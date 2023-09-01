@@ -13,7 +13,7 @@ npm install node-godfather
 ## Usage example
 
 ```typescript
-import { PlayerEvent, DialogStyleEnum } from "godfather"
+import { PlayerEvent, DialogStyleEnum } from "node-godfather"
 
 PlayerEvent.connect((player) => {
     player.setSpectating(true)
