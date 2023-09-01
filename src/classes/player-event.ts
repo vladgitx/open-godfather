@@ -14,6 +14,8 @@ export const playerEvent = new EventEmitter()
 SampNode.on("OnPlayerConnect", (playerId: number) => {
     const player = new Player(playerId)
     Players.pool.set(playerId, player)
+
+    playerEvent.emit("preConnect", player)
     playerEvent.emit("connect", player)
 })
 
@@ -21,6 +23,7 @@ SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) =
     const player = Players.at(playerId)
     if (player !== undefined) {
         playerEvent.emit("disconnect", player, reasonId)
+        playerEvent.emit("postDisconnect", player, reasonId)
     }
     Players.pool.delete(playerId)
 })
@@ -36,12 +39,20 @@ SampNode.on("OnPlayerSpawn", (playerId: number) => {
 })
 
 export class PlayerEvent {
+    static preConnect(callback: (player: Player) => void) {
+        playerEvent.on("preConnect", callback)
+    }
+
     static connect(callback: (player: Player) => void) {
         playerEvent.on("connect", callback)
     }
 
     static disconnect(callback: (player: Player, reasonId: KickReasonEnum) => void) {
         playerEvent.on("disconnect", callback)
+    }
+
+    static postDisconnect(callback: (player: Player, reasonId: KickReasonEnum) => void) {
+        playerEvent.on("postDisconnect", callback)
     }
 
     static requestClass(callback: (player: Player, classId: number) => void) {
@@ -87,7 +98,7 @@ export class PlayerEvent {
         playerEvent.on("enterVehicle", callback)
     }
 
-    static exitVehicle(callback: (player: Player, vehicle: Vehicle) => void) {
+    static exitVehicle(callback: (player: Player, vehicle: Vehicle | undefined) => void) {
         playerEvent.on("exitVehicle", callback)
     }
 }
