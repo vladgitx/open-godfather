@@ -1,8 +1,8 @@
 {
-  "name": "node-godfather",
+  "name": "open-godfather",
   "version": "1.0.0",
-  "description": "Framework for building SA-MP and open.mp scripts in Node.js with the samp-node plugin.",
-  "main": "build/index.js",
+  "description": "Node.js framework for building SA-MP and open.mp scripts with the samp-node plugin.",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
