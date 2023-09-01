@@ -14,11 +14,13 @@ export class Player {
     #id: number
     #color: number
     spawnCount: number
+    #cash: number
 
     constructor(playerId: number) {
         this.#id = playerId
         this.#color = 0xFFFFFFFF
         this.spawnCount = 0
+        this.#cash = 0
     }
 
     get id() {
@@ -83,6 +85,14 @@ export class Player {
 
     setWeaponSkill(weapon: WeaponSkillEnum, level: number) {
         return Natives.setPlayerSkillLevel(this.#id, weapon, level)
+    }
+
+    giveWeapon(weapon: WeaponEnum, ammo: number) {
+        return Natives.givePlayerWeapon(this.#id, weapon, ammo)
+    }
+
+    get weapon() {
+        return Natives.getPlayerWeapon(this.#id)
     }
 
     get position() {
@@ -168,5 +178,24 @@ export class Player {
             return undefined
         }
         return Vehicles.at(vehicleId)
+    }
+
+    get ip() {
+        return Natives.getPlayerIp(this.#id)
+    }
+
+    get ping() {
+        return Natives.getPlayerPing(this.#id)
+    }
+
+    set cash(value: number) {
+        Natives.resetPlayerMoney(this.#id)
+        Natives.givePlayerMoney(this.#id, value)
+
+        this.#cash = value
+    }
+
+    get cash() {
+        return this.#cash
     }
 }

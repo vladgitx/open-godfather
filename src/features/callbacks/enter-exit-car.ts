@@ -36,7 +36,7 @@ PlayerEvent.stateChange((player, newState, oldState) => {
     }
 })
 
-export function godfather_putPlayerInVehicle(playerId: number, vehicleId: number, seatId: number = 0): boolean {
+export function godfather_putPlayerInVehicle(playerId: number, vehicleId: number, seatId: number = 0) {
     const oldVehicleId = Natives.getPlayerVehicleId(playerId)
     if (oldVehicleId === undefined || oldVehicleId === vehicleId) {
         return Natives.putPlayerInVehicle(playerId, vehicleId, seatId)

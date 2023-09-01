@@ -135,6 +135,36 @@ export class Natives {
         }
         return samp.callNative("GetPlayerName", "iSi", playerId, 24)
     }
+
+    static getPlayerIp = (playerId: number): string => {
+        if (!Natives.isPlayerConnected(playerId)) {
+            return "255.255.255.255"
+        }
+        return samp.callNative('GetPlayerIp', 'iSi', playerId, 17)
+    }
+
+    static getPlayerPing = (playerId: number): number => {
+        return samp.callNative('GetPlayerPing', 'i', playerId);
+    }
+
+    static givePlayerMoney = (playerId: number, money: number): boolean => {
+        return samp.callNative('GivePlayerMoney', 'ii', playerId, money) === 1
+    }
+
+    static resetPlayerMoney = (playerId: number): boolean => {
+        return samp.callNative('ResetPlayerMoney', 'i', playerId) === 1
+    }
+
+    static givePlayerWeapon = (playerId: number, weaponId: WeaponEnum, ammo: number): boolean => {
+        return samp.callNative('GivePlayerWeapon', 'iii', playerId, weaponId, ammo) === 1
+    }
+
+    static getPlayerWeapon = (playerId: number): WeaponEnum => {
+        if (!Natives.isPlayerConnected(playerId)) {
+            return WeaponEnum.FIST
+        }
+        return samp.callNative('GetPlayerWeapon', 'i', playerId);
+    }
     
     static isPlayerConnected(playerId: number): boolean {
         return samp.callNative("IsPlayerConnected", "i", playerId) === 1
