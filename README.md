@@ -7,13 +7,13 @@ Node.js framework for building SA-MP and open.mp scripts with the [samp-node](ht
 ## Installation
 
 ```bash
-npm install node-godfather
+npm install open-godfather
 ```
     
 ## Usage example
 
 ```typescript
-import { PlayerEvent, DialogStyleEnum } from "node-godfather"
+import { PlayerEvent, DialogStyleEnum } from "open-godfather"
 
 PlayerEvent.connect((player) => {
     player.setSpectating(true)
