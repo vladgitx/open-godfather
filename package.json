@@ -1,0 +1,24 @@
+{
+  "name": "node-godfather",
+  "version": "1.0.0",
+  "description": "Framework for building SA-MP and open.mp scripts in Node.js with the samp-node plugin.",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "samp",
+    "samp-node",
+    "open.mp",
+    "open.mp node",
+    "omp-node",
+    "omp",
+    "open multiplayer"
+  ],
+  "author": "vladbalea",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "typescript": "^5.2.2"
+  }
+}
