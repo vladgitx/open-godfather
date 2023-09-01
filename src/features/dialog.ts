@@ -13,7 +13,6 @@ SampNode.on("OnDialogResponse", (playerId: number, dialogId: number, response: n
 })
 
 export function showPlayerDialog(playerId: number, styleId: DialogStyleEnum, caption: string, info: string, button1: string, button2: string, callback: DialogResponseCallback) {
-    dialogCallbackMap.delete(playerId)
     dialogCallbackMap.set(playerId, callback)
 
     return Natives.showPlayerDialog(playerId, 0, styleId, caption, info, button1, button2)

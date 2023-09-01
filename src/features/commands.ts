@@ -6,7 +6,7 @@ import { playerEvent } from "../classes/player-event"
 import { SampNode } from "../scripting-api"
 
 type CommandCallback = (player: Player, commandUsed: string, ...params: string[]) => void
-const definedCommands: Record<string, CommandCallback> = {}
+const definedCommands = new Map<string, CommandCallback>()
 
 export enum CommandResponseEnum {
     NOT_FOUND = 0,
@@ -16,11 +16,11 @@ export enum CommandResponseEnum {
 export function addCommand(commands: string | string[], callback: CommandCallback) {
     const commandList = Array.isArray(commands) ? commands : [commands]
     for (const command of commandList) {
-        if (definedCommands[command]) {
+        if (definedCommands.has(command)) {
             console.error(`ERROR: ${command} command was not created because a command with the same name already exists.`)
             continue
         }
-        definedCommands[command] = callback
+        definedCommands.set(command, callback)
     }
 }
 
@@ -36,9 +36,9 @@ SampNode.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
     if (command === "/") {
         return 1
     }
-    const handler = definedCommands[command]
+    const handler = definedCommands.get(command)
     
-    if (handler) {
+    if (handler !== undefined) {
         playerEvent.emit("commandPerformed", player, command, CommandResponseEnum.SUCCESS)
         handler(player, command, ...params)
     } else {
