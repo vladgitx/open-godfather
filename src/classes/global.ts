@@ -35,7 +35,7 @@ const defaultGlobalConfig: DeepRequired<GlobalConfig> = {
 SampNode.on("OnGameModeInit", () => {
     let indexFile
     try {
-        indexFile = require("../../index")
+        indexFile = require("../../../samp-node/index")
     } catch {
         console.error("[warning] Using default global config values because index.js file could not be found, make sure it's inside the \"src\" folder at the root level.")
     }

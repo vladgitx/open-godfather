@@ -41,17 +41,17 @@ export function godfather_putPlayerInVehicle(playerId: number, vehicleId: number
     if (!Natives.isValidVehicle(vehicleId) || !Natives.isPlayerConnected(playerId)) {
         return false
     }
-    const player = Players.get(playerId)
+    const player = Players.at(playerId)
     if (player === undefined) {
         return false
     }
-    const oldVehicle = Vehicles.get(oldVehicleId)
+    const oldVehicle = Vehicles.at(oldVehicleId)
     if (oldVehicle !== undefined) {
         playerEvent.emit("exitVehicle", player, oldVehicle)
     }
     Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
 
-    const vehicle = Vehicles.get(vehicleId)
+    const vehicle = Vehicles.at(vehicleId)
     if (vehicle !== undefined) {
         playerEvent.emit("enterVehicle", player, vehicle)
     }

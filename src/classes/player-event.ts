@@ -20,7 +20,7 @@ SampNode.on("OnPlayerConnect", (playerId: number) => {
 })
 
 SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) => {
-    const player = Players.get(playerId)
+    const player = Players.at(playerId)
     if (player !== undefined) {
         playerEvent.emit("disconnect", player, reasonId)
     }
@@ -28,7 +28,7 @@ SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) =
 })
 
 SampNode.on("OnPlayerSpawn", (playerId: number) => {
-    const player = Players.get(playerId)
+    const player = Players.at(playerId)
     if (player !== undefined) {
         if (player.spawnCount++ === 0) {
             playerEvent.emit("firstSpawn", player)
@@ -48,7 +48,7 @@ export class PlayerEvent {
 
     static requestClass(callback: (player: Player, classId: number) => void) {
         SampNode.on("OnPlayerRequestClass", (playerId: number, classId: number) => {
-            const player = Players.get(playerId)
+            const player = Players.at(playerId)
             if (player !== undefined) {
                 callback(player, classId)
             }
@@ -65,7 +65,7 @@ export class PlayerEvent {
 
     static text(callback: (player: Player, text: string) => void) {
         SampNode.on("OnPlayerText", (playerId: number, text: string) => {
-            const player = Players.get(playerId)
+            const player = Players.at(playerId)
             if (player !== undefined) {
                 callback(player, text)
             }
@@ -74,7 +74,7 @@ export class PlayerEvent {
 
     static stateChange(callback: (player: Player, newState: PlayerStateEnum, oldState: PlayerStateEnum) => void) {
         SampNode.on("OnPlayerStateChange", (playerId: number, newState: PlayerStateEnum, oldState: PlayerStateEnum) => {
-            const player = Players.get(playerId)
+            const player = Players.at(playerId)
             if (player !== undefined) {
                 callback(player, newState, oldState)
             }

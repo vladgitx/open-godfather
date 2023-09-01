@@ -25,7 +25,7 @@ export function addCommand(commands: string | string[], callback: CommandCallbac
 }
 
 SampNode.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
-    const player = Players.get(playerId)
+    const player = Players.at(playerId)
     if (player === undefined) {
         return 1
     }

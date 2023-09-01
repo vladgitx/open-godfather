@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Node.js framework for building SA-MP and open.mp scripts with the samp-node plugin.",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

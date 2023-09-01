@@ -5,7 +5,7 @@ import { shadeColor } from "../utils"
 export class Players {
     static pool: Record<number, Player> = {}
 
-    static get(playerId: number): Player | undefined {
+    static at(playerId: number): Player | undefined {
         if (!Natives.isPlayerConnected(playerId)) {
             return undefined
         }
@@ -18,7 +18,7 @@ export class Players {
     static search(nameOrId: string): Player | undefined {
         const playerId = parseInt(nameOrId)
         if (!isNaN(playerId)) {
-            const player = Players.get(playerId)
+            const player = Players.at(playerId)
             if (player !== undefined) {
                 return player
             }

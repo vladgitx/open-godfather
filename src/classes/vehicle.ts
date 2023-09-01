@@ -17,7 +17,7 @@ export class Vehicle {
     destroy() {
         const response = Natives.destroyVehicle(this.id)
         if (response) {
-            const vehicle = Vehicles.get(this.id)
+            const vehicle = Vehicles.at(this.id)
             if (vehicle !== undefined) {
                 vehicleEvent.emit("destroy", vehicle)
             }

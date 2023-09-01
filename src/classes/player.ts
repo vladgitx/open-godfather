@@ -163,6 +163,6 @@ export class Player {
         if (vehicleId === undefined) {
             return undefined
         }
-        return Vehicles.get(vehicleId)
+        return Vehicles.at(vehicleId)
     }
 }

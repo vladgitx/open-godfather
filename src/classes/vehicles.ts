@@ -6,7 +6,7 @@ import { Natives } from "../scripting-api"
 export class Vehicles {
     static pool: Record<number, Vehicle> = {}
 
-    static get(vehicleId: number): Vehicle | undefined {
+    static at(vehicleId: number): Vehicle | undefined {
         if (!Natives.isValidVehicle(vehicleId)) {
             return undefined
         }
