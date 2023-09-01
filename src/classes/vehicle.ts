@@ -3,32 +3,36 @@ import { vehicleEvent } from "./vehicle-event"
 import { Natives } from "../scripting-api"
 
 export class Vehicle {
-    id: number
+    #id: number
     #primaryColor: number
     #secondaryColor: number
     occupants: Player[] = []
 
     constructor(vehicleId: number, primaryColor = -1, secondaryColor = -1) {
-        this.id = vehicleId
+        this.#id = vehicleId
         this.#primaryColor = primaryColor
         this.#secondaryColor = secondaryColor
     }
 
+    get id() {
+        return this.#id
+    }
+
     destroy() {
-        const response = Natives.destroyVehicle(this.id)
+        const response = Natives.destroyVehicle(this.#id)
         if (response) {
-            const vehicle = Vehicles.at(this.id)
+            const vehicle = Vehicles.at(this.#id)
             if (vehicle !== undefined) {
                 vehicleEvent.emit("destroy", vehicle)
             }
-            delete Vehicles.pool[this.id]
+            delete Vehicles.pool[this.#id]
             return true
         }
         return false
     }
 
     get model() {
-        return Natives.getVehicleModel(this.id)
+        return Natives.getVehicleModel(this.#id)
     }
 
     get name() {
@@ -36,20 +40,20 @@ export class Vehicle {
     }
 
     set health(health: number) {
-        Natives.setVehicleHealth(this.id, health)
+        Natives.setVehicleHealth(this.#id, health)
     }
 
     get health() {
-        return Natives.getVehicleHealth(this.id)
+        return Natives.getVehicleHealth(this.#id)
     }
 
     get isValid() {
-        return Natives.isValidVehicle(this.id)
+        return Natives.isValidVehicle(this.#id)
     }
 
     set primaryColor(color: number) {
         this.#primaryColor = color
-        Natives.changeVehicleColor(this.id, this.#primaryColor, this.#secondaryColor)
+        Natives.changeVehicleColor(this.#id, this.#primaryColor, this.#secondaryColor)
     }
 
     get primaryColor() {
@@ -58,7 +62,7 @@ export class Vehicle {
 
     set secondaryColor(color: number) {
         this.#secondaryColor = color
-        Natives.changeVehicleColor(this.id, this.#primaryColor, this.#secondaryColor)
+        Natives.changeVehicleColor(this.#id, this.#primaryColor, this.#secondaryColor)
     }
 
     get secondaryColor() {
