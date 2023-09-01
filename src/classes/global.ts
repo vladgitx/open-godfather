@@ -131,6 +131,10 @@ export class Global {
         },
     }
 
+    static get tickRate() {
+        return Natives.getServerTickRate()
+    }
+
     static set stuntBonuses(enable: boolean) {
         this.#stuntBonuses = enable
         Natives.enableStuntBonusForAll(enable)

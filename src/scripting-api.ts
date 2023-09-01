@@ -26,6 +26,10 @@ export class SampNode {
 }
 
 export class Natives {
+    static getServerTickRate = (): number => {
+        return samp.callNative('GetServerTickRate', '');
+    }
+
     static setPlayerSkillLevel = (playerId: number, skillType: WeaponSkillEnum, level: number): boolean => {
         return samp.callNative('SetPlayerSkillLevel', 'iii', playerId, skillType, level) === 1
     }
