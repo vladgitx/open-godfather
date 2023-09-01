@@ -3,16 +3,10 @@ import { Player } from ".."
 import { shadeColor } from "../utils"
 
 export class Players {
-    static pool: Record<number, Player> = {}
+    static pool = new Map<number, Player>()
 
-    static at(playerId: number): Player | undefined {
-        if (!Natives.isPlayerConnected(playerId)) {
-            return undefined
-        }
-        if (!Players.pool[playerId]) {
-            Players.pool[playerId] = new Player(playerId)
-        }
-        return Players.pool[playerId]
+    static at(playerId: number) {
+        return Players.pool.get(playerId)
     }
 
     static search(nameOrId: string): Player | undefined {
@@ -26,9 +20,7 @@ export class Players {
         if (nameOrId.length < 3) {
             return undefined
         }
-        for (const playerId in Players.pool) {
-            const player = Players.pool[playerId]
-
+        for (const [playerId, player] of Players.pool) {
             if (player.name.toLowerCase().startsWith(nameOrId.toLowerCase())) {
                 return player
             }
@@ -46,9 +38,7 @@ export class Players {
                 return true
             }
             if (world !== undefined && interior === undefined) {
-                for (const playerId in Players.pool) {
-                    const player = Players.pool[playerId]
-        
+                for (const [playerId, player] of Players.pool) {
                     if (player.world === world) {
                         player.sendMessage(text, color)
                     }
@@ -56,18 +46,14 @@ export class Players {
                 return true
             }
             if (world === undefined && interior !== undefined) {
-                for (const playerId in Players.pool) {
-                    const player = Players.pool[playerId]
-        
+                for (const [playerId, player] of Players.pool) {
                     if (player.interior === interior) {
                         player.sendMessage(text, color)
                     }
                 }
                 return true
             }
-            for (const playerId in Players.pool) {
-                const player = Players.pool[playerId]
-    
+            for (const [playerId, player] of Players.pool) {
                 if (player.world === world && player.interior === interior) {
                     player.sendMessage(text, color)
                 }
@@ -77,9 +63,7 @@ export class Players {
         if (range === undefined) {
             return false
         }
-        for (const playerId in Players.pool) {
-            const player = Players.pool[playerId]
-
+        for (const [playerId, player] of Players.pool) {
             if (world !== undefined && player.world !== world) {
                 continue
             }

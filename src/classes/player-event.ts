@@ -12,11 +12,9 @@ import { SampNode } from "../scripting-api"
 export const playerEvent = new EventEmitter()
 
 SampNode.on("OnPlayerConnect", (playerId: number) => {
-    if (Players.pool[playerId]) {
-        delete Players.pool[playerId]
-    }
-    Players.pool[playerId] = new Player(playerId)
-    playerEvent.emit("connect", Players.pool[playerId])
+    const player = new Player(playerId)
+    Players.pool.set(playerId, player)
+    playerEvent.emit("connect", player)
 })
 
 SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) => {
@@ -24,7 +22,7 @@ SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) =
     if (player !== undefined) {
         playerEvent.emit("disconnect", player, reasonId)
     }
-    delete Players.pool[playerId]
+    Players.pool.delete(playerId)
 })
 
 SampNode.on("OnPlayerSpawn", (playerId: number) => {

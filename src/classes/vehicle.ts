@@ -25,7 +25,7 @@ export class Vehicle {
             if (vehicle !== undefined) {
                 vehicleEvent.emit("destroy", vehicle)
             }
-            delete Vehicles.pool[this.#id]
+            Vehicles.pool.delete(this.#id)
             return true
         }
         return false

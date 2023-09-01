@@ -4,16 +4,10 @@ import { vehicleNames } from "../vehicle-names"
 import { Natives } from "../scripting-api"
 
 export class Vehicles {
-    static pool: Record<number, Vehicle> = {}
+    static pool = new Map<number, Vehicle>()
 
-    static at(vehicleId: number): Vehicle | undefined {
-        if (!Natives.isValidVehicle(vehicleId)) {
-            return undefined
-        }
-        if (!Vehicles.pool[vehicleId]) {
-            Vehicles.pool[vehicleId] = new Vehicle(vehicleId)
-        }
-        return Vehicles.pool[vehicleId]
+    static at(vehicleId: number) {
+        return Vehicles.pool.get(vehicleId)
     }
 
     static create(modelId: number, position: { x: number, y: number, z: number }, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false): Vehicle | undefined {
@@ -21,11 +15,8 @@ export class Vehicles {
         if (vehicleId === undefined) {
             return undefined
         }
-        if (Vehicles.pool[vehicleId]) {
-            delete Vehicles.pool[vehicleId]
-        }
-        Vehicles.pool[vehicleId] = new Vehicle(vehicleId, primaryColor, secondaryColor)
-        const vehicle = Vehicles.pool[vehicleId]
+        const vehicle = new Vehicle(vehicleId, primaryColor, secondaryColor)
+        Vehicles.pool.set(vehicleId, vehicle)
 
         vehicleEvent.emit("create", vehicle)
         return vehicle
