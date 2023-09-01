@@ -6,7 +6,7 @@ export class Vehicle {
     #id: number
     #primaryColor: number
     #secondaryColor: number
-    occupants: Player[] = []
+    occupants = new Set<Player>()
 
     constructor(vehicleId: number, primaryColor = -1, secondaryColor = -1) {
         this.#id = vehicleId

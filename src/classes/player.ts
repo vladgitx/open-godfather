@@ -8,7 +8,7 @@ import {
     WeaponSkillEnum,
 } from ".."
 import { showPlayerDialog, hidePlayerDialog } from "../features/dialog"
-import { godfather_putPlayerInVehicle } from "../features/player-callbacks"
+import { godfather_putPlayerInVehicle } from "../features/callbacks/enter-exit-car"
 
 export class Player {
     #id: number
