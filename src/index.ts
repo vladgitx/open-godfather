@@ -1,4 +1,6 @@
 export * from "./enums"
 export * from "./classes"
 export * from "./features"
+export * from "./types"
 export { shadeColor } from "./utils"
+export * from "./vehicle-names"

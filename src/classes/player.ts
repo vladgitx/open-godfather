@@ -6,6 +6,7 @@ import {
     Vehicle,
     Vehicles,
     WeaponSkillEnum,
+    EntityPosition,
 } from ".."
 import { showPlayerDialog, hidePlayerDialog } from "../features/dialog"
 import { godfather_putPlayerInVehicle } from "../features/callbacks/enter-exit-car"
@@ -29,6 +30,10 @@ export class Player {
         return this.#id
     }
 
+    get exists() {
+        return Natives.isPlayerConnected(this.#id)
+    }
+
     sendMessage(message: string, color = -1) {
         return Natives.sendClientMessage(this.#id, color, message)
     }
@@ -47,7 +52,7 @@ export class Player {
         return Natives.kick(this.#id)
     }
 
-    setSpawnInfo(teamId: number, skinId: number, position: { x: number, y: number, z: number }, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
+    setSpawnInfo(teamId: number, skinId: number, position: EntityPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
         this.#skin = skinId
         return Natives.setSpawnInfo(this.#id, teamId, skinId, position, rotation, weapons)
     }
@@ -68,11 +73,15 @@ export class Player {
         return Natives.togglePlayerSpectating(this.#id, spectating)
     }
 
-    setPosition(x: number, y: number, z: number) {
-        return Natives.setPlayerPosition(this.#id, x, y, z)
+    setPosition(position: EntityPosition) {
+        return Natives.setPlayerPosition(this.#id, position.x, position.y, position.z)
     }
 
-    getDistance(position: { x: number, y: number, z: number }, world: number | undefined = undefined, interior: number | undefined = undefined) {
+    getPosition() {
+        return Natives.getPlayerPosition(this.#id)
+    }
+
+    getDistance(position: EntityPosition, world?: number, interior?: number) {
         if (world !== undefined && this.world !== world) {
             return Number.POSITIVE_INFINITY
         }
@@ -111,20 +120,12 @@ export class Player {
         return Natives.getPlayerWeapon(this.#id)
     }
 
-    get position() {
-        return Natives.getPlayerPosition(this.#id)
-    }
-
     set rotation(rotation: number) {
         Natives.setPlayerRotation(this.#id, rotation)
     }
 
     get rotation() {
         return Natives.getPlayerRotation(this.#id)
-    }
-
-    get isConnected() {
-        return Natives.isPlayerConnected(this.#id)
     }
 
     get isSpawned() {
@@ -139,24 +140,24 @@ export class Player {
         return Natives.getPlayerState(this.#id)
     }
 
-    set name(name: string) {
-        Natives.setPlayerName(this.#id, name)
+    set name(value: string) {
+        Natives.setPlayerName(this.#id, value)
     }
 
     get name() {
         return Natives.getPlayerName(this.#id)
     }
     
-    set world(world: number) {
-        Natives.setPlayerVirtualWorld(this.#id, world)
+    set world(value: number) {
+        Natives.setPlayerVirtualWorld(this.#id, value)
     }
 
     get world() {
         return Natives.getPlayerVirtualWorld(this.#id)
     }
 
-    set interior(interior: number) {
-        Natives.setPlayerInterior(this.#id, interior)
+    set interior(value: number) {
+        Natives.setPlayerInterior(this.#id, value)
     }
 
     get interior() {

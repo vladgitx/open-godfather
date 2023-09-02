@@ -212,3 +212,10 @@ export const vehicleNames = [
     "Tiller",
     "Utility Trailer",
 ]
+
+export function getVehicleModelName(modelId: number | undefined) {
+    if (modelId === undefined || modelId < 400 || modelId > 611) {
+        return "invalid_name"
+    }
+    return vehicleNames[modelId - 400]
+}

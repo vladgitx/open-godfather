@@ -9,25 +9,6 @@ export class Players {
         return Players.pool.get(playerId)
     }
 
-    static search(nameOrId: string): Player | undefined {
-        const playerId = parseInt(nameOrId)
-        if (!isNaN(playerId)) {
-            const player = Players.at(playerId)
-            if (player !== undefined) {
-                return player
-            }
-        }
-        if (nameOrId.length < 3) {
-            return undefined
-        }
-        for (const [playerId, player] of Players.pool) {
-            if (player.name.toLowerCase().startsWith(nameOrId.toLowerCase())) {
-                return player
-            }
-        }
-        return undefined
-    }
-
     static sendMessage(text: string, color: number = -1, position?: { x: number, y: number, z: number }, world?: number, interior?: number, range?: number, colorShader: boolean = false): boolean {
         if (position === undefined) {
             if (range !== undefined) {

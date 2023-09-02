@@ -1,38 +1,33 @@
-import { PlayerStateEnum, Players, Vehicle, Vehicles } from "../.."
+import { PlayerStateEnum, Players, Vehicles } from "../.."
 import { Natives } from "../../scripting-api"
 import { PlayerEvent, playerEvent } from "../../classes/player-event"
 
-const playerLastVehicle = new Map<number, Vehicle>()
+const playerLastVehicleId = new Map<number, number>()
 
 PlayerEvent.postDisconnect((player) => {
-    playerLastVehicle.delete(player.id)
+    playerLastVehicleId.delete(player.id)
     player.vehicle?.occupants.delete(player)
 })
 
 PlayerEvent.stateChange((player, newState, oldState) => {
-    if (newState === PlayerStateEnum.PASSENGER || newState === PlayerStateEnum.DRIVER) {
-        const vehicle = player.vehicle
-
-        if (playerLastVehicle.get(player.id) != vehicle) {
-            if (vehicle !== undefined) {
-                playerLastVehicle.set(player.id, vehicle)
-                vehicle.occupants.add(player)
-
-                playerEvent.emit("enterVehicle", player, vehicle)
-            }
+    if ((newState === PlayerStateEnum.PASSENGER || newState === PlayerStateEnum.DRIVER) && oldState !== PlayerStateEnum.PASSENGER && oldState !== PlayerStateEnum.DRIVER) {
+        const currentVehicle = player.vehicle
+        if (currentVehicle === undefined) {
+            return
         }
-    } else if (oldState === PlayerStateEnum.PASSENGER || oldState === PlayerStateEnum.DRIVER) {
-        const vehicle = player.vehicle
-
-        if (playerLastVehicle.get(player.id) != vehicle) {
-            const lastVehicle = playerLastVehicle.get(player.id)
-
-            if (lastVehicle !== undefined) {
-                lastVehicle.occupants.delete(player)
-                playerEvent.emit("exitVehicle", player, lastVehicle.isValid ? lastVehicle : undefined)
-            }
-            playerLastVehicle.delete(player.id)
+        playerLastVehicleId.set(player.id, currentVehicle.id)
+        currentVehicle.occupants.add(player)
+        playerEvent.emit("enterVehicle", player, currentVehicle)
+    } else if ((oldState === PlayerStateEnum.PASSENGER || oldState === PlayerStateEnum.DRIVER) && newState !== PlayerStateEnum.PASSENGER && newState !== PlayerStateEnum.DRIVER) {
+        const lastVehicleId = playerLastVehicleId.get(player.id)
+        if (lastVehicleId === undefined) {
+            return
         }
+        const lastVehicle = Vehicles.at(lastVehicleId)
+
+        lastVehicle?.occupants.delete(player)
+        playerEvent.emit("exitVehicle", player, lastVehicle)
+        playerLastVehicleId.delete(player.id)
     }
 })
 
@@ -46,13 +41,12 @@ export function godfather_putPlayerInVehicle(playerId: number, vehicleId: number
     }
     const player = Players.at(playerId)
     if (player === undefined) {
-        return false
+        return Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
     }
     const oldVehicle = Vehicles.at(oldVehicleId)
-    if (oldVehicle !== undefined) {
-        oldVehicle.occupants.delete(player)
-        playerEvent.emit("exitVehicle", player, oldVehicle)
-    }
+    oldVehicle?.occupants.delete(player)
+    playerEvent.emit("exitVehicle", player, oldVehicle)
+
     Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
 
     const vehicle = Vehicles.at(vehicleId)
