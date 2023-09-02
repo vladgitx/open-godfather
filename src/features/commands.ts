@@ -6,22 +6,27 @@ import { playerEvent } from "../classes/player-event"
 import { SampNode } from "../scripting-api"
 
 type CommandCallback = (player: Player, commandUsed: string, ...params: string[]) => void
-const definedCommands = new Map<string, CommandCallback>()
+const commandsInternal = new Map<string, CommandCallback>()
+export const registeredCommands = new Map<string[], string | undefined>()
 
 export enum CommandResponseEnum {
     NOT_FOUND = 0,
     SUCCESS = 1,
 }
 
-export function addCommand(commands: string | string[], callback: CommandCallback) {
+export function addCommand(commands: string | string[], callback: CommandCallback, info?: string, meta?: string[]) {
     const commandList = Array.isArray(commands) ? commands : [commands]
+    const validCommands: string[] = []
+
     for (const command of commandList) {
-        if (definedCommands.has(command)) {
-            console.error(`ERROR: ${command} command was not created because a command with the same name already exists.`)
-            continue
+        if (commandsInternal.has(command)) {
+            console.error(`[error] command "${command}" was not created because it's already defined.`)
+        } else {
+            commandsInternal.set(command, callback) 
+            validCommands.push(command)
         }
-        definedCommands.set(command, callback)
     }
+    registeredCommands.set(validCommands, info)
 }
 
 SampNode.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
@@ -36,7 +41,7 @@ SampNode.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
     if (command === "/") {
         return 1
     }
-    const handler = definedCommands.get(command)
+    const handler = commandsInternal.get(command)
     
     if (handler !== undefined) {
         playerEvent.emit("commandPerformed", player, command, CommandResponseEnum.SUCCESS)
