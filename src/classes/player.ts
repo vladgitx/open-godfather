@@ -15,12 +15,14 @@ export class Player {
     #color: number
     spawnCount: number
     #cash: number
+    #skin: number
 
     constructor(playerId: number) {
         this.#id = playerId
         this.#color = 0xFFFFFFFF
         this.spawnCount = 0
         this.#cash = 0
+        this.#skin = 0
     }
 
     get id() {
@@ -46,6 +48,7 @@ export class Player {
     }
 
     setSpawnInfo(teamId: number, skinId: number, position: { x: number, y: number, z: number }, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
+        this.#skin = skinId
         return Natives.setSpawnInfo(this.#id, teamId, skinId, position, rotation, weapons)
     }
 
@@ -91,7 +94,20 @@ export class Player {
         return Natives.givePlayerWeapon(this.#id, weapon, ammo)
     }
 
-    get weapon() {
+    set skin(skinId: number) {
+        this.#skin = skinId
+        Natives.setPlayerSkin(this.#id, skinId)
+    }
+
+    get skin() {
+        return this.#skin
+    }
+
+    set holdingWeapon(weaponId: WeaponEnum) {
+        Natives.setPlayerArmedWeapon(this.#id, weaponId)
+    }
+
+    get holdingWeapon() {
         return Natives.getPlayerWeapon(this.#id)
     }
 

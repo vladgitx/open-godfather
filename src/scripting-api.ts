@@ -165,6 +165,14 @@ export class Natives {
         }
         return samp.callNative('GetPlayerWeapon', 'i', playerId);
     }
+
+    static setPlayerArmedWeapon = (playerId: number, weaponId: WeaponEnum) => {
+        return samp.callNative('SetPlayerArmedWeapon', 'ii', playerId, weaponId) === 1
+    }
+
+    static setPlayerSkin = (playerId: number, skinId: number): boolean => {
+        return samp.callNative('SetPlayerSkin', 'ii', playerId, skinId) === 1
+    }
     
     static isPlayerConnected(playerId: number): boolean {
         return samp.callNative("IsPlayerConnected", "i", playerId) === 1
