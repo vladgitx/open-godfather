@@ -3,6 +3,7 @@ import {
     PlayerStateEnum,
     DialogStyleEnum,
     WeaponSkillEnum,
+    EntityPosition,
 } from "."
 
 declare class samp {
@@ -66,7 +67,7 @@ export class Natives {
         return samp.callNative('DestroyVehicle', 'i', vehicleId) === 1
     }
 
-    static createVehicle = (modelId: number, position: { x: number, y: number, z: number }, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false): number | undefined => {
+    static createVehicle = (modelId: number, position: EntityPosition, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false): number | undefined => {
         const vehicleId = samp.callNative('CreateVehicle', 'iffffiiii', modelId, position.x, position.y, position.z, rotation, primaryColor, secondaryColor, respawnDelay, addSiren)
         if (vehicleId === 65535 || vehicleId === 0) {
             return undefined
@@ -98,7 +99,7 @@ export class Natives {
         return samp.callNative("GetPlayerVirtualWorld", "i", playerId)
     }
     
-    static setSpawnInfo(playerId: number, teamId: number, skinId: number, position: { x: number, y: number, z: number }, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []): void {
+    static setSpawnInfo(playerId: number, teamId: number, skinId: number, position: EntityPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []): void {
         const weapon1 = weapons[0] ? weapons[0].weapon : WeaponEnum.FIST
         const weapon1ammo = weapons[0] ? weapons[0].ammo : 0
         const weapon2 = weapons[1] ? weapons[1].weapon : WeaponEnum.FIST
@@ -127,6 +128,10 @@ export class Natives {
         } else {
             samp.callNative("SendClientMessage", "iis", playerId, color, message)
         }
+    }
+
+    static setVehiclePosition = (vehicleId: number, x: number, y: number, z: number): boolean => {
+        return samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z) === 1
     }
     
     static getPlayerName(playerId: number): string {
@@ -178,7 +183,7 @@ export class Natives {
         return samp.callNative("IsPlayerConnected", "i", playerId) === 1
     }
     
-    static getPlayerPosition(playerId: number): { x: number, y: number, z: number } {
+    static getPlayerPosition(playerId: number): EntityPosition {
         if (!Natives.isPlayerConnected(playerId)) {
             return {
                 x: 0,
@@ -187,6 +192,22 @@ export class Natives {
             }
         }
         const pos = samp.callNative("GetPlayerPos", "iFFF", playerId)
+        return {
+            x: pos[0],
+            y: pos[1],
+            z: pos[2],
+        }
+    }
+
+    static getVehiclePosition = (vehicleId: number): EntityPosition => {
+        if (!Natives.isValidVehicle(vehicleId)) {
+            return {
+                x: 0,
+                y: 0,
+                z: 3,
+            }
+        }
+        const pos = samp.callNative('GetVehiclePos', 'iFFF', vehicleId);
         return {
             x: pos[0],
             y: pos[1],
@@ -249,6 +270,39 @@ export class Natives {
             return 0
         }
         return samp.callNative("GetPlayerFacingAngle", "iF", playerId)
+    }
+
+    static setVehicleZAngle = (vehicleId: number, angle: number) => {
+        return samp.callNative('SetVehicleZAngle', 'if', vehicleId, angle) === 1
+    }
+
+    static getVehicleZAngle = (vehicleId: number): number => {
+        if (!Natives.isValidVehicle(vehicleId)) {
+            return 0
+        }
+        return samp.callNative('GetVehicleZAngle', 'iF', vehicleId);
+    }
+
+    static setVehicleVirtualWorld = (vehicleId: number, worldId: number) => {
+        return samp.callNative('SetVehicleVirtualWorld', 'ii', vehicleId, worldId) === 1
+    }
+    
+    static getVehicleVirtualWorld = (vehicleId: number): number => {
+        if (!Natives.isValidVehicle(vehicleId)) {
+            return 0
+        }
+        return samp.callNative('GetVehicleVirtualWorld', 'i', vehicleId);
+    }
+
+    static linkVehicleToInterior = (vehicleId: number, interiorId: number): boolean => {
+        return samp.callNative('LinkVehicleToInterior', 'ii', vehicleId, interiorId) === 1
+    }
+
+    static getVehicleDistanceFromPoint = (vehicleId: number, x: number, y: number, z: number): number => {
+        if (!Natives.isValidVehicle(vehicleId)) {
+            return Number.POSITIVE_INFINITY
+        }
+        return samp.callNativeFloat('GetVehicleDistanceFromPoint', 'ifff', vehicleId, x, y, z);
     }
     
     static getPlayerDistanceFromPoint = (playerId: number, x: number, y: number, z: number): number => {
