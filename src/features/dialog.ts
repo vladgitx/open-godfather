@@ -12,9 +12,11 @@ SampNode.on("OnDialogResponse", (playerId: number, dialogId: number, response: n
     }
 })
 
-export function showPlayerDialog(playerId: number, styleId: DialogStyleEnum, caption: string, info: string, button1: string, button2: string, callback: DialogResponseCallback) {
+export function showPlayerDialog(playerId: number, styleId: DialogStyleEnum, caption: string, info: string, button1: string, button2: string, callback?: DialogResponseCallback) {
     const dialogId = Math.floor(Math.random() * 32767)
-    dialogCallbackMap.set(dialogId, callback)
+    if (callback !== undefined) {
+        dialogCallbackMap.set(dialogId, callback)
+    }
     return Natives.showPlayerDialog(playerId, dialogId, styleId, caption, info, button1, button2)
 }
 

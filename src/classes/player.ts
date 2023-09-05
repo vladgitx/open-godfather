@@ -13,14 +13,16 @@ import { godfather_putPlayerInVehicle } from "../features/callbacks/enter-exit-c
 
 export class Player {
     #id: number
-    #color: number
+    uniqueId: number
+    #color: string
     spawnCount: number
     #cash: number
     #skin: number
 
-    constructor(playerId: number) {
+    constructor(playerId: number, uniqueId: number) {
         this.#id = playerId
-        this.#color = 0xFFFFFFFF
+        this.uniqueId = uniqueId
+        this.#color = "FFFFFF"
         this.spawnCount = 0
         this.#cash = 0
         this.#skin = 0
@@ -34,22 +36,24 @@ export class Player {
         return Natives.isPlayerConnected(this.#id)
     }
 
-    sendMessage(message: string, color = -1) {
+    sendMessage(message: string, color = "FFFFFF") {
         return Natives.sendClientMessage(this.#id, color, message)
     }
 
-    spamMessage(message: string, count = 30, color = -1) {
+    spamMessage(message: string, count = 30, color = "FFFFFF") {
         for (let i = 0; i < count; i++) {
             this.sendMessage(message, color)
         }
     }
 
     spawn() {
-        return Natives.spawnPlayer(this.#id);
+        return Natives.spawnPlayer(this.#id)
     }
 
     kick() {
-        return Natives.kick(this.#id)
+        setTimeout(() => {
+            Natives.kick(this.#id)
+        }, 10)
     }
 
     setSpawnInfo(teamId: number, skinId: number, position: EntityPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
@@ -57,8 +61,8 @@ export class Player {
         return Natives.setSpawnInfo(this.#id, teamId, skinId, position, rotation, weapons)
     }
 
-    showDialog(styleId: DialogStyleEnum, caption: string, info: string, button1: string, button2: string, callback: (response: boolean, listItem: number, inputText: string) => void) {
-        return showPlayerDialog(this.#id, styleId, caption, info, button1, button2, callback)
+    showDialog(styleId: DialogStyleEnum, caption: string, info: string, primaryButton: string, secondaryButton: string = "", callback?: (response: boolean, listItem: number, inputText: string) => void) {
+        return showPlayerDialog(this.#id, styleId, caption, info, primaryButton, secondaryButton, callback)
     }
 
     hideDialog() {
@@ -91,7 +95,7 @@ export class Player {
         return Natives.getPlayerDistanceFromPoint(this.#id, position.x, position.y, position.z)
     }
 
-    setChatBubble(text: string, color = -1, drawDistance = 12, expireTime = 5000) {
+    setChatBubble(text: string, color = "FFFFFF", drawDistance = 12, expireTime = 5000) {
         return Natives.setPlayerChatBubble(this.#id, text, color, drawDistance, expireTime)
     }
 
@@ -101,6 +105,27 @@ export class Player {
 
     giveWeapon(weapon: WeaponEnum, ammo: number) {
         return Natives.givePlayerWeapon(this.#id, weapon, ammo)
+    }
+
+    setTimeout(delay: number, callback: () => void) {
+        const uuid = this.uniqueId
+        return setTimeout(() => {
+            if (this.uniqueId === uuid) {
+                callback()
+            }
+        }, delay)
+    }
+
+    setInterval(delay: number, callback: () => void) {
+        const uuid = this.uniqueId
+        const intervalId = setInterval(() => {
+            if (this.uniqueId === uuid) {
+                callback()
+            } else {
+                clearInterval(intervalId)
+            }
+        }, delay)
+        return intervalId
     }
 
     set skin(skinId: number) {
@@ -180,9 +205,9 @@ export class Player {
         return Natives.getPlayerArmour(this.#id)
     }
 
-    set color(value: number) {
-        this.#color = value
-        Natives.setPlayerColor(this.#id, value)
+    set color(hex: string) {
+        this.#color = hex
+        Natives.setPlayerColor(this.#id, hex)
     }
 
     get color() {
@@ -203,6 +228,10 @@ export class Player {
 
     get ping() {
         return Natives.getPlayerPing(this.#id)
+    }
+
+    get gpci() {
+        return Natives.gpci(this.#id)
     }
 
     set cash(value: number) {

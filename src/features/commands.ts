@@ -5,7 +5,7 @@ import {
 import { playerEvent } from "../classes/player-event"
 import { SampNode } from "../scripting-api"
 
-type CommandCallback = (player: Player, commandUsed: string, ...params: string[]) => void
+type CommandCallback = (player: Player, ...params: string[]) => void
 const commandsInternal = new Map<string, CommandCallback>()
 export const registeredCommands = new Map<string[], string | undefined>()
 
@@ -45,7 +45,7 @@ SampNode.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
     
     if (handler !== undefined) {
         playerEvent.emit("commandPerformed", player, command, CommandResponseEnum.SUCCESS)
-        handler(player, command, ...params)
+        handler(player, ...params)
     } else {
         playerEvent.emit("commandPerformed", player, command, CommandResponseEnum.NOT_FOUND)
     }

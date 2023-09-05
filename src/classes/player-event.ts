@@ -10,9 +10,10 @@ import {
 import { SampNode } from "../scripting-api"
 
 export const playerEvent = new EventEmitter()
+let lastUniqueId = 0
 
 SampNode.on("OnPlayerConnect", (playerId: number) => {
-    const player = new Player(playerId)
+    const player = new Player(playerId, lastUniqueId++)
     Players.pool.set(playerId, player)
 
     playerEvent.emit("preConnect", player)
@@ -24,6 +25,8 @@ SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) =
     if (player !== undefined) {
         playerEvent.emit("disconnect", player, reasonId)
         playerEvent.emit("postDisconnect", player, reasonId)
+
+        player.uniqueId = lastUniqueId++
     }
     Players.pool.delete(playerId)
 })

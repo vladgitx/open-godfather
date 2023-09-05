@@ -35,8 +35,8 @@ export class Natives {
         return samp.callNative('SetPlayerSkillLevel', 'iii', playerId, skillType, level) === 1
     }
 
-    static setPlayerColor = (playerId: number, color: number): void => {
-        samp.callNative('SetPlayerColor', 'ii', playerId, color)
+    static setPlayerColor = (playerId: number, color: string): void => {
+        samp.callNative('SetPlayerColor', 'ii', playerId, parseInt(color + "FF", 16))
     }
 
     static setWeather = (weatherId: number): void => {
@@ -121,17 +121,24 @@ export class Natives {
         return samp.callNative("TogglePlayerSpectating", "ii", playerId, toggle === true ? 1 : 0) === 1
     }
     
-    static sendClientMessage(playerId: number, color: number, message: string): void {
+    static sendClientMessage(playerId: number, color: string, message: string): void {
         if (message.length > 90) {
-            samp.callNative("SendClientMessage", "iis", playerId, color, `${message.slice(0, 90)} ...`)
-            samp.callNative("SendClientMessage", "iis", playerId, color, `... ${message.slice(90)}`)
+            samp.callNative("SendClientMessage", "iis", playerId, parseInt(color + "FF", 16), `${message.slice(0, 90)} ...`)
+            samp.callNative("SendClientMessage", "iis", playerId, parseInt(color + "FF", 16), `... ${message.slice(90)}`)
         } else {
-            samp.callNative("SendClientMessage", "iis", playerId, color, message)
+            samp.callNative("SendClientMessage", "iis", playerId, parseInt(color + "FF", 16), message)
         }
     }
 
     static setVehiclePosition = (vehicleId: number, x: number, y: number, z: number): boolean => {
         return samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z) === 1
+    }
+
+    static gpci = (playerId: number): string => {
+        if (!Natives.isPlayerConnected(playerId)) {
+            return "invalid_gpci"
+        }
+        return samp.callNative('gpci', 'iSi', playerId, 61);
     }
     
     static getPlayerName(playerId: number): string {
@@ -312,17 +319,17 @@ export class Natives {
         return samp.callNativeFloat('GetPlayerDistanceFromPoint', 'ifff', playerId, x, y, z)
     }
     
-    static sendClientMessageToAll(color: number, message: string): void {
+    static sendClientMessageToAll(color: string, message: string): void {
         if (message.length > 90) {
-            samp.callNative("SendClientMessageToAll", "is", color, `${message.slice(0, 90)} ...`)
-            samp.callNative("SendClientMessageToAll", "is", color, `... ${message.slice(90)}`)
+            samp.callNative("SendClientMessageToAll", "is", parseInt(color + "FF", 16), `${message.slice(0, 90)} ...`)
+            samp.callNative("SendClientMessageToAll", "is", parseInt(color + "FF", 16), `... ${message.slice(90)}`)
         } else {
-            samp.callNative("SendClientMessageToAll", "is", color, message)
+            samp.callNative("SendClientMessageToAll", "is", parseInt(color + "FF", 16), message)
         }
     }
     
-    static setPlayerChatBubble = (playerId: number, text: string, color: number, drawdistance: number, expiretime: number): boolean => {
-        return samp.callNative('SetPlayerChatBubble', 'isifi', playerId, text, color, drawdistance, expiretime) === 1
+    static setPlayerChatBubble = (playerId: number, text: string, color: string, drawdistance: number, expiretime: number): boolean => {
+        return samp.callNative('SetPlayerChatBubble', 'isifi', playerId, text, parseInt(color + "FF", 16), drawdistance, expiretime) === 1
     }
     
     static getVehicleModel(vehicleId: number): number | undefined {

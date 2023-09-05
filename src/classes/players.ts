@@ -9,7 +9,7 @@ export class Players {
         return Players.pool.get(playerId)
     }
 
-    static sendMessage(text: string, color: number = -1, position?: { x: number, y: number, z: number }, world?: number, interior?: number, range?: number, colorShader: boolean = false): boolean {
+    static sendMessage(text: string, color = "FFFFFF", position?: { x: number, y: number, z: number }, world?: number, interior?: number, range?: number, colorShader: boolean = false): boolean {
         if (position === undefined) {
             if (range !== undefined) {
                 return false
