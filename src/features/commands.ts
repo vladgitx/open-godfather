@@ -7,14 +7,13 @@ import { SampNode } from "../scripting-api"
 
 type CommandCallback = (player: Player, ...params: string[]) => void
 const commandsInternal = new Map<string, CommandCallback>()
-export const registeredCommands = new Map<string[], string | undefined>()
 
 export enum CommandResponseEnum {
     NOT_FOUND = 0,
     SUCCESS = 1,
 }
 
-export function addCommand(commands: string | string[], callback: CommandCallback, info?: string, meta?: string[]) {
+export function addCommand(commands: string | string[], callback: CommandCallback) {
     const commandList = Array.isArray(commands) ? commands : [commands]
     const validCommands: string[] = []
 
@@ -26,7 +25,7 @@ export function addCommand(commands: string | string[], callback: CommandCallbac
             validCommands.push(command)
         }
     }
-    registeredCommands.set(validCommands, info)
+    return validCommands
 }
 
 SampNode.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {

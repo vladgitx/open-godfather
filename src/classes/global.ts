@@ -1,6 +1,7 @@
 import { Natives, SampNode } from "../scripting-api"
 import { globalEvent } from "./global-event"
 import { DeepRequired } from "../utils"
+import { WeaponEnum } from "../enums"
 
 export type GlobalConfig = {
     host?: GlobalConfigHost
@@ -129,6 +130,10 @@ export class Global {
         get mode() {
             return Global.#host.mode
         },
+    }
+
+    static getWeaponName(weapon: WeaponEnum) {
+        return Natives.getWeaponName(weapon)
     }
 
     static get tickRate() {

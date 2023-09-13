@@ -10,10 +10,9 @@ import {
 import { SampNode } from "../scripting-api"
 
 export const playerEvent = new EventEmitter()
-let lastUniqueId = 0
 
 SampNode.on("OnPlayerConnect", (playerId: number) => {
-    const player = new Player(playerId, lastUniqueId++)
+    const player = new Player(playerId)
     Players.pool.set(playerId, player)
 
     playerEvent.emit("preConnect", player)
@@ -26,7 +25,7 @@ SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) =
         playerEvent.emit("disconnect", player, reasonId)
         playerEvent.emit("postDisconnect", player, reasonId)
 
-        player.uniqueId = lastUniqueId++
+        player.exists = false
     }
     Players.pool.delete(playerId)
 })
@@ -35,6 +34,7 @@ SampNode.on("OnPlayerSpawn", (playerId: number) => {
     const player = Players.at(playerId)
     if (player !== undefined) {
         if (player.spawnCount++ === 0) {
+            playerEvent.emit("preFirstSpawn", player)
             playerEvent.emit("firstSpawn", player)
         }
         playerEvent.emit("spawn", player)
@@ -73,6 +73,10 @@ export class PlayerEvent {
 
     static firstSpawn(callback: (player: Player) => void) {
         playerEvent.on("firstSpawn", callback)
+    }
+
+    static preFirstSpawn(callback: (player: Player) => void) {
+        playerEvent.on("preFirstSpawn", callback)
     }
 
     static text(callback: (player: Player, text: string) => void) {

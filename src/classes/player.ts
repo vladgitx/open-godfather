@@ -7,21 +7,22 @@ import {
     Vehicles,
     WeaponSkillEnum,
     EntityPosition,
+    SpecialActionEnum,
+    VehicleSeatEnum,
 } from ".."
 import { showPlayerDialog, hidePlayerDialog } from "../features/dialog"
 import { godfather_putPlayerInVehicle } from "../features/callbacks/enter-exit-car"
 
 export class Player {
     #id: number
-    uniqueId: number
+    exists = true
     #color: string
     spawnCount: number
     #cash: number
     #skin: number
 
-    constructor(playerId: number, uniqueId: number) {
+    constructor(playerId: number) {
         this.#id = playerId
-        this.uniqueId = uniqueId
         this.#color = "FFFFFF"
         this.spawnCount = 0
         this.#cash = 0
@@ -30,10 +31,6 @@ export class Player {
 
     get id() {
         return this.#id
-    }
-
-    get exists() {
-        return Natives.isPlayerConnected(this.#id)
     }
 
     sendMessage(message: string, color = "FFFFFF") {
@@ -50,7 +47,10 @@ export class Player {
         return Natives.spawnPlayer(this.#id)
     }
 
-    kick() {
+    kick(delay = true) {
+        if (!delay) {
+            return Natives.kick(this.#id)
+        }
         setTimeout(() => {
             Natives.kick(this.#id)
         }, 10)
@@ -69,8 +69,8 @@ export class Player {
         return hidePlayerDialog(this.#id)
     }
 
-    putIntoVehicle(vehicle: Vehicle, seatId = 0) {
-        return godfather_putPlayerInVehicle(this.#id, vehicle.id, seatId)
+    putIntoVehicle(vehicle: Vehicle, seat = VehicleSeatEnum.DRIVER) {
+        return godfather_putPlayerInVehicle(this.#id, vehicle.id, seat)
     }
 
     setSpectating(spectating: boolean) {
@@ -108,24 +108,32 @@ export class Player {
     }
 
     setTimeout(delay: number, callback: () => void) {
-        const uuid = this.uniqueId
+        console.log(`Setting timeout for ${delay / 1000} seconds.`)
         return setTimeout(() => {
-            if (this.uniqueId === uuid) {
+            if (this.exists) {
                 callback()
-            }
+                console.log("Timeout executed.")
+            } else console.log("Timeout Failed.")
         }, delay)
     }
 
     setInterval(delay: number, callback: () => void) {
-        const uuid = this.uniqueId
         const intervalId = setInterval(() => {
-            if (this.uniqueId === uuid) {
+            if (this.exists) {
                 callback()
             } else {
                 clearInterval(intervalId)
             }
         }, delay)
         return intervalId
+    }
+
+    applyAnimation(library: string, name: string, speed: number, loop: boolean, lockX: boolean, lockY: boolean, freeze: boolean, time: number, forceSync = true) {
+        return Natives.applyAnimation(this.id, library, name, speed, loop, lockX, lockY, freeze, time, forceSync)
+    }
+
+    clearAnimations() {
+        return Natives.clearAnimations(this.id, true)
     }
 
     set skin(skinId: number) {
@@ -243,5 +251,29 @@ export class Player {
 
     get cash() {
         return this.#cash
+    }
+
+    set score(value: number) {
+        Natives.setPlayerScore(this.#id, value)
+    }
+
+    get score() {
+        return Natives.getPlayerScore(this.#id)
+    }
+
+    get animation() {
+        return Natives.getPlayerAnimationIndex(this.id)
+    }
+
+    set specialAction(action: SpecialActionEnum) {
+        Natives.setPlayerSpecialAction(this.id, action)
+    }
+
+    get specialAction() {
+        return Natives.getPlayerSpecialAction(this.id)
+    }
+
+    get vehicleSeat() {
+        return Natives.getPlayerVehicleSeat(this.id)
     }
 }

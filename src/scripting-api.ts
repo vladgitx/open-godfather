@@ -4,6 +4,8 @@ import {
     DialogStyleEnum,
     WeaponSkillEnum,
     EntityPosition,
+    SpecialActionEnum,
+    VehicleSeatEnum,
 } from "."
 
 declare class samp {
@@ -29,6 +31,33 @@ export class SampNode {
 export class Natives {
     static getServerTickRate = (): number => {
         return samp.callNative('GetServerTickRate', '');
+    }
+
+    static getVehicleVelocity = (vehicleid: number) => {
+        if (!Natives.isValidVehicle(vehicleid)) {
+            return {
+                x: 0,
+                y: 0,
+                z: 0
+            }
+        }
+        const res = samp.callNative('GetVehicleVelocity', 'iFFF', vehicleid);
+        return {
+            x: res[0],
+            y: res[1],
+            z: res[2],
+        }
+    }
+
+    static getWeaponName = (weaponid: WeaponEnum): string => {
+        if (weaponid < WeaponEnum.FIST || weaponid > WeaponEnum.COLLISION) {
+            return "invalid_weapon"
+        }
+        return samp.callNative('GetWeaponName', 'iSi', weaponid, 32);
+    }
+    
+    static setVehicleVelocity = (vehicleid: number, X: number, Y: number, Z: number) => {
+        return samp.callNative('SetVehicleVelocity', 'ifff', vehicleid, X, Y, Z) === 1
     }
 
     static setPlayerSkillLevel = (playerId: number, skillType: WeaponSkillEnum, level: number): boolean => {
@@ -130,8 +159,58 @@ export class Natives {
         }
     }
 
+    static setPlayerScore = (playerId: number, score: number): boolean => {
+        return samp.callNative('SetPlayerScore', 'ii', playerId, score) === 1
+    }
+    
+    static getPlayerScore = (playerId: number): number => {
+        if (!Natives.isPlayerConnected(playerId)) {
+            return 0
+        }
+        return samp.callNative('GetPlayerScore', 'i', playerId);
+    }
+
     static setVehiclePosition = (vehicleId: number, x: number, y: number, z: number): boolean => {
         return samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z) === 1
+    }
+
+    static applyAnimation = (playerid: number, animlib: string, animname: string, fDelta: number, loop: boolean, lockx: boolean, locky: boolean, freeze: boolean, time: number, forcesync: boolean): void => {
+        samp.callNative('ApplyAnimation', 'issfiiiiii', playerid, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync);
+    }
+    
+    static clearAnimations = (playerid: number, forcesync: boolean): void => {
+        samp.callNative('ClearAnimations', 'ii', playerid, forcesync);
+    }
+    
+    static getPlayerAnimationIndex = (playerid: number): number => {
+        return samp.callNative('GetPlayerAnimationIndex', 'i', playerid);
+    }
+    
+    static getAnimationName = (index: number): { library: string, name: string} | undefined => {
+        const res = samp.callNative('GetAnimationName', 'iSiSi', index, 32, 32);
+        if (res.length < 2) {
+            return undefined
+        }
+        return {
+            library: res[0],
+            name: res[1],
+        }
+    }
+
+    static getPlayerVehicleSeat = (playerid: number): VehicleSeatEnum | undefined => {
+        const res = samp.callNative('GetPlayerVehicleSeat', 'i', playerid);
+        if (res === -1) {
+            return undefined
+        }
+        return res
+    }
+    
+    static getPlayerSpecialAction = (playerid: number): SpecialActionEnum => {
+        return samp.callNative('GetPlayerSpecialAction', 'i', playerid);
+    }
+    
+    static setPlayerSpecialAction = (playerid: number, actionid: SpecialActionEnum): boolean => {
+        return samp.callNative('SetPlayerSpecialAction', 'ii', playerid, actionid);
     }
 
     static gpci = (playerId: number): string => {
@@ -248,8 +327,8 @@ export class Natives {
         return samp.callNative("GetPlayerArmour", "iF", playerId)
     }
     
-    static putPlayerInVehicle(playerId: number, vehicleId: number, seatId: number = 0): boolean {
-        return samp.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seatId) === 1
+    static putPlayerInVehicle(playerId: number, vehicleId: number, seat = VehicleSeatEnum.DRIVER): boolean {
+        return samp.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seat) === 1
     }
     
     static getPlayerVehicleId(playerId: number): number | undefined {

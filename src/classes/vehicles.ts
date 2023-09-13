@@ -19,4 +19,18 @@ export class Vehicles {
         vehicleEvent.emit("create", vehicle)
         return vehicle
     }
+
+    static destroy(vehicleId: number) {
+        const response = Natives.destroyVehicle(vehicleId)
+        if (response) {
+            const vehicle = Vehicles.at(vehicleId)
+            if (vehicle !== undefined) {
+                vehicleEvent.emit("destroy", vehicle)
+                vehicle.exists = false
+            }
+            Vehicles.pool.delete(vehicleId)
+            return true
+        }
+        return false
+    }
 }

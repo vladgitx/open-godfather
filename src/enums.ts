@@ -133,3 +133,10 @@ export enum WeaponSkillEnum {
     M4 = 9,
     SNIPER = 10
 }
+
+export enum VehicleSeatEnum {
+    DRIVER = 0,
+    PASSENGER = 1,
+    REAR_LEFT = 2,
+    REAR_RIGHT = 3,
+}

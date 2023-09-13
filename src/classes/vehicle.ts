@@ -1,11 +1,11 @@
-import { Player, Vehicles } from "."
-import { vehicleEvent } from "./vehicle-event"
+import { Player } from "."
 import { Natives } from "../scripting-api"
 import { EntityPosition } from "../types"
 import { getVehicleModelName } from "../vehicle-names"
 
 export class Vehicle {
     #id: number
+    exists = true
     #primaryColor: number
     #secondaryColor: number
     #interior = 0
@@ -17,25 +17,8 @@ export class Vehicle {
         this.#secondaryColor = secondaryColor
     }
 
-    destroy() {
-        const response = Natives.destroyVehicle(this.#id)
-        if (response) {
-            const vehicle = Vehicles.at(this.#id)
-            if (vehicle !== undefined) {
-                vehicleEvent.emit("destroy", vehicle)
-            }
-            Vehicles.pool.delete(this.#id)
-            return true
-        }
-        return false
-    }
-
     get id() {
         return this.#id
-    }
-
-    get exists() {
-        return Natives.isValidVehicle(this.#id)
     }
 
     setPosition(position: EntityPosition) {
@@ -54,6 +37,14 @@ export class Vehicle {
             return Number.POSITIVE_INFINITY
         }
         return Natives.getVehicleDistanceFromPoint(this.#id, position.x, position.y, position.z)
+    }
+
+    setVelocity(x: number, y: number, z: number) {
+        return Natives.setVehicleVelocity(this.#id, x, y, z)
+    }
+
+    getVelocity() {
+        return Natives.getVehicleVelocity(this.#id)
     }
 
     get model() {
