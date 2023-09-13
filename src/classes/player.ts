@@ -108,12 +108,10 @@ export class Player {
     }
 
     setTimeout(delay: number, callback: () => void) {
-        console.log(`Setting timeout for ${delay / 1000} seconds.`)
         return setTimeout(() => {
             if (this.exists) {
                 callback()
-                console.log("Timeout executed.")
-            } else console.log("Timeout Failed.")
+            }
         }, delay)
     }
 
