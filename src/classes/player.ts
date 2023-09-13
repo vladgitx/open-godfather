@@ -107,7 +107,7 @@ export class Player {
         return Natives.givePlayerWeapon(this.#id, weapon, ammo)
     }
 
-    setTimeout(delay: number, callback: () => void) {
+    setTimeout(callback: () => void, delay: number) {
         return setTimeout(() => {
             if (this.exists) {
                 callback()
@@ -115,7 +115,7 @@ export class Player {
         }, delay)
     }
 
-    setInterval(delay: number, callback: () => void) {
+    setInterval(callback: () => void, delay: number) {
         const intervalId = setInterval(() => {
             if (this.exists) {
                 callback()
