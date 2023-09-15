@@ -14,8 +14,6 @@ export const playerEvent = new EventEmitter()
 SampNode.on("OnPlayerConnect", (playerId: number) => {
     const player = new Player(playerId)
     Players.pool.set(playerId, player)
-
-    playerEvent.emit("preConnect", player)
     playerEvent.emit("connect", player)
 })
 
@@ -23,9 +21,6 @@ SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) =
     const player = Players.at(playerId)
     if (player !== undefined) {
         playerEvent.emit("disconnect", player, reasonId)
-        playerEvent.emit("postDisconnect", player, reasonId)
-
-        player.exists = false
     }
     Players.pool.delete(playerId)
 })
@@ -34,7 +29,6 @@ SampNode.on("OnPlayerSpawn", (playerId: number) => {
     const player = Players.at(playerId)
     if (player !== undefined) {
         if (player.spawnCount++ === 0) {
-            playerEvent.emit("preFirstSpawn", player)
             playerEvent.emit("firstSpawn", player)
         }
         playerEvent.emit("spawn", player)
@@ -42,20 +36,12 @@ SampNode.on("OnPlayerSpawn", (playerId: number) => {
 })
 
 export class PlayerEvent {
-    static preConnect(callback: (player: Player) => void) {
-        playerEvent.on("preConnect", callback)
-    }
-
     static connect(callback: (player: Player) => void) {
         playerEvent.on("connect", callback)
     }
 
     static disconnect(callback: (player: Player, reasonId: KickReasonEnum) => void) {
         playerEvent.on("disconnect", callback)
-    }
-
-    static postDisconnect(callback: (player: Player, reasonId: KickReasonEnum) => void) {
-        playerEvent.on("postDisconnect", callback)
     }
 
     static requestClass(callback: (player: Player, classId: number) => void) {
@@ -73,10 +59,6 @@ export class PlayerEvent {
 
     static firstSpawn(callback: (player: Player) => void) {
         playerEvent.on("firstSpawn", callback)
-    }
-
-    static preFirstSpawn(callback: (player: Player) => void) {
-        playerEvent.on("preFirstSpawn", callback)
     }
 
     static text(callback: (player: Player, text: string) => void) {

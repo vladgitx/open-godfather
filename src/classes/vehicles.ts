@@ -14,7 +14,7 @@ export class Vehicles {
         if (vehicleId === undefined) {
             return undefined
         }
-        const vehicle = new Vehicle(vehicleId, primaryColor, secondaryColor)
+        const vehicle = new Vehicle(vehicleId, modelId, primaryColor, secondaryColor)
         Vehicles.pool.set(vehicleId, vehicle)
         vehicleEvent.emit("create", vehicle)
         return vehicle
@@ -26,7 +26,6 @@ export class Vehicles {
             const vehicle = Vehicles.at(vehicleId)
             if (vehicle !== undefined) {
                 vehicleEvent.emit("destroy", vehicle)
-                vehicle.exists = false
             }
             Vehicles.pool.delete(vehicleId)
             return true
