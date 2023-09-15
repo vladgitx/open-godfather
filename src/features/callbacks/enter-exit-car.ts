@@ -2,11 +2,8 @@ import { PlayerStateEnum, Players, Vehicles } from "../.."
 import { Natives } from "../../scripting-api"
 import { PlayerEvent, playerEvent } from "../../classes/player-event"
 
-const playerLastVehicleId = new Map<number, number>()
-
-PlayerEvent.postDisconnect((player) => {
-    playerLastVehicleId.delete(player.id)
-    player.vehicle?.occupants.delete(player)
+PlayerEvent.disconnect((player) => {
+    player.vehicle?.occupants.delete(player.id)
 })
 
 PlayerEvent.stateChange((player, newState, oldState) => {
@@ -15,19 +12,19 @@ PlayerEvent.stateChange((player, newState, oldState) => {
         if (currentVehicle === undefined) {
             return
         }
-        playerLastVehicleId.set(player.id, currentVehicle.id)
-        currentVehicle.occupants.add(player)
+        player.setVariable("lastVehicleId", currentVehicle.id)
+        currentVehicle.occupants.add(player.id)
         playerEvent.emit("enterVehicle", player, currentVehicle)
     } else if ((oldState === PlayerStateEnum.PASSENGER || oldState === PlayerStateEnum.DRIVER) && newState !== PlayerStateEnum.PASSENGER && newState !== PlayerStateEnum.DRIVER) {
-        const lastVehicleId = playerLastVehicleId.get(player.id)
+        const lastVehicleId = player.getVariable("lastVehicleId")
         if (lastVehicleId === undefined) {
             return
         }
         const lastVehicle = Vehicles.at(lastVehicleId)
 
-        lastVehicle?.occupants.delete(player)
+        lastVehicle?.occupants.delete(player.id)
         playerEvent.emit("exitVehicle", player, lastVehicle)
-        playerLastVehicleId.delete(player.id)
+        player.deleteVariable("lastVehicleId")
     }
 })
 
@@ -44,14 +41,14 @@ export function godfather_putPlayerInVehicle(playerId: number, vehicleId: number
         return Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
     }
     const oldVehicle = Vehicles.at(oldVehicleId)
-    oldVehicle?.occupants.delete(player)
+    oldVehicle?.occupants.delete(player.id)
     playerEvent.emit("exitVehicle", player, oldVehicle)
 
     Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
 
     const vehicle = Vehicles.at(vehicleId)
     if (vehicle !== undefined) {
-        vehicle.occupants.add(player)
+        vehicle.occupants.add(player.id)
         playerEvent.emit("enterVehicle", player, vehicle)
     }
     return true
