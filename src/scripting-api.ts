@@ -3,7 +3,7 @@ import {
     PlayerStateEnum,
     DialogStyleEnum,
     WeaponSkillEnum,
-    EntityPosition,
+    WorldPosition,
     SpecialActionEnum,
     VehicleSeatEnum,
 } from "."
@@ -96,7 +96,7 @@ export class Natives {
         return samp.callNative('DestroyVehicle', 'i', vehicleId) === 1
     }
 
-    static createVehicle = (modelId: number, position: EntityPosition, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false): number | undefined => {
+    static createVehicle = (modelId: number, position: WorldPosition, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false): number | undefined => {
         const vehicleId = samp.callNative('CreateVehicle', 'iffffiiii', modelId, position.x, position.y, position.z, rotation, primaryColor, secondaryColor, respawnDelay, addSiren)
         if (vehicleId === 65535 || vehicleId === 0) {
             return undefined
@@ -128,7 +128,7 @@ export class Natives {
         return samp.callNative("GetPlayerVirtualWorld", "i", playerId)
     }
     
-    static setSpawnInfo(playerId: number, teamId: number, skinId: number, position: EntityPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []): void {
+    static setSpawnInfo(playerId: number, teamId: number, skinId: number, position: WorldPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []): void {
         const weapon1 = weapons[0] ? weapons[0].weapon : WeaponEnum.FIST
         const weapon1ammo = weapons[0] ? weapons[0].ammo : 0
         const weapon2 = weapons[1] ? weapons[1].weapon : WeaponEnum.FIST
@@ -269,7 +269,7 @@ export class Natives {
         return samp.callNative("IsPlayerConnected", "i", playerId) === 1
     }
     
-    static getPlayerPosition(playerId: number): EntityPosition {
+    static getPlayerPosition(playerId: number): WorldPosition {
         if (!Natives.isPlayerConnected(playerId)) {
             return {
                 x: 0,
@@ -285,7 +285,7 @@ export class Natives {
         }
     }
 
-    static getVehiclePosition = (vehicleId: number): EntityPosition => {
+    static getVehiclePosition = (vehicleId: number): WorldPosition => {
         if (!Natives.isValidVehicle(vehicleId)) {
             return {
                 x: 0,

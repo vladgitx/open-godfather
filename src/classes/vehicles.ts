@@ -1,35 +1,42 @@
 import { Natives } from "../scripting-api"
-import { EntityPosition, Vehicle } from ".."
-import { vehicleEvent } from "./vehicle-event"
+import { WorldPosition, Vehicle, og } from ".."
 
 export class Vehicles {
-    static pool = new Map<number, Vehicle>()
+    private pool: Map<number, Vehicle>
 
-    static at(vehicleId: number) {
-        return Vehicles.pool.get(vehicleId)
+    constructor() {
+        this.pool = new Map()
     }
 
-    static new(modelId: number, position: EntityPosition, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false) {
+    at(vehicleId: number) {
+        return this.pool.get(vehicleId)
+    }
+
+    new(modelId: number, position: WorldPosition, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, addSiren = false) {
         const vehicleId = Natives.createVehicle(modelId, position, rotation, primaryColor, secondaryColor, respawnDelay, addSiren)
         if (vehicleId === undefined) {
             return undefined
         }
         const vehicle = new Vehicle(vehicleId, modelId, primaryColor, secondaryColor)
-        Vehicles.pool.set(vehicleId, vehicle)
-        vehicleEvent.emit("create", vehicle)
+        this.pool.set(vehicleId, vehicle)
+        og.events.emit("vehicleCreate", vehicle)
         return vehicle
     }
 
-    static destroy(vehicleId: number) {
+    destroy(vehicleId: number) {
         const response = Natives.destroyVehicle(vehicleId)
         if (response) {
-            const vehicle = Vehicles.at(vehicleId)
+            const vehicle = this.at(vehicleId)
             if (vehicle !== undefined) {
-                vehicleEvent.emit("destroy", vehicle)
+                og.events.emit("vehicleDestroy", vehicle)
             }
-            Vehicles.pool.delete(vehicleId)
+            this.pool.delete(vehicleId)
             return true
         }
         return false
+    }
+
+    get all(): ReadonlyMap<number, Vehicle> {
+        return this.pool
     }
 }

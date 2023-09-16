@@ -1,15 +1,33 @@
-import { Natives } from "../scripting-api"
-import { Player } from ".."
-import { shadeColor } from "../utils"
+import { Natives, SampNode } from "../scripting-api"
+import { KickReasonEnum, Player, og } from ".."
+import { shadeColor } from "../common/utils"
 
 export class Players {
-    static pool = new Map<number, Player>()
+    private pool: Map<number, Player>
 
-    static at(playerId: number) {
-        return Players.pool.get(playerId)
+    constructor() {
+        this.pool = new Map()
+
+        SampNode.on("OnPlayerConnect", (playerId: number) => {
+            const player = new Player(playerId)
+            this.pool.set(playerId, player)
+            const res = og.events.emit("playerConnect", player)
+        })
+        
+        SampNode.on("OnPlayerDisconnect", (playerId: number, reasonId: KickReasonEnum) => {
+            const player = this.at(playerId)
+            if (player !== undefined) {
+                og.events.emit("playerDisconnect", player, reasonId)
+            }
+            this.pool.delete(playerId)
+        })
     }
 
-    static sendMessage(text: string, color = "FFFFFF", position?: { x: number, y: number, z: number }, world?: number, interior?: number, range?: number, colorShader: boolean = false): boolean {
+    at(playerId: number): Player | undefined {
+        return this.pool.get(playerId)
+    }
+
+    sendMessage(text: string, color = "FFFFFF", position?: { x: number, y: number, z: number }, world?: number, interior?: number, range?: number, colorShader: boolean = false): boolean {
         if (position === undefined) {
             if (range !== undefined) {
                 return false
@@ -19,7 +37,7 @@ export class Players {
                 return true
             }
             if (world !== undefined && interior === undefined) {
-                for (const [playerId, player] of Players.pool) {
+                for (const [playerId, player] of this.pool) {
                     if (player.world === world) {
                         player.sendMessage(text, color)
                     }
@@ -27,14 +45,14 @@ export class Players {
                 return true
             }
             if (world === undefined && interior !== undefined) {
-                for (const [playerId, player] of Players.pool) {
+                for (const [playerId, player] of this.pool) {
                     if (player.interior === interior) {
                         player.sendMessage(text, color)
                     }
                 }
                 return true
             }
-            for (const [playerId, player] of Players.pool) {
+            for (const [playerId, player] of this.pool) {
                 if (player.world === world && player.interior === interior) {
                     player.sendMessage(text, color)
                 }
@@ -44,7 +62,7 @@ export class Players {
         if (range === undefined) {
             return false
         }
-        for (const [playerId, player] of Players.pool) {
+        for (const [playerId, player] of this.pool) {
             if (world !== undefined && player.world !== world) {
                 continue
             }
@@ -75,5 +93,9 @@ export class Players {
             }
         }
         return true
+    }
+
+    get all(): ReadonlyMap<number, Player> {
+        return this.pool
     }
 }

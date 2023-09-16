@@ -1,12 +1,11 @@
-import { PlayerStateEnum, Players, Vehicles } from "../.."
+import { PlayerStateEnum, og } from "../.."
 import { Natives } from "../../scripting-api"
-import { PlayerEvent, playerEvent } from "../../classes/player-event"
 
-PlayerEvent.disconnect((player) => {
+og.events.on("playerDisconnect", (player) => {
     player.vehicle?.occupants.delete(player.id)
 })
 
-PlayerEvent.stateChange((player, newState, oldState) => {
+og.events.on("playerStateChange", (player, newState, oldState) => {
     if ((newState === PlayerStateEnum.PASSENGER || newState === PlayerStateEnum.DRIVER) && oldState !== PlayerStateEnum.PASSENGER && oldState !== PlayerStateEnum.DRIVER) {
         const currentVehicle = player.vehicle
         if (currentVehicle === undefined) {
@@ -14,16 +13,16 @@ PlayerEvent.stateChange((player, newState, oldState) => {
         }
         player.setVariable("lastVehicleId", currentVehicle.id)
         currentVehicle.occupants.add(player.id)
-        playerEvent.emit("enterVehicle", player, currentVehicle)
+        og.events.emit("playerEnterVehicle", player, currentVehicle)
     } else if ((oldState === PlayerStateEnum.PASSENGER || oldState === PlayerStateEnum.DRIVER) && newState !== PlayerStateEnum.PASSENGER && newState !== PlayerStateEnum.DRIVER) {
         const lastVehicleId = player.getVariable("lastVehicleId")
         if (lastVehicleId === undefined) {
             return
         }
-        const lastVehicle = Vehicles.at(lastVehicleId)
+        const lastVehicle = og.vehicles.at(lastVehicleId)
 
         lastVehicle?.occupants.delete(player.id)
-        playerEvent.emit("exitVehicle", player, lastVehicle)
+        og.events.emit("playerExitVehicle", player, lastVehicle)
         player.deleteVariable("lastVehicleId")
     }
 })
@@ -36,20 +35,20 @@ export function godfather_putPlayerInVehicle(playerId: number, vehicleId: number
     if (!Natives.isValidVehicle(vehicleId) || !Natives.isPlayerConnected(playerId)) {
         return false
     }
-    const player = Players.at(playerId)
+    const player = og.players.at(playerId)
     if (player === undefined) {
         return Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
     }
-    const oldVehicle = Vehicles.at(oldVehicleId)
+    const oldVehicle = og.vehicles.at(oldVehicleId)
     oldVehicle?.occupants.delete(player.id)
-    playerEvent.emit("exitVehicle", player, oldVehicle)
+    og.events.emit("playerExitVehicle", player, oldVehicle)
 
     Natives.putPlayerInVehicle(playerId, vehicleId, seatId)
 
-    const vehicle = Vehicles.at(vehicleId)
+    const vehicle = og.vehicles.at(vehicleId)
     if (vehicle !== undefined) {
         vehicle.occupants.add(player.id)
-        playerEvent.emit("enterVehicle", player, vehicle)
+        og.events.emit("playerEnterVehicle", player, vehicle)
     }
     return true
 }

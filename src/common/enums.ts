@@ -1,3 +1,9 @@
+export enum CommandResponseEnum {
+    NOT_FOUND = 0,
+    SUCCESS = 1,
+    RESTRICTED = 2,
+}
+
 export enum WeaponEnum {
     FIST = 0,
     BRASS_KNUCKLES = 1,

@@ -4,12 +4,11 @@ import {
     DialogStyleEnum,
     PlayerStateEnum,
     Vehicle,
-    Vehicles,
     WeaponSkillEnum,
-    EntityPosition,
+    WorldPosition,
     SpecialActionEnum,
     VehicleSeatEnum,
-    Players,
+    og,
 } from ".."
 import { showPlayerDialog, hidePlayerDialog } from "../features/dialog"
 import { godfather_putPlayerInVehicle } from "../features/callbacks/enter-exit-car"
@@ -17,21 +16,21 @@ import { Entity, GenericEntity } from "./entity"
 
 export class Player extends Entity implements GenericEntity {
     #color: string
-    spawnCount: number
     #cash: number
     #skin: number
+    commands: boolean
 
     constructor(id: number) {
         super(id)
 
         this.#color = "FFFFFF"
-        this.spawnCount = 0
         this.#cash = 0
         this.#skin = 0
+        this.commands = true
     }
 
     get exists() {
-        return Players.at(this.id) === this
+        return og.players.at(this.id) === this
     }
 
     sendMessage(message: string, color = "FFFFFF") {
@@ -57,7 +56,7 @@ export class Player extends Entity implements GenericEntity {
         }, 10)
     }
 
-    setSpawnInfo(teamId: number, skinId: number, position: EntityPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
+    setSpawnInfo(teamId: number, skinId: number, position: WorldPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
         this.#skin = skinId
         return Natives.setSpawnInfo(this.id, teamId, skinId, position, rotation, weapons)
     }
@@ -78,7 +77,7 @@ export class Player extends Entity implements GenericEntity {
         return Natives.togglePlayerSpectating(this.id, spectating)
     }
 
-    setPosition(position: EntityPosition) {
+    setPosition(position: WorldPosition) {
         return Natives.setPlayerPosition(this.id, position.x, position.y, position.z)
     }
 
@@ -86,7 +85,7 @@ export class Player extends Entity implements GenericEntity {
         return Natives.getPlayerPosition(this.id)
     }
 
-    getDistance(position: EntityPosition, world?: number, interior?: number) {
+    getDistance(position: WorldPosition, world?: number, interior?: number) {
         if (world !== undefined && this.world !== world) {
             return Number.POSITIVE_INFINITY
         }
@@ -226,7 +225,7 @@ export class Player extends Entity implements GenericEntity {
         if (vehicleId === undefined) {
             return undefined
         }
-        return Vehicles.at(vehicleId)
+        return og.vehicles.at(vehicleId)
     }
 
     get ip() {

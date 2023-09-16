@@ -1,8 +1,8 @@
-import { Vehicles } from "."
 import { Natives } from "../scripting-api"
-import { EntityPosition } from "../types"
-import { getVehicleModelName } from "../vehicle-names"
+import { WorldPosition } from "../common/types"
+import { getVehicleModelName } from "../common/vehicle-names"
 import { Entity, WorldEntity } from "./entity"
+import { og } from ".."
 
 export class Vehicle extends Entity implements WorldEntity {
     #primaryColor: number
@@ -24,10 +24,10 @@ export class Vehicle extends Entity implements WorldEntity {
     }
 
     get exists() {
-        return Vehicles.at(this.id) === this
+        return og.vehicles.at(this.id) === this
     }
 
-    setPosition(position: EntityPosition) {
+    setPosition(position: WorldPosition) {
         return Natives.setVehiclePosition(this.id, position.x, position.y, position.z)
     }
 
@@ -35,7 +35,7 @@ export class Vehicle extends Entity implements WorldEntity {
         return Natives.getVehiclePosition(this.id)
     }
 
-    getDistance(position: EntityPosition, world?: number, interior?: number) {
+    getDistance(position: WorldPosition, world?: number, interior?: number) {
         if (world !== undefined && this.world !== world) {
             return Number.POSITIVE_INFINITY
         }

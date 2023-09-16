@@ -1,4 +1,4 @@
-import { EntityPosition } from "../types"
+import { WorldPosition } from "../common/types"
 
 export class Entity {
     readonly id: number
@@ -43,9 +43,9 @@ export interface WorldEntity extends GenericEntity {
 
     get rotation(): number
 
-    setPosition(position: EntityPosition): any
+    setPosition(position: WorldPosition): any
 
-    getPosition(): EntityPosition
+    getPosition(): WorldPosition
 
-    getDistance(position: EntityPosition, world?: number, interior?: number): number
+    getDistance(position: WorldPosition, world?: number, interior?: number): number
 }
