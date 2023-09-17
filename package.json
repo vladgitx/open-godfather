@@ -16,7 +16,7 @@
     "omp",
     "open multiplayer"
   ],
-  "author": "vladbalea",
+  "author": "vladgitx",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.5.7",

@@ -13,9 +13,14 @@ npm install open-godfather
 ## Usage example
 
 ```typescript
-import { PlayerEvent, DialogStyleEnum } from "open-godfather"
+import { OpenGf } from "open-godfather"
 
-PlayerEvent.connect((player) => {
+const og = new OpenGf({
+    name: "my server",
+    stuntBonuses: true,
+})
+
+og.events.playerConnect((player) => {
     player.setSpectating(true)
     
     player.showDialog(DialogStyleEnum.MSGBOX, "Hello", "Do you want to access the server?", "Spawn", "Leave", ((response) => {
@@ -34,7 +39,7 @@ PlayerEvent.connect((player) => {
     }))
 })
 
-PlayerEvent.requestClass((player) => {
+og.events.playerRequestClass((player) => {
     player.spawn()
 })
 ```
