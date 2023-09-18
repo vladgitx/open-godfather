@@ -1,9 +1,9 @@
-import { OpenCommands } from "./commands"
-import { OpenEvents } from "./events"
-import { OpenPlayers } from "./players"
-import { SampServer } from "./server"
+import { OpenCommands } from "../domain/commands"
+import { OpenEvents } from "../domain/events"
+import { OpenPlayers } from "../domain/players"
+import { SampServer } from "../domain/server"
 import { OpenConfig } from "./types"
-import { OpenVehicles } from "./vehicles"
+import { OpenVehicles } from "../domain/vehicles"
 
 export class OpenGf {
     readonly server: SampServer

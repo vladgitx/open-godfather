@@ -1,8 +1,27 @@
-export * from "./open-gf"
-export * from "./components/command"
-export * from "./components/entity"
-export * from "./components/event"
-export * from "./components/player"
-export * from "./components/vehicle"
+export {
+    OpenGf,
+    OpenConfig
+} from "./app"
+
+export {
+    Command,
+    CommandCallback,
+    CommandResponseEnum
+} from "./components/command"
+
+export {
+    Entity,
+    WorldEntity
+} from "./components/entity"
+
+import "./components/event"
+
+export { Player } from "./components/player"
+export {
+    Vehicle,
+    vehicleNames,
+    getVehicleModelName
+} from "./components/vehicle"
+
 export * from "./shared/enums"
 export * from "./shared/types"

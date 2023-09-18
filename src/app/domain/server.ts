@@ -1,6 +1,6 @@
 import { EventOn } from "../../components/event"
 import SampNatives from "../../shared/samp-natives"
-import { OpenConfig } from "./types"
+import { OpenConfig } from "../public/types"
 
 export class SampServer {
     #name: string
