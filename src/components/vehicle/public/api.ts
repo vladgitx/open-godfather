@@ -13,6 +13,8 @@ export function createVehicle(model: number, position: WorldPosition, rotation: 
     if (vehicleId === undefined) {
         return undefined
     }
+    SampNatives.setVehicleParamsEx(vehicleId, false, false, false, false, false, false, false)
+
     const vehicle = new Vehicle(vehicleId, model, primaryColor, secondaryColor)
     vehiclesPool.set(vehicleId, vehicle)
 

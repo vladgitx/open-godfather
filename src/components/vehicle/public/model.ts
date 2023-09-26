@@ -11,6 +11,13 @@ export class Vehicle extends Entity implements WorldEntity {
     #interior: number
     readonly model: number
     readonly name: string
+    #plate: string
+    #engine: "on" | "off"
+    #lights: "on" | "off"
+    #alarm: "on" | "off"
+    #doors: "locked" | "unlocked"
+    #bonnet: "open" | "closed"
+    #trunk: "open" | "closed"
 
     constructor(id: number, model: number, primaryColor = -1, secondaryColor = -1) {
         super(id, vehiclesPool)
@@ -20,6 +27,15 @@ export class Vehicle extends Entity implements WorldEntity {
         this.#interior = 0
         this.model = model
         this.name = getVehicleModelName(model)
+        this.#plate = ""
+
+        const params = SampNatives.getVehicleParamsEx(this.id)
+        this.#engine = params.engine ? "on" : "off"
+        this.#lights = params.lights ? "on" : "off"
+        this.#alarm = params.alarm ? "on" : "off"
+        this.#doors = params.doors ? "locked" : "unlocked"
+        this.#bonnet = params.bonnet ? "open" : "closed"
+        this.#trunk = params.boot ? "open" : "closed"
     }
 
     setPosition(position: WorldPosition) {
@@ -101,5 +117,74 @@ export class Vehicle extends Entity implements WorldEntity {
 
     get secondaryColor() {
         return this.#secondaryColor
+    }
+
+    set engine(state: "on" | "off") {
+        this.#engine = state
+        const res = SampNatives.getVehicleParamsEx(this.id)
+        SampNatives.setVehicleParamsEx(this.id, state === "on", res.lights, res.alarm, res.doors, res.bonnet, res.boot, res.objective)
+    }
+
+    get engine() {
+        return this.#engine
+    }
+
+    set lights(state: "on" | "off") {
+        this.#lights = state
+        const res = SampNatives.getVehicleParamsEx(this.id)
+        SampNatives.setVehicleParamsEx(this.id, res.engine, state === "on", res.alarm, res.doors, res.bonnet, res.boot, res.objective)
+    }
+
+    get lights() {
+        return this.#lights
+    }
+
+    set alarm(state: "on" | "off") {
+        this.#alarm = state
+        const res = SampNatives.getVehicleParamsEx(this.id)
+        SampNatives.setVehicleParamsEx(this.id, res.engine, res.lights, state === "on", res.doors, res.bonnet, res.boot, res.objective)
+    }
+
+    get alarm() {
+        return this.#alarm
+    }
+
+    set doors(state: "locked" | "unlocked") {
+        this.#doors = state
+        const res = SampNatives.getVehicleParamsEx(this.id)
+        SampNatives.setVehicleParamsEx(this.id, res.engine, res.lights, res.alarm, state === "locked", res.bonnet, res.boot, res.objective)
+    }
+
+    get doors() {
+        return this.#doors
+    }
+
+    set bonnet(state: "open" | "closed") {
+        this.#bonnet = state
+        const res = SampNatives.getVehicleParamsEx(this.id)
+        SampNatives.setVehicleParamsEx(this.id, res.engine, res.lights, res.alarm, res.doors, state === "open", res.boot, res.objective)
+    }
+
+    get bonnet() {
+        return this.#bonnet
+    }
+
+    set trunk(state: "open" | "closed") {
+        this.#trunk = state
+        const res = SampNatives.getVehicleParamsEx(this.id)
+        SampNatives.setVehicleParamsEx(this.id, res.engine, res.lights, res.alarm, res.doors, res.bonnet, state === "open", res.objective)
+    }
+
+    get trunk() {
+        return this.#trunk
+    }
+
+    set plate(plate: string) {
+        this.#plate = plate
+        SampNatives.setVehicleNumberPlate(this.id, plate)
+    }
+
+    get plate() {
+        return this.#plate
     }
 }

@@ -33,7 +33,9 @@ export class SampServer {
             this.stuntBonuses = this.stuntBonuses
             this.nametagDrawDistance = this.nametagDrawDistance
             this.hour = this.hour
-            this.weather = this.weather 
+            this.weather = this.weather
+
+            SampNatives.manualVehicleEngineAndLights()
         })
     }
 
