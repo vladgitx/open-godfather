@@ -1,6 +1,6 @@
-export enum CommandResponseEnum {
-    NOT_FOUND = 0,
-    SUCCESS = 1,
-    RESTRICTED = 2,
-    SPAM = 3,
+export enum CommandResponses {
+    NotFound = 0,
+    Success = 1,
+    Restricted = 2,
+    Spam = 3,
 }

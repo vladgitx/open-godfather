@@ -1,11 +1,11 @@
-import { PlayerStateEnum } from "../../../shared/enums"
+import { PlayerStates } from "../../../shared/enums"
 import SampNatives from "../../../shared/samp-natives"
 import { EventEmit, EventOn } from "../../event"
 import { getVehicle } from "../../vehicle"
 import { getPlayer } from "../public/api"
 
 EventOn.playerStateChange((player, newState, oldState) => {
-    if ((newState === PlayerStateEnum.PASSENGER || newState === PlayerStateEnum.DRIVER) && oldState !== PlayerStateEnum.PASSENGER && oldState !== PlayerStateEnum.DRIVER) {
+    if ((newState === PlayerStates.Passenger || newState === PlayerStates.Driver) && oldState !== PlayerStates.Passenger && oldState !== PlayerStates.Driver) {
 
         const currentVehicle = player.vehicle
         if (currentVehicle === undefined) {
@@ -15,7 +15,7 @@ EventOn.playerStateChange((player, newState, oldState) => {
         player.setVariable("internal::lastVehicleId", currentVehicle.id)
         EventEmit.playerEnterVehicle(player, currentVehicle)
         
-    } else if ((oldState === PlayerStateEnum.PASSENGER || oldState === PlayerStateEnum.DRIVER) && newState !== PlayerStateEnum.PASSENGER && newState !== PlayerStateEnum.DRIVER) {
+    } else if ((oldState === PlayerStates.Passenger || oldState === PlayerStates.Driver) && newState !== PlayerStates.Passenger && newState !== PlayerStates.Driver) {
 
         const lastVehicleId = player.getVariable("internal::lastVehicleId")
         if (lastVehicleId === undefined) {

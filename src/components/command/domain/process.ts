@@ -1,14 +1,12 @@
 import SampNatives from "../../../shared/samp-natives"
 import { EventEmit } from "../../event"
 import { Player, getPlayer } from "../../player"
-import { CommandResponseEnum } from "../public/enums"
+import { CommandResponses } from "../public/enums"
 import { commandCallbacks } from "./pool"
 
 SampNatives.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
-    console.log("OnPlayerCommandText")
     const player = getPlayer(playerId)
     if (player === undefined) {
-        console.log("undefined player", player)
         return 1
     }
 
@@ -17,30 +15,25 @@ SampNatives.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
     params.shift()
 
     if (command === "/") {
-        console.log("undefined command", command)
         return 1
     }
 
     if (isSpammingCommands(player)) {
-        console.log("is spamming")
-        EventEmit.playerCommand(player, command, CommandResponseEnum.SPAM)
+        EventEmit.playerCommand(player, command, CommandResponses.Spam)
         return 1
     }
 
     if (!player.commands) {
-        console.log("is restricted")
-        EventEmit.playerCommand(player, command, CommandResponseEnum.RESTRICTED)
+        EventEmit.playerCommand(player, command, CommandResponses.Restricted)
         return 1
     }
 
     const callback = commandCallbacks.get(command)
     if (callback) {
-        console.log("callback found")
-        EventEmit.playerCommand(player, command, CommandResponseEnum.SUCCESS)
+        EventEmit.playerCommand(player, command, CommandResponses.Success)
         callback(player, ...params)
     } else {
-        console.log("callback not found")
-        EventEmit.playerCommand(player, command, CommandResponseEnum.NOT_FOUND)
+        EventEmit.playerCommand(player, command, CommandResponses.NotFound)
     }
 
     return 1

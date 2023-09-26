@@ -7,4 +7,4 @@ export {
 } from "./public/api"
 export { Command } from "./public/model"
 export { CommandCallback } from "./public/types"
-export { CommandResponseEnum } from "./public/enums"
+export { CommandResponses } from "./public/enums"

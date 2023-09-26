@@ -6,7 +6,7 @@ export {
 export {
     Command,
     CommandCallback,
-    CommandResponseEnum
+    CommandResponses
 } from "./components/command"
 
 export {
@@ -25,3 +25,4 @@ export {
 
 export * from "./shared/enums"
 export * from "./shared/types"
+export * from "./shared/utils"

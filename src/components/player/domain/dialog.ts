@@ -1,4 +1,4 @@
-import { DialogStyleEnum } from "../../../shared/enums"
+import { DialogStyles } from "../../../shared/enums"
 import SampNatives from "../../../shared/samp-natives"
 
 type DialogResponseCallback = (response: boolean, listItem: number, inputText: string) => void
@@ -12,7 +12,7 @@ SampNatives.on("OnDialogResponse", (playerId: number, dialogId: number, response
     }
 })
 
-export function showPlayerDialog(playerId: number, styleId: DialogStyleEnum, caption: string, info: string, primaryButton: string, secondaryButton = "", callback?: DialogResponseCallback) {
+export function showPlayerDialog(playerId: number, styleId: DialogStyles, caption: string, info: string, primaryButton: string, secondaryButton = "", callback?: DialogResponseCallback) {
     const dialogId = Math.floor(Math.random() * 32767)
     if (callback !== undefined) {
         dialogCallbackMap.set(dialogId, callback)
@@ -22,5 +22,5 @@ export function showPlayerDialog(playerId: number, styleId: DialogStyleEnum, cap
 
 export function hidePlayerDialog(playerId: number) {
     dialogCallbackMap.delete(playerId)
-    return SampNatives.showPlayerDialog(playerId, -1, DialogStyleEnum.MSGBOX, "", "", "", "")
+    return SampNatives.showPlayerDialog(playerId, -1, DialogStyles.MessageBox, "", "", "", "")
 }
