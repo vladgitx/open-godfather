@@ -1,10 +1,12 @@
 import {
-    WeaponEnum,
-    PlayerStateEnum,
-    DialogStyleEnum,
-    WeaponSkillEnum,
-    SpecialActionEnum,
-    VehicleSeatEnum,
+    Weapons,
+    PlayerStates,
+    DialogStyles,
+    WeaponSkills,
+    SpecialActions,
+    VehicleSeats,
+    CameraModes,
+    WeaponSlots,
 } from "./enums"
 import { WorldPosition } from "./types"
 
@@ -27,6 +29,43 @@ export default class SampNatives {
         return samp.callNativeFloat(nativeName, paramTypes, ...args)
     }
 
+    static manualVehicleEngineAndLights = (): number => {
+        return samp.callNative('ManualVehicleEngineAndLights', '');
+    }
+    
+    static setVehicleParamsEx = (vehicleid: number, engine: boolean, lights: boolean, alarm: boolean, doors: boolean, bonnet: boolean, boot: boolean, objective: boolean): boolean => {
+        return samp.callNative('SetVehicleParamsEx', 'iiiiiiii', vehicleid, engine, lights, alarm, doors, bonnet, boot, objective) === 1
+    }
+
+    static setVehicleNumberPlate = (vehicleid: number, numberplate: string) => {
+        return samp.callNative('SetVehicleNumberPlate', 'is', vehicleid, numberplate) === 1
+    }
+    
+    static getVehicleParamsEx = (vehicleid: number): { engine: boolean, lights: boolean, alarm: boolean, doors: boolean, bonnet: boolean, boot: boolean, objective: boolean } => {
+        if (!SampNatives.isValidVehicle(vehicleid)) {
+            return {
+                engine: false,
+                lights: false,
+                alarm: false,
+                doors: false,
+                bonnet: false,
+                boot: false,
+                objective: false,
+            }
+        }
+        const res = samp.callNative('GetVehicleParamsEx', 'iIIIIIII', vehicleid)
+
+        return {
+            engine: res[0],
+            lights: res[1],
+            alarm: res[2],
+            doors: res[3],
+            bonnet: res[4],
+            boot: res[5],
+            objective: res[6],
+        } 
+    }
+
     static getServerTickRate = (): number => {
         return samp.callNative('GetServerTickRate', '');
     }
@@ -47,8 +86,8 @@ export default class SampNatives {
         }
     }
 
-    static getWeaponName = (weaponid: WeaponEnum): string => {
-        if (weaponid < WeaponEnum.FIST || weaponid > WeaponEnum.COLLISION) {
+    static getWeaponName = (weaponid: Weapons): string => {
+        if (weaponid < Weapons.Fist || weaponid > Weapons.Collision) {
             return "invalid_weapon"
         }
         return samp.callNative('GetWeaponName', 'iSi', weaponid, 32);
@@ -58,7 +97,7 @@ export default class SampNatives {
         return samp.callNative('SetVehicleVelocity', 'ifff', vehicleid, X, Y, Z) === 1
     }
 
-    static setPlayerSkillLevel = (playerId: number, skillType: WeaponSkillEnum, level: number): boolean => {
+    static setPlayerSkillLevel = (playerId: number, skillType: WeaponSkills, level: number): boolean => {
         return samp.callNative('SetPlayerSkillLevel', 'iii', playerId, skillType, level) === 1
     }
 
@@ -102,7 +141,7 @@ export default class SampNatives {
         return vehicleId
     }
 
-    static showPlayerDialog = (playerId: number, dialogId: number, styleId: DialogStyleEnum, caption: string, info: string, button1: string, button2: string): boolean => {
+    static showPlayerDialog = (playerId: number, dialogId: number, styleId: DialogStyles, caption: string, info: string, button1: string, button2: string): boolean => {
         return samp.callNative('ShowPlayerDialog', 'iiissss', playerId, dialogId, styleId, caption, info, button1, button2) === 1
     }
 
@@ -125,15 +164,56 @@ export default class SampNatives {
     static getPlayerVirtualWorld(playerId: number): number {
         return samp.callNative("GetPlayerVirtualWorld", "i", playerId)
     }
+
+    static setPlayerTeam = (playerid: number, teamid: number): boolean => {
+        return samp.callNative('SetPlayerTeam', 'ii', playerid, teamid) === 1
+    }
+
+    static create3DTextLabel = (text: string, color: string, X: number, Y: number, Z: number, DrawDistance: number, virtualworld: number, testLOS: boolean): number | undefined => {
+        if (!text) {
+            return undefined
+        }
+
+        if (virtualworld === -1) {
+            return undefined
+        }
+
+        const res = samp.callNative('Create3DTextLabel', 'siffffii', text, parseInt(color + "FF", 16), X, Y, Z, DrawDistance, virtualworld, testLOS)
+        if (res === 65535) {
+            return undefined
+        }
+
+        return res
+    }
     
-    static setSpawnInfo(playerId: number, teamId: number, skinId: number, position: WorldPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []): void {
-        const weapon1 = weapons[0] ? weapons[0].weapon : WeaponEnum.FIST
+    static delete3DTextLabel = (id: number) => {
+        return samp.callNative('Delete3DTextLabel', 'i', id) === 1
+    }
+    
+    static attach3DTextLabelToPlayer = (id: number, playerid: number, OffsetX: number, OffsetY: number, OffsetZ: number) => {
+        return samp.callNative('Attach3DTextLabelToPlayer', 'iifff', id, playerid, OffsetX, OffsetY, OffsetZ) === 1
+    }
+    
+    static attach3DTextLabelToVehicle = (id: number, vehicleid: number, OffsetX: number, OffsetY: number, OffsetZ: number) => {
+        return samp.callNative('Attach3DTextLabelToVehicle', 'iifff', id, vehicleid, OffsetX, OffsetY, OffsetZ) === 1
+    }
+    
+    static update3DTextLabelText = (id: number, color: string, text: string) => {
+        if (text) {
+            samp.callNative('Update3DTextLabelText', 'iis', id, parseInt(color + "FF", 16), text)
+            return true
+        }
+        return false
+    }
+    
+    static setSpawnInfo(playerId: number, team: number, skinId: number, position: WorldPosition, rotation: number, weapons: { weapon: Weapons, ammo: number }[] = []): void {
+        const weapon1 = weapons[0] ? weapons[0].weapon : Weapons.Fist
         const weapon1ammo = weapons[0] ? weapons[0].ammo : 0
-        const weapon2 = weapons[1] ? weapons[1].weapon : WeaponEnum.FIST
+        const weapon2 = weapons[1] ? weapons[1].weapon : Weapons.Fist
         const weapon2ammo = weapons[1] ? weapons[1].ammo : 0
-        const weapon3 = weapons[2] ? weapons[2].weapon : WeaponEnum.FIST
+        const weapon3 = weapons[2] ? weapons[2].weapon : Weapons.Fist
         const weapon3ammo = weapons[2] ? weapons[2].ammo : 0
-        samp.callNative("SetSpawnInfo", "iiiffffiiiiii", playerId, teamId, skinId, position.x, position.y, position.z, rotation, weapon1, weapon1ammo, weapon2, weapon2ammo, weapon3, weapon3ammo)
+        samp.callNative("SetSpawnInfo", "iiiffffiiiiii", playerId, team, skinId, position.x, position.y, position.z, rotation, weapon1, weapon1ammo, weapon2, weapon2ammo, weapon3, weapon3ammo)
     }
     
     static kick(playerId: number): void {
@@ -199,7 +279,7 @@ export default class SampNatives {
         }
     }
 
-    static getPlayerVehicleSeat = (playerid: number): VehicleSeatEnum | undefined => {
+    static getPlayerVehicleSeat = (playerid: number): VehicleSeats | undefined => {
         const res = samp.callNative('GetPlayerVehicleSeat', 'i', playerid);
         if (res === -1) {
             return undefined
@@ -207,11 +287,11 @@ export default class SampNatives {
         return res
     }
     
-    static getPlayerSpecialAction = (playerid: number): SpecialActionEnum => {
+    static getPlayerSpecialAction = (playerid: number): SpecialActions => {
         return samp.callNative('GetPlayerSpecialAction', 'i', playerid);
     }
     
-    static setPlayerSpecialAction = (playerid: number, actionid: SpecialActionEnum): boolean => {
+    static setPlayerSpecialAction = (playerid: number, actionid: SpecialActions): boolean => {
         return samp.callNative('SetPlayerSpecialAction', 'ii', playerid, actionid);
     }
 
@@ -248,18 +328,18 @@ export default class SampNatives {
         return samp.callNative('ResetPlayerMoney', 'i', playerId) === 1
     }
 
-    static givePlayerWeapon = (playerId: number, weaponId: WeaponEnum, ammo: number): boolean => {
+    static givePlayerWeapon = (playerId: number, weaponId: Weapons, ammo: number): boolean => {
         return samp.callNative('GivePlayerWeapon', 'iii', playerId, weaponId, ammo) === 1
     }
 
-    static getPlayerWeapon = (playerId: number): WeaponEnum => {
+    static getPlayerWeapon = (playerId: number): Weapons => {
         if (!SampNatives.isPlayerConnected(playerId)) {
-            return WeaponEnum.FIST
+            return Weapons.Fist
         }
         return samp.callNative('GetPlayerWeapon', 'i', playerId);
     }
 
-    static setPlayerArmedWeapon = (playerId: number, weaponId: WeaponEnum) => {
+    static setPlayerArmedWeapon = (playerId: number, weaponId: Weapons) => {
         return samp.callNative('SetPlayerArmedWeapon', 'ii', playerId, weaponId) === 1
     }
 
@@ -329,8 +409,28 @@ export default class SampNatives {
         return samp.callNative("GetPlayerArmour", "iF", playerId)
     }
     
-    static putPlayerInVehicle(playerId: number, vehicleId: number, seat = VehicleSeatEnum.DRIVER): boolean {
+    static putPlayerInVehicle(playerId: number, vehicleId: number, seat = VehicleSeats.Driver): boolean {
         return samp.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seat) === 1
+    }
+
+    static getPlayerWeaponData = (playerid: number, slot: WeaponSlots): { model: Weapons, ammo: number } | undefined => {
+        if (!SampNatives.isPlayerConnected(playerid)) {
+            return undefined
+        }
+
+        const res = samp.callNative('GetPlayerWeaponData', 'iiII', playerid, slot)
+        if (res.length < 2) {
+            return undefined
+        }
+
+        if (slot !== WeaponSlots.Unarmed && res[0] === Weapons.Fist) {
+            return undefined
+        }
+        
+        return {
+            model: res[0],
+            ammo: res[1],
+        }
     }
     
     static getPlayerVehicleId(playerId: number): number | undefined {
@@ -341,8 +441,15 @@ export default class SampNatives {
         }
         return vehicleId
     }
+
+    static getPlayerCameraMode = (playerid: number): CameraModes => {
+        if (!SampNatives.isPlayerConnected(playerid)) {
+            return CameraModes.FollowPed
+        }
+        return samp.callNative('GetPlayerCameraMode', 'i', playerid);
+    }
     
-    static getPlayerState(playerId: number): PlayerStateEnum | undefined {
+    static getPlayerState(playerId: number): PlayerStates | undefined {
         if (!SampNatives.isPlayerConnected(playerId)) {
             return undefined
         }
