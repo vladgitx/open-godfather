@@ -4,6 +4,7 @@ import { OpenPlayers } from "../domain/players"
 import { SampServer } from "../domain/server"
 import { OpenConfig } from "./types"
 import { OpenVehicles } from "../domain/vehicles"
+import { TextLabels } from "../domain/text-labels"
 
 export class OpenGf {
     readonly server: SampServer
@@ -11,6 +12,7 @@ export class OpenGf {
     readonly players: OpenPlayers
     readonly vehicles: OpenVehicles
     readonly commands: OpenCommands
+    readonly textLabels: TextLabels
 
     constructor(config?: Partial<OpenConfig>) {
         this.server = new SampServer(config)
@@ -18,5 +20,6 @@ export class OpenGf {
         this.players = new OpenPlayers()
         this.vehicles = new OpenVehicles()
         this.commands = new OpenCommands()
+        this.textLabels = new TextLabels()
     }
 }
