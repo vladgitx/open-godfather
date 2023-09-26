@@ -1,4 +1,4 @@
-import { DialogStyleEnum, PlayerStateEnum, SpecialActionEnum, VehicleSeatEnum, WeaponEnum, WeaponSkillEnum } from "../../../shared/enums"
+import { DialogStyles, PlayerStates, SpecialActions, VehicleSeats, Weapons, WeaponSkills, WeaponSlots } from "../../../shared/enums"
 import SampNatives from "../../../shared/samp-natives"
 import { WorldPosition } from "../../../shared/types"
 import { Entity, WorldEntity } from "../../entity"
@@ -8,17 +8,21 @@ import { hidePlayerDialog, showPlayerDialog } from "../domain/dialog"
 import { putInVehicleWithEvent } from "../domain/enter-exit-car"
 
 export class Player extends Entity implements WorldEntity {
+    #name: string
     #color: string
     #cash: number
     #skin: number
+    #team: number | undefined
     commands: boolean
 
     constructor(id: number) {
         super(id, playersPool)
 
+        this.#name = SampNatives.getPlayerName(this.id)
         this.#color = "FFFFFF"
         this.#cash = 0
         this.#skin = 0
+        this.#team = undefined
         this.commands = true
     }
 
@@ -39,12 +43,14 @@ export class Player extends Entity implements WorldEntity {
         }, 10)
     }
 
-    setSpawnInfo(teamId: number, skinId: number, position: WorldPosition, rotation: number, weapons: { weapon: WeaponEnum, ammo: number }[] = []) {
-        this.#skin = skinId
-        return SampNatives.setSpawnInfo(this.id, teamId, skinId, position, rotation, weapons)
+    setSpawnInfo(team: number | undefined, skin: number, position: WorldPosition, rotation: number, weapons: { weapon: Weapons, ammo: number }[] = []) {
+        this.#skin = skin
+        this.#team = team
+
+        return SampNatives.setSpawnInfo(this.id, team === undefined ? 255 : team, skin, position, rotation, weapons)
     }
 
-    showDialog(styleId: DialogStyleEnum, caption: string, info: string, primaryButton: string, secondaryButton = "", callback?: (response: boolean, listItem: number, inputText: string) => void) {
+    showDialog(styleId: DialogStyles, caption: string, info: string, primaryButton: string, secondaryButton = "", callback?: (response: boolean, listItem: number, inputText: string) => void) {
         return showPlayerDialog(this.id, styleId, caption, info, primaryButton, secondaryButton, callback)
     }
 
@@ -52,7 +58,7 @@ export class Player extends Entity implements WorldEntity {
         return hidePlayerDialog(this.id)
     }
 
-    putIntoVehicle(vehicle: Vehicle, seat = VehicleSeatEnum.DRIVER) {
+    putIntoVehicle(vehicle: Vehicle, seat = VehicleSeats.Driver) {
         return putInVehicleWithEvent(this.id, vehicle.id, seat)
     }
 
@@ -82,12 +88,30 @@ export class Player extends Entity implements WorldEntity {
         return SampNatives.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
     }
 
-    setWeaponSkill(weapon: WeaponSkillEnum, level: number) {
+    setWeaponSkill(weapon: WeaponSkills, level: number) {
         return SampNatives.setPlayerSkillLevel(this.id, weapon, level)
     }
 
-    giveWeapon(weapon: WeaponEnum, ammo: number) {
+    giveWeapon(weapon: Weapons, ammo: number) {
         return SampNatives.givePlayerWeapon(this.id, weapon, ammo)
+    }
+
+    weaponAtSlot(slot: WeaponSlots) {
+        return SampNatives.getPlayerWeaponData(this.id, slot)
+    }
+
+    getWeapons() {
+        const weapons: { model: Weapons, ammo: number }[] = []
+
+        const values = Object.values(WeaponSlots).filter((v) => !isNaN(Number(v)))
+        for (const value of values) {
+            const weapon = this.weaponAtSlot(value as WeaponSlots)
+            if (weapon) {
+                weapons.push(weapon)
+            }
+        }
+
+        return weapons
     }
 
     applyAnimation(library: string, name: string, speed: number, loop: boolean, lockX: boolean, lockY: boolean, freeze: boolean, time: number, forceSync = true) {
@@ -107,7 +131,16 @@ export class Player extends Entity implements WorldEntity {
         return this.#skin
     }
 
-    set holdingWeapon(weaponId: WeaponEnum) {
+    set team(team: number | undefined) {
+        this.#team = team
+        SampNatives.setPlayerTeam(this.id, team === undefined ? 255 : team)
+    }
+
+    get team() {
+        return this.#team
+    }
+
+    set holdingWeapon(weaponId: Weapons) {
         SampNatives.setPlayerArmedWeapon(this.id, weaponId)
     }
 
@@ -128,19 +161,20 @@ export class Player extends Entity implements WorldEntity {
         if (state === undefined) {
             return undefined
         }
-        return state !== PlayerStateEnum.WASTED && state !== PlayerStateEnum.SPECTATING && state !== PlayerStateEnum.NONE
+        return state !== PlayerStates.Wasted && state !== PlayerStates.Spectating && state !== PlayerStates.None
     }
 
-    get state(): PlayerStateEnum | undefined {
+    get state(): PlayerStates | undefined {
         return SampNatives.getPlayerState(this.id)
     }
 
     set name(value: string) {
+        this.#name = value
         SampNatives.setPlayerName(this.id, value)
     }
 
     get name() {
-        return SampNatives.getPlayerName(this.id)
+        return this.#name
     }
     
     set world(value: number) {
@@ -227,7 +261,7 @@ export class Player extends Entity implements WorldEntity {
         return SampNatives.getPlayerAnimationIndex(this.id)
     }
 
-    set specialAction(action: SpecialActionEnum) {
+    set specialAction(action: SpecialActions) {
         SampNatives.setPlayerSpecialAction(this.id, action)
     }
 
@@ -237,5 +271,9 @@ export class Player extends Entity implements WorldEntity {
 
     get vehicleSeat() {
         return SampNatives.getPlayerVehicleSeat(this.id)
+    }
+
+    get cameraMode() {
+        return SampNatives.getPlayerCameraMode(this.id)
     }
 }

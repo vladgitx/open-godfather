@@ -1,5 +1,5 @@
-import { KickReasonEnum, PlayerStateEnum } from "../../../shared/enums"
-import { CommandResponseEnum } from "../../command"
+import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../../shared/enums"
+import { CommandResponses } from "../../command"
 import { Player } from "../../player"
 import { Vehicle } from "../../vehicle/public/model"
 import { eventBus } from "../domain/event-bus"
@@ -17,11 +17,11 @@ export class EventEmit {
         eventBus.emit("playerConnect", player)
     }
 
-    static playerDisconnect(player: Player, reason = KickReasonEnum.CUSTOM) {
+    static playerDisconnect(player: Player, reason = KickReasons.Custom) {
         eventBus.emit("playerDisconnect", player, reason)
     }
 
-    static playerCommand(player: Player, command: string, response: CommandResponseEnum) {
+    static playerCommand(player: Player, command: string, response: CommandResponses) {
         eventBus.emit("playerCommand", player, command, response)
     }
 
@@ -41,7 +41,7 @@ export class EventEmit {
         eventBus.emit("playerText", player, text)
     }
 
-    static playerStateChange(player: Player, newState: PlayerStateEnum, oldState: PlayerStateEnum) {
+    static playerStateChange(player: Player, newState: PlayerStates, oldState: PlayerStates) {
         eventBus.emit("playerStateChange", player, newState, oldState)
     }
 
@@ -59,5 +59,21 @@ export class EventEmit {
 
     static playerExitVehicle(player: Player, vehicle: Vehicle | undefined) {
         eventBus.emit("playerExitVehicle", player, vehicle)
+    }
+
+    static playerStartEnterVehicle(player: Player, vehicle: Vehicle, asPassenger: boolean) {
+        eventBus.emit("playerStartEnterVehicle", player, vehicle, asPassenger)
+    }
+
+    static playerStartExitVehicle(player: Player, vehicle: Vehicle | undefined) {
+        eventBus.emit("playerStartExitVehicle", player, vehicle)
+    }
+
+    static playerDamage(player: Player, issuer: Player | undefined, amount: number, weapon: Weapons, bodyPart: BodyParts) {
+        eventBus.emit("playerDamage", player, issuer, amount, weapon, bodyPart)
+    }
+
+    static playerDeath(player: Player, killer: Player | undefined, weapon: Weapons) {
+        eventBus.emit("playerDeath", player, killer, weapon)
     }
 }

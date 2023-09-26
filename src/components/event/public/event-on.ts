@@ -1,5 +1,5 @@
-import { KickReasonEnum, PlayerStateEnum } from "../../../shared/enums"
-import { CommandResponseEnum } from "../../command"
+import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../../shared/enums"
+import { CommandResponses } from "../../command"
 import { Player } from "../../player"
 import { Vehicle } from "../../vehicle/public/model"
 import { eventBus } from "../domain/event-bus"
@@ -17,11 +17,11 @@ export class EventOn {
         eventBus.on("playerConnect", callback)
     }
 
-    static playerDisconnect(callback: (player: Player, reason: KickReasonEnum) => void) {
+    static playerDisconnect(callback: (player: Player, reason: KickReasons) => void) {
         eventBus.on("playerDisconnect", callback)
     }
 
-    static playerCommand(callback: (player: Player, command: string, response: CommandResponseEnum) => void) {
+    static playerCommand(callback: (player: Player, command: string, response: CommandResponses) => void) {
         eventBus.on("playerCommand", callback)
     }
 
@@ -41,7 +41,7 @@ export class EventOn {
         eventBus.on("playerText", callback)
     }
 
-    static playerStateChange(callback: (player: Player, newState: PlayerStateEnum, oldState: PlayerStateEnum) => void) {
+    static playerStateChange(callback: (player: Player, newState: PlayerStates, oldState: PlayerStates) => void) {
         eventBus.on("playerStateChange", callback)
     }
 
@@ -59,5 +59,21 @@ export class EventOn {
 
     static playerExitVehicle(callback: (player: Player, vehicle: Vehicle | undefined) => void) {
         eventBus.on("playerExitVehicle", callback)
+    }
+
+    static playerStartEnterVehicle(callback: (player: Player, vehicle: Vehicle, asPassenger: boolean) => void) {
+        eventBus.on("playerStartEnterVehicle", callback)
+    }
+
+    static playerStartExitVehicle(callback: (player: Player, vehicle: Vehicle) => void) {
+        eventBus.on("playerStartExitVehicle", callback)
+    }
+
+    static playerDamage(callback: (player: Player, issuer: Player | undefined, amount: number, weapon: Weapons, bodyPart: BodyParts) => void) {
+        eventBus.on("playerDamage", callback)
+    }
+
+    static playerDeath(callback: (player: Player, killer: Player | undefined, weapon: Weapons) => void) {
+        eventBus.on("playerDeath", callback)
     }
 }

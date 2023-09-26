@@ -1,8 +1,8 @@
-import { CommandResponseEnum } from "../../components/command"
+import { CommandResponses } from "../../components/command"
 import { EventOn } from "../../components/event"
 import { Player } from "../../components/player"
 import { Vehicle } from "../../components/vehicle"
-import { KickReasonEnum, PlayerStateEnum } from "../../shared/enums"
+import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../shared/enums"
 
 export class OpenEvents {
     init(callback: () => void) {
@@ -17,11 +17,11 @@ export class OpenEvents {
         EventOn.playerConnect(callback)
     }
 
-    playerDisconnect(callback: (player: Player, reason: KickReasonEnum) => void) {
+    playerDisconnect(callback: (player: Player, reason: KickReasons) => void) {
         EventOn.playerDisconnect(callback)
     }
 
-    playerCommand(callback: (player: Player, command: string, response: CommandResponseEnum) => void) {
+    playerCommand(callback: (player: Player, command: string, response: CommandResponses) => void) {
         EventOn.playerCommand(callback)
     }
 
@@ -41,7 +41,7 @@ export class OpenEvents {
         EventOn.playerText(callback)
     }
 
-    playerStateChange(callback: (player: Player, newState: PlayerStateEnum, oldState: PlayerStateEnum) => void) {
+    playerStateChange(callback: (player: Player, newState: PlayerStates, oldState: PlayerStates) => void) {
         EventOn.playerStateChange(callback)
     }
 
@@ -59,5 +59,21 @@ export class OpenEvents {
 
     playerExitVehicle(callback: (player: Player, vehicle: Vehicle | undefined) => void) {
         EventOn.playerExitVehicle(callback)
+    }
+
+    playerStartEnterVehicle(callback: (player: Player, vehicle: Vehicle, asPassenger: boolean) => void) {
+        EventOn.playerStartEnterVehicle(callback)
+    }
+
+    playerStartExitVehicle(callback: (player: Player, vehicle: Vehicle) => void) {
+        EventOn.playerStartExitVehicle(callback)
+    }
+
+    playerDamage(callback: (player: Player, issuer: Player | undefined, amount: number, weapon: Weapons, bodyPart: BodyParts) => void) {
+        EventOn.playerDamage(callback)
+    }
+
+    playerDeath(callback: (player: Player, killer: Player | undefined, weapon: Weapons) => void) {
+        EventOn.playerDeath(callback)
     }
 }
