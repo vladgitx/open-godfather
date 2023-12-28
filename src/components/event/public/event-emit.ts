@@ -1,5 +1,4 @@
 import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../../shared/enums"
-import { CommandResponses } from "../../command"
 import { Player } from "../../player"
 import { Vehicle } from "../../vehicle/public/model"
 import { eventBus } from "../domain/event-bus"
@@ -21,8 +20,8 @@ export class EventEmit {
         eventBus.emit("playerDisconnect", player, reason)
     }
 
-    static playerCommand(player: Player, command: string, response: CommandResponses) {
-        eventBus.emit("playerCommand", player, command, response)
+    static playerCommand(player: Player, command: string, call?: () => void) {
+        eventBus.emit("playerCommand", player, command, call)
     }
 
     static playerSpawn(player: Player) {

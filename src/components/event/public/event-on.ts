@@ -1,5 +1,4 @@
 import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../../shared/enums"
-import { CommandResponses } from "../../command"
 import { Player } from "../../player"
 import { Vehicle } from "../../vehicle/public/model"
 import { eventBus } from "../domain/event-bus"
@@ -21,7 +20,7 @@ export class EventOn {
         eventBus.on("playerDisconnect", callback)
     }
 
-    static playerCommand(callback: (player: Player, command: string, response: CommandResponses) => void) {
+    static playerCommand(callback: (player: Player, command: string, call?: () => void) => void) {
         eventBus.on("playerCommand", callback)
     }
 

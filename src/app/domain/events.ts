@@ -1,4 +1,3 @@
-import { CommandResponses } from "../../components/command"
 import { EventOn } from "../../components/event"
 import { Player } from "../../components/player"
 import { Vehicle } from "../../components/vehicle"
@@ -21,7 +20,7 @@ export class OpenEvents {
         EventOn.playerDisconnect(callback)
     }
 
-    playerCommand(callback: (player: Player, command: string, response: CommandResponses) => void) {
+    playerCommand(callback: (player: Player, command: string, call?: () => void) => void) {
         EventOn.playerCommand(callback)
     }
 

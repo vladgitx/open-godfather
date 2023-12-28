@@ -6,7 +6,6 @@ export {
 export {
     Command,
     CommandCallback,
-    CommandResponses
 } from "./components/command"
 
 export {

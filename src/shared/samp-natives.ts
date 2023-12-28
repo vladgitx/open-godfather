@@ -339,6 +339,10 @@ export default class SampNatives {
         return samp.callNative('GetPlayerWeapon', 'i', playerId);
     }
 
+    static resetPlayerWeapons = (playerId: number): boolean => {
+        return samp.callNative('ResetPlayerWeapons', 'i', playerId) === 1
+    }
+
     static setPlayerArmedWeapon = (playerId: number, weaponId: Weapons) => {
         return samp.callNative('SetPlayerArmedWeapon', 'ii', playerId, weaponId) === 1
     }

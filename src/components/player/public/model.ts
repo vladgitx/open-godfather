@@ -13,7 +13,6 @@ export class Player extends Entity implements WorldEntity {
     #cash: number
     #skin: number
     #team: number | undefined
-    commands: boolean
 
     constructor(id: number) {
         super(id, playersPool)
@@ -23,7 +22,6 @@ export class Player extends Entity implements WorldEntity {
         this.#cash = 0
         this.#skin = 0
         this.#team = undefined
-        this.commands = true
     }
 
     sendMessage(message: string, color = "FFFFFF") {
@@ -94,6 +92,22 @@ export class Player extends Entity implements WorldEntity {
 
     giveWeapon(weapon: Weapons, ammo: number) {
         return SampNatives.givePlayerWeapon(this.id, weapon, ammo)
+    }
+
+    resetWeapons() {
+        return SampNatives.resetPlayerWeapons(this.id)
+    }
+
+    removeWeapon(weapon: Weapons) {
+        const weapons = this.getWeapons()
+
+        this.resetWeapons()
+
+        for (const weaponData of weapons) {
+            if (weaponData.model !== weapon) {
+                this.giveWeapon(weaponData.model, weaponData.ammo)
+            }
+        }
     }
 
     weaponAtSlot(slot: WeaponSlots) {
