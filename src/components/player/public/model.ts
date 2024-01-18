@@ -48,8 +48,8 @@ export class Player extends Entity implements WorldEntity {
         return SampNatives.setSpawnInfo(this.id, team === undefined ? 255 : team, skin, position, rotation, weapons)
     }
 
-    showDialog(styleId: DialogStyles, caption: string, info: string, primaryButton: string, secondaryButton = "", callback?: (response: boolean, listItem: number, inputText: string) => void) {
-        return showPlayerDialog(this.id, styleId, caption, info, primaryButton, secondaryButton, callback)
+    showDialog(styleId: DialogStyles, caption: string, info: string, primaryButton: string, secondaryButton = "") {
+        return showPlayerDialog(this.id, styleId, caption, info, primaryButton, secondaryButton)
     }
 
     hideDialog() {

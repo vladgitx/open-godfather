@@ -5,6 +5,7 @@ import { SampServer } from "../domain/server"
 import { OpenConfig } from "./types"
 import { OpenVehicles } from "../domain/vehicles"
 import { TextLabels } from "../domain/text-labels"
+import SampNatives from "../../shared/samp-natives"
 
 export class OpenGf {
     readonly server: SampServer
@@ -13,6 +14,7 @@ export class OpenGf {
     readonly vehicles: OpenVehicles
     readonly commands: OpenCommands
     readonly textLabels: TextLabels
+    readonly callNative = SampNatives.callNative
 
     constructor(config?: Partial<OpenConfig>) {
         this.server = new SampServer(config)

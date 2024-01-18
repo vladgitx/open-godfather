@@ -1,5 +1,5 @@
 import SampNatives from "../../../shared/samp-natives"
-import { BodyParts, PlayerStates, Weapons } from "../../../shared/enums"
+import { BodyParts, HitTypes, PlayerStates, Weapons } from "../../../shared/enums"
 import { EventEmit } from "../../event"
 import { getPlayer } from "../public/api"
 import { getVehicle } from "../../vehicle"
@@ -71,4 +71,17 @@ SampNatives.on("OnPlayerTakeDamage", (playerId: number, issuerId: number, amount
     if (player) {
         EventEmit.playerDamage(player, getPlayer(issuerId), amount, weapon, bodyPart)
     }
+})
+
+SampNatives.on("OnPlayerWeaponShot", (playerId: number, weapon: Weapons, hitType: HitTypes, hitId: number, fX: number, fY: number, fZ: number) => {
+    const player = getPlayer(playerId)
+    if (player) {
+        const hitEntity =
+            hitType === HitTypes.Player ? getPlayer(hitId) :
+            hitType === HitTypes.Vehicle ? getVehicle(hitId) :
+            undefined
+
+        EventEmit.playerShoot(player, weapon, hitEntity, { x: fX, y: fY, z: fZ })
+    }
+    return 1
 })

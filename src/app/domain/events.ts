@@ -2,6 +2,7 @@ import { EventOn } from "../../components/event"
 import { Player } from "../../components/player"
 import { Vehicle } from "../../components/vehicle"
 import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../shared/enums"
+import { WorldPosition } from "../../shared/types"
 
 export class OpenEvents {
     init(callback: () => void) {
@@ -74,5 +75,9 @@ export class OpenEvents {
 
     playerDeath(callback: (player: Player, killer: Player | undefined, weapon: Weapons) => void) {
         EventOn.playerDeath(callback)
+    }
+
+    playerShoot(callback: (player: Player, weapon: Weapons, hitEntity: Player | Vehicle | undefined, hitPosition: WorldPosition) => void) {
+        EventOn.playerShoot(callback)
     }
 }

@@ -1,4 +1,5 @@
 import { BodyParts, KickReasons, PlayerStates, Weapons } from "../../../shared/enums"
+import { WorldPosition } from "../../../shared/types"
 import { Player } from "../../player"
 import { Vehicle } from "../../vehicle/public/model"
 import { eventBus } from "../domain/event-bus"
@@ -74,5 +75,9 @@ export class EventEmit {
 
     static playerDeath(player: Player, killer: Player | undefined, weapon: Weapons) {
         eventBus.emit("playerDeath", player, killer, weapon)
+    }
+
+    static playerShoot(player: Player, weapon: Weapons, hitEntity: Player | Vehicle | undefined, hitPosition: WorldPosition) {
+        eventBus.emit("playerShoot", player, weapon, hitEntity, hitPosition)
     }
 }

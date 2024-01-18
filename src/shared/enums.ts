@@ -180,3 +180,11 @@ export enum WeaponSlots {
     Gadget = 11,
     Detonator = 12,
 }
+
+export enum HitTypes {
+    None = 0,
+    Player = 1,
+    Vehicle = 2,
+    Object = 3,
+    PlayerObject = 4
+}
