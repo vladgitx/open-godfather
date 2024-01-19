@@ -1,27 +1,9 @@
-export {
-    OpenGf,
-    OpenConfig
-} from "./app"
+import { PlayersMp } from "./modules/player"
+import { Vector3 as ogVector3 } from "./modules/vector3"
+import { VehiclesMp } from "./modules/vehicle"
 
-export {
-    Command,
-    CommandCallback,
-} from "./components/command"
-
-export {
-    Entity,
-    WorldEntity
-} from "./components/entity"
-
-import "./components/event"
-
-export { Player } from "./components/player"
-export {
-    Vehicle,
-    vehicleNames,
-    getVehicleModelName
-} from "./components/vehicle"
-
-export * from "./shared/enums"
-export * from "./shared/types"
-export * from "./shared/utils"
+export namespace og {
+    export const players = new PlayersMp()
+    export const vehicles = new VehiclesMp()
+    export const Vector3 = ogVector3
+}
