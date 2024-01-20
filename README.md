@@ -7,39 +7,33 @@ Node.js framework for building SA-MP and open.mp scripts with the [samp-node](ht
 ## Installation
 
 ```bash
-npm install open-godfather
+npm install github:vladgitx/open-godfather
 ```
     
 ## Usage example
 
 ```typescript
-import { OpenGf } from "open-godfather"
+import { og, DialogStylesEnum } from "open-godfather"
 
-const og = new OpenGf({
-    name: "my server",
-    stuntBonuses: true,
-})
+og.events.on("playerConnect", async (player) => {
+	const res = await player.dialog.show(DialogStylesEnum.MessageBox, "Hello", "Do you want to join this server?", "Yes", "No")
 
-og.events.playerConnect((player) => {
-    player.setSpectating(true)
-    
-    player.showDialog(DialogStyleEnum.MSGBOX, "Hello", "Do you want to access the server?", "Spawn", "Leave", ((response) => {
-        if (!response) {
-            return player.kick()
-        }
-        player.sendMessage("Welcome!")
-        player.setSpawnInfo(0, 101, { x: 0, y: 0, z: 3 }, 3)
-
-        player.world = 0
-        player.interior = 0
-        player.health = 100
-        player.armour = 0
-    
-        player.setSpectating(false)
-    }))
-})
-
-og.events.playerRequestClass((player) => {
-    player.spawn()
+	if (res.response !== "first") {
+		player.kick()
+	} else {
+		player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
+		player.sendMessage("Welcome to the server!")
+	}
 })
 ```
+
+## Fully typed
+
+The project is entirely type-safe, including the events.
+
+![Showing typescript](https://i.imgur.com/nZsJ5xF.png)
+
+
+## Contributing
+
+Contributions are always welcome, since there's plenty of work ahead (pickups, checkpoints, etc.). This project follows a very consistent code structure, so review existing modules before contributing.

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Node.js framework for building SA-MP and open.mp scripts with the samp-node plugin.",
   "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "types": "build/types/index.d.ts",
   "scripts": {
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,mjs,json}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,mjs,json}'",
+    "build": "rollup -c"
   },
   "keywords": [
     "samp",
@@ -19,9 +20,14 @@
   "author": "vladgitx",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@sa-mp/node": "^0.2.0",
     "@types/node": "^20.5.7",
     "prettier": "^3.2.4",
+    "rollup": "^4.9.5",
+    "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },
   "prettier": {

@@ -1,12 +1,9 @@
 import { PlayerMp } from "./instance"
 
-// TODO: create player on connect and destroy on disconnect
 export class PlayerMpFactory {
-	private pool = new Map<number, PlayerMp>()
+	private static pool = new Map<number, PlayerMp>()
 
-	constructor() {}
-
-	new(id: number) {
+	static new(id: number) {
 		if (this.at(id)) {
 			return undefined
 		}
@@ -17,11 +14,17 @@ export class PlayerMpFactory {
 		return player
 	}
 
-	destroy(player: PlayerMp) {
-		return this.pool.delete(player.id)
+	static destroy(player: PlayerMp) {
+		const deleted = this.pool.delete(player.id)
+		player.exists = false
+		return deleted
 	}
 
-	at(id: number) {
+	static at(id: number) {
 		return this.pool.get(id)
+	}
+
+	static get all() {
+		return this.pool.values()
 	}
 }

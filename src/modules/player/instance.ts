@@ -1,17 +1,21 @@
-import { og } from "../.."
 import { CONFIG } from "../../shared/config"
 import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "../../shared/enums"
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../natives"
 import { Vector3 } from "../vector3"
 import { VehicleMp } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
+import { Entity } from "../entity"
+import { putInVehicleWithEvent } from "./@controllers/enter-exit-car"
+import { vehiclesMp } from "../../singletons/vehicles"
+import { PlayerTextLabels } from "./text-label"
 
-export class PlayerMp {
+export class PlayerMp extends Entity {
 	readonly dialog = new PlayerDialog(this)
 	readonly weapons = new PlayerWeapons(this)
 	readonly animations = new PlayerAnimations(this)
+	readonly textLabels = new PlayerTextLabels(this)
 
 	private _name = SampNatives.getPlayerName(this.id)
 	private _color = CONFIG.player.color
@@ -19,7 +23,9 @@ export class PlayerMp {
 	private _skin = CONFIG.player.skin
 	private _spectating = true
 
-	constructor(readonly id: number) {
+	constructor(id: number) {
+		super(id)
+
 		SampNatives.setPlayerColor(this.id, this._color)
 		SampNatives.givePlayerMoney(this.id, this._cash)
 		SampNatives.setPlayerSkin(this.id, this._skin)
@@ -28,8 +34,8 @@ export class PlayerMp {
 		SampNatives.togglePlayerSpectating(this.id, this._spectating)
 	}
 
-	sendMessage(message: string) {
-		return SampNatives.sendClientMessage(this.id, CONFIG.message.color, message)
+	sendMessage(message: string, color = CONFIG.message.color) {
+		return SampNatives.sendClientMessage(this.id, color, message)
 	}
 
 	spawn(
@@ -39,6 +45,10 @@ export class PlayerMp {
 		interior = CONFIG.player.spawn.interior,
 	) {
 		if (!this.spectating) {
+			if (this.state === PlayerStatesEnum.Wasted) {
+				// If in class selection
+				SampNatives.spawnPlayer(this.id)
+			}
 			return
 		}
 
@@ -218,21 +228,19 @@ export class PlayerMp {
 		return SampNatives.getPlayerState(this.id)
 	}
 
-	/* TODO
 	putIntoVehicle(vehicle: VehicleMp, seat = VehicleSeatsEnum.Driver) {
-		return putInVehicleWithEvent(this.id, vehicle.id, seat)
-	}*/
+		return putInVehicleWithEvent(this, vehicle, seat)
+	}
 
 	get vehicle(): VehicleMp | undefined {
 		const vehicleId = SampNatives.getPlayerVehicleId(this.id)
 		if (vehicleId === undefined) {
 			return undefined
 		}
-		return og.vehicles.at(vehicleId)
+		return vehiclesMp.at(vehicleId)
 	}
 
 	get vehicleSeat() {
 		return SampNatives.getPlayerVehicleSeat(this.id)
 	}
-	
 }

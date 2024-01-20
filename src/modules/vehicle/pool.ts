@@ -1,14 +1,10 @@
 import { CONFIG } from "../../shared/config"
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../natives"
 import { Vector3 } from "../vector3"
 import { VehicleMpFactory } from "./factory"
 import { VehicleMp } from "./instance"
 
 export class VehiclesMp {
-    private factory = new VehicleMpFactory()
-
-    constructor() {}
-
 	new(
 		model: number,
 		position: Vector3,
@@ -23,15 +19,31 @@ export class VehiclesMp {
 			return undefined
 		}
 
-		return this.factory.new(vehicleId, model, primaryColor, secondaryColor)
+		return VehicleMpFactory.new(vehicleId, model, primaryColor, secondaryColor)
 	}
 
-    destroy(vehicle: VehicleMp) {
+	destroy(vehicle: VehicleMp) {
 		SampNatives.destroyVehicle(vehicle.id)
-		this.factory.destroy(vehicle)
+		VehicleMpFactory.destroy(vehicle)
 	}
 
 	at(id: number) {
-		return this.factory.at(id)
+		return VehicleMpFactory.at(id)
+	}
+
+	getClosest(position: Vector3, range: number, world?: number, interior?: number) {
+		const vehicles = new Map<VehicleMp, number>()
+		for (const vehicle of this.all) {
+			const distance = vehicle.getDistance(position, world, interior)
+
+			if (distance < range) {
+				vehicles.set(vehicle, distance)
+			}
+		}
+		return vehicles
+	}
+
+	get all() {
+		return VehicleMpFactory.all
 	}
 }

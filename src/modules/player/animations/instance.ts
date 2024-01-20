@@ -1,4 +1,4 @@
-import { SampNatives } from "../../../natives"
+import { SampNatives } from "../../natives"
 import { PlayerMp } from "../instance"
 
 export class PlayerAnimations {

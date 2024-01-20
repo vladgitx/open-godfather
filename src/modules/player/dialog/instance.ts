@@ -1,5 +1,5 @@
 import { DialogStylesEnum } from "../../../shared/enums"
-import { SampNatives } from "../../../natives"
+import { SampNatives } from "../../natives"
 import { PlayerMp } from "../instance"
 import { DialogResponse } from "./@types/response"
 import { PlayerDialogFactory } from "./factory"

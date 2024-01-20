@@ -1,22 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Node 16",
-  "_version": "16.1.0",
-
   "compilerOptions": {
     "lib": ["es2021"],
-    "module": "node16",
+    "module": "ESNext",
     "target": "es2021",
-
     "rootDir": "src",
-    "outDir": "build",
     "declaration": true,
-
+    "declarationDir": "./build/types",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "types": ["@sa-mp/node", "@types/node"]
   }
 }

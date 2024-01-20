@@ -1,19 +1,30 @@
 import { CONFIG } from "../../shared/config"
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../natives"
 import { Vector3 } from "../vector3"
+import { Entity } from "../entity"
+import { PlayerMp } from "../player"
+import { VehicleParams } from "./params"
+import { VehicleTextLabels } from "./text-label"
 
-export class VehicleMp {
+export class VehicleMp extends Entity {
+	public occupants = new Set<PlayerMp>()
+
+	readonly params = new VehicleParams(this)
+	readonly textLabels = new VehicleTextLabels(this)
+
 	private _primaryColor: number
 	private _secondaryColor: number
 	private _interior = CONFIG.vehicle.interior
 	private _plate = CONFIG.vehicle.plate
 
 	constructor(
-		readonly id: number,
+		id: number,
 		readonly model: number,
 		primaryColor: number,
 		secondaryColor: number,
 	) {
+		super(id)
+
 		this._primaryColor = primaryColor
 		this._secondaryColor = secondaryColor
 
@@ -106,9 +117,4 @@ export class VehicleMp {
 	get plate() {
 		return this._plate
 	}
-
-	/* TODO
-    get occupants() {
-        return getVehicleOccupants(this)
-    }*/
 }
