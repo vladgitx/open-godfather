@@ -1,0 +1,35 @@
+import { Vector3 } from "../vector3";
+import { Entity } from "../entity";
+import { PlayerMp } from "../player";
+import { VehicleParams } from "./params";
+import { VehicleTextLabels } from "./text-label";
+export declare class VehicleMp extends Entity {
+    readonly model: number;
+    occupants: Set<PlayerMp>;
+    readonly params: VehicleParams;
+    readonly textLabels: VehicleTextLabels;
+    private _primaryColor;
+    private _secondaryColor;
+    private _interior;
+    private _plate;
+    constructor(id: number, model: number, primaryColor: number, secondaryColor: number);
+    set position(position: Vector3);
+    get position(): Vector3;
+    getDistance(position: Vector3, world?: number, interior?: number): number;
+    set velocity(velocity: Vector3);
+    get velocity(): Vector3;
+    set rotation(angle: number);
+    get rotation(): number;
+    set world(value: number);
+    get world(): number;
+    set interior(interior: number);
+    get interior(): number;
+    set health(health: number);
+    get health(): number;
+    set primaryColor(color: number);
+    get primaryColor(): number;
+    set secondaryColor(color: number);
+    get secondaryColor(): number;
+    set plate(plate: string);
+    get plate(): string;
+}

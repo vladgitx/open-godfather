@@ -1,0 +1,1 @@
+export { PlayerWeapons } from "./instance";

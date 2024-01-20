@@ -1,0 +1,1 @@
+export { VehicleTextLabels } from "./instance";
