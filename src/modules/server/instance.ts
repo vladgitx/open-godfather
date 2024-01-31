@@ -1,4 +1,4 @@
-import { SampNatives } from "../natives"
+import { SampNatives } from "../../wrapper"
 
 export class ServerMp {
 	private _name = "open gf server"

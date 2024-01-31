@@ -7,8 +7,8 @@ import {
 	VehicleSeatsEnum,
 	CameraModesEnum,
 	WeaponSlotsEnum,
-} from "../../shared/enums"
-import { Vector3 } from "../vector3"
+} from "../shared/enums"
+import { Vector3 } from "../modules/vector3"
 
 export class SampNatives {
 	static manualVehicleEngineAndLights = (): number => {

@@ -1,5 +1,5 @@
 import { CONFIG } from "../../shared/config"
-import { SampNatives } from "../natives"
+import { SampNatives } from "../../wrapper"
 import { Vector3 } from "../vector3"
 import { TextLabelMpFactory } from "./factory"
 import { TextLabelMp } from "./instance"

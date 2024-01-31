@@ -1,4 +1,4 @@
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../../../wrapper"
 import { CONFIG } from "../../../shared/config"
 import { BodyPartsEnum, HitTypesEnum, PlayerStatesEnum, WeaponsEnum } from "../../../shared/enums"
 import { playersMp } from "../../../singletons/players"

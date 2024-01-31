@@ -1,4 +1,4 @@
-import { SampNatives } from "../natives"
+import { SampNatives } from "../../wrapper"
 import { CONFIG } from "../../shared/config"
 import { PlayerMpFactory } from "./factory"
 import { Vector3 } from "../vector3"

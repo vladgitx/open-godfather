@@ -1,4 +1,4 @@
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../../../wrapper"
 import { TextLabelMp } from "../../text-label"
 import { Vector3 } from "../../vector3"
 import { VehicleMp } from "../instance"

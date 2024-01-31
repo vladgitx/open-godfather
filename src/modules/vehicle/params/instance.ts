@@ -1,5 +1,5 @@
 import { VehicleMp } from ".."
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../../../wrapper"
 import { CONFIG } from "../../../shared/config"
 
 export class VehicleParams {

@@ -1,5 +1,5 @@
 import { Entity } from "../entity"
-import { SampNatives } from "../natives"
+import { SampNatives } from "../../wrapper"
 
 export class TextLabelMp extends Entity {
 	private _text: string

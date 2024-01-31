@@ -1,5 +1,5 @@
 import { PlayerMp } from ".."
-import { SampNatives } from "../../natives"
+import { SampNatives } from "../../../wrapper"
 import { PlayerStatesEnum, VehicleSeatsEnum } from "../../../shared/enums"
 import { VehicleMp } from "../../vehicle"
 import { eventsMp } from "../../../singletons/events"

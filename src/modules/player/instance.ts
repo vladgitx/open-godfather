@@ -1,6 +1,6 @@
 import { CONFIG } from "../../shared/config"
 import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "../../shared/enums"
-import { SampNatives } from "../natives"
+import { SampNatives } from "../../wrapper"
 import { Vector3 } from "../vector3"
 import { VehicleMp } from "../vehicle"
 import { PlayerAnimations } from "./animations"

@@ -1,3 +1,3 @@
-import { SampNatives } from "../../../natives"
+import { SampNatives } from "../../../../wrapper"
 
 SampNatives.manualVehicleEngineAndLights()
