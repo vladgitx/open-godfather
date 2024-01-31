@@ -15,6 +15,7 @@ export class PlayerWeapons {
 
 	remove(weapon: WeaponsEnum) {
 		const weapons = this.all
+		const holding = this.holding
 
 		this.reset()
 
@@ -24,7 +25,11 @@ export class PlayerWeapons {
 			}
 		}
 
-		this.holding = WeaponsEnum.Fist
+		if (holding !== weapon) {
+			this.holding = holding
+		} else {
+			this.holding = WeaponsEnum.Fist
+		}
 	}
 
 	reset() {
