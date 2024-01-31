@@ -1,5 +1,5 @@
 export type DialogResponse = {
-    response: "first" | "second" | undefined;
+    button: "first" | "second" | undefined;
     listItem: number | undefined;
     inputText: string;
 };

@@ -713,7 +713,7 @@ class PlayerDialogFactory {
     static async new(player) {
         const existing = this.promises.get(player.id);
         if (existing) {
-            existing({ response: undefined, listItem: undefined, inputText: "" });
+            existing({ button: undefined, listItem: undefined, inputText: "" });
         }
         return new Promise((resolve) => {
             this.promises.set(player.id, resolve);
@@ -722,7 +722,7 @@ class PlayerDialogFactory {
     static destroy(player, response) {
         const existing = this.promises.get(player.id);
         if (existing) {
-            existing(response || { response: undefined, listItem: undefined, inputText: "" });
+            existing(response || { button: undefined, listItem: undefined, inputText: "" });
         }
         this.promises.delete(player.id);
     }
@@ -1426,9 +1426,9 @@ samp.on("OnPlayerWeaponShot", (playerId, weapon, hitType, hitId, fX, fY, fZ) => 
 samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, inputText) => {
     const player = playersMp.at(playerId);
     if (player) {
-        const response = responseParam === 1 ? "first" : responseParam === 0 ? "second" : undefined;
+        const button = responseParam === 1 ? "first" : responseParam === 0 ? "second" : undefined;
         const listItem = listItemParam === -1 ? undefined : listItemParam;
-        PlayerDialogFactory.destroy(player, { response, listItem, inputText });
+        PlayerDialogFactory.destroy(player, { button, listItem, inputText });
     }
 });
 eventsMp.on("playerDisconnect", (player) => {
