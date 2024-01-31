@@ -18,11 +18,11 @@ import { og, DialogStylesEnum } from "open-godfather"
 og.events.on("playerConnect", async (player) => {
 	const res = await player.dialog.show(DialogStylesEnum.MessageBox, "Hello", "Do you want to join this server?", "Yes", "No")
 
-	if (res.response !== "first") {
-		player.kick()
-	} else {
+	if (res.button === "first") {
 		player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
 		player.sendMessage("Welcome to the server!")
+	} else {
+		player.kick()
 	}
 })
 ```
