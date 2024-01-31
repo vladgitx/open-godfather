@@ -755,13 +755,19 @@ class PlayerWeapons {
     }
     remove(weapon) {
         const weapons = this.all;
+        const holding = this.holding;
         this.reset();
         for (const weaponData of weapons) {
             if (weaponData.model !== weapon) {
                 this.add(weaponData.model, weaponData.ammo);
             }
         }
-        this.holding = exports.WeaponsEnum.Fist;
+        if (holding !== weapon) {
+            this.holding = holding;
+        }
+        else {
+            this.holding = exports.WeaponsEnum.Fist;
+        }
     }
     reset() {
         return SampNatives.resetPlayerWeapons(this.player.id);

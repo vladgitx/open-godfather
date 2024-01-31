@@ -1,1 +1,0 @@
-export { SampNatives } from "./module";
