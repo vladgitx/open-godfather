@@ -12,21 +12,20 @@ export class ServerMp {
 	private _weather = 1
 
 	constructor() {
-		SampNatives.sendRconCommand("hostname " + this._name)
-		SampNatives.sendRconCommand("language " + this._language)
-		SampNatives.sendRconCommand("weburl " + this._website)
-		SampNatives.sendRconCommand("mapname " + this._map)
-		SampNatives.sendRconCommand("gamemode " + this._mode)
-
-		SampNatives.enableStuntBonusForAll(this._stuntBonuses)
-		SampNatives.setNameTagDrawDistance(this._nameTagDistance)
-		SampNatives.setWorldTime(this._hour)
-		SampNatives.setWeather(this._weather)
+		this.name = this._name
+		this.language = this._language
+		this.website = this._website
+		this.map = this._map
+		this.mode = this._mode
+		this.stuntBonuses = this._stuntBonuses
+		this.nameTagDistance = this._nameTagDistance
+		this.hour = this._hour
+		this.weather = this._weather
 	}
 
 	set name(name: string) {
 		this._name = name
-		SampNatives.sendRconCommand("hostname " + this._name)
+		SampNatives.sendRconCommand("name " + this._name)
 	}
 
 	get name() {
@@ -44,7 +43,7 @@ export class ServerMp {
 
 	set website(website: string) {
 		this._website = website
-		SampNatives.sendRconCommand("weburl " + this._website)
+		SampNatives.sendRconCommand("website " + this._website)
 	}
 
 	get website() {
@@ -53,7 +52,7 @@ export class ServerMp {
 
 	set map(map: string) {
 		this._map = map
-		SampNatives.sendRconCommand("mapname " + this._map)
+		SampNatives.sendRconCommand("game.map " + this._map)
 	}
 
 	get map() {
@@ -62,7 +61,7 @@ export class ServerMp {
 
 	set mode(mode: string) {
 		this._mode = mode
-		SampNatives.sendRconCommand("gamemode " + this._mode)
+		SampNatives.sendRconCommand("game.mode " + this._mode)
 	}
 
 	get mode() {
