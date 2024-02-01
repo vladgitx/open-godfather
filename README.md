@@ -1,8 +1,6 @@
-
 # Open Godfather
 
-Node.js framework for building SA-MP and open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
-
+Node.js library for building SA-MP and open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
 
 ## Installation
 
@@ -16,9 +14,9 @@ npm install github:vladgitx/open-godfather
 import { og, DialogStylesEnum } from "open-godfather"
 
 og.events.on("playerConnect", async (player) => {
-	const res = await player.dialog.show(DialogStylesEnum.MessageBox, "Hello", "Do you want to join this server?", "Yes", "No")
+	const result = await player.dialog.show(DialogStylesEnum.MessageBox, "Hello", "Do you want to join this server?", "Yes", "No")
 
-	if (res.button === "first") {
+	if (result.button === "first") {
 		player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
 		player.sendMessage("Welcome to the server!")
 	} else {
@@ -30,9 +28,6 @@ og.events.on("playerConnect", async (player) => {
 ## Fully typed
 
 The project is entirely type-safe, including the events.
-
-![Showing typescript](https://i.imgur.com/nZsJ5xF.png)
-
 
 ## Contributing
 

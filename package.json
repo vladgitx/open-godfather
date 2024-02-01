@@ -1,7 +1,7 @@
 {
   "name": "open-godfather",
   "version": "1.0.0",
-  "description": "Node.js framework for building SA-MP and open.mp scripts with the samp-node plugin.",
+  "description": "Node.js library for building SA-MP and open.mp scripts with the samp-node plugin.",
   "main": "build/index.js",
   "types": "build/types/index.d.ts",
   "scripts": {
