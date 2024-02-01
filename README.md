@@ -1,6 +1,6 @@
 # Open Godfather
 
-Node.js library for building SA-MP and open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
+Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
 
 ## Installation
 

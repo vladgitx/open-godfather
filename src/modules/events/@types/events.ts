@@ -1,11 +1,11 @@
 import { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "../../../shared/enums"
 import { CommandMp } from "../../commands"
-import { CommandCallback } from "../../commands/@types/callback"
 import { PlayerMp } from "../../player"
 import { Vector3 } from "../../vector3"
 import { VehicleMp } from "../../vehicle"
 
 type ServerEvents = {
+	init: []
 	exit: []
 }
 
