@@ -4,6 +4,7 @@ import { PlayerMp } from "../../player";
 import { Vector3 } from "../../vector3";
 import { VehicleMp } from "../../vehicle";
 type ServerEvents = {
+    init: [];
     exit: [];
 };
 type PlayerEvents = {

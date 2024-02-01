@@ -6,12 +6,55 @@ class EventBus extends stream.EventEmitter {
     emit(event, ...args) {
         return super.emit(event, ...args);
     }
+    addListener(event, listener) {
+        return super.addListener(event, listener);
+    }
     on(event, listener) {
         return super.on(event, listener);
+    }
+    once(event, listener) {
+        return super.once(event, listener);
+    }
+    prependListener(event, listener) {
+        return super.prependListener(event, listener);
+    }
+    prependOnceListener(event, listener) {
+        return super.prependOnceListener(event, listener);
+    }
+    removeListener(event, listener) {
+        return super.removeListener(event, listener);
+    }
+    off(event, listener) {
+        return super.off(event, listener);
+    }
+    removeAllListeners(event) {
+        return super.removeAllListeners(event);
+    }
+    listeners(event) {
+        return super.listeners(event);
+    }
+    rawListeners(event) {
+        return super.rawListeners(event);
+    }
+    eventNames() {
+        return super.eventNames();
+    }
+    listenerCount(event) {
+        return super.listenerCount(event);
+    }
+    getMaxListeners() {
+        return super.getMaxListeners();
+    }
+    setMaxListeners(n) {
+        return super.setMaxListeners(n);
     }
 }
 
 const eventsMp = new EventBus();
+
+samp.on("OnGameModeInit", () => {
+    eventsMp.emit("init");
+});
 
 samp.on("OnGameModeExit", () => {
     eventsMp.emit("exit");
@@ -1599,19 +1642,19 @@ class ServerMp {
         this._nameTagDistance = 20;
         this._hour = 18;
         this._weather = 1;
-        SampNatives.sendRconCommand("hostname " + this._name);
-        SampNatives.sendRconCommand("language " + this._language);
-        SampNatives.sendRconCommand("weburl " + this._website);
-        SampNatives.sendRconCommand("mapname " + this._map);
-        SampNatives.sendRconCommand("gamemode " + this._mode);
-        SampNatives.enableStuntBonusForAll(this._stuntBonuses);
-        SampNatives.setNameTagDrawDistance(this._nameTagDistance);
-        SampNatives.setWorldTime(this._hour);
-        SampNatives.setWeather(this._weather);
+        this.name = this._name;
+        this.language = this._language;
+        this.website = this._website;
+        this.map = this._map;
+        this.mode = this._mode;
+        this.stuntBonuses = this._stuntBonuses;
+        this.nameTagDistance = this._nameTagDistance;
+        this.hour = this._hour;
+        this.weather = this._weather;
     }
     set name(name) {
         this._name = name;
-        SampNatives.sendRconCommand("hostname " + this._name);
+        SampNatives.sendRconCommand("name " + this._name);
     }
     get name() {
         return this._name;
@@ -1625,21 +1668,21 @@ class ServerMp {
     }
     set website(website) {
         this._website = website;
-        SampNatives.sendRconCommand("weburl " + this._website);
+        SampNatives.sendRconCommand("website " + this._website);
     }
     get website() {
         return this._website;
     }
     set map(map) {
         this._map = map;
-        SampNatives.sendRconCommand("mapname " + this._map);
+        SampNatives.sendRconCommand("game.map " + this._map);
     }
     get map() {
         return this._map;
     }
     set mode(mode) {
         this._mode = mode;
-        SampNatives.sendRconCommand("gamemode " + this._mode);
+        SampNatives.sendRconCommand("game.mode " + this._mode);
     }
     get mode() {
         return this._mode;
