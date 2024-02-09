@@ -11,4 +11,5 @@ export declare class Vector3 {
     length(): number;
     normalize(): Vector3;
     distance(v: Vector3): number;
+    inFrontXY(angle: number, distance: number, z?: number): Vector3;
 }

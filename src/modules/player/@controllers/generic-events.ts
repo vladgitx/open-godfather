@@ -25,7 +25,7 @@ samp.on("OnPlayerSpawn", (playerId: number) => {
 samp.on("OnPlayerRequestClass", (playerId: number, classId: number) => {
 	const player = playersMp.at(playerId)
 	if (player !== undefined) {
-		eventsMp.emit("playerRequestClass", player, classId)
+		player.spawn()
 	}
 })
 

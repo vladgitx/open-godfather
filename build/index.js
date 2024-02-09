@@ -94,6 +94,13 @@ class Vector3 {
         const dz = this.z - v.z;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
+    inFrontXY(angle, distance, z) {
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        const newX = this.x + dx;
+        const newY = this.y + dy;
+        return new Vector3(newX, newY, z != undefined ? z : this.z);
+    }
 }
 
 const CONFIG = {
@@ -1421,7 +1428,7 @@ samp.on("OnPlayerSpawn", (playerId) => {
 samp.on("OnPlayerRequestClass", (playerId, classId) => {
     const player = playersMp.at(playerId);
     if (player !== undefined) {
-        eventsMp.emit("playerRequestClass", player, classId);
+        player.spawn();
     }
 });
 samp.on("OnPlayerText", (playerId, text) => {

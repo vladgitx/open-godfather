@@ -15,7 +15,6 @@ type PlayerEvents = {
 	playerCommand: [PlayerMp, string, CommandMp | undefined, () => void]
 	playerSpawn: [PlayerMp]
 	playerFirstSpawn: [PlayerMp]
-	playerRequestClass: [PlayerMp, number]
 	playerText: [PlayerMp, string]
 	playerStateChange: [PlayerMp, PlayerStatesEnum, PlayerStatesEnum]
 	playerEnterVehicle: [PlayerMp, VehicleMp]
