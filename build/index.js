@@ -88,6 +88,12 @@ class Vector3 {
         const len = this.length();
         return len > 0 ? this.scale(1 / len) : new Vector3();
     }
+    distance(v) {
+        const dx = this.x - v.x;
+        const dy = this.y - v.y;
+        const dz = this.z - v.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
 }
 
 const CONFIG = {
@@ -993,15 +999,6 @@ class VehicleMp extends Entity {
     get position() {
         return SampNatives.getPlayerPosition(this.id);
     }
-    getDistance(position, world, interior) {
-        if (world !== undefined && this.world !== world) {
-            return Number.POSITIVE_INFINITY;
-        }
-        if (interior !== undefined && this.interior !== interior) {
-            return Number.POSITIVE_INFINITY;
-        }
-        return SampNatives.getVehicleDistanceFromPoint(this.id, position.x, position.y, position.z);
-    }
     set velocity(velocity) {
         SampNatives.setVehicleVelocity(this.id, velocity);
     }
@@ -1097,7 +1094,13 @@ class VehiclesMp {
     getClosest(position, range, world, interior) {
         const vehicles = new Map();
         for (const vehicle of this.all) {
-            const distance = vehicle.getDistance(position, world, interior);
+            if (world !== undefined && vehicle.world !== world) {
+                continue;
+            }
+            if (interior !== undefined && vehicle.interior !== interior) {
+                continue;
+            }
+            const distance = vehicle.position.distance(position);
             if (distance < range) {
                 vehicles.set(vehicle, distance);
             }
@@ -1224,15 +1227,6 @@ class PlayerMp extends Entity {
     }
     get position() {
         return SampNatives.getPlayerPosition(this.id);
-    }
-    getDistance(position, world, interior) {
-        if (world !== undefined && this.world !== world) {
-            return Number.POSITIVE_INFINITY;
-        }
-        if (interior !== undefined && this.interior !== interior) {
-            return Number.POSITIVE_INFINITY;
-        }
-        return SampNatives.getPlayerDistanceFromPoint(this.id, position.x, position.y, position.z);
     }
     set specialAction(action) {
         SampNatives.setPlayerSpecialAction(this.id, action);
@@ -1392,7 +1386,13 @@ class PlayersMp {
     getClosest(position, range, world, interior) {
         const players = new Map();
         for (const player of this.all) {
-            const distance = player.getDistance(position, world, interior);
+            if (world !== undefined && player.world !== world) {
+                continue;
+            }
+            if (interior !== undefined && player.interior !== interior) {
+                continue;
+            }
+            const distance = player.position.distance(position);
             if (distance < range) {
                 players.set(player, distance);
             }

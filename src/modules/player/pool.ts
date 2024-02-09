@@ -16,7 +16,14 @@ export class PlayersMp {
 	getClosest(position: Vector3, range: number, world?: number, interior?: number) {
 		const players = new Map<PlayerMp, number>()
 		for (const player of this.all) {
-			const distance = player.getDistance(position, world, interior)
+			if (world !== undefined && player.world !== world) {
+				continue
+			}
+			if (interior !== undefined && player.interior !== interior) {
+				continue
+			}
+
+			const distance = player.position.distance(position)
 
 			if (distance < range) {
 				players.set(player, distance)

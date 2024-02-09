@@ -37,4 +37,11 @@ export class Vector3 {
 		const len = this.length()
 		return len > 0 ? this.scale(1 / len) : new Vector3()
 	}
+
+	distance(v: Vector3): number {
+		const dx = this.x - v.x
+		const dy = this.y - v.y
+		const dz = this.z - v.z
+		return Math.sqrt(dx * dx + dy * dy + dz * dz)
+	}
 }

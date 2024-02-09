@@ -34,7 +34,14 @@ export class VehiclesMp {
 	getClosest(position: Vector3, range: number, world?: number, interior?: number) {
 		const vehicles = new Map<VehicleMp, number>()
 		for (const vehicle of this.all) {
-			const distance = vehicle.getDistance(position, world, interior)
+			if (world !== undefined && vehicle.world !== world) {
+				continue
+			}
+			if (interior !== undefined && vehicle.interior !== interior) {
+				continue
+			}
+
+			const distance = vehicle.position.distance(position)
 
 			if (distance < range) {
 				vehicles.set(vehicle, distance)

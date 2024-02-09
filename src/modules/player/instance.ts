@@ -87,16 +87,6 @@ export class PlayerMp extends Entity {
 		return SampNatives.getPlayerPosition(this.id)
 	}
 
-	getDistance(position: Vector3, world?: number, interior?: number) {
-		if (world !== undefined && this.world !== world) {
-			return Number.POSITIVE_INFINITY
-		}
-		if (interior !== undefined && this.interior !== interior) {
-			return Number.POSITIVE_INFINITY
-		}
-		return SampNatives.getPlayerDistanceFromPoint(this.id, position.x, position.y, position.z)
-	}
-
 	set specialAction(action: SpecialActionsEnum) {
 		SampNatives.setPlayerSpecialAction(this.id, action)
 	}

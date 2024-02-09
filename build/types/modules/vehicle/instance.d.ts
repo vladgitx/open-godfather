@@ -15,7 +15,6 @@ export declare class VehicleMp extends Entity {
     constructor(id: number, model: number, primaryColor: number, secondaryColor: number);
     set position(position: Vector3);
     get position(): Vector3;
-    getDistance(position: Vector3, world?: number, interior?: number): number;
     set velocity(velocity: Vector3);
     get velocity(): Vector3;
     set rotation(angle: number);

@@ -10,4 +10,5 @@ export declare class Vector3 {
     cross(v: Vector3): Vector3;
     length(): number;
     normalize(): Vector3;
+    distance(v: Vector3): number;
 }

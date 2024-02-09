@@ -40,16 +40,6 @@ export class VehicleMp extends Entity {
 		return SampNatives.getPlayerPosition(this.id)
 	}
 
-	getDistance(position: Vector3, world?: number, interior?: number) {
-		if (world !== undefined && this.world !== world) {
-			return Number.POSITIVE_INFINITY
-		}
-		if (interior !== undefined && this.interior !== interior) {
-			return Number.POSITIVE_INFINITY
-		}
-		return SampNatives.getVehicleDistanceFromPoint(this.id, position.x, position.y, position.z)
-	}
-
 	set velocity(velocity: Vector3) {
 		SampNatives.setVehicleVelocity(this.id, velocity)
 	}

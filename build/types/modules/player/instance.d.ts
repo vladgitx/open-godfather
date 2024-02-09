@@ -24,7 +24,6 @@ export declare class PlayerMp extends Entity {
     get spectating(): boolean;
     set position(position: Vector3);
     get position(): Vector3;
-    getDistance(position: Vector3, world?: number, interior?: number): number;
     set specialAction(action: SpecialActionsEnum);
     get specialAction(): SpecialActionsEnum;
     set skin(skin: number);
