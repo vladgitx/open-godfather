@@ -7,7 +7,7 @@ export class PlayerDialogFactory {
 	static async new(player: PlayerMp): Promise<DialogResponse> {
 		const existing = this.promises.get(player.id)
 		if (existing) {
-			existing({ button: undefined, listItem: undefined, inputText: "" })
+			existing({ button: undefined, item: undefined, input: "" })
 		}
 
 		return new Promise((resolve) => {
@@ -18,7 +18,7 @@ export class PlayerDialogFactory {
 	static destroy(player: PlayerMp, response?: DialogResponse) {
 		const existing = this.promises.get(player.id)
 		if (existing) {
-			existing(response || { button: undefined, listItem: undefined, inputText: "" })
+			existing(response || { button: undefined, item: undefined, input: "" })
 		}
 
 		this.promises.delete(player.id)
