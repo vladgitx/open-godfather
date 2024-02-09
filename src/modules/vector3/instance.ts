@@ -44,4 +44,14 @@ export class Vector3 {
 		const dz = this.z - v.z
 		return Math.sqrt(dx * dx + dy * dy + dz * dz)
 	}
+
+	inFrontXY(angle: number, distance: number, z?: number): Vector3 {
+		const dx = Math.cos(angle) * distance
+		const dy = Math.sin(angle) * distance
+
+		const newX = this.x + dx
+		const newY = this.y + dy
+
+		return new Vector3(newX, newY, z != undefined ? z : this.z)
+	}
 }
