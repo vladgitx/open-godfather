@@ -22,6 +22,6 @@ export class PlayerDialog {
 
 	async hide(response?: DialogResponse) {
 		PlayerDialogFactory.destroy(this.player, response)
-		SampNatives.showPlayerDialog(this.player.id, -1, DialogStylesEnum.MessageBox, "", "", "", "")
+		SampNatives.hidePlayerDialog(this.player.id)
 	}
 }

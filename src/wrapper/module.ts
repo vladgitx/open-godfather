@@ -158,6 +158,10 @@ export class SampNatives {
 		return samp.callNative("ShowPlayerDialog", "iiissss", playerId, dialogId, styleId, caption, info, button1, button2) === 1
 	}
 
+	static hidePlayerDialog(playerId: number) {
+		samp.callNative("HidePlayerDialog", "i", playerId)
+	}
+
 	static setPlayerName(playerId: number, name: string): boolean {
 		return samp.callNative("SetPlayerName", "is", playerId, name) === 1
 	}
