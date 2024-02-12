@@ -5,25 +5,6 @@ export class Entity {
 
 	constructor(public id: number) {}
 
-	setTimeout(callback: () => void, delay: number) {
-		return setTimeout(() => {
-			if (this.exists) {
-				callback()
-			}
-		}, delay)
-	}
-
-	setInterval(callback: () => void, delay: number) {
-		const intervalId = setInterval(() => {
-			if (this.exists) {
-				callback()
-			} else {
-				clearInterval(intervalId)
-			}
-		}, delay)
-		return intervalId
-	}
-
 	setVariable(name: string, value: any) {
 		this.variables.set(name, value)
 	}

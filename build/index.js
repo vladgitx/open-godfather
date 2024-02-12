@@ -858,24 +858,6 @@ class Entity {
         this.id = id;
         this.variables = new Map();
     }
-    setTimeout(callback, delay) {
-        return setTimeout(() => {
-            if (this.exists) {
-                callback();
-            }
-        }, delay);
-    }
-    setInterval(callback, delay) {
-        const intervalId = setInterval(() => {
-            if (this.exists) {
-                callback();
-            }
-            else {
-                clearInterval(intervalId);
-            }
-        }, delay);
-        return intervalId;
-    }
     setVariable(name, value) {
         this.variables.set(name, value);
     }
