@@ -28,6 +28,7 @@ export declare class SampNatives {
     static destroyVehicle: (vehicleId: number) => boolean;
     static createVehicle: (modelId: number, position: Vector3, rotation: number, primaryColor?: number, secondaryColor?: number, respawnDelay?: number, addSiren?: boolean) => number | undefined;
     static showPlayerDialog: (playerId: number, dialogId: number, styleId: DialogStylesEnum, caption: string, info: string, button1: string, button2: string) => boolean;
+    static hidePlayerDialog(playerId: number): void;
     static setPlayerName(playerId: number, name: string): boolean;
     static setPlayerInterior(playerId: number, interior: number): boolean;
     static getPlayerInterior(playerId: number): number;
