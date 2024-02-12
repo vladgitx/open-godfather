@@ -4,8 +4,9 @@ import { PlayerDialogFactory } from "../factory"
 
 samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, inputText) => {
 	const player = playersMp.at(playerId)
+
 	if (player) {
-		const button = responseParam === 1 ? "first" : responseParam === 0 ? "second" : undefined
+		const button = responseParam === 1 ? "main" : "second"
 		const item = listItemParam === -1 ? undefined : listItemParam
 
 		PlayerDialogFactory.destroy(player, { button, item, input: inputText })
@@ -13,5 +14,5 @@ samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, i
 })
 
 eventsMp.on("playerDisconnect", (player) => {
-	PlayerDialogFactory.destroy(player)
+	PlayerDialogFactory.destroy(player, undefined)
 })

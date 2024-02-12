@@ -772,7 +772,7 @@ class PlayerDialogFactory {
     static async new(player) {
         const existing = this.promises.get(player.id);
         if (existing) {
-            existing({ button: undefined, item: undefined, input: "" });
+            existing(undefined);
         }
         return new Promise((resolve) => {
             this.promises.set(player.id, resolve);
@@ -781,7 +781,7 @@ class PlayerDialogFactory {
     static destroy(player, response) {
         const existing = this.promises.get(player.id);
         if (existing) {
-            existing(response || { button: undefined, item: undefined, input: "" });
+            existing(response);
         }
         this.promises.delete(player.id);
     }
@@ -1495,13 +1495,13 @@ samp.on("OnPlayerWeaponShot", (playerId, weapon, hitType, hitId, fX, fY, fZ) => 
 samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, inputText) => {
     const player = playersMp.at(playerId);
     if (player) {
-        const button = responseParam === 1 ? "first" : responseParam === 0 ? "second" : undefined;
+        const button = responseParam === 1 ? "main" : "second";
         const item = listItemParam === -1 ? undefined : listItemParam;
         PlayerDialogFactory.destroy(player, { button, item, input: inputText });
     }
 });
 eventsMp.on("playerDisconnect", (player) => {
-    PlayerDialogFactory.destroy(player);
+    PlayerDialogFactory.destroy(player, undefined);
 });
 
 class TextLabelMp extends Entity {
