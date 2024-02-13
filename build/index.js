@@ -60,101 +60,6 @@ samp.on("OnGameModeExit", () => {
     eventsMp.emit("exit");
 });
 
-class Vector3 {
-    constructor(x = 0, y = 0, z = 0) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-    add(v) {
-        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
-    }
-    subtract(v) {
-        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
-    }
-    scale(scalar) {
-        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
-    }
-    dot(v) {
-        return this.x * v.x + this.y * v.y + this.z * v.z;
-    }
-    cross(v) {
-        return new Vector3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x);
-    }
-    length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-    }
-    normalize() {
-        const len = this.length();
-        return len > 0 ? this.scale(1 / len) : new Vector3();
-    }
-    distance(v) {
-        const dx = this.x - v.x;
-        const dy = this.y - v.y;
-        const dz = this.z - v.z;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-    inFrontXY(angle, distance, z) {
-        const dx = Math.cos(angle) * distance;
-        const dy = Math.sin(angle) * distance;
-        const newX = this.x + dx;
-        const newY = this.y + dy;
-        return new Vector3(newX, newY, z != undefined ? z : this.z);
-    }
-}
-
-const CONFIG = {
-    entity: {
-        invalidId: -1,
-    },
-    player: {
-        team: 0,
-        color: "FFFFFF",
-        skin: 0,
-        cash: 0,
-        spawn: {
-            position: new Vector3(),
-            rotation: 0,
-            world: 0,
-            interior: 0,
-        },
-    },
-    vehicle: {
-        interior: 0,
-        plate: "",
-        primaryColor: -1,
-        secondaryColor: -1,
-        respawnDelay: -1,
-        siren: false,
-        params: {
-            engine: "off",
-            lights: "off",
-            alarm: "off",
-            doors: "unlocked",
-            bonnet: "closed",
-            boot: "closed",
-            objective: "off",
-        },
-    },
-    message: {
-        color: "FFFFFF",
-    },
-    chatBubble: {
-        color: "FFFFFF",
-        distance: 12,
-        expire: 5000,
-    },
-    textLabel: {
-        color: "FFFFFF",
-        distance: 10,
-        world: 0,
-        testLos: true,
-    },
-    playerAttachedObjects: {
-        limit: 10,
-    },
-};
-
 exports.WeaponsEnum = void 0;
 (function (WeaponsEnum) {
     WeaponsEnum[WeaponsEnum["Fist"] = 0] = "Fist";
@@ -367,6 +272,49 @@ exports.HitTypesEnum = void 0;
     HitTypesEnum[HitTypesEnum["Object"] = 3] = "Object";
     HitTypesEnum[HitTypesEnum["PlayerObject"] = 4] = "PlayerObject";
 })(exports.HitTypesEnum || (exports.HitTypesEnum = {}));
+
+class Vector3 {
+    constructor(x = 0, y = 0, z = 0) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    add(v) {
+        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
+    }
+    subtract(v) {
+        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
+    }
+    scale(scalar) {
+        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
+    }
+    dot(v) {
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
+    cross(v) {
+        return new Vector3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x);
+    }
+    length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+    normalize() {
+        const len = this.length();
+        return len > 0 ? this.scale(1 / len) : new Vector3();
+    }
+    distance(v) {
+        const dx = this.x - v.x;
+        const dy = this.y - v.y;
+        const dz = this.z - v.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+    inFrontXY(angle, distance, z) {
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        const newX = this.x + dx;
+        const newY = this.y + dy;
+        return new Vector3(newX, newY, z != undefined ? z : this.z);
+    }
+}
 
 class SampNatives {
     static hidePlayerDialog(playerId) {
@@ -789,6 +737,58 @@ SampNatives.setPlayerChatBubble = (playerId, text, color, drawdistance, expireti
     return samp.callNative("SetPlayerChatBubble", "isifi", playerId, text, parseInt(color + "FF", 16), drawdistance, expiretime) === 1;
 };
 
+const CONFIG = {
+    entity: {
+        invalidId: -1,
+    },
+    player: {
+        team: 0,
+        color: "FFFFFF",
+        skin: 0,
+        cash: 0,
+        spawn: {
+            position: new Vector3(),
+            rotation: 0,
+            world: 0,
+            interior: 0,
+        },
+    },
+    vehicle: {
+        interior: 0,
+        plate: "",
+        primaryColor: -1,
+        secondaryColor: -1,
+        respawnDelay: -1,
+        siren: false,
+        params: {
+            engine: "off",
+            lights: "off",
+            alarm: "off",
+            doors: "unlocked",
+            bonnet: "closed",
+            boot: "closed",
+            objective: "off",
+        },
+    },
+    message: {
+        color: "FFFFFF",
+    },
+    chatBubble: {
+        color: "FFFFFF",
+        distance: 12,
+        expire: 5000,
+    },
+    textLabel: {
+        color: "FFFFFF",
+        distance: 10,
+        world: 0,
+        testLos: true,
+    },
+    playerAttachedObjects: {
+        limit: 10,
+    },
+};
+
 class PlayerAnimations {
     constructor(player) {
         this.player = player;
@@ -859,7 +859,7 @@ class PlayerDialogShow {
         return PlayerDialogFactory.new(this.player);
     }
     async input(caption, info, primaryButton, secondaryButton = "") {
-        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.MessageBox, caption, info, primaryButton, secondaryButton);
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.Input, caption, info, primaryButton, secondaryButton);
         return PlayerDialogFactory.new(this.player);
     }
     async password(caption, info, primaryButton, secondaryButton = "") {
@@ -1470,6 +1470,7 @@ PlayerMpFactory.pool = new Map();
 // So I'm fixing it by triggering "playerConnect" with a little bit of delay
 const playerTimeoutIds = new Map();
 samp.on("OnPlayerConnect", (playerId) => {
+    SampNatives.togglePlayerSpectating(playerId, true);
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId);
         const player = PlayerMpFactory.new(playerId);

@@ -109,7 +109,7 @@ class PlayerDialogShow {
         SampNatives.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
-            DialogStylesEnum.MessageBox,
+            DialogStylesEnum.Input,
             caption,
             info,
             primaryButton,

@@ -1,4 +1,5 @@
 import { eventsMp } from "../../../singletons/events"
+import { SampNatives } from "../../../wrapper"
 import { PlayerMpFactory } from "../factory"
 
 // TODO: find the actual issue and fix it
@@ -7,6 +8,8 @@ import { PlayerMpFactory } from "../factory"
 const playerTimeoutIds = new Map<number, NodeJS.Timeout>()
 
 samp.on("OnPlayerConnect", (playerId) => {
+    SampNatives.togglePlayerSpectating(playerId, true)
+
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId)
 
