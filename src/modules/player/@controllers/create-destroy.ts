@@ -8,7 +8,7 @@ import { PlayerMpFactory } from "../factory"
 const playerTimeoutIds = new Map<number, NodeJS.Timeout>()
 
 samp.on("OnPlayerConnect", (playerId) => {
-    SampNatives.togglePlayerSpectating(playerId, true)
+    SampNatives.togglePlayerSpectating(playerId, true) // TODO: remove this when the issue is fixed
 
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId)
