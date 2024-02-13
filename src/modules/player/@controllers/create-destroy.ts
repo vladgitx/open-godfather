@@ -1,5 +1,5 @@
 import { eventsMp } from "../../../singletons/events"
-import { SampNatives } from "../../../wrapper"
+import { SampEvents, SampNatives } from "../../../wrapper"
 import { PlayerMpFactory } from "../factory"
 
 // TODO: find the actual issue and fix it
@@ -7,7 +7,7 @@ import { PlayerMpFactory } from "../factory"
 // So I'm fixing it by triggering "playerConnect" with a little bit of delay
 const playerTimeoutIds = new Map<number, NodeJS.Timeout>()
 
-samp.on("OnPlayerConnect", (playerId) => {
+SampEvents.onPlayerConnect((playerId) => {
     SampNatives.togglePlayerSpectating(playerId, true) // TODO: remove this when the issue is fixed
 
     const timeoutId = setTimeout(() => {
@@ -23,7 +23,7 @@ samp.on("OnPlayerConnect", (playerId) => {
     playerTimeoutIds.set(playerId, timeoutId)
 })
 
-samp.on("OnPlayerDisconnect", (playerId, reason) => {
+SampEvents.onPlayerDisconnect((playerId, reason) => {
     clearTimeout(playerTimeoutIds.get(playerId))
     playerTimeoutIds.delete(playerId)
 

@@ -52,14 +52,6 @@ class EventBus extends stream.EventEmitter {
 
 const eventsMp = new EventBus();
 
-samp.on("OnGameModeInit", () => {
-    eventsMp.emit("init");
-});
-
-samp.on("OnGameModeExit", () => {
-    eventsMp.emit("exit");
-});
-
 exports.WeaponsEnum = void 0;
 (function (WeaponsEnum) {
     WeaponsEnum[WeaponsEnum["Fist"] = 0] = "Fist";
@@ -736,6 +728,62 @@ SampNatives.getPlayerDistanceFromPoint = (playerId, x, y, z) => {
 SampNatives.setPlayerChatBubble = (playerId, text, color, drawdistance, expiretime) => {
     return samp.callNative("SetPlayerChatBubble", "isifi", playerId, text, parseInt(color + "FF", 16), drawdistance, expiretime) === 1;
 };
+
+class SampEvents {
+    static onPlayerConnect(callback) {
+        samp.on("OnPlayerConnect", callback);
+    }
+    static onPlayerDisconnect(callback) {
+        samp.on("OnPlayerDisconnect", callback);
+    }
+    static onPlayerSpawn(callback) {
+        samp.on("OnPlayerSpawn", callback);
+    }
+    static onPlayerDeath(callback) {
+        samp.on("OnPlayerDeath", callback);
+    }
+    static onPlayerText(callback) {
+        samp.on("OnPlayerText", callback);
+    }
+    static onPlayerCommandText(callback) {
+        samp.on("OnPlayerCommandText", callback);
+    }
+    static onPlayerRequestClass(callback) {
+        samp.on("OnPlayerRequestClass", callback);
+    }
+    static onPlayerEnterVehicle(callback) {
+        samp.on("OnPlayerEnterVehicle", callback);
+    }
+    static onPlayerExitVehicle(callback) {
+        samp.on("OnPlayerExitVehicle", callback);
+    }
+    static onPlayerStateChange(callback) {
+        samp.on("OnPlayerStateChange", callback);
+    }
+    static onPlayerTakeDamage(callback) {
+        samp.on("OnPlayerTakeDamage", callback);
+    }
+    static onPlayerWeaponShot(callback) {
+        samp.on("OnPlayerWeaponShot", callback);
+    }
+    static onDialogResponse(callback) {
+        samp.on("OnDialogResponse", callback);
+    }
+    static onGameModeExit(callback) {
+        samp.on("OnGameModeExit", callback);
+    }
+    static onGameModeInit(callback) {
+        samp.on("OnGameModeInit", callback);
+    }
+}
+
+SampEvents.onGameModeInit(() => {
+    eventsMp.emit("init");
+});
+
+SampEvents.onGameModeExit(() => {
+    eventsMp.emit("exit");
+});
 
 const CONFIG = {
     entity: {
@@ -1481,7 +1529,7 @@ PlayerMpFactory.pool = new Map();
 // Weird issue: if you kick a player in the "playerConnect" event, they get a crash/timeout
 // So I'm fixing it by triggering "playerConnect" with a little bit of delay
 const playerTimeoutIds = new Map();
-samp.on("OnPlayerConnect", (playerId) => {
+SampEvents.onPlayerConnect((playerId) => {
     SampNatives.togglePlayerSpectating(playerId, true); // TODO: remove this when the issue is fixed
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId);
@@ -1492,7 +1540,7 @@ samp.on("OnPlayerConnect", (playerId) => {
     }, 1000);
     playerTimeoutIds.set(playerId, timeoutId);
 });
-samp.on("OnPlayerDisconnect", (playerId, reason) => {
+SampEvents.onPlayerDisconnect((playerId, reason) => {
     clearTimeout(playerTimeoutIds.get(playerId));
     playerTimeoutIds.delete(playerId);
     const player = PlayerMpFactory.at(playerId);
@@ -1532,7 +1580,7 @@ class PlayersMp {
 
 const playersMp = new PlayersMp();
 
-samp.on("OnPlayerSpawn", (playerId) => {
+SampEvents.onPlayerSpawn((playerId) => {
     const player = playersMp.at(playerId);
     if (player === undefined) {
         return;
@@ -1544,52 +1592,52 @@ samp.on("OnPlayerSpawn", (playerId) => {
     }
     eventsMp.emit("playerSpawn", player);
 });
-samp.on("OnPlayerRequestClass", (playerId, classId) => {
+SampEvents.onPlayerRequestClass((playerId, classId) => {
     const player = playersMp.at(playerId);
     if (player !== undefined) {
         player.spawn();
     }
 });
-samp.on("OnPlayerText", (playerId, text) => {
+SampEvents.onPlayerText((playerId, text) => {
     const player = playersMp.at(playerId);
     if (player !== undefined) {
         eventsMp.emit("playerText", player, text);
     }
     return 0;
 });
-samp.on("OnPlayerStateChange", (playerId, newState, oldState) => {
+SampEvents.onPlayerStateChange((playerId, newState, oldState) => {
     const player = playersMp.at(playerId);
     if (player !== undefined) {
         eventsMp.emit("playerStateChange", player, newState, oldState);
     }
 });
-samp.on("OnPlayerEnterVehicle", (playerId, vehicleId, asPassenger) => {
+SampEvents.onPlayerEnterVehicle((playerId, vehicleId, asPassenger) => {
     const player = playersMp.at(playerId);
     const vehicle = vehiclesMp.at(vehicleId);
     if (player !== undefined && vehicle !== undefined) {
         eventsMp.emit("playerStartEnterVehicle", player, vehicle, asPassenger);
     }
 });
-samp.on("OnPlayerExitVehicle", (playerId, vehicleId) => {
+SampEvents.onPlayerExitVehicle((playerId, vehicleId) => {
     const player = playersMp.at(playerId);
     const vehicle = vehiclesMp.at(vehicleId);
     if (player !== undefined && vehicle !== undefined) {
         eventsMp.emit("playerStartExitVehicle", player, vehicle);
     }
 });
-samp.on("OnPlayerDeath", (playerId, killerId, weapon) => {
+SampEvents.onPlayerDeath((playerId, killerId, weapon) => {
     const player = playersMp.at(playerId);
     if (player) {
         eventsMp.emit("playerDeath", player, playersMp.at(killerId), weapon);
     }
 });
-samp.on("OnPlayerTakeDamage", (playerId, issuerId, amount, weapon, bodyPart) => {
+SampEvents.onPlayerTakeDamage((playerId, issuerId, amount, weapon, bodyPart) => {
     const player = playersMp.at(playerId);
     if (player) {
         eventsMp.emit("playerDamage", player, playersMp.at(issuerId), amount, weapon, bodyPart);
     }
 });
-samp.on("OnPlayerWeaponShot", (playerId, weapon, hitType, hitId, fX, fY, fZ) => {
+SampEvents.onPlayerWeaponShot((playerId, weapon, hitType, hitId, fX, fY, fZ) => {
     const player = playersMp.at(playerId);
     if (player) {
         const hitEntity = hitType === exports.HitTypesEnum.Player ? playersMp.at(hitId) : hitType === exports.HitTypesEnum.Vehicle ? vehiclesMp.at(hitId) : undefined;
@@ -1598,10 +1646,10 @@ samp.on("OnPlayerWeaponShot", (playerId, weapon, hitType, hitId, fX, fY, fZ) => 
     return 1;
 });
 
-samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, inputText) => {
+SampEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam, inputText) => {
     const player = playersMp.at(playerId);
     if (player) {
-        PlayerDialogFactory.destroy(player, { button: responseParam === 1 ? "main" : "second", item: listItemParam, input: inputText });
+        PlayerDialogFactory.destroy(player, { button: responseParam ? "main" : "second", item: listItemParam, input: inputText });
     }
 });
 eventsMp.on("playerDisconnect", (player) => {
@@ -1734,7 +1782,7 @@ class CommandMpFactory {
 // command/alias -> command
 CommandMpFactory.pool = new Map();
 
-samp.on("OnPlayerCommandText", (playerId, cmdText) => {
+SampEvents.onPlayerCommandText((playerId, cmdText) => {
     const player = playersMp.at(playerId);
     if (!player) {
         return 1;
@@ -1844,6 +1892,8 @@ class ServerMp {
     }
 }
 
+const serverMp = new ServerMp();
+
 class CommandsMp {
     constructor() {
         this.add = CommandMpFactory.new;
@@ -1852,8 +1902,6 @@ class CommandsMp {
         return CommandMpFactory.all;
     }
 }
-
-const serverMp = new ServerMp();
 
 const commandsMp = new CommandsMp();
 
@@ -1867,10 +1915,3 @@ exports.og = void 0;
     og.textLabels = textLabelsMp;
     og.Vector3 = Vector3;
 })(exports.og || (exports.og = {}));
-
-exports.CommandMp = CommandMp;
-exports.PlayerMp = PlayerMp;
-exports.ServerMp = ServerMp;
-exports.TextLabelMp = TextLabelMp;
-exports.Vector3 = Vector3;
-exports.VehicleMp = VehicleMp;

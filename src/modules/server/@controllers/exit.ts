@@ -1,5 +1,6 @@
 import { eventsMp } from "../../../singletons/events"
+import { SampEvents } from "../../../wrapper"
 
-samp.on("OnGameModeExit", () => {
+SampEvents.onGameModeExit(() => {
     eventsMp.emit("exit")
 })

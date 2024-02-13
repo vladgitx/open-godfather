@@ -3,12 +3,12 @@ import "./modules/player/@controllers"
 import "./modules/vehicle/@controllers"
 import "./modules/commands/@controllers"
 
-export { ServerMp } from "./modules/server"
-export { PlayerMp } from "./modules/player"
-export { VehicleMp } from "./modules/vehicle"
-export { Vector3 } from "./modules/vector3"
-export { CommandMp, TCommandCallback } from "./modules/commands"
-export { TextLabelMp } from "./modules/text-label"
+export { type ServerMp } from "./modules/server"
+export { type PlayerMp } from "./modules/player"
+export { type VehicleMp } from "./modules/vehicle"
+export { type Vector3 } from "./modules/vector3"
+export { type CommandMp, type TCommandCallback } from "./modules/commands"
+export { type TextLabelMp } from "./modules/text-label"
 
 export * from "./shared/enums"
 

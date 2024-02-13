@@ -1,5 +1,6 @@
 import { eventsMp } from "../../../singletons/events"
+import { SampEvents } from "../../../wrapper"
 
-samp.on("OnGameModeInit", () => {
+SampEvents.onGameModeInit(() => {
     eventsMp.emit("init")
 })

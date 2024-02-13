@@ -89,7 +89,12 @@ class PlayerDialogShow {
         return PlayerDialogFactory.new(this.player)
     }
 
-    async messageBox(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<TMessageDialogResponse | undefined> {
+    async messageBox(
+        caption: string,
+        info: string,
+        primaryButton: string,
+        secondaryButton = "",
+    ): Promise<TMessageDialogResponse | undefined> {
         SampNatives.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),

@@ -1,4 +1,4 @@
-import { SampNatives } from "../../../wrapper"
+import { SampEvents, SampNatives } from "../../../wrapper"
 import { CONFIG } from "../../../shared/config"
 import { BodyPartsEnum, HitTypesEnum, PlayerStatesEnum, WeaponsEnum } from "../../../shared/enums"
 import { playersMp } from "../../../singletons/players"
@@ -6,7 +6,7 @@ import { eventsMp } from "../../../singletons/events"
 import { vehiclesMp } from "../../../singletons/vehicles"
 import { Vector3 } from "../../vector3"
 
-samp.on("OnPlayerSpawn", (playerId: number) => {
+SampEvents.onPlayerSpawn((playerId: number) => {
     const player = playersMp.at(playerId)
     if (player === undefined) {
         return
@@ -22,14 +22,14 @@ samp.on("OnPlayerSpawn", (playerId: number) => {
     eventsMp.emit("playerSpawn", player)
 })
 
-samp.on("OnPlayerRequestClass", (playerId: number, classId: number) => {
+SampEvents.onPlayerRequestClass((playerId: number, classId: number) => {
     const player = playersMp.at(playerId)
     if (player !== undefined) {
         player.spawn()
     }
 })
 
-samp.on("OnPlayerText", (playerId: number, text: string) => {
+SampEvents.onPlayerText((playerId: number, text: string) => {
     const player = playersMp.at(playerId)
     if (player !== undefined) {
         eventsMp.emit("playerText", player, text)
@@ -38,14 +38,14 @@ samp.on("OnPlayerText", (playerId: number, text: string) => {
     return 0
 })
 
-samp.on("OnPlayerStateChange", (playerId: number, newState: PlayerStatesEnum, oldState: PlayerStatesEnum) => {
+SampEvents.onPlayerStateChange((playerId: number, newState: PlayerStatesEnum, oldState: PlayerStatesEnum) => {
     const player = playersMp.at(playerId)
     if (player !== undefined) {
         eventsMp.emit("playerStateChange", player, newState, oldState)
     }
 })
 
-samp.on("OnPlayerEnterVehicle", (playerId: number, vehicleId: number, asPassenger: boolean) => {
+SampEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenger: boolean) => {
     const player = playersMp.at(playerId)
     const vehicle = vehiclesMp.at(vehicleId)
 
@@ -54,7 +54,7 @@ samp.on("OnPlayerEnterVehicle", (playerId: number, vehicleId: number, asPassenge
     }
 })
 
-samp.on("OnPlayerExitVehicle", (playerId: number, vehicleId: number) => {
+SampEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
     const player = playersMp.at(playerId)
     const vehicle = vehiclesMp.at(vehicleId)
 
@@ -63,22 +63,21 @@ samp.on("OnPlayerExitVehicle", (playerId: number, vehicleId: number) => {
     }
 })
 
-samp.on("OnPlayerDeath", (playerId: number, killerId: number, weapon: WeaponsEnum) => {
+SampEvents.onPlayerDeath((playerId: number, killerId: number, weapon: WeaponsEnum) => {
     const player = playersMp.at(playerId)
     if (player) {
         eventsMp.emit("playerDeath", player, playersMp.at(killerId), weapon)
     }
 })
 
-samp.on("OnPlayerTakeDamage", (playerId: number, issuerId: number, amount: number, weapon: WeaponsEnum, bodyPart: BodyPartsEnum) => {
+SampEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: number, weapon: WeaponsEnum, bodyPart: BodyPartsEnum) => {
     const player = playersMp.at(playerId)
     if (player) {
         eventsMp.emit("playerDamage", player, playersMp.at(issuerId), amount, weapon, bodyPart)
     }
 })
 
-samp.on(
-    "OnPlayerWeaponShot",
+SampEvents.onPlayerWeaponShot(
     (playerId: number, weapon: WeaponsEnum, hitType: HitTypesEnum, hitId: number, fX: number, fY: number, fZ: number) => {
         const player = playersMp.at(playerId)
         if (player) {

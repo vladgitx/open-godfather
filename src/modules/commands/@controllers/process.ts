@@ -1,8 +1,9 @@
 import { eventsMp } from "../../../singletons/events"
 import { playersMp } from "../../../singletons/players"
+import { SampEvents } from "../../../wrapper"
 import { CommandMpFactory } from "../factory"
 
-samp.on("OnPlayerCommandText", (playerId: number, cmdText: string) => {
+SampEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
     const player = playersMp.at(playerId)
     if (!player) {
         return 1
