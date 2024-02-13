@@ -39,4 +39,7 @@ export declare const CONFIG: {
         world: number;
         testLos: boolean;
     };
+    playerAttachedObjects: {
+        limit: number;
+    };
 };

@@ -25,6 +25,10 @@ export declare class SampNatives {
     static enableStuntBonusForAll: (enable: boolean) => void;
     static sendRconCommand: (command: string) => void;
     static changeVehicleColor: (vehicleId: number, color1: number, color2: number) => boolean;
+    static setPlayerAttachedObject: (playerId: number, index: number, modelid: number, bone: number, fOffsetX: number, fOffsetY: number, fOffsetZ: number, fRotX: number, fRotY: number, fRotZ: number, fScaleX: number, fScaleY: number, fScaleZ: number, materialcolor1: string, materialcolor2: string) => boolean;
+    static removePlayerAttachedObject: (playerId: number, index: number) => boolean;
+    static isPlayerAttachedObjectSlotUsed: (playerId: number, index: number) => boolean;
+    static editAttachedObject: (playerId: number, index: number) => boolean;
     static destroyVehicle: (vehicleId: number) => boolean;
     static createVehicle: (modelId: number, position: Vector3, rotation: number, primaryColor?: number, secondaryColor?: number, respawnDelay?: number, addSiren?: boolean) => number | undefined;
     static showPlayerDialog: (playerId: number, dialogId: number, styleId: DialogStylesEnum, caption: string, info: string, button1: string, button2: string) => boolean;

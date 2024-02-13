@@ -150,6 +150,9 @@ const CONFIG = {
         world: 0,
         testLos: true,
     },
+    playerAttachedObjects: {
+        limit: 10,
+    },
 };
 
 exports.WeaponsEnum = void 0;
@@ -236,6 +239,27 @@ exports.PlayerStatesEnum = void 0;
     PlayerStatesEnum[PlayerStatesEnum["Spawned"] = 8] = "Spawned";
     PlayerStatesEnum[PlayerStatesEnum["Spectating"] = 9] = "Spectating";
 })(exports.PlayerStatesEnum || (exports.PlayerStatesEnum = {}));
+exports.PlayerBonesEnum = void 0;
+(function (PlayerBonesEnum) {
+    PlayerBonesEnum[PlayerBonesEnum["Spine"] = 1] = "Spine";
+    PlayerBonesEnum[PlayerBonesEnum["Head"] = 2] = "Head";
+    PlayerBonesEnum[PlayerBonesEnum["LeftUpperArm"] = 3] = "LeftUpperArm";
+    PlayerBonesEnum[PlayerBonesEnum["RightUpperArm"] = 4] = "RightUpperArm";
+    PlayerBonesEnum[PlayerBonesEnum["LeftHand"] = 5] = "LeftHand";
+    PlayerBonesEnum[PlayerBonesEnum["RightHand"] = 6] = "RightHand";
+    PlayerBonesEnum[PlayerBonesEnum["LeftThigh"] = 7] = "LeftThigh";
+    PlayerBonesEnum[PlayerBonesEnum["RightThigh"] = 8] = "RightThigh";
+    PlayerBonesEnum[PlayerBonesEnum["LeftFoot"] = 9] = "LeftFoot";
+    PlayerBonesEnum[PlayerBonesEnum["RightFoot"] = 10] = "RightFoot";
+    PlayerBonesEnum[PlayerBonesEnum["RightCalf"] = 11] = "RightCalf";
+    PlayerBonesEnum[PlayerBonesEnum["LeftCalf"] = 12] = "LeftCalf";
+    PlayerBonesEnum[PlayerBonesEnum["LeftForearm"] = 13] = "LeftForearm";
+    PlayerBonesEnum[PlayerBonesEnum["RightForearm"] = 14] = "RightForearm";
+    PlayerBonesEnum[PlayerBonesEnum["LeftClavicle"] = 15] = "LeftClavicle";
+    PlayerBonesEnum[PlayerBonesEnum["RightClavicle"] = 16] = "RightClavicle";
+    PlayerBonesEnum[PlayerBonesEnum["Neck"] = 17] = "Neck";
+    PlayerBonesEnum[PlayerBonesEnum["Jaw"] = 18] = "Jaw";
+})(exports.PlayerBonesEnum || (exports.PlayerBonesEnum = {}));
 exports.KickReasonsEnum = void 0;
 (function (KickReasonsEnum) {
     KickReasonsEnum[KickReasonsEnum["Crash"] = 0] = "Crash";
@@ -555,6 +579,18 @@ SampNatives.sendRconCommand = (command) => {
 };
 SampNatives.changeVehicleColor = (vehicleId, color1, color2) => {
     return samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2) === 1;
+};
+SampNatives.setPlayerAttachedObject = (playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, materialcolor1, materialcolor2) => {
+    return (samp.callNative("SetPlayerAttachedObject", "iiiifffffffffii", playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, parseInt(materialcolor1 + "FF", 16), parseInt(materialcolor2 + "FF", 16)) === 1);
+};
+SampNatives.removePlayerAttachedObject = (playerId, index) => {
+    return samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index) === 1;
+};
+SampNatives.isPlayerAttachedObjectSlotUsed = (playerId, index) => {
+    return samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index) === 1;
+};
+SampNatives.editAttachedObject = (playerId, index) => {
+    return samp.callNative("EditAttachedObject", "ii", playerId, index) === 1;
 };
 SampNatives.destroyVehicle = (vehicleId) => {
     return samp.callNative("DestroyVehicle", "i", vehicleId) === 1;
@@ -1165,6 +1201,50 @@ class PlayerTextLabels {
     }
 }
 
+class PlayerAttachedObject extends Entity {
+    constructor(slot, model, bone, offset, rotation, scale, firstMaterialColor, secondMaterialColor) {
+        super(slot);
+        this.model = model;
+        this.bone = bone;
+        this.offset = offset;
+        this.rotation = rotation;
+        this.scale = scale;
+        this.firstMaterialColor = firstMaterialColor;
+        this.secondMaterialColor = secondMaterialColor;
+    }
+}
+
+class PlayerAttachedObjects {
+    constructor(player) {
+        this.player = player;
+        this.attachedObjects = new Array(CONFIG.playerAttachedObjects.limit).fill(undefined);
+    }
+    new(model, bone, offset, rotation, scale, firstMaterialColor, secondMaterialColor) {
+        const slot = this.attachedObjects.indexOf(undefined);
+        if (slot === -1) {
+            return undefined;
+        }
+        const success = SampNatives.setPlayerAttachedObject(this.player.id, slot, model, bone, offset.x, offset.y, offset.z, rotation.x, rotation.y, rotation.z, scale.x, scale.y, scale.z, firstMaterialColor, secondMaterialColor);
+        if (success) {
+            this.attachedObjects[slot] = new PlayerAttachedObject(slot, model, bone, offset, rotation, scale, firstMaterialColor, secondMaterialColor);
+            return this.attachedObjects[slot];
+        }
+        return undefined;
+    }
+    destroy(object) {
+        SampNatives.removePlayerAttachedObject(this.player.id, object.id);
+        this.attachedObjects[object.id] = undefined;
+        object.exists = false;
+    }
+    destroyAll() {
+        for (const object of this.attachedObjects) {
+            if (object) {
+                this.destroy(object);
+            }
+        }
+    }
+}
+
 class PlayerMp extends Entity {
     constructor(id) {
         super(id);
@@ -1172,6 +1252,7 @@ class PlayerMp extends Entity {
         this.weapons = new PlayerWeapons(this);
         this.animations = new PlayerAnimations(this);
         this.textLabels = new PlayerTextLabels(this);
+        this.attachedObjects = new PlayerAttachedObjects(this);
         this._name = SampNatives.getPlayerName(this.id);
         this._color = CONFIG.player.color;
         this._cash = CONFIG.player.cash;

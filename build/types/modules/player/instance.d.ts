@@ -6,11 +6,13 @@ import { PlayerDialog } from "./dialog";
 import { PlayerWeapons } from "./weapons";
 import { Entity } from "../entity";
 import { PlayerTextLabels } from "./text-label";
+import { PlayerAttachedObjects } from "./attached-objects";
 export declare class PlayerMp extends Entity {
     readonly dialog: PlayerDialog;
     readonly weapons: PlayerWeapons;
     readonly animations: PlayerAnimations;
     readonly textLabels: PlayerTextLabels;
+    readonly attachedObjects: PlayerAttachedObjects;
     private _name;
     private _color;
     private _cash;
