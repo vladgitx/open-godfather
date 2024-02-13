@@ -838,6 +838,10 @@ class PlayerDialogShow {
     constructor(player) {
         this.player = player;
     }
+    async any(style, caption, info, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), style, caption, info, primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
+    }
     async list(caption, items, primaryButton, secondaryButton = "") {
         SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.List, caption, items.join("\n"), primaryButton, secondaryButton);
         return PlayerDialogFactory.new(this.player);

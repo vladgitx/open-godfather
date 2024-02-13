@@ -1,3 +1,4 @@
+import { DialogStylesEnum } from "../../../shared/enums";
 import { PlayerMp } from "../instance";
 import { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response";
 export declare class PlayerDialog {
@@ -9,6 +10,7 @@ export declare class PlayerDialog {
 declare class PlayerDialogShow {
     private player;
     constructor(player: PlayerMp);
+    any(style: DialogStylesEnum, caption: string, info: string, primaryButton: string, secondaryButton?: string): Promise<DialogResponse>;
     list(caption: string, items: string[], primaryButton: string, secondaryButton?: string): Promise<ListDialogResponse | undefined>;
     tabList(caption: string, items: string[][], primaryButton: string, secondaryButton?: string): Promise<ListDialogResponse | undefined>;
     tabListWithHeaders(caption: string, headers: string[], items: string[][], primaryButton: string, secondaryButton?: string): Promise<ListDialogResponse | undefined>;

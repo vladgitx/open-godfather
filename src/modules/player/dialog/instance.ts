@@ -18,6 +18,26 @@ export class PlayerDialog {
 class PlayerDialogShow {
     constructor(private player: PlayerMp) {}
 
+    async any(
+        style: DialogStylesEnum,
+        caption: string,
+        info: string,
+        primaryButton: string,
+        secondaryButton = "",
+    ): Promise<DialogResponse> {
+        SampNatives.showPlayerDialog(
+            this.player.id,
+            Math.floor(Math.random() * 32767),
+            style,
+            caption,
+            info,
+            primaryButton,
+            secondaryButton,
+        )
+
+        return PlayerDialogFactory.new(this.player)
+    }
+
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse | undefined> {
         SampNatives.showPlayerDialog(
             this.player.id,
