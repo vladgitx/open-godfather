@@ -1,3 +1,3 @@
-import { VehiclesMp } from "../modules/vehicle"
+import { VehicleMpHandler } from "../modules/vehicle"
 
-export const vehiclesMp = new VehiclesMp()
+export const vehiclesMp = new VehicleMpHandler()

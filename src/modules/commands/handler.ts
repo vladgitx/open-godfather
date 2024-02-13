@@ -1,6 +1,6 @@
 import { CommandMpFactory } from "./factory"
 
-export class CommandsMp {
+export class CommandMpHandler {
     constructor() {}
 
     add = CommandMpFactory.new

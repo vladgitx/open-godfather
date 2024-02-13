@@ -1,5 +1,5 @@
 import { Vector3 } from "../modules/vector3"
-import { TVehicleParamsType } from "../modules/vehicle/params"
+import { TVehicleParamsType } from "../modules/vehicle"
 
 export const CONFIG = {
     entity: {
@@ -11,7 +11,7 @@ export const CONFIG = {
         skin: 0,
         cash: 0,
         spawn: {
-            position: new Vector3(),
+            position: new Vector3(0, 0, 3),
             rotation: 0,
             world: 0,
             interior: 0,

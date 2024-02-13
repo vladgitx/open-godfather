@@ -1,4 +1,4 @@
-import { VehicleMp } from "./instance"
+import { VehicleMp } from "./entity"
 
 export class VehicleMpFactory {
     private static pool = new Map<number, VehicleMp>()

@@ -4,7 +4,7 @@ import { PlayerMpFactory } from "./factory"
 import { Vector3 } from "../vector3"
 import { PlayerMp } from "."
 
-export class PlayersMp {
+export class PlayerMpHandler {
     at(id: number) {
         return PlayerMpFactory.at(id)
     }

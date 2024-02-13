@@ -1,3 +1,3 @@
-import { PlayersMp } from "../modules/player"
+import { PlayerMpHandler } from "../modules/player"
 
-export const playersMp = new PlayersMp()
+export const playersMp = new PlayerMpHandler()

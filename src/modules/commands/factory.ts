@@ -2,7 +2,6 @@ import { TCommandCallback } from "./@types/callback"
 import { CommandMp } from "./instance"
 
 export class CommandMpFactory {
-    // command/alias -> command
     private static pool = new Map<string, CommandMp>()
 
     static new(name: string, aliases: string[], callback: TCommandCallback) {

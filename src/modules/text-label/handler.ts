@@ -4,7 +4,7 @@ import { Vector3 } from "../vector3"
 import { TextLabelMpFactory } from "./factory"
 import { TextLabelMp } from "./instance"
 
-export class TextLabelsMp {
+export class TextLabelMpHandler {
     constructor() {}
 
     new(

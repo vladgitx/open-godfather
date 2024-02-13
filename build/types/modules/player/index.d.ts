@@ -1,2 +1,3 @@
 export { PlayerMp } from "./instance";
-export { PlayersMp } from "./pool";
+export { PlayerMpHandler } from "./handler";
+export { TListDialogResponse, TMessageDialogResponse, TInputDialogResponse } from "./dialog";

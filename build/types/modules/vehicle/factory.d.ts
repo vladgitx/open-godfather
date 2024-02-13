@@ -1,4 +1,4 @@
-import { VehicleMp } from "./instance";
+import { VehicleMp } from "./entity";
 export declare class VehicleMpFactory {
     private static pool;
     static new(vehicleId: number, model: number, primaryColor: number, secondaryColor: number): VehicleMp | undefined;

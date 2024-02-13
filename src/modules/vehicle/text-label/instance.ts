@@ -1,7 +1,7 @@
 import { SampNatives } from "../../../wrapper"
 import { TextLabelMp } from "../../text-label"
 import { Vector3 } from "../../vector3"
-import { VehicleMp } from "../instance"
+import { VehicleMp } from "../entity"
 
 export class VehicleTextLabels {
     private labels = new Set<TextLabelMp>()

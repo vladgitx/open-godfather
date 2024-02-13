@@ -1,2 +1,3 @@
-export { VehicleMp } from "./instance";
-export { VehiclesMp } from "./pool";
+export { VehicleMp } from "./entity";
+export { VehicleMpHandler } from "./handler";
+export { TVehicleParamsType } from "./params";

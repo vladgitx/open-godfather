@@ -1,5 +1,5 @@
 import { EventEmitter } from "stream"
-import { TEventMap } from "./@types/events"
+import { TEventMap } from "./@internal/types"
 
 export class EventBus extends EventEmitter {
     emit<K extends keyof TEventMap>(event: K, ...args: TEventMap[K]): boolean {

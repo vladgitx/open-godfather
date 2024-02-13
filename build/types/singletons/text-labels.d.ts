@@ -1,2 +1,2 @@
-import { TextLabelsMp } from "../modules/text-label";
-export declare const textLabelsMp: TextLabelsMp;
+import { TextLabelMpHandler } from "../modules/text-label";
+export declare const textLabelsMp: TextLabelMpHandler;

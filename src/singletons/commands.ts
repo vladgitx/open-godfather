@@ -1,3 +1,3 @@
-import { CommandsMp } from "../modules/commands"
+import { CommandMpHandler } from "../modules/commands"
 
-export const commandsMp = new CommandsMp()
+export const commandsMp = new CommandMpHandler()

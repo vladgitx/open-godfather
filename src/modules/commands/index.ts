@@ -1,3 +1,3 @@
 export { CommandMp } from "./instance"
-export { CommandsMp } from "./pool"
+export { CommandMpHandler } from "./handler"
 export { TCommandCallback } from "./@types/callback"

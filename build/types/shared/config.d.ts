@@ -1,5 +1,5 @@
 import { Vector3 } from "../modules/vector3";
-import { TVehicleParamsType } from "../modules/vehicle/params";
+import { TVehicleParamsType } from "../modules/vehicle";
 export declare const CONFIG: {
     entity: {
         invalidId: number;

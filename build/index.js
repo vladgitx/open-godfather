@@ -795,7 +795,7 @@ const CONFIG = {
         skin: 0,
         cash: 0,
         spawn: {
-            position: new Vector3(),
+            position: new Vector3(0, 0, 3),
             rotation: 0,
             world: 0,
             interior: 0,
@@ -1194,7 +1194,7 @@ class VehicleMpFactory {
 }
 VehicleMpFactory.pool = new Map();
 
-class VehiclesMp {
+class VehicleMpHandler {
     new(model, position, rotation, primaryColor = CONFIG.vehicle.primaryColor, secondaryColor = CONFIG.vehicle.secondaryColor, respawnDelay = CONFIG.vehicle.respawnDelay, siren = CONFIG.vehicle.siren) {
         const vehicleId = SampNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren);
         if (vehicleId === undefined) {
@@ -1230,7 +1230,7 @@ class VehiclesMp {
     }
 }
 
-const vehiclesMp = new VehiclesMp();
+const vehiclesMp = new VehicleMpHandler();
 
 eventsMp.on("playerStateChange", (player, newState, oldState) => {
     if ((newState === exports.PlayerStatesEnum.Passenger || newState === exports.PlayerStatesEnum.Driver) &&
@@ -1550,7 +1550,7 @@ SampEvents.onPlayerDisconnect((playerId, reason) => {
     }
 });
 
-class PlayersMp {
+class PlayerMpHandler {
     at(id) {
         return PlayerMpFactory.at(id);
     }
@@ -1578,7 +1578,7 @@ class PlayersMp {
     }
 }
 
-const playersMp = new PlayersMp();
+const playersMp = new PlayerMpHandler();
 
 SampEvents.onPlayerSpawn((playerId) => {
     const player = playersMp.at(playerId);
@@ -1693,7 +1693,7 @@ class TextLabelMpFactory {
 }
 TextLabelMpFactory.pool = new Map();
 
-class TextLabelsMp {
+class TextLabelMpHandler {
     constructor() {
         this.at = TextLabelMpFactory.at;
     }
@@ -1710,7 +1710,7 @@ class TextLabelsMp {
     }
 }
 
-const textLabelsMp = new TextLabelsMp();
+const textLabelsMp = new TextLabelMpHandler();
 
 eventsMp.on("playerDisconnect", (player) => {
     for (const label of player.textLabels.all) {
@@ -1779,7 +1779,6 @@ class CommandMpFactory {
         return CommandMpFactory.pool.values();
     }
 }
-// command/alias -> command
 CommandMpFactory.pool = new Map();
 
 SampEvents.onPlayerCommandText((playerId, cmdText) => {
@@ -1894,7 +1893,7 @@ class ServerMp {
 
 const serverMp = new ServerMp();
 
-class CommandsMp {
+class CommandMpHandler {
     constructor() {
         this.add = CommandMpFactory.new;
     }
@@ -1903,7 +1902,7 @@ class CommandsMp {
     }
 }
 
-const commandsMp = new CommandsMp();
+const commandsMp = new CommandMpHandler();
 
 exports.og = void 0;
 (function (og) {

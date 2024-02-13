@@ -1,2 +1,2 @@
-import { PlayersMp } from "../modules/player";
-export declare const playersMp: PlayersMp;
+import { PlayerMpHandler } from "../modules/player";
+export declare const playersMp: PlayerMpHandler;

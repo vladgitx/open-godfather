@@ -1,6 +1,6 @@
 /// <reference types="@types/node" />
 import { EventEmitter } from "stream";
-import { TEventMap } from "./@types/events";
+import { TEventMap } from "./@internal/types";
 export declare class EventBus extends EventEmitter {
     emit<K extends keyof TEventMap>(event: K, ...args: TEventMap[K]): boolean;
     addListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this;

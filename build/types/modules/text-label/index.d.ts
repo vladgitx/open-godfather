@@ -1,2 +1,2 @@
 export { TextLabelMp } from "./instance";
-export { TextLabelsMp } from "./pool";
+export { TextLabelMpHandler } from "./handler";

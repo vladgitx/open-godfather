@@ -2,9 +2,9 @@ import { CONFIG } from "../../shared/config"
 import { SampNatives } from "../../wrapper"
 import { Vector3 } from "../vector3"
 import { VehicleMpFactory } from "./factory"
-import { VehicleMp } from "./instance"
+import { VehicleMp } from "./entity"
 
-export class VehiclesMp {
+export class VehicleMpHandler {
     new(
         model: number,
         position: Vector3,

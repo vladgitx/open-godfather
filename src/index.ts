@@ -7,7 +7,7 @@ export { type ServerMp } from "./modules/server"
 export { type PlayerMp } from "./modules/player"
 export { type VehicleMp } from "./modules/vehicle"
 export { type Vector3 } from "./modules/vector3"
-export { type CommandMp, type TCommandCallback } from "./modules/commands"
+export { type CommandMp, TCommandCallback } from "./modules/commands"
 export { type TextLabelMp } from "./modules/text-label"
 
 export * from "./shared/enums"
