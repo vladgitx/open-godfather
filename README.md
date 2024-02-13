@@ -16,7 +16,7 @@ The player is immediately placed into spectate mode when they connect, and all t
 import { og } from "open-godfather"
 
 og.events.on("playerConnect", async (player) => {
-    const result = await player.dialog.show.message("Hey", "Wanna spawn?", "Yes", "No")
+    const result = await player.dialog.show.messageBox("Hey", "Wanna spawn?", "Yes", "No")
 	
     if (result?.button === "main") {
         player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))

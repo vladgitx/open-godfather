@@ -1,2 +1,2 @@
 export { VehicleParams } from "./instance";
-export { VehicleParamsType } from "./@types/params";
+export { TVehicleParamsType } from "./@types/params";

@@ -1,11 +1,11 @@
-import { CommandCallback } from "./@types/callback"
+import { TCommandCallback } from "./@types/callback"
 import { CommandMp } from "./instance"
 
 export class CommandMpFactory {
     // command/alias -> command
     private static pool = new Map<string, CommandMp>()
 
-    static new(name: string, aliases: string[], callback: CommandCallback) {
+    static new(name: string, aliases: string[], callback: TCommandCallback) {
         if (aliases.includes(name)) {
             throw new Error(`Command ${name} cannot be an alias of itself`)
         }

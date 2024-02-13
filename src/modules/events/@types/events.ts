@@ -4,12 +4,12 @@ import { PlayerMp } from "../../player"
 import { Vector3 } from "../../vector3"
 import { VehicleMp } from "../../vehicle"
 
-type ServerEvents = {
+type TServerEvents = {
     init: []
     exit: []
 }
 
-type PlayerEvents = {
+type TPlayerEvents = {
     playerConnect: [PlayerMp]
     playerDisconnect: [PlayerMp, KickReasonsEnum]
     playerCommand: [PlayerMp, string, CommandMp | undefined, () => void]
@@ -26,9 +26,9 @@ type PlayerEvents = {
     playerShoot: [PlayerMp, WeaponsEnum, PlayerMp | VehicleMp | undefined, Vector3]
 }
 
-type VehicleEvents = {
+type TVehicleEvents = {
     vehicleCreate: [VehicleMp]
     vehicleDestroy: [VehicleMp]
 }
 
-export type EventMap = ServerEvents & PlayerEvents & VehicleEvents
+export type TEventMap = TServerEvents & TPlayerEvents & TVehicleEvents

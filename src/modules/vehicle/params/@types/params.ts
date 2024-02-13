@@ -1,4 +1,4 @@
-export type VehicleParamsType = {
+export type TVehicleParamsType = {
     engine: "on" | "off"
     lights: "on" | "off"
     alarm: "on" | "off"

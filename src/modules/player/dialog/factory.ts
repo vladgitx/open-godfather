@@ -1,10 +1,10 @@
 import { PlayerMp } from "../instance"
-import { DialogResponse } from "./@types/response"
+import { TDialogResponse } from "./@internal/types"
 
 export class PlayerDialogFactory {
-    static promises = new Map<number, (result: DialogResponse) => void>()
+    static promises = new Map<number, (result: TDialogResponse) => void>()
 
-    static async new(player: PlayerMp): Promise<DialogResponse> {
+    static async new(player: PlayerMp): Promise<TDialogResponse> {
         const existing = this.promises.get(player.id)
         if (existing) {
             existing(undefined)
@@ -15,7 +15,7 @@ export class PlayerDialogFactory {
         })
     }
 
-    static destroy(player: PlayerMp, response: DialogResponse) {
+    static destroy(player: PlayerMp, response: TDialogResponse) {
         const existing = this.promises.get(player.id)
         if (existing) {
             existing(response)

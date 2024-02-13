@@ -1,5 +1,5 @@
 import { Vector3 } from "../modules/vector3"
-import { VehicleParamsType } from "../modules/vehicle/params"
+import { TVehicleParamsType } from "../modules/vehicle/params"
 
 export const CONFIG = {
     entity: {
@@ -32,7 +32,7 @@ export const CONFIG = {
             bonnet: "closed",
             boot: "closed",
             objective: "off",
-        } as VehicleParamsType,
+        } as TVehicleParamsType,
     },
     message: {
         color: "FFFFFF",

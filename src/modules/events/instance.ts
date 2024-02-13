@@ -1,56 +1,56 @@
 import { EventEmitter } from "stream"
-import { EventMap } from "./@types/events"
+import { TEventMap } from "./@types/events"
 
 export class EventBus extends EventEmitter {
-    emit<K extends keyof EventMap>(event: K, ...args: EventMap[K]): boolean {
+    emit<K extends keyof TEventMap>(event: K, ...args: TEventMap[K]): boolean {
         return super.emit(event, ...(args as any[]))
     }
 
-    addListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    addListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.addListener(event, listener as (...args: any[]) => void)
     }
 
-    on<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    on<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.on(event, listener as (...args: any[]) => void)
     }
 
-    once<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    once<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.once(event, listener as (...args: any[]) => void)
     }
 
-    prependListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    prependListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.prependListener(event, listener as (...args: any[]) => void)
     }
 
-    prependOnceListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    prependOnceListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.prependOnceListener(event, listener as (...args: any[]) => void)
     }
 
-    removeListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    removeListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.removeListener(event, listener as (...args: any[]) => void)
     }
 
-    off<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void): this {
+    off<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
         return super.off(event, listener as (...args: any[]) => void)
     }
 
-    removeAllListeners<K extends keyof EventMap>(event?: K): this {
+    removeAllListeners<K extends keyof TEventMap>(event?: K): this {
         return super.removeAllListeners(event)
     }
 
-    listeners<K extends keyof EventMap>(event: K): Function[] {
+    listeners<K extends keyof TEventMap>(event: K): Function[] {
         return super.listeners(event)
     }
 
-    rawListeners<K extends keyof EventMap>(event: K): Function[] {
+    rawListeners<K extends keyof TEventMap>(event: K): Function[] {
         return super.rawListeners(event)
     }
 
-    eventNames(): Array<keyof EventMap> {
-        return super.eventNames() as Array<keyof EventMap>
+    eventNames(): Array<keyof TEventMap> {
+        return super.eventNames() as Array<keyof TEventMap>
     }
 
-    listenerCount<K extends keyof EventMap>(event: K): number {
+    listenerCount<K extends keyof TEventMap>(event: K): number {
         return super.listenerCount(event)
     }
 

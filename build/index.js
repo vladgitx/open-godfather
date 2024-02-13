@@ -838,23 +838,35 @@ class PlayerDialogShow {
     constructor(player) {
         this.player = player;
     }
-    async any(style, caption, info, primaryButton, secondaryButton = "") {
-        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), style, caption, info, primaryButton, secondaryButton);
-        return PlayerDialogFactory.new(this.player);
-    }
     async list(caption, items, primaryButton, secondaryButton = "") {
         SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.List, caption, items.join("\n"), primaryButton, secondaryButton);
         return PlayerDialogFactory.new(this.player);
     }
-    async tabList(caption, items, primaryButton, secondaryButton = "") {
+    async tablist(caption, items, primaryButton, secondaryButton = "") {
         SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.Tablist, caption, items.map((columns) => columns.join("\t")).join("\n"), primaryButton, secondaryButton);
         return PlayerDialogFactory.new(this.player);
     }
-    async tabListWithHeaders(caption, headers, items, primaryButton, secondaryButton = "") {
-        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.TablistHeaders, caption, headers.join("\t") + "\n" + items.map((columns) => columns.join("\t")).join("\n"), primaryButton, secondaryButton);
+    async tablistWithHeaders(caption, headers, items, primaryButton, secondaryButton = "") {
+        let headerString = "";
+        let itemsString = "";
+        if (typeof headers === "string") {
+            headerString = headers;
+            headers = [headers];
+        }
+        else {
+            headerString = headers.join("\t");
+        }
+        if (typeof items[0] === "string") {
+            itemsString = items.join("\n");
+            items = [items];
+        }
+        else {
+            itemsString = items.map((columns) => columns.join("\t")).join("\n");
+        }
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.TablistHeaders, caption, headerString + "\n" + itemsString, primaryButton, secondaryButton);
         return PlayerDialogFactory.new(this.player);
     }
-    async message(caption, info, primaryButton, secondaryButton = "") {
+    async messageBox(caption, info, primaryButton, secondaryButton = "") {
         SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.MessageBox, caption, info, primaryButton, secondaryButton);
         return PlayerDialogFactory.new(this.player);
     }
@@ -1470,7 +1482,7 @@ PlayerMpFactory.pool = new Map();
 // So I'm fixing it by triggering "playerConnect" with a little bit of delay
 const playerTimeoutIds = new Map();
 samp.on("OnPlayerConnect", (playerId) => {
-    SampNatives.togglePlayerSpectating(playerId, true);
+    SampNatives.togglePlayerSpectating(playerId, true); // TODO: remove this when the issue is fixed
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId);
         const player = PlayerMpFactory.new(playerId);

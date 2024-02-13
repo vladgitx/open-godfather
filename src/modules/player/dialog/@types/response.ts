@@ -1,25 +1,15 @@
-type Button = "main" | "second"
-type Item = number
-type Input = string
+import { TDialogButton, TDialogInput, TDialogItem } from "../@internal/types"
 
-export type DialogResponse =
-    | {
-          button: Button
-          item: Item
-          input: Input
-      }
-    | undefined
-
-export type ListDialogResponse = {
-    button: Button
-    item: Item
+export type TListDialogResponse = {
+    button: TDialogButton
+    item: TDialogItem
 }
 
-export type MessageDialogResponse = {
-    button: Button
+export type TMessageDialogResponse = {
+    button: TDialogButton
 }
 
-export type InputDialogResponse = {
-    button: Button
-    input: Input
+export type TInputDialogResponse = {
+    button: TDialogButton
+    input: TDialogInput
 }

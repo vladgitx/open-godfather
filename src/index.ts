@@ -7,7 +7,7 @@ export { ServerMp } from "./modules/server"
 export { PlayerMp } from "./modules/player"
 export { VehicleMp } from "./modules/vehicle"
 export { Vector3 } from "./modules/vector3"
-export { CommandMp, CommandCallback } from "./modules/commands"
+export { CommandMp, TCommandCallback } from "./modules/commands"
 export { TextLabelMp } from "./modules/text-label"
 
 export * from "./shared/enums"
