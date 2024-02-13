@@ -5,23 +5,23 @@ import { DialogResponse } from "./@types/response"
 import { PlayerDialogFactory } from "./factory"
 
 export class PlayerDialog {
-	constructor(private player: PlayerMp) {}
+    constructor(private player: PlayerMp) {}
 
-	async show(styleId: DialogStylesEnum, caption: string, info: string, primaryButton: string, secondaryButton = "") {
-		SampNatives.showPlayerDialog(
-			this.player.id,
-			Math.floor(Math.random() * 32767),
-			styleId,
-			caption,
-			info,
-			primaryButton,
-			secondaryButton,
-		)
-		return PlayerDialogFactory.new(this.player)
-	}
+    async show(styleId: DialogStylesEnum, caption: string, info: string, primaryButton: string, secondaryButton = "") {
+        SampNatives.showPlayerDialog(
+            this.player.id,
+            Math.floor(Math.random() * 32767),
+            styleId,
+            caption,
+            info,
+            primaryButton,
+            secondaryButton,
+        )
+        return PlayerDialogFactory.new(this.player)
+    }
 
-	async hide(response?: DialogResponse) {
-		PlayerDialogFactory.destroy(this.player, response)
-		SampNatives.hidePlayerDialog(this.player.id)
-	}
+    async hide(response?: DialogResponse) {
+        PlayerDialogFactory.destroy(this.player, response)
+        SampNatives.hidePlayerDialog(this.player.id)
+    }
 }

@@ -10,227 +10,229 @@ import { Entity } from "../entity"
 import { putInVehicleWithEvent } from "./@controllers/enter-exit-car"
 import { vehiclesMp } from "../../singletons/vehicles"
 import { PlayerTextLabels } from "./text-label"
+import { PlayerAttachedObjects } from "./attached-objects"
 
 export class PlayerMp extends Entity {
-	readonly dialog = new PlayerDialog(this)
-	readonly weapons = new PlayerWeapons(this)
-	readonly animations = new PlayerAnimations(this)
-	readonly textLabels = new PlayerTextLabels(this)
+    readonly dialog = new PlayerDialog(this)
+    readonly weapons = new PlayerWeapons(this)
+    readonly animations = new PlayerAnimations(this)
+    readonly textLabels = new PlayerTextLabels(this)
+    readonly attachedObjects = new PlayerAttachedObjects(this)
 
-	private _name = SampNatives.getPlayerName(this.id)
-	private _color = CONFIG.player.color
-	private _cash = CONFIG.player.cash
-	private _skin = CONFIG.player.skin
-	private _spectating = true
+    private _name = SampNatives.getPlayerName(this.id)
+    private _color = CONFIG.player.color
+    private _cash = CONFIG.player.cash
+    private _skin = CONFIG.player.skin
+    private _spectating = true
 
-	constructor(id: number) {
-		super(id)
+    constructor(id: number) {
+        super(id)
 
-		SampNatives.setPlayerColor(this.id, this._color)
-		SampNatives.givePlayerMoney(this.id, this._cash)
-		SampNatives.setPlayerSkin(this.id, this._skin)
-		SampNatives.setPlayerTeam(this.id, CONFIG.player.team)
+        SampNatives.setPlayerColor(this.id, this._color)
+        SampNatives.givePlayerMoney(this.id, this._cash)
+        SampNatives.setPlayerSkin(this.id, this._skin)
+        SampNatives.setPlayerTeam(this.id, CONFIG.player.team)
 
-		SampNatives.togglePlayerSpectating(this.id, this._spectating)
-	}
+        SampNatives.togglePlayerSpectating(this.id, this._spectating)
+    }
 
-	sendMessage(message: string, color = CONFIG.message.color) {
-		return SampNatives.sendClientMessage(this.id, color, message)
-	}
+    sendMessage(message: string, color = CONFIG.message.color) {
+        return SampNatives.sendClientMessage(this.id, color, message)
+    }
 
-	spawn(
-		position = CONFIG.player.spawn.position,
-		rotation = CONFIG.player.spawn.rotation,
-		world = CONFIG.player.spawn.world,
-		interior = CONFIG.player.spawn.interior,
-	) {
-		if (!this.spectating) {
-			if (this.state === PlayerStatesEnum.Wasted) {
-				// If in class selection
-				SampNatives.spawnPlayer(this.id)
-			}
-			return
-		}
+    spawn(
+        position = CONFIG.player.spawn.position,
+        rotation = CONFIG.player.spawn.rotation,
+        world = CONFIG.player.spawn.world,
+        interior = CONFIG.player.spawn.interior,
+    ) {
+        if (!this.spectating) {
+            if (this.state === PlayerStatesEnum.Wasted) {
+                // If in class selection
+                SampNatives.spawnPlayer(this.id)
+            }
+            return
+        }
 
-		this.world = world
-		this.interior = interior
+        this.world = world
+        this.interior = interior
 
-		SampNatives.setSpawnInfo(this.id, CONFIG.player.team, this.skin, position, rotation)
+        SampNatives.setSpawnInfo(this.id, CONFIG.player.team, this.skin, position, rotation)
 
-		this.spectating = false
-	}
+        this.spectating = false
+    }
 
-	kick(delay = 10) {
-		if (delay <= 0) {
-			return SampNatives.kick(this.id)
-		}
+    kick(delay = 10) {
+        if (delay <= 0) {
+            return SampNatives.kick(this.id)
+        }
 
-		setTimeout(() => {
-			SampNatives.kick(this.id)
-		}, delay)
-	}
+        setTimeout(() => {
+            SampNatives.kick(this.id)
+        }, delay)
+    }
 
-	set spectating(spectating: boolean) {
-		this._spectating = spectating
-		SampNatives.togglePlayerSpectating(this.id, spectating)
-	}
+    set spectating(spectating: boolean) {
+        this._spectating = spectating
+        SampNatives.togglePlayerSpectating(this.id, spectating)
+    }
 
-	get spectating() {
-		return this._spectating
-	}
+    get spectating() {
+        return this._spectating
+    }
 
-	set position(position: Vector3) {
-		SampNatives.setPlayerPosition(this.id, position.x, position.y, position.z)
-	}
+    set position(position: Vector3) {
+        SampNatives.setPlayerPosition(this.id, position.x, position.y, position.z)
+    }
 
-	get position() {
-		return SampNatives.getPlayerPosition(this.id)
-	}
+    get position() {
+        return SampNatives.getPlayerPosition(this.id)
+    }
 
-	set specialAction(action: SpecialActionsEnum) {
-		SampNatives.setPlayerSpecialAction(this.id, action)
-	}
+    set specialAction(action: SpecialActionsEnum) {
+        SampNatives.setPlayerSpecialAction(this.id, action)
+    }
 
-	get specialAction() {
-		return SampNatives.getPlayerSpecialAction(this.id)
-	}
+    get specialAction() {
+        return SampNatives.getPlayerSpecialAction(this.id)
+    }
 
-	set skin(skin: number) {
-		this._skin = skin
-		SampNatives.setPlayerSkin(this.id, skin)
-	}
+    set skin(skin: number) {
+        this._skin = skin
+        SampNatives.setPlayerSkin(this.id, skin)
+    }
 
-	get skin() {
-		return this._skin
-	}
+    get skin() {
+        return this._skin
+    }
 
-	set rotation(rotation: number) {
-		SampNatives.setPlayerRotation(this.id, rotation)
-	}
+    set rotation(rotation: number) {
+        SampNatives.setPlayerRotation(this.id, rotation)
+    }
 
-	get rotation() {
-		return SampNatives.getPlayerRotation(this.id)
-	}
+    get rotation() {
+        return SampNatives.getPlayerRotation(this.id)
+    }
 
-	set name(name: string) {
-		this._name = name
-		SampNatives.setPlayerName(this.id, name)
-	}
+    set name(name: string) {
+        this._name = name
+        SampNatives.setPlayerName(this.id, name)
+    }
 
-	get name() {
-		return this._name
-	}
+    get name() {
+        return this._name
+    }
 
-	set world(value: number) {
-		SampNatives.setPlayerVirtualWorld(this.id, value)
-	}
+    set world(value: number) {
+        SampNatives.setPlayerVirtualWorld(this.id, value)
+    }
 
-	get world() {
-		return SampNatives.getPlayerVirtualWorld(this.id)
-	}
+    get world() {
+        return SampNatives.getPlayerVirtualWorld(this.id)
+    }
 
-	set interior(value: number) {
-		SampNatives.setPlayerInterior(this.id, value)
-	}
+    set interior(value: number) {
+        SampNatives.setPlayerInterior(this.id, value)
+    }
 
-	get interior() {
-		return SampNatives.getPlayerInterior(this.id)
-	}
+    get interior() {
+        return SampNatives.getPlayerInterior(this.id)
+    }
 
-	set health(value: number) {
-		SampNatives.setPlayerHealth(this.id, value)
-	}
+    set health(value: number) {
+        SampNatives.setPlayerHealth(this.id, value)
+    }
 
-	get health() {
-		return SampNatives.getPlayerHealth(this.id)
-	}
+    get health() {
+        return SampNatives.getPlayerHealth(this.id)
+    }
 
-	set armour(value: number) {
-		SampNatives.setPlayerArmour(this.id, value)
-	}
+    set armour(value: number) {
+        SampNatives.setPlayerArmour(this.id, value)
+    }
 
-	get armour() {
-		return SampNatives.getPlayerArmour(this.id)
-	}
+    get armour() {
+        return SampNatives.getPlayerArmour(this.id)
+    }
 
-	set color(hex: string) {
-		this._color = hex
-		SampNatives.setPlayerColor(this.id, hex)
-	}
+    set color(hex: string) {
+        this._color = hex
+        SampNatives.setPlayerColor(this.id, hex)
+    }
 
-	get color() {
-		return this._color
-	}
+    get color() {
+        return this._color
+    }
 
-	get ip() {
-		return SampNatives.getPlayerIp(this.id)
-	}
+    get ip() {
+        return SampNatives.getPlayerIp(this.id)
+    }
 
-	get ping() {
-		return SampNatives.getPlayerPing(this.id)
-	}
+    get ping() {
+        return SampNatives.getPlayerPing(this.id)
+    }
 
-	get gpci() {
-		return SampNatives.gpci(this.id)
-	}
+    get gpci() {
+        return SampNatives.gpci(this.id)
+    }
 
-	set cash(value: number) {
-		SampNatives.resetPlayerMoney(this.id)
-		SampNatives.givePlayerMoney(this.id, value)
+    set cash(value: number) {
+        SampNatives.resetPlayerMoney(this.id)
+        SampNatives.givePlayerMoney(this.id, value)
 
-		this._cash = value
-	}
+        this._cash = value
+    }
 
-	get cash() {
-		return this._cash
-	}
+    get cash() {
+        return this._cash
+    }
 
-	set score(value: number) {
-		SampNatives.setPlayerScore(this.id, value)
-	}
+    set score(value: number) {
+        SampNatives.setPlayerScore(this.id, value)
+    }
 
-	get score() {
-		return SampNatives.getPlayerScore(this.id)
-	}
+    get score() {
+        return SampNatives.getPlayerScore(this.id)
+    }
 
-	get cameraMode() {
-		return SampNatives.getPlayerCameraMode(this.id)
-	}
+    get cameraMode() {
+        return SampNatives.getPlayerCameraMode(this.id)
+    }
 
-	setChatBubble(
-		text: string,
-		color = CONFIG.chatBubble.color,
-		drawDistance = CONFIG.chatBubble.distance,
-		expireTime = CONFIG.chatBubble.expire,
-	) {
-		return SampNatives.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
-	}
+    setChatBubble(
+        text: string,
+        color = CONFIG.chatBubble.color,
+        drawDistance = CONFIG.chatBubble.distance,
+        expireTime = CONFIG.chatBubble.expire,
+    ) {
+        return SampNatives.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
+    }
 
-	get spawned() {
-		const state = this.state
-		if (state === undefined) {
-			return undefined
-		}
-		return state !== PlayerStatesEnum.Wasted && state !== PlayerStatesEnum.Spectating && state !== PlayerStatesEnum.None
-	}
+    get spawned() {
+        const state = this.state
+        if (state === undefined) {
+            return undefined
+        }
+        return state !== PlayerStatesEnum.Wasted && state !== PlayerStatesEnum.Spectating && state !== PlayerStatesEnum.None
+    }
 
-	get state(): PlayerStatesEnum | undefined {
-		return SampNatives.getPlayerState(this.id)
-	}
+    get state(): PlayerStatesEnum | undefined {
+        return SampNatives.getPlayerState(this.id)
+    }
 
-	putIntoVehicle(vehicle: VehicleMp, seat = VehicleSeatsEnum.Driver) {
-		return putInVehicleWithEvent(this, vehicle, seat)
-	}
+    putIntoVehicle(vehicle: VehicleMp, seat = VehicleSeatsEnum.Driver) {
+        return putInVehicleWithEvent(this, vehicle, seat)
+    }
 
-	get vehicle(): VehicleMp | undefined {
-		const vehicleId = SampNatives.getPlayerVehicleId(this.id)
-		if (vehicleId === undefined) {
-			return undefined
-		}
-		return vehiclesMp.at(vehicleId)
-	}
+    get vehicle(): VehicleMp | undefined {
+        const vehicleId = SampNatives.getPlayerVehicleId(this.id)
+        if (vehicleId === undefined) {
+            return undefined
+        }
+        return vehiclesMp.at(vehicleId)
+    }
 
-	get vehicleSeat() {
-		return SampNatives.getPlayerVehicleSeat(this.id)
-	}
+    get vehicleSeat() {
+        return SampNatives.getPlayerVehicleSeat(this.id)
+    }
 }

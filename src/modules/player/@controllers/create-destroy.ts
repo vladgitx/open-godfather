@@ -7,26 +7,26 @@ import { PlayerMpFactory } from "../factory"
 const playerTimeoutIds = new Map<number, NodeJS.Timeout>()
 
 samp.on("OnPlayerConnect", (playerId) => {
-	const timeoutId = setTimeout(() => {
-		playerTimeoutIds.delete(playerId)
+    const timeoutId = setTimeout(() => {
+        playerTimeoutIds.delete(playerId)
 
-		const player = PlayerMpFactory.new(playerId)
+        const player = PlayerMpFactory.new(playerId)
 
-		if (player) {
-			eventsMp.emit("playerConnect", player)
-		}
-	}, 1000)
+        if (player) {
+            eventsMp.emit("playerConnect", player)
+        }
+    }, 1000)
 
-	playerTimeoutIds.set(playerId, timeoutId)
+    playerTimeoutIds.set(playerId, timeoutId)
 })
 
 samp.on("OnPlayerDisconnect", (playerId, reason) => {
-	clearTimeout(playerTimeoutIds.get(playerId))
-	playerTimeoutIds.delete(playerId)
+    clearTimeout(playerTimeoutIds.get(playerId))
+    playerTimeoutIds.delete(playerId)
 
-	const player = PlayerMpFactory.at(playerId)
-	if (player) {
-		eventsMp.emit("playerDisconnect", player, reason)
-		PlayerMpFactory.destroy(player)
-	}
+    const player = PlayerMpFactory.at(playerId)
+    if (player) {
+        eventsMp.emit("playerDisconnect", player, reason)
+        PlayerMpFactory.destroy(player)
+    }
 })

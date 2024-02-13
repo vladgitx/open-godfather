@@ -4,31 +4,31 @@ import { Vector3 } from "../../vector3"
 import { VehicleMp } from "../instance"
 
 export class VehicleTextLabels {
-	private labels = new Set<TextLabelMp>()
+    private labels = new Set<TextLabelMp>()
 
-	constructor(private vehicle: VehicleMp) {}
+    constructor(private vehicle: VehicleMp) {}
 
-	attach(label: TextLabelMp, offset: Vector3) {
-		if (label.attached) {
-			return false
-		}
+    attach(label: TextLabelMp, offset: Vector3) {
+        if (label.attached) {
+            return false
+        }
 
-		if (!SampNatives.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
-			return false
-		}
+        if (!SampNatives.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
+            return false
+        }
 
-		this.labels.add(label)
-		label.attached = true
+        this.labels.add(label)
+        label.attached = true
 
-		return true
-	}
+        return true
+    }
 
-	get all() {
-		for (const label of this.labels) {
-			if (!label.exists) {
-				this.labels.delete(label)
-			}
-		}
-		return this.labels
-	}
+    get all() {
+        for (const label of this.labels) {
+            if (!label.exists) {
+                this.labels.delete(label)
+            }
+        }
+        return this.labels
+    }
 }

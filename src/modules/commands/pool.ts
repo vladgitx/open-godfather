@@ -1,11 +1,11 @@
 import { CommandMpFactory } from "./factory"
 
 export class CommandsMp {
-	constructor() {}
+    constructor() {}
 
-	add = CommandMpFactory.new
+    add = CommandMpFactory.new
 
-	get all() {
-		return CommandMpFactory.all
-	}
+    get all() {
+        return CommandMpFactory.all
+    }
 }

@@ -21,11 +21,11 @@ import { textLabelsMp } from "./singletons/text-labels"
 import { Vector3 as Vector3Mp } from "./modules/vector3"
 
 export namespace og {
-	export const events = eventsMp
-	export const server = serverMp
-	export const players = playersMp
-	export const vehicles = vehiclesMp
-	export const commands = commandsMp
-	export const textLabels = textLabelsMp
-	export const Vector3 = Vector3Mp
+    export const events = eventsMp
+    export const server = serverMp
+    export const players = playersMp
+    export const vehicles = vehiclesMp
+    export const commands = commandsMp
+    export const textLabels = textLabelsMp
+    export const Vector3 = Vector3Mp
 }
