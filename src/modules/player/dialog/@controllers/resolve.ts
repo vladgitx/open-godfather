@@ -6,10 +6,7 @@ samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, i
     const player = playersMp.at(playerId)
 
     if (player) {
-        const button = responseParam === 1 ? "main" : "second"
-        const item = listItemParam === -1 ? undefined : listItemParam
-
-        PlayerDialogFactory.destroy(player, { button, item, input: inputText })
+        PlayerDialogFactory.destroy(player, { button: responseParam === 1 ? "main" : "second", item: listItemParam, input: inputText })
     }
 })
 

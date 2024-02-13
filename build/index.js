@@ -827,14 +827,40 @@ PlayerDialogFactory.promises = new Map();
 class PlayerDialog {
     constructor(player) {
         this.player = player;
-    }
-    async show(styleId, caption, info, primaryButton, secondaryButton = "") {
-        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), styleId, caption, info, primaryButton, secondaryButton);
-        return PlayerDialogFactory.new(this.player);
+        this.show = new PlayerDialogShow(this.player);
     }
     async hide(response) {
         PlayerDialogFactory.destroy(this.player, response);
         SampNatives.hidePlayerDialog(this.player.id);
+    }
+}
+class PlayerDialogShow {
+    constructor(player) {
+        this.player = player;
+    }
+    async list(caption, items, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.List, caption, items.join("\n"), primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
+    }
+    async tabList(caption, items, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.Tablist, caption, items.map((columns) => columns.join("\t")).join("\n"), primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
+    }
+    async tabListWithHeaders(caption, headers, items, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.TablistHeaders, caption, headers.join("\t") + "\n" + items.map((columns) => columns.join("\t")).join("\n"), primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
+    }
+    async message(caption, info, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.MessageBox, caption, info, primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
+    }
+    async input(caption, info, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.MessageBox, caption, info, primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
+    }
+    async password(caption, info, primaryButton, secondaryButton = "") {
+        SampNatives.showPlayerDialog(this.player.id, Math.floor(Math.random() * 32767), exports.DialogStylesEnum.Password, caption, info, primaryButton, secondaryButton);
+        return PlayerDialogFactory.new(this.player);
     }
 }
 
@@ -1558,9 +1584,7 @@ samp.on("OnPlayerWeaponShot", (playerId, weapon, hitType, hitId, fX, fY, fZ) => 
 samp.on("OnDialogResponse", (playerId, dialogId, responseParam, listItemParam, inputText) => {
     const player = playersMp.at(playerId);
     if (player) {
-        const button = responseParam === 1 ? "main" : "second";
-        const item = listItemParam === -1 ? undefined : listItemParam;
-        PlayerDialogFactory.destroy(player, { button, item, input: inputText });
+        PlayerDialogFactory.destroy(player, { button: responseParam === 1 ? "main" : "second", item: listItemParam, input: inputText });
     }
 });
 eventsMp.on("playerDisconnect", (player) => {
