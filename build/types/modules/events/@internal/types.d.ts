@@ -10,7 +10,7 @@ type TServerEvents = {
 type TPlayerEvents = {
     playerConnect: [PlayerMp];
     playerDisconnect: [PlayerMp, KickReasonsEnum];
-    playerCommand: [PlayerMp, string, CommandMp | undefined, () => void];
+    playerCommand: [PlayerMp, string, CommandMp | undefined, () => void | Promise<void>];
     playerSpawn: [PlayerMp];
     playerFirstSpawn: [PlayerMp];
     playerText: [PlayerMp, string];

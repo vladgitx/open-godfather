@@ -6,32 +6,32 @@ export class EventBus extends EventEmitter {
         return super.emit(event, ...(args as any[]))
     }
 
-    addListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.addListener(event, listener as (...args: any[]) => void)
+    addListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.addListener(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
-    on<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.on(event, listener as (...args: any[]) => void)
+    on<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.on(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
-    once<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.once(event, listener as (...args: any[]) => void)
+    once<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.once(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
-    prependListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.prependListener(event, listener as (...args: any[]) => void)
+    prependListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.prependListener(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
-    prependOnceListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.prependOnceListener(event, listener as (...args: any[]) => void)
+    prependOnceListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.prependOnceListener(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
-    removeListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.removeListener(event, listener as (...args: any[]) => void)
+    removeListener<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.removeListener(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
-    off<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void): this {
-        return super.off(event, listener as (...args: any[]) => void)
+    off<K extends keyof TEventMap>(event: K, listener: (...args: TEventMap[K]) => void | Promise<void>): this {
+        return super.off(event, listener as (...args: any[]) => void | Promise<void>)
     }
 
     removeAllListeners<K extends keyof TEventMap>(event?: K): this {
