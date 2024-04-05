@@ -1,6 +1,8 @@
 # Open Godfather
 
-Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
+Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin. Inspired by RageMP's scripting approach.
+
+### :warning: This library is not complete yet, therefore not ready for production. :warning:
 
 ## Installation
 
@@ -10,7 +12,7 @@ npm install github:vladgitx/open-godfather
     
 ## Usage example
 
-The player is immediately placed into spectate mode when they connect, and all that's left is to spawn them. This approach eliminates class selection and team assignments, simplifying the initialization process.
+The player is immediately placed into spectate mode when they connect, and all that's left is to spawn them. This eliminates class selection and team assignments, simplifying the initialization process.
 
 ```typescript
 import { og } from "open-godfather"
@@ -24,6 +26,8 @@ og.events.on("playerConnect", async (player) => {
     }
 })
 ```
+
+### Commands
 
 The player can spawn a car with a specific model ID using the "/car", "/vehicle", or "/veh" command. If the model is not specified, it will use 411 (Infernus).
 
