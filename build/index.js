@@ -521,53 +521,41 @@ SampNatives.changeVehicleColor = (vehicleId, color1, color2) => {
     return samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2) === 1;
 };
 SampNatives.setPlayerAttachedObject = (playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, materialcolor1, materialcolor2) => {
-    let specifiers = "iiii";
-    let values = [playerId, index, modelid, bone];
+    const values = [playerId, index, modelid, bone];
     if (fOffsetX !== undefined) {
-        specifiers += "f";
         values.push(fOffsetX);
     }
     if (fOffsetY !== undefined) {
-        specifiers += "f";
         values.push(fOffsetY);
     }
     if (fOffsetZ !== undefined) {
-        specifiers += "f";
         values.push(fOffsetZ);
     }
     if (fRotX !== undefined) {
-        specifiers += "f";
         values.push(fRotX);
     }
     if (fRotY !== undefined) {
-        specifiers += "f";
         values.push(fRotY);
     }
     if (fRotZ !== undefined) {
-        specifiers += "f";
         values.push(fRotZ);
     }
     if (fScaleX !== undefined) {
-        specifiers += "f";
         values.push(fScaleX);
     }
     if (fScaleY !== undefined) {
-        specifiers += "f";
         values.push(fScaleY);
     }
     if (fScaleZ !== undefined) {
-        specifiers += "f";
         values.push(fScaleZ);
     }
     if (materialcolor1 !== undefined) {
-        specifiers += "i";
         values.push(parseInt(materialcolor1 + "FF", 16));
     }
     if (materialcolor2 !== undefined) {
-        specifiers += "i";
         values.push(parseInt(materialcolor2 + "FF", 16));
     }
-    return samp.callNative("SetPlayerAttachedObject", specifiers, ...values) === 1;
+    return samp.callNative("SetPlayerAttachedObject", "iiiifffffffffii", ...values) === 1;
 };
 SampNatives.removePlayerAttachedObject = (playerId, index) => {
     return samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index) === 1;
