@@ -1831,6 +1831,9 @@ class ServerMp {
         this.hour = this._hour;
         this.weather = this._weather;
     }
+    sendRconCommand(command) {
+        SampNatives.sendRconCommand(command);
+    }
     set name(name) {
         this._name = name;
         SampNatives.sendRconCommand("name " + this._name);

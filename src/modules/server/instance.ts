@@ -22,6 +22,10 @@ export class ServerMp {
         this.hour = this._hour
         this.weather = this._weather
     }
+    
+    sendRconCommand(command: string) {
+        SampNatives.sendRconCommand(command)
+    }
 
     set name(name: string) {
         this._name = name

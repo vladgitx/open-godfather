@@ -9,6 +9,7 @@ export declare class ServerMp {
     private _hour;
     private _weather;
     constructor();
+    sendRconCommand(command: string): void;
     set name(name: string);
     get name(): string;
     set language(language: string);
