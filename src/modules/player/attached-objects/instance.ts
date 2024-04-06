@@ -13,11 +13,11 @@ export class PlayerAttachedObjects {
     new(
         model: number,
         bone: PlayerBonesEnum,
-        offset: Vector3,
-        rotation: Vector3,
-        scale: Vector3,
-        firstMaterialColor: string,
-        secondMaterialColor: string,
+        offset?: Vector3,
+        rotation?: Vector3,
+        scale?: Vector3,
+        firstMaterialColor?: string,
+        secondMaterialColor?: string,
     ) {
         const slot = this.attachedObjects.indexOf(undefined)
         if (slot === -1) {
@@ -29,15 +29,15 @@ export class PlayerAttachedObjects {
             slot,
             model,
             bone,
-            offset.x,
-            offset.y,
-            offset.z,
-            rotation.x,
-            rotation.y,
-            rotation.z,
-            scale.x,
-            scale.y,
-            scale.z,
+            offset?.x,
+            offset?.y,
+            offset?.z,
+            rotation?.x,
+            rotation?.y,
+            rotation?.z,
+            scale?.x,
+            scale?.y,
+            scale?.z,
             firstMaterialColor,
             secondMaterialColor,
         )
@@ -47,11 +47,11 @@ export class PlayerAttachedObjects {
                 slot,
                 model,
                 bone,
-                offset,
-                rotation,
-                scale,
-                firstMaterialColor,
-                secondMaterialColor,
+                offset ?? new Vector3(),
+                rotation ?? new Vector3(),
+                scale ?? new Vector3(),
+                firstMaterialColor ?? "",
+                secondMaterialColor ?? "",
             )
             return this.attachedObjects[slot]
         }

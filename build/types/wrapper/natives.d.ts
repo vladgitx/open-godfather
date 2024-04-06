@@ -25,7 +25,7 @@ export declare class SampNatives {
     static enableStuntBonusForAll: (enable: boolean) => void;
     static sendRconCommand: (command: string) => void;
     static changeVehicleColor: (vehicleId: number, color1: number, color2: number) => boolean;
-    static setPlayerAttachedObject: (playerId: number, index: number, modelid: number, bone: number, fOffsetX: number, fOffsetY: number, fOffsetZ: number, fRotX: number, fRotY: number, fRotZ: number, fScaleX: number, fScaleY: number, fScaleZ: number, materialcolor1: string, materialcolor2: string) => boolean;
+    static setPlayerAttachedObject: (playerId: number, index: number, modelid: number, bone: number, fOffsetX?: number, fOffsetY?: number, fOffsetZ?: number, fRotX?: number, fRotY?: number, fRotZ?: number, fScaleX?: number, fScaleY?: number, fScaleZ?: number, materialcolor1?: string, materialcolor2?: string) => boolean;
     static removePlayerAttachedObject: (playerId: number, index: number) => boolean;
     static isPlayerAttachedObjectSlotUsed: (playerId: number, index: number) => boolean;
     static editAttachedObject: (playerId: number, index: number) => boolean;
