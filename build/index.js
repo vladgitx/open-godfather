@@ -520,35 +520,8 @@ SampNatives.sendRconCommand = (command) => {
 SampNatives.changeVehicleColor = (vehicleId, color1, color2) => {
     return samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2) === 1;
 };
-SampNatives.setPlayerAttachedObject = (playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, materialcolor1, materialcolor2) => {
-    const values = [playerId, index, modelid, bone];
-    if (fOffsetX !== undefined) {
-        values.push(fOffsetX);
-    }
-    if (fOffsetY !== undefined) {
-        values.push(fOffsetY);
-    }
-    if (fOffsetZ !== undefined) {
-        values.push(fOffsetZ);
-    }
-    if (fRotX !== undefined) {
-        values.push(fRotX);
-    }
-    if (fRotY !== undefined) {
-        values.push(fRotY);
-    }
-    if (fRotZ !== undefined) {
-        values.push(fRotZ);
-    }
-    if (fScaleX !== undefined) {
-        values.push(fScaleX);
-    }
-    if (fScaleY !== undefined) {
-        values.push(fScaleY);
-    }
-    if (fScaleZ !== undefined) {
-        values.push(fScaleZ);
-    }
+SampNatives.setPlayerAttachedObject = (playerId, index, modelid, bone, fOffsetX = 0, fOffsetY = 0, fOffsetZ = 0, fRotX = 0, fRotY = 0, fRotZ = 0, fScaleX = 1, fScaleY = 1, fScaleZ = 1, materialcolor1, materialcolor2) => {
+    const values = [playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ];
     if (materialcolor1 !== undefined) {
         values.push(parseInt(materialcolor1 + "FF", 16));
     }
@@ -1358,7 +1331,7 @@ class PlayerAttachedObjects {
         }
         const success = SampNatives.setPlayerAttachedObject(this.player.id, slot, model, bone, offset?.x, offset?.y, offset?.z, rotation?.x, rotation?.y, rotation?.z, scale?.x, scale?.y, scale?.z, firstMaterialColor, secondMaterialColor);
         if (success) {
-            this.attachedObjects[slot] = new PlayerAttachedObject(slot, model, bone, offset ?? new Vector3(), rotation ?? new Vector3(), scale ?? new Vector3(), firstMaterialColor ?? "", secondMaterialColor ?? "");
+            this.attachedObjects[slot] = new PlayerAttachedObject(slot, model, bone, offset ?? new Vector3(0, 0, 0), rotation ?? new Vector3(0, 0, 0), scale ?? new Vector3(1, 1, 1), firstMaterialColor ?? "", secondMaterialColor ?? "");
             return this.attachedObjects[slot];
         }
         return undefined;

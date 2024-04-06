@@ -47,9 +47,9 @@ export class PlayerAttachedObjects {
                 slot,
                 model,
                 bone,
-                offset ?? new Vector3(),
-                rotation ?? new Vector3(),
-                scale ?? new Vector3(),
+                offset ?? new Vector3(0, 0, 0),
+                rotation ?? new Vector3(0, 0, 0),
+                scale ?? new Vector3(1, 1, 1),
                 firstMaterialColor ?? "",
                 secondMaterialColor ?? "",
             )

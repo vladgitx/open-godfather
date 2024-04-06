@@ -119,55 +119,19 @@ export class SampNatives {
         index: number,
         modelid: number,
         bone: number,
-        fOffsetX?: number,
-        fOffsetY?: number,
-        fOffsetZ?: number,
-        fRotX?: number,
-        fRotY?: number,
-        fRotZ?: number,
-        fScaleX?: number,
-        fScaleY?: number,
-        fScaleZ?: number,
+        fOffsetX = 0,
+        fOffsetY = 0,
+        fOffsetZ = 0,
+        fRotX = 0,
+        fRotY = 0,
+        fRotZ = 0,
+        fScaleX = 1,
+        fScaleY = 1,
+        fScaleZ = 1,
         materialcolor1?: string,
         materialcolor2?: string,
     ) => {
-        const values = [playerId, index, modelid, bone]
-
-        if (fOffsetX !== undefined) {
-            values.push(fOffsetX)
-        }
-
-        if (fOffsetY !== undefined) {
-            values.push(fOffsetY)
-        }
-
-        if (fOffsetZ !== undefined) {
-            values.push(fOffsetZ)
-        }
-
-        if (fRotX !== undefined) {
-            values.push(fRotX)
-        }
-
-        if (fRotY !== undefined) {
-            values.push(fRotY)
-        }
-
-        if (fRotZ !== undefined) {
-            values.push(fRotZ)
-        }
-
-        if (fScaleX !== undefined) {
-            values.push(fScaleX)
-        }
-
-        if (fScaleY !== undefined) {
-            values.push(fScaleY)
-        }
-
-        if (fScaleZ !== undefined) {
-            values.push(fScaleZ)
-        }
+        const values = [playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ]
 
         if (materialcolor1 !== undefined) {
             values.push(parseInt(materialcolor1 + "FF", 16))
