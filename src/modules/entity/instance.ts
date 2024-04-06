@@ -27,7 +27,7 @@ export class Entity {
             callback()
         }
         this.cleanupCallbacks = []
-        
+
         this.id = CONFIG.entity.invalidId
     }
 

@@ -4,6 +4,7 @@ import "./modules/vehicle/@controllers";
 import "./modules/commands/@controllers";
 export { type ServerMp } from "./modules/server";
 export { type PlayerMp } from "./modules/player";
+export { type PlayerAttachedObject } from "./modules/player/attached-objects";
 export { type VehicleMp } from "./modules/vehicle";
 export { type Vector3 } from "./modules/vector3";
 export { type CommandMp, TCommandCallback } from "./modules/commands";
