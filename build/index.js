@@ -983,6 +983,10 @@ class Entity {
     constructor(id) {
         this.id = id;
         this.variables = new Map();
+        this.cleanupCallbacks = [];
+    }
+    onCleanup(callback) {
+        this.cleanupCallbacks.push(callback);
     }
     setVariable(name, value) {
         this.variables.set(name, value);
@@ -994,6 +998,10 @@ class Entity {
         return this.variables.delete(name);
     }
     set exists(value) {
+        for (const callback of this.cleanupCallbacks) {
+            callback();
+        }
+        this.cleanupCallbacks = [];
         this.id = CONFIG.entity.invalidId;
     }
     get exists() {
