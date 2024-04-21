@@ -1761,33 +1761,33 @@ class CommandMp {
 class CommandFactory {
     constructor() {
         this.pool = new Map();
-    }
-    new(name, aliases, callback) {
-        if (aliases.includes(name)) {
-            throw new Error(`Command ${name} cannot be an alias of itself`);
-        }
-        if (this.at(name)) {
-            throw new Error(`Command ${name} already exists`);
-        }
-        for (const alias of aliases) {
-            if (this.at(alias)) {
-                throw new Error(`You're using alias ${alias} for command ${name}, but that alias already exists as another command`);
+        this.new = (name, aliases, callback) => {
+            if (aliases.includes(name)) {
+                throw new Error(`Command ${name} cannot be an alias of itself`);
             }
-        }
-        for (const command of this.all) {
-            if (command.aliases.includes(name)) {
-                throw new Error(`Command name ${name} is used as an alias for command ${command.name}`);
+            if (this.at(name)) {
+                throw new Error(`Command ${name} already exists`);
             }
-            if (aliases.some((alias) => command.aliases.includes(alias))) {
-                throw new Error(`Command ${name} shares the same aliases as command ${command.name}`);
+            for (const alias of aliases) {
+                if (this.at(alias)) {
+                    throw new Error(`You're using alias ${alias} for command ${name}, but that alias already exists as another command`);
+                }
             }
-        }
-        const command = new CommandMp(name, aliases, callback);
-        this.pool.set(name, command);
-        for (const alias of aliases) {
-            this.pool.set(alias, command);
-        }
-        return command;
+            for (const command of this.all) {
+                if (command.aliases.includes(name)) {
+                    throw new Error(`Command name ${name} is used as an alias for command ${command.name}`);
+                }
+                if (aliases.some((alias) => command.aliases.includes(alias))) {
+                    throw new Error(`Command ${name} shares the same aliases as command ${command.name}`);
+                }
+            }
+            const command = new CommandMp(name, aliases, callback);
+            this.pool.set(name, command);
+            for (const alias of aliases) {
+                this.pool.set(alias, command);
+            }
+            return command;
+        };
     }
     at(name) {
         return this.pool.get(name);

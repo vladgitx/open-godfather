@@ -4,7 +4,7 @@ import { CommandMp } from "./instance"
 class CommandFactory {
     private pool = new Map<string, CommandMp>()
 
-    new(name: string, aliases: string[], callback: CommandCallback) {
+    new = (name: string, aliases: string[], callback: CommandCallback) => {
         if (aliases.includes(name)) {
             throw new Error(`Command ${name} cannot be an alias of itself`)
         }
