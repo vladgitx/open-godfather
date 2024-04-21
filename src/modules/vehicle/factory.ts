@@ -1,9 +1,9 @@
 import { VehicleMp } from "./entity"
 
-export class VehicleMpFactory {
-    private static pool = new Map<number, VehicleMp>()
+class VehicleFactory {
+    private pool = new Map<number, VehicleMp>()
 
-    static new(vehicleId: number, model: number, primaryColor: number, secondaryColor: number) {
+    new(vehicleId: number, model: number, primaryColor: number, secondaryColor: number) {
         if (this.at(vehicleId)) {
             return undefined
         }
@@ -14,17 +14,18 @@ export class VehicleMpFactory {
         return vehicle
     }
 
-    static destroy(vehicle: VehicleMp) {
-        const deleted = this.pool.delete(vehicle.id)
+    destroy(vehicle: VehicleMp) {
+        this.pool.delete(vehicle.id)
         vehicle.exists = false
-        return deleted
     }
 
-    static at(id: number) {
+    at(id: number) {
         return this.pool.get(id)
     }
 
-    static get all() {
+    get all() {
         return this.pool.values()
     }
 }
+
+export const vehicleFactory = new VehicleFactory()

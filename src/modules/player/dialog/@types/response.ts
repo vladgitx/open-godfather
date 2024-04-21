@@ -1,15 +1,15 @@
-import { TDialogButton, TDialogInput, TDialogItem } from "../@internal/types"
-
-export type TListDialogResponse = {
-    button: TDialogButton
-    item: TDialogItem
+export type ListDialogResponse = {
+    action: boolean
+    item: number
 }
 
-export type TMessageDialogResponse = {
-    button: TDialogButton
+export type MessageDialogResponse = {
+    action: boolean
 }
 
-export type TInputDialogResponse = {
-    button: TDialogButton
-    input: TDialogInput
+export type InputDialogResponse = {
+    action: boolean
+    input: string
 }
+
+export type DialogResponse = ListDialogResponse & InputDialogResponse & MessageDialogResponse

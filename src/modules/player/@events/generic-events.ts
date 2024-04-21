@@ -1,10 +1,10 @@
 import { SampEvents, SampNatives } from "@/wrapper"
 import { CONFIG } from "@/shared/config"
 import { BodyPartsEnum, HitTypesEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums"
-import { vehiclesMp } from "@/singletons/vehicles"
 import { Vector3 } from "../../vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../handler"
+import { vehicleHandler } from "@/modules/vehicle"
 
 SampEvents.onPlayerSpawn((playerId: number) => {
     const player = playerHandler.at(playerId)
@@ -47,7 +47,7 @@ SampEvents.onPlayerStateChange((playerId: number, newState: PlayerStatesEnum, ol
 
 SampEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenger: boolean) => {
     const player = playerHandler.at(playerId)
-    const vehicle = vehiclesMp.at(vehicleId)
+    const vehicle = vehicleHandler.at(vehicleId)
 
     if (player !== undefined && vehicle !== undefined) {
         dispatcher.emit("playerStartEnterVehicle", player, vehicle, asPassenger)
@@ -56,7 +56,7 @@ SampEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenge
 
 SampEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
     const player = playerHandler.at(playerId)
-    const vehicle = vehiclesMp.at(vehicleId)
+    const vehicle = vehicleHandler.at(vehicleId)
 
     if (player !== undefined && vehicle !== undefined) {
         dispatcher.emit("playerStartExitVehicle", player, vehicle)
@@ -82,7 +82,11 @@ SampEvents.onPlayerWeaponShot(
         const player = playerHandler.at(playerId)
         if (player) {
             const hitEntity =
-                hitType === HitTypesEnum.Player ? playerHandler.at(hitId) : hitType === HitTypesEnum.Vehicle ? vehiclesMp.at(hitId) : undefined
+                hitType === HitTypesEnum.Player
+                    ? playerHandler.at(hitId)
+                    : hitType === HitTypesEnum.Vehicle
+                      ? vehicleHandler.at(hitId)
+                      : undefined
 
             dispatcher.emit("playerShoot", player, weapon, hitEntity, new Vector3(fX, fY, fZ))
         }

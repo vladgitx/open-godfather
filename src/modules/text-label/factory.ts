@@ -1,9 +1,9 @@
 import { TextLabelMp } from "./instance"
 
-export class TextLabelMpFactory {
-    private static pool = new Map<number, TextLabelMp>()
+class TextLabelFactory {
+    private pool = new Map<number, TextLabelMp>()
 
-    static new(id: number, text: string, color: string) {
+    new(id: number, text: string, color: string) {
         if (this.at(id)) {
             return undefined
         }
@@ -14,13 +14,14 @@ export class TextLabelMpFactory {
         return label
     }
 
-    static destroy(label: TextLabelMp) {
-        const deleted = this.pool.delete(label.id)
+    destroy(label: TextLabelMp) {
+        this.pool.delete(label.id)
         label.exists = false
-        return deleted
     }
 
-    static at(id: number) {
+    at(id: number) {
         return this.pool.get(id)
     }
 }
+
+export const textLabelFactory = new TextLabelFactory()

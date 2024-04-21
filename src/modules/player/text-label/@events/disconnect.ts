@@ -1,8 +1,8 @@
 import { dispatcher } from "@/modules/dispatcher"
-import { textLabelsMp } from "@/singletons/text-labels"
+import { textLabelHandler } from "@/modules/text-label"
 
 dispatcher.on("playerDisconnect", (player) => {
     for (const label of player.textLabels.all) {
-        textLabelsMp.destroy(label)
+        textLabelHandler.destroy(label)
     }
 })

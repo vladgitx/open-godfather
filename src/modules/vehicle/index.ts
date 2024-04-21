@@ -1,4 +1,4 @@
-export { VehicleMp } from "./entity"
-export { VehicleMpHandler } from "./handler"
+export { type VehicleMp } from "./entity"
+export { vehicleHandler } from "./handler"
 
 export { TVehicleParamsType } from "./params"

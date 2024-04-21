@@ -1,10 +1,10 @@
 import { CONFIG } from "@/shared/config"
 import { SampNatives } from "@/wrapper"
 import { Vector3 } from "../vector3"
-import { VehicleMpFactory } from "./factory"
+import { vehicleFactory } from "./factory"
 import { VehicleMp } from "./entity"
 
-export class VehicleMpHandler {
+class VehicleHandler {
     new(
         model: number,
         position: Vector3,
@@ -19,16 +19,16 @@ export class VehicleMpHandler {
             return undefined
         }
 
-        return VehicleMpFactory.new(vehicleId, model, primaryColor, secondaryColor)
+        return vehicleFactory.new(vehicleId, model, primaryColor, secondaryColor)
     }
 
     destroy(vehicle: VehicleMp) {
         SampNatives.destroyVehicle(vehicle.id)
-        VehicleMpFactory.destroy(vehicle)
+        vehicleFactory.destroy(vehicle)
     }
 
     at(id: number) {
-        return VehicleMpFactory.at(id)
+        return vehicleFactory.at(id)
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {
@@ -51,6 +51,8 @@ export class VehicleMpHandler {
     }
 
     get all() {
-        return VehicleMpFactory.all
+        return vehicleFactory.all
     }
 }
+
+export const vehicleHandler = new VehicleHandler()

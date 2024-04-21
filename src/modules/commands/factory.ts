@@ -9,7 +9,8 @@ class CommandFactory {
             throw new Error(`Command ${name} cannot be an alias of itself`)
         }
 
-        if (this.at(name)) { // It throws a TypeError at runtime if the function is not an arrow function
+        if (this.at(name)) {
+            // It throws a TypeError at runtime if the function is not an arrow function
             throw new Error(`Command ${name} already exists`)
         }
 

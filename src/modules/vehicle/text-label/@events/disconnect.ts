@@ -1,8 +1,8 @@
 import { dispatcher } from "@/modules/dispatcher"
-import { textLabelsMp } from "@/singletons/text-labels"
+import { textLabelHandler } from "@/modules/text-label"
 
 dispatcher.on("vehicleDestroy", (vehicle) => {
     for (const label of vehicle.textLabels.all) {
-        textLabelsMp.destroy(label)
+        textLabelHandler.destroy(label)
     }
 })

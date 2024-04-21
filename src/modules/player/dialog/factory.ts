@@ -1,11 +1,12 @@
 import { PlayerMp } from "../instance"
-import { TDialogResponse } from "./@internal/types"
+import { DialogResponse } from "./@types/response"
 
-export class PlayerDialogFactory {
-    static promises = new Map<number, (result: TDialogResponse) => void>()
+class PlayerDialogFactory {
+    private promises = new Map<number, (result: DialogResponse | undefined) => void>()
 
-    static async new(player: PlayerMp): Promise<TDialogResponse> {
+    async new(player: PlayerMp): Promise<DialogResponse | undefined> {
         const existing = this.promises.get(player.id)
+
         if (existing) {
             existing(undefined)
         }
@@ -15,8 +16,9 @@ export class PlayerDialogFactory {
         })
     }
 
-    static destroy(player: PlayerMp, response: TDialogResponse) {
+    destroy(player: PlayerMp, response: DialogResponse | undefined) {
         const existing = this.promises.get(player.id)
+
         if (existing) {
             existing(response)
         }
@@ -24,3 +26,5 @@ export class PlayerDialogFactory {
         this.promises.delete(player.id)
     }
 }
+
+export const playerDialogFactory = new PlayerDialogFactory()

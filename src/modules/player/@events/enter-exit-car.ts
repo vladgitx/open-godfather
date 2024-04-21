@@ -1,8 +1,7 @@
 import { PlayerMp } from ".."
 import { SampNatives } from "@/wrapper"
 import { PlayerStatesEnum, VehicleSeatsEnum } from "@/shared/enums"
-import { VehicleMp } from "../../vehicle"
-import { vehiclesMp } from "@/singletons/vehicles"
+import { VehicleMp, vehicleHandler } from "../../vehicle"
 import { dispatcher } from "@/modules/dispatcher"
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
@@ -29,7 +28,7 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
         }
 
         player.deleteVariable("internal::lastVehicleId")
-        dispatcher.emit("playerExitVehicle", player, vehiclesMp.at(lastVehicleId))
+        dispatcher.emit("playerExitVehicle", player, vehicleHandler.at(lastVehicleId))
     }
 })
 

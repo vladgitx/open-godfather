@@ -2,13 +2,12 @@ import { CONFIG } from "@/shared/config"
 import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums"
 import { SampNatives } from "@/wrapper"
 import { Vector3 } from "../vector3"
-import { VehicleMp } from "../vehicle"
+import { VehicleMp, vehicleHandler } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
 import { Entity } from "../entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
-import { vehiclesMp } from "@/singletons/vehicles"
 import { PlayerTextLabels } from "./text-label"
 import { PlayerAttachedObjects } from "./attached-objects"
 
@@ -229,7 +228,7 @@ export class PlayerMp extends Entity {
         if (vehicleId === undefined) {
             return undefined
         }
-        return vehiclesMp.at(vehicleId)
+        return vehicleHandler.at(vehicleId)
     }
 
     get vehicleSeat() {

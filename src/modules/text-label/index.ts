@@ -1,2 +1,2 @@
-export { TextLabelMp } from "./instance"
-export { TextLabelMpHandler } from "./handler"
+export { type TextLabelMp } from "./instance"
+export { textLabelHandler } from "./handler"
