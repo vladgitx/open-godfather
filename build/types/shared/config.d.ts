@@ -1,5 +1,5 @@
 import { Vector3 } from "../modules/vector3";
-import { TVehicleParamsType } from "../modules/vehicle";
+import { type VehicleParamsType } from "../modules/vehicle";
 export declare const CONFIG: {
     entity: {
         invalidId: number;
@@ -23,7 +23,7 @@ export declare const CONFIG: {
         secondaryColor: number;
         respawnDelay: number;
         siren: boolean;
-        params: TVehicleParamsType;
+        params: VehicleParamsType;
     };
     message: {
         color: string;

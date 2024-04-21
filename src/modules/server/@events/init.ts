@@ -1,6 +1,6 @@
 import { dispatcher } from "@/modules/dispatcher"
-import { SampEvents } from "@/wrapper"
+import { nativeEvents } from "@/wrapper"
 
-SampEvents.onGameModeInit(() => {
+nativeEvents.onGameModeInit(() => {
     dispatcher.emit("init")
 })

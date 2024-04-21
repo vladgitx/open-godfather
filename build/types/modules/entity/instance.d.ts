@@ -4,8 +4,8 @@ export declare class Entity {
     private cleanupCallbacks;
     constructor(id: number);
     onCleanup(callback: () => void): void;
-    setVariable(name: string, value: any): void;
-    getVariable(name: string): any;
+    setVariable(name: string, value: unknown): void;
+    getVariable(name: string): unknown;
     deleteVariable(name: string): boolean;
     set exists(value: false);
     get exists(): boolean;

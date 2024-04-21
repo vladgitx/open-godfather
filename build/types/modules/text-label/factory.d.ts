@@ -1,7 +1,9 @@
 import { TextLabelMp } from "./instance";
-export declare class TextLabelMpFactory {
-    private static pool;
-    static new(id: number, text: string, color: string): TextLabelMp | undefined;
-    static destroy(label: TextLabelMp): boolean;
-    static at(id: number): TextLabelMp | undefined;
+declare class TextLabelFactory {
+    private pool;
+    new(id: number, text: string, color: string): TextLabelMp | undefined;
+    destroy(label: TextLabelMp): void;
+    at(id: number): TextLabelMp | undefined;
 }
+export declare const textLabelFactory: TextLabelFactory;
+export {};

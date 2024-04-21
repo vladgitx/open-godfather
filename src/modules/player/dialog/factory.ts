@@ -1,5 +1,5 @@
-import { PlayerMp } from "../instance"
-import { DialogResponse } from "./@types/response"
+import { type PlayerMp } from "../instance"
+import type { DialogResponse } from "./@types/response"
 
 class PlayerDialogFactory {
     private promises = new Map<number, (result: DialogResponse | undefined) => void>()

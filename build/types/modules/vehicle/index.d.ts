@@ -1,3 +1,3 @@
-export { VehicleMp } from "./entity";
-export { VehicleMpHandler } from "./handler";
-export { TVehicleParamsType } from "./params";
+export { type VehicleMp } from "./entity";
+export { vehicleHandler } from "./handler";
+export { VehicleParamsType } from "./params";

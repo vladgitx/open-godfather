@@ -1,6 +1,6 @@
-import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums";
-import { Vector3 } from "../vector3";
-import { VehicleMp } from "../vehicle";
+import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums";
+import { type Vector3 } from "../vector3";
+import { type VehicleMp } from "../vehicle";
 import { PlayerAnimations } from "./animations";
 import { PlayerDialog } from "./dialog";
 import { PlayerWeapons } from "./weapons";

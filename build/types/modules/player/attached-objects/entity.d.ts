@@ -1,6 +1,6 @@
-import { PlayerBonesEnum } from "@/shared/enums";
+import { type PlayerBonesEnum } from "@/shared/enums";
 import { Entity } from "../../entity";
-import { Vector3 } from "../../vector3";
+import { type Vector3 } from "../../vector3";
 export declare class PlayerAttachedObject extends Entity {
     readonly model: number;
     readonly bone: PlayerBonesEnum;

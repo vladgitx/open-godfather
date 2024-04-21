@@ -1,5 +1,5 @@
-import { WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums";
-import { PlayerMp } from "../instance";
+import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums";
+import { type PlayerMp } from "../instance";
 export declare class PlayerWeapons {
     private player;
     constructor(player: PlayerMp);

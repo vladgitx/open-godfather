@@ -1,5 +1,5 @@
-import { SampNatives } from "@/wrapper"
-import { PlayerMp } from "../instance"
+import { sampNatives } from "@/wrapper"
+import { type PlayerMp } from "../instance"
 
 export class PlayerAnimations {
     constructor(private player: PlayerMp) {}
@@ -15,14 +15,14 @@ export class PlayerAnimations {
         time: number,
         forceSync = true,
     ) {
-        return SampNatives.applyAnimation(this.player.id, library, name, speed, loop, lockX, lockY, freeze, time, forceSync)
+        sampNatives.applyAnimation(this.player.id, library, name, speed, loop, lockX, lockY, freeze, time, forceSync)
     }
 
     clear() {
-        return SampNatives.clearAnimations(this.player.id, true)
+        sampNatives.clearAnimations(this.player.id, true)
     }
 
     get currentIndex() {
-        return SampNatives.getPlayerAnimationIndex(this.player.id)
+        return sampNatives.getPlayerAnimationIndex(this.player.id)
     }
 }

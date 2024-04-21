@@ -1,8 +1,8 @@
-import { SampNatives } from "@/wrapper"
+import { sampNatives } from "@/wrapper"
 import { CONFIG } from "@/shared/config"
 import { playerFactory } from "./factory"
-import { Vector3 } from "../vector3"
-import { PlayerMp } from "."
+import { type Vector3 } from "../vector3"
+import { type PlayerMp } from "."
 
 class PlayerHandler {
     at(id: number) {
@@ -10,7 +10,7 @@ class PlayerHandler {
     }
 
     broadcast(message: string, color = CONFIG.message.color) {
-        SampNatives.sendClientMessageToAll(color, message)
+        sampNatives.sendClientMessageToAll(color, message)
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {

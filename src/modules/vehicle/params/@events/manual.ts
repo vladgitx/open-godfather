@@ -1,3 +1,3 @@
-import { SampNatives } from "@/wrapper"
+import { sampNatives } from "@/wrapper"
 
-SampNatives.manualVehicleEngineAndLights()
+sampNatives.manualVehicleEngineAndLights()

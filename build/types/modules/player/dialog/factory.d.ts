@@ -1,7 +1,9 @@
-import { PlayerMp } from "../instance";
-import { TDialogResponse } from "./@internal/types";
-export declare class PlayerDialogFactory {
-    static promises: Map<number, (result: TDialogResponse) => void>;
-    static new(player: PlayerMp): Promise<TDialogResponse>;
-    static destroy(player: PlayerMp, response: TDialogResponse): void;
+import { type PlayerMp } from "../instance";
+import type { DialogResponse } from "./@types/response";
+declare class PlayerDialogFactory {
+    private promises;
+    new(player: PlayerMp): Promise<DialogResponse | undefined>;
+    destroy(player: PlayerMp, response: DialogResponse | undefined): void;
 }
+export declare const playerDialogFactory: PlayerDialogFactory;
+export {};

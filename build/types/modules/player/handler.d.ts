@@ -1,5 +1,5 @@
-import { Vector3 } from "../vector3";
-import { PlayerMp } from ".";
+import { type Vector3 } from "../vector3";
+import { type PlayerMp } from ".";
 declare class PlayerHandler {
     at(id: number): PlayerMp | undefined;
     broadcast(message: string, color?: string): void;

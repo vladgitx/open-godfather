@@ -1,6 +1,6 @@
-import { TextLabelMp } from "../../text-label";
-import { Vector3 } from "../../vector3";
-import { PlayerMp } from "../instance";
+import { type TextLabelMp } from "../../text-label";
+import { type Vector3 } from "../../vector3";
+import { type PlayerMp } from "../instance";
 export declare class PlayerTextLabels {
     private player;
     private labels;

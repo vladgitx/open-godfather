@@ -1,16 +1,18 @@
-import { PlayerMp } from "../player"
-import { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums"
-import { CommandMp } from "../commands"
-import { VehicleMp } from "../vehicle"
-import { Vector3 } from "../vector3"
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
+import { type PlayerMp } from "../player"
+import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums"
+import { type CommandMp } from "../commands"
+import { type VehicleMp } from "../vehicle"
+import { type Vector3 } from "../vector3"
 import EventEmitter from "events"
 
-type ServerEvents = {
+interface ServerEvents {
     init: []
     exit: []
 }
 
-type PlayerEvents = {
+interface PlayerEvents {
     playerConnect: [PlayerMp]
     playerDisconnect: [PlayerMp, KickReasonsEnum]
     playerCommand: [PlayerMp, string, CommandMp | undefined, () => void | Promise<void>]
@@ -27,7 +29,7 @@ type PlayerEvents = {
     playerShoot: [PlayerMp, WeaponsEnum, PlayerMp | VehicleMp | undefined, Vector3]
 }
 
-type VehicleEvents = {
+interface VehicleEvents {
     vehicleCreate: [VehicleMp]
     vehicleDestroy: [VehicleMp]
 }
@@ -36,51 +38,51 @@ type EventMap = ServerEvents & PlayerEvents & VehicleEvents
 
 class Dispatcher extends EventEmitter {
     emit<K extends keyof EventMap>(event: K, ...args: EventMap[K]): boolean {
-        return super.emit(event, ...(args as any[]))
+        return super.emit(event, ...(args as EventMap[K][]))
     }
 
     addListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.addListener(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.addListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     on<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.on(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.on(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     once<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.once(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.once(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     prependListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.prependListener(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.prependListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     prependOnceListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.prependOnceListener(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.prependOnceListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     removeListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.removeListener(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.removeListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     off<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.off(event, listener as (...args: any[]) => void | Promise<void>)
+        return super.off(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
     }
 
     removeAllListeners<K extends keyof EventMap>(event?: K): this {
         return super.removeAllListeners(event)
     }
 
-    listeners<K extends keyof EventMap>(event: K): Function[] {
+    listeners<K extends keyof EventMap>(event: K) {
         return super.listeners(event)
     }
 
-    rawListeners<K extends keyof EventMap>(event: K): Function[] {
+    rawListeners<K extends keyof EventMap>(event: K) {
         return super.rawListeners(event)
     }
 
-    eventNames(): Array<keyof EventMap> {
-        return super.eventNames() as Array<keyof EventMap>
+    eventNames(): (keyof EventMap)[] {
+        return super.eventNames() as (keyof EventMap)[]
     }
 
     listenerCount<K extends keyof EventMap>(event: K): number {

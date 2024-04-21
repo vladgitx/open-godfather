@@ -1,18 +1,18 @@
-import { SampEvents, SampNatives } from "@/wrapper"
+import { nativeEvents, sampNatives } from "@/wrapper"
 import { CONFIG } from "@/shared/config"
-import { BodyPartsEnum, HitTypesEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums"
+import { type BodyPartsEnum, HitTypesEnum, type PlayerStatesEnum, type WeaponsEnum } from "@/shared/enums"
 import { Vector3 } from "../../vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../handler"
 import { vehicleHandler } from "@/modules/vehicle"
 
-SampEvents.onPlayerSpawn((playerId: number) => {
+nativeEvents.onPlayerSpawn((playerId: number) => {
     const player = playerHandler.at(playerId)
     if (player === undefined) {
         return
     }
 
-    SampNatives.setPlayerTeam(playerId, CONFIG.player.team)
+    sampNatives.setPlayerTeam(playerId, CONFIG.player.team)
 
     if (player.getVariable("internal::firstSpawn") === undefined) {
         player.setVariable("internal::firstSpawn", true)
@@ -22,14 +22,15 @@ SampEvents.onPlayerSpawn((playerId: number) => {
     dispatcher.emit("playerSpawn", player)
 })
 
-SampEvents.onPlayerRequestClass((playerId: number, classId: number) => {
+nativeEvents.onPlayerRequestClass((playerId: number) => {
     const player = playerHandler.at(playerId)
+
     if (player !== undefined) {
         player.spawn()
     }
 })
 
-SampEvents.onPlayerText((playerId: number, text: string) => {
+nativeEvents.onPlayerText((playerId: number, text: string) => {
     const player = playerHandler.at(playerId)
     if (player !== undefined) {
         dispatcher.emit("playerText", player, text)
@@ -38,14 +39,14 @@ SampEvents.onPlayerText((playerId: number, text: string) => {
     return 0
 })
 
-SampEvents.onPlayerStateChange((playerId: number, newState: PlayerStatesEnum, oldState: PlayerStatesEnum) => {
+nativeEvents.onPlayerStateChange((playerId: number, newState: PlayerStatesEnum, oldState: PlayerStatesEnum) => {
     const player = playerHandler.at(playerId)
     if (player !== undefined) {
         dispatcher.emit("playerStateChange", player, newState, oldState)
     }
 })
 
-SampEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenger: boolean) => {
+nativeEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenger: boolean) => {
     const player = playerHandler.at(playerId)
     const vehicle = vehicleHandler.at(vehicleId)
 
@@ -54,7 +55,7 @@ SampEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenge
     }
 })
 
-SampEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
+nativeEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
     const player = playerHandler.at(playerId)
     const vehicle = vehicleHandler.at(vehicleId)
 
@@ -63,21 +64,21 @@ SampEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
     }
 })
 
-SampEvents.onPlayerDeath((playerId: number, killerId: number, weapon: WeaponsEnum) => {
+nativeEvents.onPlayerDeath((playerId: number, killerId: number, weapon: WeaponsEnum) => {
     const player = playerHandler.at(playerId)
     if (player) {
         dispatcher.emit("playerDeath", player, playerHandler.at(killerId), weapon)
     }
 })
 
-SampEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: number, weapon: WeaponsEnum, bodyPart: BodyPartsEnum) => {
+nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: number, weapon: WeaponsEnum, bodyPart: BodyPartsEnum) => {
     const player = playerHandler.at(playerId)
     if (player) {
         dispatcher.emit("playerDamage", player, playerHandler.at(issuerId), amount, weapon, bodyPart)
     }
 })
 
-SampEvents.onPlayerWeaponShot(
+nativeEvents.onPlayerWeaponShot(
     (playerId: number, weapon: WeaponsEnum, hitType: HitTypesEnum, hitId: number, fX: number, fY: number, fZ: number) => {
         const player = playerHandler.at(playerId)
         if (player) {

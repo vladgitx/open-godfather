@@ -1,4 +1,4 @@
-import { VehicleMp } from "..";
+import { type VehicleMp } from "..";
 export declare class VehicleParams {
     private vehicle;
     private _engine;

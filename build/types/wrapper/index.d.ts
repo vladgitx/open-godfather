@@ -1,2 +1,2 @@
-export { SampNatives } from "./natives";
-export { SampEvents } from "./events";
+export { sampNatives } from "./natives";
+export { nativeEvents } from "./events";

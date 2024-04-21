@@ -1,4 +1,4 @@
-export type TVehicleParamsType = {
+export interface VehicleParamsType {
     engine: "on" | "off";
     lights: "on" | "off";
     alarm: "on" | "off";
@@ -6,4 +6,4 @@ export type TVehicleParamsType = {
     bonnet: "closed" | "open";
     boot: "closed" | "open";
     objective: "on" | "off";
-};
+}

@@ -1,4 +1,4 @@
-import { CommandCallback } from "./@types/callback"
+import { type CommandCallback } from "./@types/callback"
 
 export class CommandMp {
     constructor(

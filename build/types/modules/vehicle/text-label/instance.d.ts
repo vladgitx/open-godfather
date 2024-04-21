@@ -1,6 +1,6 @@
-import { TextLabelMp } from "../../text-label";
-import { Vector3 } from "../../vector3";
-import { VehicleMp } from "../entity";
+import { type TextLabelMp } from "../../text-label";
+import { type Vector3 } from "../../vector3";
+import { type VehicleMp } from "../entity";
 export declare class VehicleTextLabels {
     private vehicle;
     private labels;

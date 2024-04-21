@@ -1,9 +1,9 @@
-import { SampEvents } from "@/wrapper"
+import { nativeEvents } from "@/wrapper"
 import { commandFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "@/modules/player"
 
-SampEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
+nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
     const player = playerHandler.at(playerId)
 
     if (!player) {
@@ -24,6 +24,7 @@ SampEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
     if (command) {
         dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params))
     } else {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         dispatcher.emit("playerCommand", player, commandStr, undefined, () => {})
     }
 

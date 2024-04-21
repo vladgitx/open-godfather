@@ -1,9 +1,9 @@
-import { SampEvents } from "@/wrapper"
+import { nativeEvents } from "@/wrapper"
 import { playerDialogFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../../handler"
 
-SampEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam, inputText) => {
+nativeEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam, inputText) => {
     const player = playerHandler.at(playerId)
 
     if (player) {

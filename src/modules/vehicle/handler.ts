@@ -1,8 +1,8 @@
 import { CONFIG } from "@/shared/config"
-import { SampNatives } from "@/wrapper"
-import { Vector3 } from "../vector3"
+import { sampNatives } from "@/wrapper"
+import { type Vector3 } from "../vector3"
 import { vehicleFactory } from "./factory"
-import { VehicleMp } from "./entity"
+import { type VehicleMp } from "./entity"
 
 class VehicleHandler {
     new(
@@ -14,7 +14,7 @@ class VehicleHandler {
         respawnDelay = CONFIG.vehicle.respawnDelay,
         siren = CONFIG.vehicle.siren,
     ) {
-        const vehicleId = SampNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
+        const vehicleId = sampNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
         if (vehicleId === undefined) {
             return undefined
         }
@@ -23,7 +23,7 @@ class VehicleHandler {
     }
 
     destroy(vehicle: VehicleMp) {
-        SampNatives.destroyVehicle(vehicle.id)
+        sampNatives.destroyVehicle(vehicle.id)
         vehicleFactory.destroy(vehicle)
     }
 

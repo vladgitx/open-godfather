@@ -1,7 +1,7 @@
-import { PlayerMp } from ".."
-import { SampNatives } from "@/wrapper"
-import { PlayerStatesEnum, VehicleSeatsEnum } from "@/shared/enums"
-import { VehicleMp, vehicleHandler } from "../../vehicle"
+import { type PlayerMp } from ".."
+import { sampNatives } from "@/wrapper"
+import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/shared/enums"
+import { type VehicleMp, vehicleHandler } from "../../vehicle"
 import { dispatcher } from "@/modules/dispatcher"
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
@@ -22,7 +22,8 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
         newState !== PlayerStatesEnum.Passenger &&
         newState !== PlayerStatesEnum.Driver
     ) {
-        const lastVehicleId = player.getVariable("internal::lastVehicleId")
+        const lastVehicleId = player.getVariable("internal::lastVehicleId") as number | undefined
+
         if (lastVehicleId === undefined) {
             return
         }
@@ -35,12 +36,12 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
 export function putInVehicleWithEvent(player: PlayerMp, vehicle: VehicleMp, seat: VehicleSeatsEnum) {
     const oldVehicle = player.vehicle
     if (!oldVehicle || oldVehicle === vehicle) {
-        return SampNatives.putPlayerInVehicle(player.id, vehicle.id, seat)
+        return sampNatives.putPlayerInVehicle(player.id, vehicle.id, seat)
     }
 
     dispatcher.emit("playerExitVehicle", player, oldVehicle)
 
-    SampNatives.putPlayerInVehicle(player.id, vehicle.id, seat)
+    sampNatives.putPlayerInVehicle(player.id, vehicle.id, seat)
 
     dispatcher.emit("playerEnterVehicle", player, vehicle)
 

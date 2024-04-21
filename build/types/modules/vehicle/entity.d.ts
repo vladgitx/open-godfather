@@ -1,6 +1,6 @@
-import { Vector3 } from "../vector3";
+import { type Vector3 } from "../vector3";
 import { Entity } from "../entity";
-import { PlayerMp } from "../player";
+import { type PlayerMp } from "../player";
 import { VehicleParams } from "./params";
 import { VehicleTextLabels } from "./text-label";
 export declare class VehicleMp extends Entity {

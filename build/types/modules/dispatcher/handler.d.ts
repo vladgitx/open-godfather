@@ -1,15 +1,15 @@
 /// <reference types="@types/node" />
-import { PlayerMp } from "../player";
-import { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums";
-import { CommandMp } from "../commands";
-import { VehicleMp } from "../vehicle";
-import { Vector3 } from "../vector3";
+import { type PlayerMp } from "../player";
+import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums";
+import { type CommandMp } from "../commands";
+import { type VehicleMp } from "../vehicle";
+import { type Vector3 } from "../vector3";
 import EventEmitter from "events";
-type ServerEvents = {
+interface ServerEvents {
     init: [];
     exit: [];
-};
-type PlayerEvents = {
+}
+interface PlayerEvents {
     playerConnect: [PlayerMp];
     playerDisconnect: [PlayerMp, KickReasonsEnum];
     playerCommand: [PlayerMp, string, CommandMp | undefined, () => void | Promise<void>];
@@ -24,11 +24,11 @@ type PlayerEvents = {
     playerDamage: [PlayerMp, PlayerMp | undefined, number, WeaponsEnum, BodyPartsEnum];
     playerDeath: [PlayerMp, PlayerMp | undefined, WeaponsEnum];
     playerShoot: [PlayerMp, WeaponsEnum, PlayerMp | VehicleMp | undefined, Vector3];
-};
-type VehicleEvents = {
+}
+interface VehicleEvents {
     vehicleCreate: [VehicleMp];
     vehicleDestroy: [VehicleMp];
-};
+}
 type EventMap = ServerEvents & PlayerEvents & VehicleEvents;
 declare class Dispatcher extends EventEmitter {
     emit<K extends keyof EventMap>(event: K, ...args: EventMap[K]): boolean;
@@ -42,7 +42,7 @@ declare class Dispatcher extends EventEmitter {
     removeAllListeners<K extends keyof EventMap>(event?: K): this;
     listeners<K extends keyof EventMap>(event: K): Function[];
     rawListeners<K extends keyof EventMap>(event: K): Function[];
-    eventNames(): Array<keyof EventMap>;
+    eventNames(): (keyof EventMap)[];
     listenerCount<K extends keyof EventMap>(event: K): number;
     getMaxListeners(): number;
     setMaxListeners(n: number): this;

@@ -3,7 +3,7 @@ export class Vector3 {
     y: number
     z: number
 
-    constructor(x: number = 0, y: number = 0, z: number = 0) {
+    constructor(x = 0, y = 0, z = 0) {
         this.x = x
         this.y = y
         this.z = z
@@ -52,6 +52,6 @@ export class Vector3 {
         const newX = this.x + dx
         const newY = this.y + dy
 
-        return new Vector3(newX, newY, z != undefined ? z : this.z)
+        return new Vector3(newX, newY, z ?? this.z)
     }
 }

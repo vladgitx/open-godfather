@@ -1,13 +1,13 @@
-export type ListDialogResponse = {
+export interface ListDialogResponse {
     action: boolean
     item: number
 }
 
-export type MessageDialogResponse = {
+export interface MessageDialogResponse {
     action: boolean
 }
 
-export type InputDialogResponse = {
+export interface InputDialogResponse {
     action: boolean
     input: string
 }

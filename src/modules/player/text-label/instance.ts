@@ -1,7 +1,7 @@
-import { SampNatives } from "@/wrapper"
-import { TextLabelMp } from "../../text-label"
-import { Vector3 } from "../../vector3"
-import { PlayerMp } from "../instance"
+import { sampNatives } from "@/wrapper"
+import { type TextLabelMp } from "../../text-label"
+import { type Vector3 } from "../../vector3"
+import { type PlayerMp } from "../instance"
 
 export class PlayerTextLabels {
     private labels = new Set<TextLabelMp>()
@@ -13,7 +13,7 @@ export class PlayerTextLabels {
             return false
         }
 
-        if (!SampNatives.attach3DTextLabelToPlayer(label.id, this.player.id, offset.x, offset.y, offset.z)) {
+        if (!sampNatives.attach3DTextLabelToPlayer(label.id, this.player.id, offset.x, offset.y, offset.z)) {
             return false
         }
 

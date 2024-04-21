@@ -1,6 +1,6 @@
-import { PlayerBonesEnum } from "@/shared/enums";
+import { type PlayerBonesEnum } from "@/shared/enums";
 import { Vector3 } from "../../vector3";
-import { PlayerMp } from "../instance";
+import { type PlayerMp } from "../instance";
 import { PlayerAttachedObject } from "./entity";
 export declare class PlayerAttachedObjects {
     private player;

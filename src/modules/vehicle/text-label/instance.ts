@@ -1,7 +1,7 @@
-import { SampNatives } from "@/wrapper"
-import { TextLabelMp } from "../../text-label"
-import { Vector3 } from "../../vector3"
-import { VehicleMp } from "../entity"
+import { sampNatives } from "@/wrapper"
+import { type TextLabelMp } from "../../text-label"
+import { type Vector3 } from "../../vector3"
+import { type VehicleMp } from "../entity"
 
 export class VehicleTextLabels {
     private labels = new Set<TextLabelMp>()
@@ -13,7 +13,7 @@ export class VehicleTextLabels {
             return false
         }
 
-        if (!SampNatives.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
+        if (!sampNatives.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
             return false
         }
 

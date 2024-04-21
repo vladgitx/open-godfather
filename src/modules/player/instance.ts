@@ -1,8 +1,8 @@
 import { CONFIG } from "@/shared/config"
-import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums"
-import { SampNatives } from "@/wrapper"
-import { Vector3 } from "../vector3"
-import { VehicleMp, vehicleHandler } from "../vehicle"
+import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums"
+import { sampNatives } from "@/wrapper"
+import { type Vector3 } from "../vector3"
+import { type VehicleMp, vehicleHandler } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
@@ -18,7 +18,7 @@ export class PlayerMp extends Entity {
     readonly textLabels = new PlayerTextLabels(this)
     readonly attachedObjects = new PlayerAttachedObjects(this)
 
-    private _name = SampNatives.getPlayerName(this.id)
+    private _name = sampNatives.getPlayerName(this.id)
     private _color = CONFIG.player.color
     private _cash = CONFIG.player.cash
     private _skin = CONFIG.player.skin
@@ -27,16 +27,16 @@ export class PlayerMp extends Entity {
     constructor(id: number) {
         super(id)
 
-        SampNatives.setPlayerColor(this.id, this._color)
-        SampNatives.givePlayerMoney(this.id, this._cash)
-        SampNatives.setPlayerSkin(this.id, this._skin)
-        SampNatives.setPlayerTeam(this.id, CONFIG.player.team)
+        sampNatives.setPlayerColor(this.id, this._color)
+        sampNatives.givePlayerMoney(this.id, this._cash)
+        sampNatives.setPlayerSkin(this.id, this._skin)
+        sampNatives.setPlayerTeam(this.id, CONFIG.player.team)
 
-        SampNatives.togglePlayerSpectating(this.id, this._spectating)
+        sampNatives.togglePlayerSpectating(this.id, this._spectating)
     }
 
     sendMessage(message: string, color = CONFIG.message.color) {
-        return SampNatives.sendClientMessage(this.id, color, message)
+        sampNatives.sendClientMessage(this.id, color, message)
     }
 
     spawn(
@@ -48,7 +48,7 @@ export class PlayerMp extends Entity {
         if (!this.spectating) {
             if (this.state === PlayerStatesEnum.Wasted) {
                 // If in class selection
-                SampNatives.spawnPlayer(this.id)
+                sampNatives.spawnPlayer(this.id)
             }
             return
         }
@@ -56,24 +56,25 @@ export class PlayerMp extends Entity {
         this.world = world
         this.interior = interior
 
-        SampNatives.setSpawnInfo(this.id, CONFIG.player.team, this.skin, position, rotation)
+        sampNatives.setSpawnInfo(this.id, CONFIG.player.team, this.skin, position, rotation)
 
         this.spectating = false
     }
 
     kick(delay = 10) {
         if (delay <= 0) {
-            return SampNatives.kick(this.id)
+            sampNatives.kick(this.id)
+            return
         }
 
         setTimeout(() => {
-            SampNatives.kick(this.id)
+            sampNatives.kick(this.id)
         }, delay)
     }
 
     set spectating(spectating: boolean) {
         this._spectating = spectating
-        SampNatives.togglePlayerSpectating(this.id, spectating)
+        sampNatives.togglePlayerSpectating(this.id, spectating)
     }
 
     get spectating() {
@@ -81,24 +82,24 @@ export class PlayerMp extends Entity {
     }
 
     set position(position: Vector3) {
-        SampNatives.setPlayerPosition(this.id, position.x, position.y, position.z)
+        sampNatives.setPlayerPosition(this.id, position.x, position.y, position.z)
     }
 
     get position() {
-        return SampNatives.getPlayerPosition(this.id)
+        return sampNatives.getPlayerPosition(this.id)
     }
 
     set specialAction(action: SpecialActionsEnum) {
-        SampNatives.setPlayerSpecialAction(this.id, action)
+        sampNatives.setPlayerSpecialAction(this.id, action)
     }
 
     get specialAction() {
-        return SampNatives.getPlayerSpecialAction(this.id)
+        return sampNatives.getPlayerSpecialAction(this.id)
     }
 
     set skin(skin: number) {
         this._skin = skin
-        SampNatives.setPlayerSkin(this.id, skin)
+        sampNatives.setPlayerSkin(this.id, skin)
     }
 
     get skin() {
@@ -106,16 +107,16 @@ export class PlayerMp extends Entity {
     }
 
     set rotation(rotation: number) {
-        SampNatives.setPlayerRotation(this.id, rotation)
+        sampNatives.setPlayerRotation(this.id, rotation)
     }
 
     get rotation() {
-        return SampNatives.getPlayerRotation(this.id)
+        return sampNatives.getPlayerRotation(this.id)
     }
 
     set name(name: string) {
         this._name = name
-        SampNatives.setPlayerName(this.id, name)
+        sampNatives.setPlayerName(this.id, name)
     }
 
     get name() {
@@ -123,40 +124,40 @@ export class PlayerMp extends Entity {
     }
 
     set world(value: number) {
-        SampNatives.setPlayerVirtualWorld(this.id, value)
+        sampNatives.setPlayerVirtualWorld(this.id, value)
     }
 
     get world() {
-        return SampNatives.getPlayerVirtualWorld(this.id)
+        return sampNatives.getPlayerVirtualWorld(this.id)
     }
 
     set interior(value: number) {
-        SampNatives.setPlayerInterior(this.id, value)
+        sampNatives.setPlayerInterior(this.id, value)
     }
 
     get interior() {
-        return SampNatives.getPlayerInterior(this.id)
+        return sampNatives.getPlayerInterior(this.id)
     }
 
     set health(value: number) {
-        SampNatives.setPlayerHealth(this.id, value)
+        sampNatives.setPlayerHealth(this.id, value)
     }
 
     get health() {
-        return SampNatives.getPlayerHealth(this.id)
+        return sampNatives.getPlayerHealth(this.id)
     }
 
     set armour(value: number) {
-        SampNatives.setPlayerArmour(this.id, value)
+        sampNatives.setPlayerArmour(this.id, value)
     }
 
     get armour() {
-        return SampNatives.getPlayerArmour(this.id)
+        return sampNatives.getPlayerArmour(this.id)
     }
 
     set color(hex: string) {
         this._color = hex
-        SampNatives.setPlayerColor(this.id, hex)
+        sampNatives.setPlayerColor(this.id, hex)
     }
 
     get color() {
@@ -164,20 +165,20 @@ export class PlayerMp extends Entity {
     }
 
     get ip() {
-        return SampNatives.getPlayerIp(this.id)
+        return sampNatives.getPlayerIp(this.id)
     }
 
     get ping() {
-        return SampNatives.getPlayerPing(this.id)
+        return sampNatives.getPlayerPing(this.id)
     }
 
     get gpci() {
-        return SampNatives.gpci(this.id)
+        return sampNatives.gpci(this.id)
     }
 
     set cash(value: number) {
-        SampNatives.resetPlayerMoney(this.id)
-        SampNatives.givePlayerMoney(this.id, value)
+        sampNatives.resetPlayerMoney(this.id)
+        sampNatives.givePlayerMoney(this.id, value)
 
         this._cash = value
     }
@@ -187,15 +188,15 @@ export class PlayerMp extends Entity {
     }
 
     set score(value: number) {
-        SampNatives.setPlayerScore(this.id, value)
+        sampNatives.setPlayerScore(this.id, value)
     }
 
     get score() {
-        return SampNatives.getPlayerScore(this.id)
+        return sampNatives.getPlayerScore(this.id)
     }
 
     get cameraMode() {
-        return SampNatives.getPlayerCameraMode(this.id)
+        return sampNatives.getPlayerCameraMode(this.id)
     }
 
     setChatBubble(
@@ -204,7 +205,7 @@ export class PlayerMp extends Entity {
         drawDistance = CONFIG.chatBubble.distance,
         expireTime = CONFIG.chatBubble.expire,
     ) {
-        return SampNatives.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
+        return sampNatives.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
     }
 
     get spawned() {
@@ -216,7 +217,7 @@ export class PlayerMp extends Entity {
     }
 
     get state(): PlayerStatesEnum | undefined {
-        return SampNatives.getPlayerState(this.id)
+        return sampNatives.getPlayerState(this.id)
     }
 
     putIntoVehicle(vehicle: VehicleMp, seat = VehicleSeatsEnum.Driver) {
@@ -224,7 +225,7 @@ export class PlayerMp extends Entity {
     }
 
     get vehicle(): VehicleMp | undefined {
-        const vehicleId = SampNatives.getPlayerVehicleId(this.id)
+        const vehicleId = sampNatives.getPlayerVehicleId(this.id)
         if (vehicleId === undefined) {
             return undefined
         }
@@ -232,6 +233,6 @@ export class PlayerMp extends Entity {
     }
 
     get vehicleSeat() {
-        return SampNatives.getPlayerVehicleSeat(this.id)
+        return sampNatives.getPlayerVehicleSeat(this.id)
     }
 }

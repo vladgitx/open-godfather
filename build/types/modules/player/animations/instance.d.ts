@@ -1,4 +1,4 @@
-import { PlayerMp } from "../instance";
+import { type PlayerMp } from "../instance";
 export declare class PlayerAnimations {
     private player;
     constructor(player: PlayerMp);

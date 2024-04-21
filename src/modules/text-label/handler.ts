@@ -1,12 +1,10 @@
 import { CONFIG } from "@/shared/config"
-import { SampNatives } from "@/wrapper"
-import { Vector3 } from "../vector3"
+import { sampNatives } from "@/wrapper"
+import { type Vector3 } from "../vector3"
 import { textLabelFactory } from "./factory"
-import { TextLabelMp } from "./instance"
+import { type TextLabelMp } from "./instance"
 
 class TextLabelHandler {
-    constructor() {}
-
     new(
         text: string,
         color: string,
@@ -15,8 +13,8 @@ class TextLabelHandler {
         world = CONFIG.textLabel.world,
         testLos = CONFIG.textLabel.testLos,
     ) {
-        const labelId = SampNatives.create3DTextLabel(text, color, position.x, position.y, position.z, drawDistance, world, testLos)
-        
+        const labelId = sampNatives.create3DTextLabel(text, color, position.x, position.y, position.z, drawDistance, world, testLos)
+
         if (labelId === undefined) {
             return undefined
         }
@@ -25,11 +23,13 @@ class TextLabelHandler {
     }
 
     destroy(label: TextLabelMp) {
-        SampNatives.delete3DTextLabel(label.id)
-        return textLabelFactory.destroy(label)
+        sampNatives.delete3DTextLabel(label.id)
+        textLabelFactory.destroy(label)
     }
 
-    at = textLabelFactory.at
+    at(id: number) {
+        return textLabelFactory.at(id)
+    }
 }
 
 export const textLabelHandler = new TextLabelHandler()

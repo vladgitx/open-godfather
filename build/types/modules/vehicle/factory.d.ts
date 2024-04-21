@@ -1,8 +1,10 @@
 import { VehicleMp } from "./entity";
-export declare class VehicleMpFactory {
-    private static pool;
-    static new(vehicleId: number, model: number, primaryColor: number, secondaryColor: number): VehicleMp | undefined;
-    static destroy(vehicle: VehicleMp): boolean;
-    static at(id: number): VehicleMp | undefined;
-    static get all(): IterableIterator<VehicleMp>;
+declare class VehicleFactory {
+    private pool;
+    new(vehicleId: number, model: number, primaryColor: number, secondaryColor: number): VehicleMp | undefined;
+    destroy(vehicle: VehicleMp): void;
+    at(id: number): VehicleMp | undefined;
+    get all(): IterableIterator<VehicleMp>;
 }
+export declare const vehicleFactory: VehicleFactory;
+export {};

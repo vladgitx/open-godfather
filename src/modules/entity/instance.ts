@@ -1,7 +1,7 @@
 import { CONFIG } from "@/shared/config"
 
 export class Entity {
-    private variables = new Map<string, any>()
+    private variables = new Map<string, unknown>()
     private cleanupCallbacks: (() => void)[] = []
 
     constructor(public id: number) {}
@@ -10,7 +10,7 @@ export class Entity {
         this.cleanupCallbacks.push(callback)
     }
 
-    setVariable(name: string, value: any) {
+    setVariable(name: string, value: unknown) {
         this.variables.set(name, value)
     }
 
