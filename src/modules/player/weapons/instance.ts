@@ -1,5 +1,5 @@
-import { WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "../../../shared/enums"
-import { SampNatives } from "../../../wrapper"
+import { WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums"
+import { SampNatives } from "@/wrapper"
 import { PlayerMp } from "../instance"
 
 export class PlayerWeapons {

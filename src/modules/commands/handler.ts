@@ -1,11 +1,8 @@
-import { CommandMpFactory } from "./factory"
+import { commandFactory } from "./factory"
 
-export class CommandMpHandler {
-    constructor() {}
-
-    add = CommandMpFactory.new
-
-    get all() {
-        return CommandMpFactory.all
-    }
+class CommandHandler {
+    add = commandFactory.new
+    all = commandFactory.all
 }
+
+export const commandHandler = new CommandHandler()

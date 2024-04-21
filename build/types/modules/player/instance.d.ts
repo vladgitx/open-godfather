@@ -1,4 +1,4 @@
-import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "../../shared/enums";
+import { PlayerStatesEnum, SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums";
 import { Vector3 } from "../vector3";
 import { VehicleMp } from "../vehicle";
 import { PlayerAnimations } from "./animations";
@@ -51,7 +51,7 @@ export declare class PlayerMp extends Entity {
     get cash(): number;
     set score(value: number);
     get score(): number;
-    get cameraMode(): import("../../shared/enums").CameraModesEnum;
+    get cameraMode(): import("@/shared/enums").CameraModesEnum;
     setChatBubble(text: string, color?: string, drawDistance?: number, expireTime?: number): boolean;
     get spawned(): boolean | undefined;
     get state(): PlayerStatesEnum | undefined;

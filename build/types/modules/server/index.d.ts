@@ -1,1 +1,1 @@
-export { ServerMp } from "./instance";
+export { mpServer } from "./handler";

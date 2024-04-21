@@ -1,8 +1,10 @@
-import { TCommandCallback } from "./@types/callback";
+import { CommandCallback } from "./@types/callback";
 import { CommandMp } from "./instance";
-export declare class CommandMpFactory {
-    private static pool;
-    static new(name: string, aliases: string[], callback: TCommandCallback): CommandMp;
-    static at(name: string): CommandMp | undefined;
-    static get all(): IterableIterator<CommandMp>;
+declare class CommandFactory {
+    private pool;
+    new(name: string, aliases: string[], callback: CommandCallback): CommandMp;
+    at(name: string): CommandMp | undefined;
+    get all(): IterableIterator<CommandMp>;
 }
+export declare const commandFactory: CommandFactory;
+export {};

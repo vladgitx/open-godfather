@@ -1,25 +1,25 @@
-import { TCommandCallback } from "./@types/callback"
+import { CommandCallback } from "./@types/callback"
 import { CommandMp } from "./instance"
 
-export class CommandMpFactory {
-    private static pool = new Map<string, CommandMp>()
+class CommandFactory {
+    private pool = new Map<string, CommandMp>()
 
-    static new(name: string, aliases: string[], callback: TCommandCallback) {
+    new(name: string, aliases: string[], callback: CommandCallback) {
         if (aliases.includes(name)) {
             throw new Error(`Command ${name} cannot be an alias of itself`)
         }
 
-        if (CommandMpFactory.at(name)) {
+        if (this.at(name)) {
             throw new Error(`Command ${name} already exists`)
         }
 
         for (const alias of aliases) {
-            if (CommandMpFactory.at(alias)) {
+            if (this.at(alias)) {
                 throw new Error(`You're using alias ${alias} for command ${name}, but that alias already exists as another command`)
             }
         }
 
-        for (const command of CommandMpFactory.all) {
+        for (const command of this.all) {
             if (command.aliases.includes(name)) {
                 throw new Error(`Command name ${name} is used as an alias for command ${command.name}`)
             }
@@ -30,20 +30,22 @@ export class CommandMpFactory {
         }
 
         const command = new CommandMp(name, aliases, callback)
-        CommandMpFactory.pool.set(name, command)
+        this.pool.set(name, command)
 
         for (const alias of aliases) {
-            CommandMpFactory.pool.set(alias, command)
+            this.pool.set(alias, command)
         }
 
         return command
     }
 
-    static at(name: string) {
-        return CommandMpFactory.pool.get(name)
+    at(name: string) {
+        return this.pool.get(name)
     }
 
-    static get all() {
-        return CommandMpFactory.pool.values()
+    get all() {
+        return this.pool.values()
     }
 }
+
+export const commandFactory = new CommandFactory()

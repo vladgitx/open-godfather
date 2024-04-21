@@ -1,6 +1,6 @@
 import { VehicleMp } from ".."
-import { SampNatives } from "../../../wrapper"
-import { CONFIG } from "../../../shared/config"
+import { SampNatives } from "@/wrapper"
+import { CONFIG } from "@/shared/config"
 
 export class VehicleParams {
     private _engine: "on" | "off" = CONFIG.vehicle.params.engine

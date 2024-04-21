@@ -1,4 +1,4 @@
-import { PlayerBonesEnum } from "../../../shared/enums";
+import { PlayerBonesEnum } from "@/shared/enums";
 import { Entity } from "../../entity";
 import { Vector3 } from "../../vector3";
 export declare class PlayerAttachedObject extends Entity {

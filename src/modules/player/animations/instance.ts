@@ -1,4 +1,4 @@
-import { SampNatives } from "../../../wrapper"
+import { SampNatives } from "@/wrapper"
 import { PlayerMp } from "../instance"
 
 export class PlayerAnimations {

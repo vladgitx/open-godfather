@@ -1,4 +1,4 @@
-import { PlayerBonesEnum } from "../../../shared/enums";
+import { PlayerBonesEnum } from "@/shared/enums";
 import { Vector3 } from "../../vector3";
 import { PlayerMp } from "../instance";
 import { PlayerAttachedObject } from "./entity";

@@ -1,4 +1,4 @@
-import { WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "../../../shared/enums";
+import { WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums";
 import { PlayerMp } from "../instance";
 export declare class PlayerWeapons {
     private player;

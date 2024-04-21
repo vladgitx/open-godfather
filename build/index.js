@@ -1,8 +1,8 @@
 'use strict';
 
-var stream = require('stream');
+var EventEmitter = require('events');
 
-class EventBus extends stream.EventEmitter {
+class Dispatcher extends EventEmitter {
     emit(event, ...args) {
         return super.emit(event, ...args);
     }
@@ -49,8 +49,7 @@ class EventBus extends stream.EventEmitter {
         return super.setMaxListeners(n);
     }
 }
-
-const eventsMp = new EventBus();
+const dispatcher = new Dispatcher();
 
 exports.WeaponsEnum = void 0;
 (function (WeaponsEnum) {
@@ -785,11 +784,11 @@ class SampEvents {
 }
 
 SampEvents.onGameModeInit(() => {
-    eventsMp.emit("init");
+    dispatcher.emit("init");
 });
 
 SampEvents.onGameModeExit(() => {
-    eventsMp.emit("exit");
+    dispatcher.emit("exit");
 });
 
 const CONFIG = {
@@ -1247,7 +1246,7 @@ class VehicleMpHandler {
 
 const vehiclesMp = new VehicleMpHandler();
 
-eventsMp.on("playerStateChange", (player, newState, oldState) => {
+dispatcher.on("playerStateChange", (player, newState, oldState) => {
     if ((newState === exports.PlayerStatesEnum.Passenger || newState === exports.PlayerStatesEnum.Driver) &&
         oldState !== exports.PlayerStatesEnum.Passenger &&
         oldState !== exports.PlayerStatesEnum.Driver) {
@@ -1256,7 +1255,7 @@ eventsMp.on("playerStateChange", (player, newState, oldState) => {
             return;
         }
         player.setVariable("internal::lastVehicleId", currentVehicle.id);
-        eventsMp.emit("playerEnterVehicle", player, currentVehicle);
+        dispatcher.emit("playerEnterVehicle", player, currentVehicle);
     }
     else if ((oldState === exports.PlayerStatesEnum.Passenger || oldState === exports.PlayerStatesEnum.Driver) &&
         newState !== exports.PlayerStatesEnum.Passenger &&
@@ -1266,7 +1265,7 @@ eventsMp.on("playerStateChange", (player, newState, oldState) => {
             return;
         }
         player.deleteVariable("internal::lastVehicleId");
-        eventsMp.emit("playerExitVehicle", player, vehiclesMp.at(lastVehicleId));
+        dispatcher.emit("playerExitVehicle", player, vehiclesMp.at(lastVehicleId));
     }
 });
 function putInVehicleWithEvent(player, vehicle, seat) {
@@ -1274,9 +1273,9 @@ function putInVehicleWithEvent(player, vehicle, seat) {
     if (!oldVehicle || oldVehicle === vehicle) {
         return SampNatives.putPlayerInVehicle(player.id, vehicle.id, seat);
     }
-    eventsMp.emit("playerExitVehicle", player, oldVehicle);
+    dispatcher.emit("playerExitVehicle", player, oldVehicle);
     SampNatives.putPlayerInVehicle(player.id, vehicle.id, seat);
-    eventsMp.emit("playerEnterVehicle", player, vehicle);
+    dispatcher.emit("playerEnterVehicle", player, vehicle);
     return true;
 }
 
@@ -1550,7 +1549,7 @@ SampEvents.onPlayerConnect((playerId) => {
         playerTimeoutIds.delete(playerId);
         const player = PlayerMpFactory.new(playerId);
         if (player) {
-            eventsMp.emit("playerConnect", player);
+            dispatcher.emit("playerConnect", player);
         }
     }, 1000);
     playerTimeoutIds.set(playerId, timeoutId);
@@ -1560,7 +1559,7 @@ SampEvents.onPlayerDisconnect((playerId, reason) => {
     playerTimeoutIds.delete(playerId);
     const player = PlayerMpFactory.at(playerId);
     if (player) {
-        eventsMp.emit("playerDisconnect", player, reason);
+        dispatcher.emit("playerDisconnect", player, reason);
         PlayerMpFactory.destroy(player);
     }
 });
@@ -1603,9 +1602,9 @@ SampEvents.onPlayerSpawn((playerId) => {
     SampNatives.setPlayerTeam(playerId, CONFIG.player.team);
     if (player.getVariable("internal::firstSpawn") === undefined) {
         player.setVariable("internal::firstSpawn", true);
-        eventsMp.emit("playerFirstSpawn", player);
+        dispatcher.emit("playerFirstSpawn", player);
     }
-    eventsMp.emit("playerSpawn", player);
+    dispatcher.emit("playerSpawn", player);
 });
 SampEvents.onPlayerRequestClass((playerId, classId) => {
     const player = playersMp.at(playerId);
@@ -1616,47 +1615,47 @@ SampEvents.onPlayerRequestClass((playerId, classId) => {
 SampEvents.onPlayerText((playerId, text) => {
     const player = playersMp.at(playerId);
     if (player !== undefined) {
-        eventsMp.emit("playerText", player, text);
+        dispatcher.emit("playerText", player, text);
     }
     return 0;
 });
 SampEvents.onPlayerStateChange((playerId, newState, oldState) => {
     const player = playersMp.at(playerId);
     if (player !== undefined) {
-        eventsMp.emit("playerStateChange", player, newState, oldState);
+        dispatcher.emit("playerStateChange", player, newState, oldState);
     }
 });
 SampEvents.onPlayerEnterVehicle((playerId, vehicleId, asPassenger) => {
     const player = playersMp.at(playerId);
     const vehicle = vehiclesMp.at(vehicleId);
     if (player !== undefined && vehicle !== undefined) {
-        eventsMp.emit("playerStartEnterVehicle", player, vehicle, asPassenger);
+        dispatcher.emit("playerStartEnterVehicle", player, vehicle, asPassenger);
     }
 });
 SampEvents.onPlayerExitVehicle((playerId, vehicleId) => {
     const player = playersMp.at(playerId);
     const vehicle = vehiclesMp.at(vehicleId);
     if (player !== undefined && vehicle !== undefined) {
-        eventsMp.emit("playerStartExitVehicle", player, vehicle);
+        dispatcher.emit("playerStartExitVehicle", player, vehicle);
     }
 });
 SampEvents.onPlayerDeath((playerId, killerId, weapon) => {
     const player = playersMp.at(playerId);
     if (player) {
-        eventsMp.emit("playerDeath", player, playersMp.at(killerId), weapon);
+        dispatcher.emit("playerDeath", player, playersMp.at(killerId), weapon);
     }
 });
 SampEvents.onPlayerTakeDamage((playerId, issuerId, amount, weapon, bodyPart) => {
     const player = playersMp.at(playerId);
     if (player) {
-        eventsMp.emit("playerDamage", player, playersMp.at(issuerId), amount, weapon, bodyPart);
+        dispatcher.emit("playerDamage", player, playersMp.at(issuerId), amount, weapon, bodyPart);
     }
 });
 SampEvents.onPlayerWeaponShot((playerId, weapon, hitType, hitId, fX, fY, fZ) => {
     const player = playersMp.at(playerId);
     if (player) {
         const hitEntity = hitType === exports.HitTypesEnum.Player ? playersMp.at(hitId) : hitType === exports.HitTypesEnum.Vehicle ? vehiclesMp.at(hitId) : undefined;
-        eventsMp.emit("playerShoot", player, weapon, hitEntity, new Vector3(fX, fY, fZ));
+        dispatcher.emit("playerShoot", player, weapon, hitEntity, new Vector3(fX, fY, fZ));
     }
     return 1;
 });
@@ -1667,7 +1666,7 @@ SampEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam, i
         PlayerDialogFactory.destroy(player, { button: responseParam ? "main" : "second", item: listItemParam, input: inputText });
     }
 });
-eventsMp.on("playerDisconnect", (player) => {
+dispatcher.on("playerDisconnect", (player) => {
     PlayerDialogFactory.destroy(player, undefined);
 });
 
@@ -1727,25 +1726,25 @@ class TextLabelMpHandler {
 
 const textLabelsMp = new TextLabelMpHandler();
 
-eventsMp.on("playerDisconnect", (player) => {
+dispatcher.on("playerDisconnect", (player) => {
     for (const label of player.textLabels.all) {
         textLabelsMp.destroy(label);
     }
 });
 
-eventsMp.on("playerEnterVehicle", (player, vehicle) => {
+dispatcher.on("playerEnterVehicle", (player, vehicle) => {
     vehicle.occupants.add(player);
 });
-eventsMp.on("playerExitVehicle", (player, vehicle) => {
+dispatcher.on("playerExitVehicle", (player, vehicle) => {
     vehicle?.occupants.delete(player);
 });
-eventsMp.on("playerDisconnect", (player) => {
+dispatcher.on("playerDisconnect", (player) => {
     player.vehicle?.occupants.delete(player);
 });
 
 SampNatives.manualVehicleEngineAndLights();
 
-eventsMp.on("vehicleDestroy", (vehicle) => {
+dispatcher.on("vehicleDestroy", (vehicle) => {
     for (const label of vehicle.textLabels.all) {
         textLabelsMp.destroy(label);
     }
@@ -1759,20 +1758,23 @@ class CommandMp {
     }
 }
 
-class CommandMpFactory {
-    static new(name, aliases, callback) {
+class CommandFactory {
+    constructor() {
+        this.pool = new Map();
+    }
+    new(name, aliases, callback) {
         if (aliases.includes(name)) {
             throw new Error(`Command ${name} cannot be an alias of itself`);
         }
-        if (CommandMpFactory.at(name)) {
+        if (this.at(name)) {
             throw new Error(`Command ${name} already exists`);
         }
         for (const alias of aliases) {
-            if (CommandMpFactory.at(alias)) {
+            if (this.at(alias)) {
                 throw new Error(`You're using alias ${alias} for command ${name}, but that alias already exists as another command`);
             }
         }
-        for (const command of CommandMpFactory.all) {
+        for (const command of this.all) {
             if (command.aliases.includes(name)) {
                 throw new Error(`Command name ${name} is used as an alias for command ${command.name}`);
             }
@@ -1781,20 +1783,20 @@ class CommandMpFactory {
             }
         }
         const command = new CommandMp(name, aliases, callback);
-        CommandMpFactory.pool.set(name, command);
+        this.pool.set(name, command);
         for (const alias of aliases) {
-            CommandMpFactory.pool.set(alias, command);
+            this.pool.set(alias, command);
         }
         return command;
     }
-    static at(name) {
-        return CommandMpFactory.pool.get(name);
+    at(name) {
+        return this.pool.get(name);
     }
-    static get all() {
-        return CommandMpFactory.pool.values();
+    get all() {
+        return this.pool.values();
     }
 }
-CommandMpFactory.pool = new Map();
+const commandFactory = new CommandFactory();
 
 SampEvents.onPlayerCommandText((playerId, cmdText) => {
     const player = playersMp.at(playerId);
@@ -1807,17 +1809,17 @@ SampEvents.onPlayerCommandText((playerId, cmdText) => {
     if (commandStr === "/") {
         return 1;
     }
-    const command = CommandMpFactory.at(commandStr);
+    const command = commandFactory.at(commandStr);
     if (command) {
-        eventsMp.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params));
+        dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params));
     }
     else {
-        eventsMp.emit("playerCommand", player, commandStr, undefined, () => { });
+        dispatcher.emit("playerCommand", player, commandStr, undefined, () => { });
     }
     return 1;
 });
 
-class ServerMp {
+class MultiplayerServer {
     constructor() {
         this._name = "open gf server";
         this._language = "en";
@@ -1908,27 +1910,25 @@ class ServerMp {
         return SampNatives.getServerTickRate();
     }
 }
+const mpServer = new MultiplayerServer();
 
-const serverMp = new ServerMp();
-
-class CommandMpHandler {
+class CommandHandler {
     constructor() {
-        this.add = CommandMpFactory.new;
-    }
-    get all() {
-        return CommandMpFactory.all;
+        this.add = commandFactory.new;
+        this.all = commandFactory.all;
     }
 }
+const commandHandler = new CommandHandler();
 
-const commandsMp = new CommandMpHandler();
+var ogExport = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    Vector3: Vector3,
+    commands: commandHandler,
+    events: dispatcher,
+    players: playersMp,
+    server: mpServer,
+    textLabels: textLabelsMp,
+    vehicles: vehiclesMp
+});
 
-exports.og = void 0;
-(function (og) {
-    og.events = eventsMp;
-    og.server = serverMp;
-    og.players = playersMp;
-    og.vehicles = vehiclesMp;
-    og.commands = commandsMp;
-    og.textLabels = textLabelsMp;
-    og.Vector3 = Vector3;
-})(exports.og || (exports.og = {}));
+exports.og = ogExport;

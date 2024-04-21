@@ -1,4 +1,4 @@
-import { CONFIG } from "../../shared/config"
+import { CONFIG } from "@/shared/config"
 
 export class Entity {
     private variables = new Map<string, any>()

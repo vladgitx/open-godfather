@@ -1,3 +1,3 @@
-export { CommandMp } from "./instance"
-export { CommandMpHandler } from "./handler"
-export { TCommandCallback } from "./@types/callback"
+export { type CommandMp } from "./instance"
+export { commandHandler } from "./handler"
+export { CommandCallback } from "./@types/callback"

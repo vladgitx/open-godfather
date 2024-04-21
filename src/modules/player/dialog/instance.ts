@@ -1,5 +1,5 @@
-import { DialogStylesEnum } from "../../../shared/enums"
-import { SampNatives } from "../../../wrapper"
+import { DialogStylesEnum } from "@/shared/enums"
+import { SampNatives } from "@/wrapper"
 import { PlayerMp } from "../instance"
 import { TDialogResponse } from "./@internal/types"
 import { TInputDialogResponse, TListDialogResponse, TMessageDialogResponse } from "./@types/response"
