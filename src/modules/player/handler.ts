@@ -1,12 +1,12 @@
 import { SampNatives } from "@/wrapper"
 import { CONFIG } from "@/shared/config"
-import { PlayerMpFactory } from "./factory"
+import { playerFactory } from "./factory"
 import { Vector3 } from "../vector3"
 import { PlayerMp } from "."
 
-export class PlayerMpHandler {
+class PlayerHandler {
     at(id: number) {
-        return PlayerMpFactory.at(id)
+        return playerFactory.at(id)
     }
 
     broadcast(message: string, color = CONFIG.message.color) {
@@ -33,6 +33,8 @@ export class PlayerMpHandler {
     }
 
     get all() {
-        return PlayerMpFactory.all
+        return playerFactory.all
     }
 }
+
+export const playerHandler = new PlayerHandler()

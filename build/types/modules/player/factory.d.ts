@@ -1,8 +1,10 @@
 import { PlayerMp } from "./instance";
-export declare class PlayerMpFactory {
-    private static pool;
-    static new(id: number): PlayerMp | undefined;
-    static destroy(player: PlayerMp): boolean;
-    static at(id: number): PlayerMp | undefined;
-    static get all(): IterableIterator<PlayerMp>;
+declare class PlayerFactory {
+    private pool;
+    new(id: number): PlayerMp | undefined;
+    destroy(player: PlayerMp): void;
+    at(id: number): PlayerMp | undefined;
+    get all(): IterableIterator<PlayerMp>;
 }
+export declare const playerFactory: PlayerFactory;
+export {};

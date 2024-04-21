@@ -1,5 +1,5 @@
 import { SampEvents, SampNatives } from "@/wrapper"
-import { PlayerMpFactory } from "../factory"
+import { playerFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
 
 // TODO: find the actual issue and fix it
@@ -14,7 +14,7 @@ SampEvents.onPlayerConnect((playerId) => {
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId)
 
-        const player = PlayerMpFactory.new(playerId)
+        const player = playerFactory.new(playerId)
 
         if (player) {
             dispatcher.emit("playerConnect", player)
@@ -28,10 +28,10 @@ SampEvents.onPlayerDisconnect((playerId, reason) => {
     clearTimeout(playerTimeoutIds.get(playerId))
     playerTimeoutIds.delete(playerId)
 
-    const player = PlayerMpFactory.at(playerId)
+    const player = playerFactory.at(playerId)
 
     if (player) {
         dispatcher.emit("playerDisconnect", player, reason)
-        PlayerMpFactory.destroy(player)
+        playerFactory.destroy(player)
     }
 })

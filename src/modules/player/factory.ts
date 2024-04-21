@@ -1,9 +1,9 @@
 import { PlayerMp } from "./instance"
 
-export class PlayerMpFactory {
-    private static pool = new Map<number, PlayerMp>()
+class PlayerFactory {
+    private pool = new Map<number, PlayerMp>()
 
-    static new(id: number) {
+    new(id: number) {
         if (this.at(id)) {
             return undefined
         }
@@ -14,17 +14,18 @@ export class PlayerMpFactory {
         return player
     }
 
-    static destroy(player: PlayerMp) {
-        const deleted = this.pool.delete(player.id)
+    destroy(player: PlayerMp) {
+        this.pool.delete(player.id)
         player.exists = false
-        return deleted
     }
 
-    static at(id: number) {
+    at(id: number) {
         return this.pool.get(id)
     }
 
-    static get all() {
+    get all() {
         return this.pool.values()
     }
 }
+
+export const playerFactory = new PlayerFactory()

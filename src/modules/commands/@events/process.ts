@@ -1,10 +1,10 @@
-import { playersMp } from "@/singletons/players"
 import { SampEvents } from "@/wrapper"
 import { commandFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
+import { playerHandler } from "@/modules/player"
 
 SampEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
-    const player = playersMp.at(playerId)
+    const player = playerHandler.at(playerId)
 
     if (!player) {
         return 1
