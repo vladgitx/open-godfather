@@ -1,1 +1,0 @@
-export { PlayerTextLabels } from "./instance";

@@ -1,1 +1,0 @@
-export { PlayerDialog } from "./instance";

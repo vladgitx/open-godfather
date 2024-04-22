@@ -1,1 +1,0 @@
-export { dispatcher } from "./handler";
