@@ -1,51 +1,52 @@
 {
-  "name": "open-godfather",
-  "version": "1.0.0",
-  "description": "Node.js library for building open.mp scripts with the samp-node plugin.",
-  "main": "build/index.js",
-  "types": "build/types/index.d.ts",
-  "scripts": {
-    "format": "prettier --write --log-level silent 'src/**/*.{js,jsx,ts,tsx,mjs,json}'",
-    "lint": "npx eslint src/**/*.ts",
-    "build": "rollup -c",
-    "pre-commit": "npm run format && npm run lint && npm run build"
-  },
-  "keywords": [
-    "samp",
-    "samp-node",
-    "open.mp",
-    "open.mp node",
-    "omp-node",
-    "omp",
-    "open multiplayer"
-  ],
-  "author": "vladgitx",
-  "license": "ISC",
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@sa-mp/node": "^0.2.0",
-    "@types/node": "^20.5.7",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "prettier": "^3.2.4",
-    "rollup": "^4.9.5",
-    "rollup-plugin-delete": "^2.0.0",
-    "tslib": "^2.6.2",
-    "typescript": "^5.2.2",
-    "typescript-eslint": "^7.7.0"
-  },
-  "prettier": {
-    "$schema": "http://json.schemastore.org/prettierrc",
-    "singleQuote": false,
-    "trailingComma": "all",
-    "bracketSpacing": true,
-    "bracketSameLine": false,
-    "arrowParens": "always",
-    "semi": false,
-    "tabWidth": 4,
-    "useTabs": false,
-    "printWidth": 140
-  }
+    "name": "open-godfather",
+    "version": "1.0.0",
+    "description": "Node.js library for building open.mp scripts with the samp-node plugin.",
+    "main": "build/index.js",
+    "types": "build/types/index.d.ts",
+    "scripts": {
+        "format": "prettier -w --log-level silent '{,src/**/}*.{js,jsx,ts,tsx,mjs,json}'",
+        "lint": "npx eslint src/**/*.ts",
+        "build": "rollup -c",
+        "pre-commit": "npm run format && npm run lint && npm run build",
+        "prepare": "npm run build"
+    },
+    "keywords": [
+        "samp",
+        "samp-node",
+        "open.mp",
+        "open.mp node",
+        "omp-node",
+        "omp",
+        "open multiplayer"
+    ],
+    "author": "vladgitx",
+    "license": "ISC",
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@sa-mp/node": "^0.2.0",
+        "@types/node": "^20.5.7",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "prettier": "^3.2.4",
+        "rollup": "^4.9.5",
+        "rollup-plugin-delete": "^2.0.0",
+        "tslib": "^2.6.2",
+        "typescript": "^5.2.2",
+        "typescript-eslint": "^7.7.0"
+    },
+    "prettier": {
+        "$schema": "http://json.schemastore.org/prettierrc",
+        "singleQuote": false,
+        "trailingComma": "all",
+        "bracketSpacing": true,
+        "bracketSameLine": false,
+        "arrowParens": "always",
+        "semi": false,
+        "tabWidth": 4,
+        "useTabs": false,
+        "printWidth": 140
+    }
 }
