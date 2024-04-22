@@ -1,14 +1,16 @@
-# Open Godfather
+# Open Godfather :warning: Not complete and unstable :warning:
 
 Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin. Inspired by RageMP's scripting approach.
 
-### :warning: This library is not complete yet, therefore not ready for production. :warning:
-
 ## Installation
 
+You can use the [OG CLI](https://github.com/vladgitx/og-cli) to set up a project with Open Godfather and Typescript.
+
 ```bash
-npm install github:vladgitx/open-godfather
+npx github:vladgitx/og-cli <your-folder>
 ```
+
+And you're done! You can now edit `src/index.ts` or start the server using `npm run start`.
     
 ## Usage example
 
