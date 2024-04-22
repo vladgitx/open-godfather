@@ -10,7 +10,7 @@ You can use the [OG CLI](https://github.com/vladgitx/og-cli) to set up a project
 npx github:vladgitx/og-cli <your-folder>
 ```
 
-And you're done! You can now edit `src/index.ts` and start the server using `npm run start`.
+That's it! You can now edit `src/index.ts` and start the server with `npm run start`.
     
 ## Usage example
 
