@@ -1,4 +1,4 @@
-# Open Godfather :warning: Not complete and unstable :warning:
+# Open Godfather :warning: Unstable & Not Complete :warning:
 
 Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
 
@@ -10,9 +10,11 @@ One-step installation, you don't need to do anything manually. Run the command b
 npx github:vladgitx/og-cli
 ```
 
-That's it! You can now edit `src/index.ts` and start the server with `npm run start`.
+That's it! You can now edit `src/index.ts` and start the server with `npm run start`. You can find more about the Open Godfather CLI [here](https://github.com/vladgitx/og-cli).
 
-Get more information about the Open Godfather CLI [here](https://github.com/vladgitx/og-cli).
+### You know what you're doing?
+
+If you don't want to use the CLI, you can just run `npm install github:vladgitx/open-godfather` in your existing project and do the rest by yourself.
     
 ## Usage example
 
