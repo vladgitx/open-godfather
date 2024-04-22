@@ -4,7 +4,7 @@ Fully-typed Node.js library for building open.mp scripts with the [samp-node](ht
 
 ## Installation
 
-You can use the [OG CLI](https://github.com/vladgitx/og-cli) to set up a project with Open Godfather and Typescript.
+You can use the [OG CLI](https://github.com/vladgitx/og-cli) to set up a project with Open Godfather and Typescript without the need to do anything manually.
 
 ```bash
 npx github:vladgitx/og-cli <your-folder>
