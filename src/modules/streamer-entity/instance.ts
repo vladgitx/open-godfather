@@ -1,6 +1,6 @@
 import { type StreamerItemType, streamerNatives } from "@/natives/streamer"
 import { Entity } from "../entity"
-import { Vector3 } from "../vector3"
+import { type Vector3 } from "../vector3"
 
 export class StreamerEntity extends Entity {
     constructor(
@@ -35,17 +35,11 @@ export class StreamerEntity extends Entity {
     }
 
     set position(position: Vector3) {
-        streamerNatives.setFloatData(this.type, this.id, "x", position.x)
-        streamerNatives.setFloatData(this.type, this.id, "y", position.y)
-        streamerNatives.setFloatData(this.type, this.id, "z", position.z)
+        streamerNatives.setItemPos(this.type, this.id, position)
     }
 
     get position() {
-        const x = streamerNatives.getFloatData(this.type, this.id, "x")
-        const y = streamerNatives.getFloatData(this.type, this.id, "y")
-        const z = streamerNatives.getFloatData(this.type, this.id, "z")
-
-        return new Vector3(x, y, z)
+        return streamerNatives.getItemPos(this.type, this.id)
     }
 
     set world(id: number) {

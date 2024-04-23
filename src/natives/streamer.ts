@@ -1,4 +1,4 @@
-import { type Vector3 } from "@/og-export"
+import { Vector3 } from "@/modules/vector3"
 
 const INVALID_STREAMER_ID = 0
 
@@ -131,6 +131,39 @@ class StreamerNatives {
 
     setIntData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData, value: number) {
         samp.callNative("Streamer_SetIntData", "iiii", STREAMER_ITEM_TYPES[itemType], itemId, STREAMER_ITEM_DATA[itemData], value)
+    }
+
+    countVisibleItems(playerId: number, type: StreamerItemType) {
+        return samp.callNative("Streamer_CountVisibleItems", "iii", playerId, STREAMER_ITEM_TYPES[type], 1) as number
+    }
+
+    countItems(type: StreamerItemType) {
+        return samp.callNative("Streamer_CountItems", "ii", STREAMER_ITEM_TYPES[type], 1) as number
+    }
+
+    getNearbyItems(position: Vector3, type: StreamerItemType, maxItems: number, range: number, world: number) {
+        const itemIds = samp.callNative(
+            "Streamer_GetNearbyItems",
+            "fffiAifi",
+            position.x,
+            position.y,
+            position.z,
+            STREAMER_ITEM_TYPES[type],
+            maxItems,
+            range,
+            world,
+        ) as number[]
+
+        return itemIds
+    }
+
+    getItemPos(itemType: StreamerItemType, itemId: number) {
+        const pos = samp.callNative("Streamer_GetItemPos", "ii", STREAMER_ITEM_TYPES[itemType], itemId) as number[]
+        return new Vector3(pos[0], pos[1], pos[2])
+    }
+
+    setItemPos(itemType: StreamerItemType, itemId: number, position: Vector3) {
+        samp.callNative("Streamer_SetItemPos", "iifff", STREAMER_ITEM_TYPES[itemType], itemId, position.x, position.y, position.z)
     }
 }
 
