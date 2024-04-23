@@ -1,5 +1,5 @@
 import { DialogStylesEnum } from "@/shared/enums"
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { type PlayerMp } from "../instance"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
 import { playerDialogFactory } from "./factory"
@@ -11,7 +11,7 @@ export class PlayerDialog {
 
     hide(response?: DialogResponse) {
         playerDialogFactory.destroy(this.player, response)
-        sampNatives.hidePlayerDialog(this.player.id)
+        nativeFunctions.hidePlayerDialog(this.player.id)
     }
 }
 
@@ -19,7 +19,7 @@ class PlayerDialogShow {
     constructor(private player: PlayerMp) {}
 
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse | undefined> {
-        sampNatives.showPlayerDialog(
+        nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.List,
@@ -38,7 +38,7 @@ class PlayerDialogShow {
         primaryButton: string,
         secondaryButton = "",
     ): Promise<ListDialogResponse | undefined> {
-        sampNatives.showPlayerDialog(
+        nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Tablist,
@@ -75,7 +75,7 @@ class PlayerDialogShow {
             itemsString = (items as string[][]).map((columns) => columns.join("\t")).join("\n")
         }
 
-        sampNatives.showPlayerDialog(
+        nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.TablistHeaders,
@@ -94,7 +94,7 @@ class PlayerDialogShow {
         primaryButton: string,
         secondaryButton = "",
     ): Promise<MessageDialogResponse | undefined> {
-        sampNatives.showPlayerDialog(
+        nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.MessageBox,
@@ -108,7 +108,7 @@ class PlayerDialogShow {
     }
 
     async input(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse | undefined> {
-        sampNatives.showPlayerDialog(
+        nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Input,
@@ -122,7 +122,7 @@ class PlayerDialogShow {
     }
 
     async password(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse | undefined> {
-        sampNatives.showPlayerDialog(
+        nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Password,

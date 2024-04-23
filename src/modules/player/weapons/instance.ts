@@ -1,16 +1,16 @@
 import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums"
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { type PlayerMp } from "../instance"
 
 export class PlayerWeapons {
     constructor(private player: PlayerMp) {}
 
     setSkill(weapon: WeaponSkillsEnum, level: number) {
-        return sampNatives.setPlayerSkillLevel(this.player.id, weapon, level)
+        return nativeFunctions.setPlayerSkillLevel(this.player.id, weapon, level)
     }
 
     add(weapon: WeaponsEnum, ammo: number) {
-        return sampNatives.givePlayerWeapon(this.player.id, weapon, ammo)
+        return nativeFunctions.givePlayerWeapon(this.player.id, weapon, ammo)
     }
 
     remove(weapon: WeaponsEnum) {
@@ -33,19 +33,19 @@ export class PlayerWeapons {
     }
 
     reset() {
-        return sampNatives.resetPlayerWeapons(this.player.id)
+        return nativeFunctions.resetPlayerWeapons(this.player.id)
     }
 
     at(slot: WeaponSlotsEnum) {
-        return sampNatives.getPlayerWeaponData(this.player.id, slot)
+        return nativeFunctions.getPlayerWeaponData(this.player.id, slot)
     }
 
     set holding(weapon: WeaponsEnum) {
-        sampNatives.setPlayerArmedWeapon(this.player.id, weapon)
+        nativeFunctions.setPlayerArmedWeapon(this.player.id, weapon)
     }
 
     get holding() {
-        return sampNatives.getPlayerWeapon(this.player.id)
+        return nativeFunctions.getPlayerWeapon(this.player.id)
     }
 
     get all() {

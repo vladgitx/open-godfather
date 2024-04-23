@@ -1,4 +1,4 @@
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { CONFIG } from "@/shared/config"
 import { playerFactory } from "./factory"
 import { type Vector3 } from "../vector3"
@@ -10,7 +10,7 @@ class PlayerHandler {
     }
 
     broadcast(message: string, color = CONFIG.message.color) {
-        sampNatives.sendClientMessageToAll(color, message)
+        nativeFunctions.sendClientMessageToAll(color, message)
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {

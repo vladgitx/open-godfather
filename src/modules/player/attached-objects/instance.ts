@@ -1,6 +1,6 @@
 import { CONFIG } from "@/shared/config"
 import { type PlayerBonesEnum } from "@/shared/enums"
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../../vector3"
 import { type PlayerMp } from "../instance"
 import { PlayerAttachedObject } from "./entity"
@@ -24,7 +24,7 @@ export class PlayerAttachedObjects {
             return undefined
         }
 
-        const success = sampNatives.setPlayerAttachedObject(
+        const success = nativeFunctions.setPlayerAttachedObject(
             this.player.id,
             slot,
             model,
@@ -60,7 +60,7 @@ export class PlayerAttachedObjects {
     }
 
     destroy(object: PlayerAttachedObject) {
-        sampNatives.removePlayerAttachedObject(this.player.id, object.id)
+        nativeFunctions.removePlayerAttachedObject(this.player.id, object.id)
 
         this.attachedObjects[object.id] = undefined
 

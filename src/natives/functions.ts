@@ -10,7 +10,7 @@ import {
 } from "../shared/enums"
 import { Vector3 } from "../modules/vector3"
 
-class SampNatives {
+class NativeFunctions {
     manualVehicleEngineAndLights = (): number => {
         return samp.callNative("ManualVehicleEngineAndLights", "")
     }
@@ -656,4 +656,4 @@ class SampNatives {
     }
 }
 
-export const sampNatives = new SampNatives()
+export const nativeFunctions = new NativeFunctions()

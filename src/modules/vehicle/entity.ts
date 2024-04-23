@@ -1,5 +1,5 @@
 import { CONFIG } from "@/shared/config"
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { Entity } from "../entity"
 import { type PlayerMp } from "../player"
@@ -28,45 +28,45 @@ export class VehicleMp extends Entity {
         this._primaryColor = primaryColor
         this._secondaryColor = secondaryColor
 
-        sampNatives.linkVehicleToInterior(this.id, this._interior)
-        sampNatives.setVehicleNumberPlate(this.id, this._plate)
+        nativeFunctions.linkVehicleToInterior(this.id, this._interior)
+        nativeFunctions.setVehicleNumberPlate(this.id, this._plate)
     }
 
     set position(position: Vector3) {
-        sampNatives.setPlayerPosition(this.id, position.x, position.y, position.z)
+        nativeFunctions.setPlayerPosition(this.id, position.x, position.y, position.z)
     }
 
     get position() {
-        return sampNatives.getPlayerPosition(this.id)
+        return nativeFunctions.getPlayerPosition(this.id)
     }
 
     set velocity(velocity: Vector3) {
-        sampNatives.setVehicleVelocity(this.id, velocity)
+        nativeFunctions.setVehicleVelocity(this.id, velocity)
     }
 
     get velocity() {
-        return sampNatives.getVehicleVelocity(this.id)
+        return nativeFunctions.getVehicleVelocity(this.id)
     }
 
     set rotation(angle: number) {
-        sampNatives.setVehicleZAngle(this.id, angle)
+        nativeFunctions.setVehicleZAngle(this.id, angle)
     }
 
     get rotation() {
-        return sampNatives.getVehicleZAngle(this.id)
+        return nativeFunctions.getVehicleZAngle(this.id)
     }
 
     set world(value: number) {
-        sampNatives.setVehicleVirtualWorld(this.id, value)
+        nativeFunctions.setVehicleVirtualWorld(this.id, value)
     }
 
     get world() {
-        return sampNatives.getVehicleVirtualWorld(this.id)
+        return nativeFunctions.getVehicleVirtualWorld(this.id)
     }
 
     set interior(interior: number) {
         this._interior = interior
-        sampNatives.linkVehicleToInterior(this.id, interior)
+        nativeFunctions.linkVehicleToInterior(this.id, interior)
     }
 
     get interior() {
@@ -74,16 +74,16 @@ export class VehicleMp extends Entity {
     }
 
     set health(health: number) {
-        sampNatives.setVehicleHealth(this.id, health)
+        nativeFunctions.setVehicleHealth(this.id, health)
     }
 
     get health() {
-        return sampNatives.getVehicleHealth(this.id)
+        return nativeFunctions.getVehicleHealth(this.id)
     }
 
     set primaryColor(color: number) {
         this._primaryColor = color
-        sampNatives.changeVehicleColor(this.id, this._primaryColor, this._secondaryColor)
+        nativeFunctions.changeVehicleColor(this.id, this._primaryColor, this._secondaryColor)
     }
 
     get primaryColor() {
@@ -92,7 +92,7 @@ export class VehicleMp extends Entity {
 
     set secondaryColor(color: number) {
         this._secondaryColor = color
-        sampNatives.changeVehicleColor(this.id, this._primaryColor, this._secondaryColor)
+        nativeFunctions.changeVehicleColor(this.id, this._primaryColor, this._secondaryColor)
     }
 
     get secondaryColor() {
@@ -101,7 +101,7 @@ export class VehicleMp extends Entity {
 
     set plate(plate: string) {
         this._plate = plate
-        sampNatives.setVehicleNumberPlate(this.id, plate)
+        nativeFunctions.setVehicleNumberPlate(this.id, plate)
     }
 
     get plate() {

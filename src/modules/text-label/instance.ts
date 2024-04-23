@@ -1,5 +1,5 @@
 import { Entity } from "../entity"
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 
 export class TextLabelMp extends Entity {
     private _text: string
@@ -14,7 +14,7 @@ export class TextLabelMp extends Entity {
     }
 
     set text(text: string) {
-        if (sampNatives.update3DTextLabelText(this.id, this._color, text)) {
+        if (nativeFunctions.update3DTextLabelText(this.id, this._color, text)) {
             this._text = text
         }
     }

@@ -1,4 +1,4 @@
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { type TextLabelMp } from "../../text-label"
 import { type Vector3 } from "../../vector3"
 import { type PlayerMp } from "../instance"
@@ -13,7 +13,7 @@ export class PlayerTextLabels {
             return false
         }
 
-        if (!sampNatives.attach3DTextLabelToPlayer(label.id, this.player.id, offset.x, offset.y, offset.z)) {
+        if (!nativeFunctions.attach3DTextLabelToPlayer(label.id, this.player.id, offset.x, offset.y, offset.z)) {
             return false
         }
 

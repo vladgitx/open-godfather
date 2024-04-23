@@ -1,4 +1,4 @@
-import { nativeEvents, sampNatives } from "@/wrapper"
+import { nativeEvents, nativeFunctions } from "@/natives"
 import { playerFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
 
@@ -9,7 +9,7 @@ import { dispatcher } from "@/modules/dispatcher"
 const playerTimeoutIds = new Map<number, NodeJS.Timeout>()
 
 nativeEvents.onPlayerConnect((playerId) => {
-    sampNatives.togglePlayerSpectating(playerId, true) // TODO: remove this when the issue is fixed
+    nativeFunctions.togglePlayerSpectating(playerId, true) // TODO: remove this when the issue is fixed
 
     const timeoutId = setTimeout(() => {
         playerTimeoutIds.delete(playerId)

@@ -1,4 +1,4 @@
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { type TextLabelMp } from "../../text-label"
 import { type Vector3 } from "../../vector3"
 import { type VehicleMp } from "../entity"
@@ -13,7 +13,7 @@ export class VehicleTextLabels {
             return false
         }
 
-        if (!sampNatives.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
+        if (!nativeFunctions.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
             return false
         }
 

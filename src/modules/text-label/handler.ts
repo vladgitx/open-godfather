@@ -1,5 +1,5 @@
 import { CONFIG } from "@/shared/config"
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { textLabelFactory } from "./factory"
 import { type TextLabelMp } from "./instance"
@@ -13,7 +13,7 @@ class TextLabelHandler {
         world = CONFIG.textLabel.world,
         testLos = CONFIG.textLabel.testLos,
     ) {
-        const labelId = sampNatives.create3DTextLabel(text, color, position.x, position.y, position.z, drawDistance, world, testLos)
+        const labelId = nativeFunctions.create3DTextLabel(text, color, position.x, position.y, position.z, drawDistance, world, testLos)
 
         if (labelId === undefined) {
             return undefined
@@ -23,7 +23,7 @@ class TextLabelHandler {
     }
 
     destroy(label: TextLabelMp) {
-        sampNatives.delete3DTextLabel(label.id)
+        nativeFunctions.delete3DTextLabel(label.id)
         textLabelFactory.destroy(label)
     }
 

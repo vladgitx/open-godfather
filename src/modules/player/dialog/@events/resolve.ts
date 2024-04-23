@@ -1,4 +1,4 @@
-import { nativeEvents } from "@/wrapper"
+import { nativeEvents } from "@/natives"
 import { playerDialogFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../../handler"

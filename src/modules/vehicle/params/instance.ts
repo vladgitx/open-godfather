@@ -1,5 +1,5 @@
 import { type VehicleMp } from ".."
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { CONFIG } from "@/shared/config"
 
 export class VehicleParams {
@@ -12,7 +12,7 @@ export class VehicleParams {
     private _objective: "on" | "off" = CONFIG.vehicle.params.objective
 
     constructor(private vehicle: VehicleMp) {
-        sampNatives.setVehicleParamsEx(
+        nativeFunctions.setVehicleParamsEx(
             vehicle.id,
             this._engine === "on",
             this._lights === "on",
@@ -27,8 +27,8 @@ export class VehicleParams {
     set engine(value: "on" | "off") {
         this._engine = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             this._engine === "on",
             params.lights,
@@ -47,8 +47,8 @@ export class VehicleParams {
     set lights(value: "on" | "off") {
         this._lights = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             params.engine,
             this._lights === "on",
@@ -67,8 +67,8 @@ export class VehicleParams {
     set alarm(value: "on" | "off") {
         this._alarm = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             params.engine,
             params.lights,
@@ -87,8 +87,8 @@ export class VehicleParams {
     set doors(value: "locked" | "unlocked") {
         this._doors = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             params.engine,
             params.lights,
@@ -107,8 +107,8 @@ export class VehicleParams {
     set hood(value: "closed" | "open") {
         this._bonnet = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             params.engine,
             params.lights,
@@ -127,8 +127,8 @@ export class VehicleParams {
     set trunk(value: "closed" | "open") {
         this._boot = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             params.engine,
             params.lights,
@@ -147,8 +147,8 @@ export class VehicleParams {
     set objective(value: "on" | "off") {
         this._objective = value
 
-        const params = sampNatives.getVehicleParamsEx(this.vehicle.id)
-        sampNatives.setVehicleParamsEx(
+        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
+        nativeFunctions.setVehicleParamsEx(
             this.vehicle.id,
             params.engine,
             params.lights,

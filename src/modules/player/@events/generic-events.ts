@@ -1,4 +1,4 @@
-import { nativeEvents, sampNatives } from "@/wrapper"
+import { nativeEvents, nativeFunctions } from "@/natives"
 import { CONFIG } from "@/shared/config"
 import { type BodyPartsEnum, HitTypesEnum, type PlayerStatesEnum, type WeaponsEnum } from "@/shared/enums"
 import { Vector3 } from "../../vector3"
@@ -12,7 +12,7 @@ nativeEvents.onPlayerSpawn((playerId: number) => {
         return
     }
 
-    sampNatives.setPlayerTeam(playerId, CONFIG.player.team)
+    nativeFunctions.setPlayerTeam(playerId, CONFIG.player.team)
 
     if (player.getVariable("internal::firstSpawn") === undefined) {
         player.setVariable("internal::firstSpawn", true)

@@ -1,4 +1,4 @@
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 
 class MultiplayerServer {
     private _name = "open gf server"
@@ -24,12 +24,12 @@ class MultiplayerServer {
     }
 
     sendRconCommand(command: string) {
-        sampNatives.sendRconCommand(command)
+        nativeFunctions.sendRconCommand(command)
     }
 
     set name(name: string) {
         this._name = name
-        sampNatives.sendRconCommand("name " + this._name)
+        nativeFunctions.sendRconCommand("name " + this._name)
     }
 
     get name() {
@@ -38,7 +38,7 @@ class MultiplayerServer {
 
     set language(language: string) {
         this._language = language
-        sampNatives.sendRconCommand("language " + this._language)
+        nativeFunctions.sendRconCommand("language " + this._language)
     }
 
     get language() {
@@ -47,7 +47,7 @@ class MultiplayerServer {
 
     set website(website: string) {
         this._website = website
-        sampNatives.sendRconCommand("website " + this._website)
+        nativeFunctions.sendRconCommand("website " + this._website)
     }
 
     get website() {
@@ -56,7 +56,7 @@ class MultiplayerServer {
 
     set map(map: string) {
         this._map = map
-        sampNatives.sendRconCommand("game.map " + this._map)
+        nativeFunctions.sendRconCommand("game.map " + this._map)
     }
 
     get map() {
@@ -65,7 +65,7 @@ class MultiplayerServer {
 
     set mode(mode: string) {
         this._mode = mode
-        sampNatives.sendRconCommand("game.mode " + this._mode)
+        nativeFunctions.sendRconCommand("game.mode " + this._mode)
     }
 
     get mode() {
@@ -74,7 +74,7 @@ class MultiplayerServer {
 
     set stuntBonuses(stuntBonuses: boolean) {
         this._stuntBonuses = stuntBonuses
-        sampNatives.enableStuntBonusForAll(this._stuntBonuses)
+        nativeFunctions.enableStuntBonusForAll(this._stuntBonuses)
     }
 
     get stuntBonuses() {
@@ -83,7 +83,7 @@ class MultiplayerServer {
 
     set nameTagDistance(nameTagDistance: number) {
         this._nameTagDistance = nameTagDistance
-        sampNatives.setNameTagDrawDistance(this._nameTagDistance)
+        nativeFunctions.setNameTagDrawDistance(this._nameTagDistance)
     }
 
     get nameTagDistance() {
@@ -92,7 +92,7 @@ class MultiplayerServer {
 
     set hour(hour: number) {
         this._hour = hour
-        sampNatives.setWorldTime(this._hour)
+        nativeFunctions.setWorldTime(this._hour)
     }
 
     get hour() {
@@ -101,7 +101,7 @@ class MultiplayerServer {
 
     set weather(weather: number) {
         this._weather = weather
-        sampNatives.setWeather(this._weather)
+        nativeFunctions.setWeather(this._weather)
     }
 
     get weather() {
@@ -109,7 +109,7 @@ class MultiplayerServer {
     }
 
     get tickRate() {
-        return sampNatives.getServerTickRate()
+        return nativeFunctions.getServerTickRate()
     }
 }
 

@@ -1,5 +1,5 @@
 import { type PlayerMp } from ".."
-import { sampNatives } from "@/wrapper"
+import { nativeFunctions } from "@/natives"
 import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/shared/enums"
 import { type VehicleMp, vehicleHandler } from "../../vehicle"
 import { dispatcher } from "@/modules/dispatcher"
@@ -36,12 +36,12 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
 export function putInVehicleWithEvent(player: PlayerMp, vehicle: VehicleMp, seat: VehicleSeatsEnum) {
     const oldVehicle = player.vehicle
     if (!oldVehicle || oldVehicle === vehicle) {
-        return sampNatives.putPlayerInVehicle(player.id, vehicle.id, seat)
+        return nativeFunctions.putPlayerInVehicle(player.id, vehicle.id, seat)
     }
 
     dispatcher.emit("playerExitVehicle", player, oldVehicle)
 
-    sampNatives.putPlayerInVehicle(player.id, vehicle.id, seat)
+    nativeFunctions.putPlayerInVehicle(player.id, vehicle.id, seat)
 
     dispatcher.emit("playerEnterVehicle", player, vehicle)
 
