@@ -86,7 +86,7 @@ class StreamerNatives {
     ) {
         const id = samp.callNative(
             "CreateDynamicPickup",
-            "iifffiiiiii",
+            "iifffiiifii",
             modelId,
             type,
             position.x,
