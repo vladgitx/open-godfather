@@ -28,7 +28,7 @@ class TextLabelHandler {
     }
 
     at(id: number) {
-        return textLabelFactory.at(id)
+        return textLabelFactory.pool.get(id)
     }
 }
 

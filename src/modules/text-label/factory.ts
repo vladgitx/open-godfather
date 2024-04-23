@@ -1,10 +1,10 @@
 import { TextLabelMp } from "./instance"
 
 class TextLabelFactory {
-    private pool = new Map<number, TextLabelMp>()
+    pool = new Map<number, TextLabelMp>()
 
     new(id: number, text: string, color: string) {
-        if (this.at(id)) {
+        if (this.pool.has(id)) {
             return undefined
         }
 
@@ -17,10 +17,6 @@ class TextLabelFactory {
     destroy(label: TextLabelMp) {
         this.pool.delete(label.id)
         label.exists = false
-    }
-
-    at(id: number) {
-        return this.pool.get(id)
     }
 }
 

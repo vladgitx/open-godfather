@@ -1,10 +1,10 @@
 import { VehicleMp } from "./entity"
 
 class VehicleFactory {
-    private pool = new Map<number, VehicleMp>()
+    pool = new Map<number, VehicleMp>()
 
     new(vehicleId: number, model: number, primaryColor: number, secondaryColor: number) {
-        if (this.at(vehicleId)) {
+        if (this.pool.get(vehicleId)) {
             return undefined
         }
 
@@ -17,14 +17,6 @@ class VehicleFactory {
     destroy(vehicle: VehicleMp) {
         this.pool.delete(vehicle.id)
         vehicle.exists = false
-    }
-
-    at(id: number) {
-        return this.pool.get(id)
-    }
-
-    get all() {
-        return this.pool.values()
     }
 }
 

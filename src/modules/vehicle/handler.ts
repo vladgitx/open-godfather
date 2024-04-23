@@ -15,6 +15,7 @@ class VehicleHandler {
         siren = CONFIG.vehicle.siren,
     ) {
         const vehicleId = nativeFunctions.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
+
         if (vehicleId === undefined) {
             return undefined
         }
@@ -28,7 +29,7 @@ class VehicleHandler {
     }
 
     at(id: number) {
-        return vehicleFactory.at(id)
+        return vehicleFactory.pool.get(id)
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {
@@ -51,7 +52,7 @@ class VehicleHandler {
     }
 
     get all() {
-        return vehicleFactory.all
+        return vehicleFactory.pool.values()
     }
 }
 

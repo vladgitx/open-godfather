@@ -5,10 +5,6 @@ import { type Vector3 } from "../vector3"
 import { type PlayerMp } from "."
 
 class PlayerHandler {
-    at(id: number) {
-        return playerFactory.at(id)
-    }
-
     broadcast(message: string, color = CONFIG.message.color) {
         nativeFunctions.sendClientMessageToAll(color, message)
     }
@@ -33,7 +29,11 @@ class PlayerHandler {
     }
 
     get all() {
-        return playerFactory.all
+        return playerFactory.pool.values()
+    }
+
+    at(id: number) {
+        return playerFactory.pool.get(id)
     }
 }
 

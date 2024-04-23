@@ -1,6 +1,7 @@
 import { nativeEvents, nativeFunctions } from "@/natives"
 import { playerFactory } from "../factory"
 import { dispatcher } from "@/modules/dispatcher"
+import { playerHandler } from "../handler"
 
 // TODO: find the actual issue and fix it
 // Weird issue: if you kick a player in the "playerConnect" event, they get a crash/timeout
@@ -28,7 +29,7 @@ nativeEvents.onPlayerDisconnect((playerId, reason) => {
     clearTimeout(playerTimeoutIds.get(playerId))
     playerTimeoutIds.delete(playerId)
 
-    const player = playerFactory.at(playerId)
+    const player = playerHandler.at(playerId)
 
     if (player) {
         dispatcher.emit("playerDisconnect", player, reason)

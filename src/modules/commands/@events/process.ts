@@ -19,7 +19,7 @@ nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
         return 1
     }
 
-    const command = commandFactory.at(commandStr)
+    const command = commandFactory.pool.get(commandStr)
 
     if (command) {
         dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params))
