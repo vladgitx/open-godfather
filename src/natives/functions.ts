@@ -63,6 +63,10 @@ class NativeFunctions {
         return samp.callNative("GetServerTickRate", "")
     }
 
+    disableInteriorEnterExits = (): void => {
+        samp.callNative("DisableInteriorEnterExits", "")
+    }
+
     getVehicleVelocity = (vehicleId: number): Vector3 => {
         if (!this.isValidVehicle(vehicleId)) {
             return new Vector3()

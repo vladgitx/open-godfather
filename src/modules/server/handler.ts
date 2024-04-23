@@ -27,6 +27,10 @@ class MultiplayerServer {
         nativeFunctions.sendRconCommand(command)
     }
 
+    disableDefaultInteriorEntrances() {
+        nativeFunctions.disableInteriorEnterExits()
+    }
+
     set name(name: string) {
         this._name = name
         nativeFunctions.sendRconCommand("name " + this._name)
