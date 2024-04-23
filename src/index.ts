@@ -8,6 +8,7 @@ export { type PlayerAttachedObject } from "./modules/player/attached-objects"
 export { type VehicleMp } from "./modules/vehicle"
 export { type CommandMp, CommandCallback } from "./modules/commands"
 export { type TextLabelMp } from "./modules/text-label"
+export { type Pickup } from "./modules/pickup"
 
 export * from "./shared/enums"
 export * as og from "./og-export"
