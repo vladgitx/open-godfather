@@ -600,6 +600,10 @@ class NativeFunctions {
     isValidVehicle(vehicleId: number): boolean {
         return samp.callNative("IsValidVehicle", "i", vehicleId) === 1
     }
+
+    showNameTags = (show: number): number => {
+        return samp.callNative("ShowNameTags", "i", show)
+    }
 }
 
 export const nativeFunctions = new NativeFunctions()

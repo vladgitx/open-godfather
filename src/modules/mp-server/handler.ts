@@ -10,6 +10,7 @@ class MultiplayerServer {
     private _nameTagDistance = 20
     private _hour = 18
     private _weather = 1
+    private _disabledNameTags = false
 
     constructor() {
         this.name = this._name
@@ -21,6 +22,15 @@ class MultiplayerServer {
         this.nameTagDistance = this._nameTagDistance
         this.hour = this._hour
         this.weather = this._weather
+    }
+
+    set disabledNameTags(disabledNameTags: boolean) {
+        this._disabledNameTags = disabledNameTags
+        nativeFunctions.showNameTags(disabledNameTags ? 0 : 1)
+    }
+
+    get disabledNameTags() {
+        return this._disabledNameTags
     }
 
     sendRconCommand(command: string) {
