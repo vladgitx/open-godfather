@@ -1,10 +1,9 @@
+import { EntityFactory } from "../entity"
 import { Pickup } from "./instance"
 
-class PickupFactory {
-    pool = new Map<number, Pickup>()
-
+class PickupFactory extends EntityFactory<Pickup> {
     new(id: number) {
-        if (this.pool.get(id)) {
+        if (this.pool.has(id)) {
             return undefined
         }
 
@@ -12,11 +11,6 @@ class PickupFactory {
         this.pool.set(id, pickup)
 
         return pickup
-    }
-
-    destroy(pickup: Pickup) {
-        this.pool.delete(pickup.id)
-        pickup.exists = false
     }
 }
 

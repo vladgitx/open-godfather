@@ -1,8 +1,7 @@
+import { EntityFactory } from "../entity"
 import { TextLabel } from "./instance"
 
-class TextLabelFactory {
-    pool = new Map<number, TextLabel>()
-
+class TextLabelFactory extends EntityFactory<TextLabel> {
     new(id: number, text: string, color: string) {
         if (this.pool.has(id)) {
             return undefined
@@ -12,11 +11,6 @@ class TextLabelFactory {
         this.pool.set(id, label)
 
         return label
-    }
-
-    destroy(label: TextLabel) {
-        this.pool.delete(label.id)
-        label.exists = false
     }
 }
 
