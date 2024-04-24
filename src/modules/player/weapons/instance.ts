@@ -1,9 +1,9 @@
 import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums"
 import { nativeFunctions } from "@/natives"
-import { type PlayerMp } from "../instance"
+import { type Player } from "../instance"
 
 export class PlayerWeapons {
-    constructor(private player: PlayerMp) {}
+    constructor(private player: Player) {}
 
     setSkill(weapon: WeaponSkillsEnum, level: number) {
         return nativeFunctions.setPlayerSkillLevel(this.player.id, weapon, level)

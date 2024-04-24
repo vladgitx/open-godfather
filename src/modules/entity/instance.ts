@@ -1,4 +1,4 @@
-import { CONFIG } from "@/shared/config"
+const INVALID_ENTITY_ID = -1
 
 export class Entity {
     private variables = new Map<string, unknown>()
@@ -28,10 +28,10 @@ export class Entity {
         }
         this.cleanupCallbacks = []
 
-        this.id = CONFIG.entity.invalidId
+        this.id = INVALID_ENTITY_ID
     }
 
     get exists(): boolean {
-        return this.id !== CONFIG.entity.invalidId
+        return this.id !== INVALID_ENTITY_ID
     }
 }

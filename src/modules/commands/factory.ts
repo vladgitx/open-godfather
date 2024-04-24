@@ -1,8 +1,8 @@
 import { type CommandCallback } from "./@types/callback"
-import { CommandMp } from "./instance"
+import { Command } from "./instance"
 
 class CommandFactory {
-    pool = new Map<string, CommandMp>()
+    pool = new Map<string, Command>()
 
     new = (name: string, aliases: string[], callback: CommandCallback) => {
         if (aliases.includes(name)) {
@@ -30,7 +30,7 @@ class CommandFactory {
             }
         }
 
-        const command = new CommandMp(name, aliases, callback)
+        const command = new Command(name, aliases, callback)
         this.pool.set(name, command)
 
         for (const alias of aliases) {

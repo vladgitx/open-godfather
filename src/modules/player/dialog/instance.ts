@@ -1,13 +1,13 @@
 import { DialogStylesEnum } from "@/shared/enums"
 import { nativeFunctions } from "@/natives"
-import { type PlayerMp } from "../instance"
+import { type Player } from "../instance"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
 import { playerDialogFactory } from "./factory"
 
 export class PlayerDialog {
     readonly show = new PlayerDialogShow(this.player)
 
-    constructor(private player: PlayerMp) {}
+    constructor(private player: Player) {}
 
     hide(response?: DialogResponse) {
         playerDialogFactory.destroy(this.player, response)
@@ -16,7 +16,7 @@ export class PlayerDialog {
 }
 
 class PlayerDialogShow {
-    constructor(private player: PlayerMp) {}
+    constructor(private player: Player) {}
 
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse | undefined> {
         nativeFunctions.showPlayerDialog(

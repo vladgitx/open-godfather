@@ -2,9 +2,6 @@ import { Vector3 } from "../modules/vector3"
 import { type VehicleParamsType } from "../modules/vehicle"
 
 export const CONFIG = {
-    entity: {
-        invalidId: -1,
-    },
     player: {
         team: 0,
         color: "FFFFFF",

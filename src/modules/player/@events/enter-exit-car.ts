@@ -1,7 +1,7 @@
-import { type PlayerMp } from ".."
+import { type Player } from ".."
 import { nativeFunctions } from "@/natives"
 import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/shared/enums"
-import { type VehicleMp, vehicleHandler } from "../../vehicle"
+import { type Vehicle, vehicleHandler } from "../../vehicle"
 import { dispatcher } from "@/modules/dispatcher"
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
@@ -33,7 +33,7 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
     }
 })
 
-export function putInVehicleWithEvent(player: PlayerMp, vehicle: VehicleMp, seat: VehicleSeatsEnum) {
+export function putInVehicleWithEvent(player: Player, vehicle: Vehicle, seat: VehicleSeatsEnum) {
     const oldVehicle = player.vehicle
     if (!oldVehicle || oldVehicle === vehicle) {
         return nativeFunctions.putPlayerInVehicle(player.id, vehicle.id, seat)

@@ -2,7 +2,7 @@ import { CONFIG } from "@/shared/config"
 import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { vehicleFactory } from "./factory"
-import { type VehicleMp } from "./entity"
+import { type Vehicle } from "./entity"
 
 class VehicleHandler {
     new(
@@ -23,7 +23,7 @@ class VehicleHandler {
         return vehicleFactory.new(vehicleId, model, primaryColor, secondaryColor)
     }
 
-    destroy(vehicle: VehicleMp) {
+    destroy(vehicle: Vehicle) {
         nativeFunctions.destroyVehicle(vehicle.id)
         vehicleFactory.destroy(vehicle)
     }
@@ -33,7 +33,7 @@ class VehicleHandler {
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {
-        const vehicles = new Map<VehicleMp, number>()
+        const vehicles = new Map<Vehicle, number>()
         for (const vehicle of this.all) {
             if (world !== undefined && vehicle.world !== world) {
                 continue

@@ -2,7 +2,7 @@ import { CONFIG } from "@/shared/config"
 import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { textLabelFactory } from "./factory"
-import { type TextLabelMp } from "./instance"
+import { type TextLabel } from "./instance"
 
 class TextLabelHandler {
     new(
@@ -22,7 +22,7 @@ class TextLabelHandler {
         return textLabelFactory.new(labelId, text, color)
     }
 
-    destroy(label: TextLabelMp) {
+    destroy(label: TextLabel) {
         nativeFunctions.delete3DTextLabel(label.id)
         textLabelFactory.destroy(label)
     }

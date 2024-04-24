@@ -2,7 +2,7 @@ import { nativeFunctions } from "@/natives"
 import { CONFIG } from "@/shared/config"
 import { playerFactory } from "./factory"
 import { type Vector3 } from "../vector3"
-import { type PlayerMp } from "."
+import { type Player } from "."
 
 class PlayerHandler {
     broadcast(message: string, color = CONFIG.message.color) {
@@ -10,7 +10,7 @@ class PlayerHandler {
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {
-        const players = new Map<PlayerMp, number>()
+        const players = new Map<Player, number>()
         for (const player of this.all) {
             if (world !== undefined && player.world !== world) {
                 continue

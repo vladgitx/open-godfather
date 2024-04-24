@@ -1,7 +1,7 @@
 import { Entity } from "../entity"
 import { nativeFunctions } from "@/natives"
 
-export class TextLabelMp extends Entity {
+export class TextLabel extends Entity {
     private _text: string
     private _color: string
     public attached = false

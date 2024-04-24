@@ -1,8 +1,8 @@
 import { nativeFunctions } from "@/natives"
-import { type PlayerMp } from "../instance"
+import { type Player } from "../instance"
 
 export class PlayerAnimations {
-    constructor(private player: PlayerMp) {}
+    constructor(private player: Player) {}
 
     set(
         library: string,

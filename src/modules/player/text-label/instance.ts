@@ -1,14 +1,14 @@
 import { nativeFunctions } from "@/natives"
-import { type TextLabelMp } from "../../text-label"
+import { type TextLabel } from "../../text-label"
 import { type Vector3 } from "../../vector3"
-import { type PlayerMp } from "../instance"
+import { type Player } from "../instance"
 
 export class PlayerTextLabels {
-    private labels = new Set<TextLabelMp>()
+    private labels = new Set<TextLabel>()
 
-    constructor(private player: PlayerMp) {}
+    constructor(private player: Player) {}
 
-    attach(label: TextLabelMp, offset: Vector3) {
+    attach(label: TextLabel, offset: Vector3) {
         if (label.attached) {
             return false
         }

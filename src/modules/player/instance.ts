@@ -2,7 +2,7 @@ import { CONFIG } from "@/shared/config"
 import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums"
 import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
-import { type VehicleMp, vehicleHandler } from "../vehicle"
+import { type Vehicle, vehicleHandler } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
@@ -11,7 +11,7 @@ import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerTextLabels } from "./text-label"
 import { PlayerAttachedObjects } from "./attached-objects"
 
-export class PlayerMp extends Entity {
+export class Player extends Entity {
     readonly dialog = new PlayerDialog(this)
     readonly weapons = new PlayerWeapons(this)
     readonly animations = new PlayerAnimations(this)
@@ -220,11 +220,11 @@ export class PlayerMp extends Entity {
         return nativeFunctions.getPlayerState(this.id)
     }
 
-    putIntoVehicle(vehicle: VehicleMp, seat = VehicleSeatsEnum.Driver) {
+    putIntoVehicle(vehicle: Vehicle, seat = VehicleSeatsEnum.Driver) {
         return putInVehicleWithEvent(this, vehicle, seat)
     }
 
-    get vehicle(): VehicleMp | undefined {
+    get vehicle(): Vehicle | undefined {
         const vehicleId = nativeFunctions.getPlayerVehicleId(this.id)
         if (vehicleId === undefined) {
             return undefined

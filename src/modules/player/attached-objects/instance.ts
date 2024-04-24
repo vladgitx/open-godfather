@@ -2,13 +2,13 @@ import { CONFIG } from "@/shared/config"
 import { type PlayerBonesEnum } from "@/shared/enums"
 import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../../vector3"
-import { type PlayerMp } from "../instance"
+import { type Player } from "../instance"
 import { PlayerAttachedObject } from "./entity"
 
 export class PlayerAttachedObjects {
     private attachedObjects = new Array<PlayerAttachedObject | undefined>(CONFIG.playerAttachedObjects.limit).fill(undefined)
 
-    constructor(private player: PlayerMp) {}
+    constructor(private player: Player) {}
 
     new(
         model: number,

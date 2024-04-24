@@ -2,12 +2,12 @@ import { CONFIG } from "@/shared/config"
 import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { Entity } from "../entity"
-import { type PlayerMp } from "../player"
+import { type Player } from "../player"
 import { VehicleParams } from "./params"
 import { VehicleTextLabels } from "./text-label"
 
-export class VehicleMp extends Entity {
-    public occupants = new Set<PlayerMp>()
+export class Vehicle extends Entity {
+    public occupants = new Set<Player>()
 
     readonly params = new VehicleParams(this)
     readonly textLabels = new VehicleTextLabels(this)

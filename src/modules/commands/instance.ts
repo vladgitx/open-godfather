@@ -1,6 +1,6 @@
 import { type CommandCallback } from "./@types/callback"
 
-export class CommandMp {
+export class Command {
     constructor(
         readonly name: string,
         readonly aliases: string[],

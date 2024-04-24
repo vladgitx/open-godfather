@@ -1,14 +1,14 @@
 import { nativeFunctions } from "@/natives"
-import { type TextLabelMp } from "../../text-label"
+import { type TextLabel } from "../../text-label"
 import { type Vector3 } from "../../vector3"
-import { type VehicleMp } from "../entity"
+import { type Vehicle } from "../entity"
 
 export class VehicleTextLabels {
-    private labels = new Set<TextLabelMp>()
+    private labels = new Set<TextLabel>()
 
-    constructor(private vehicle: VehicleMp) {}
+    constructor(private vehicle: Vehicle) {}
 
-    attach(label: TextLabelMp, offset: Vector3) {
+    attach(label: TextLabel, offset: Vector3) {
         if (label.attached) {
             return false
         }

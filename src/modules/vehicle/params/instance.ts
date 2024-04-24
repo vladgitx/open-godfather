@@ -1,4 +1,4 @@
-import { type VehicleMp } from ".."
+import { type Vehicle } from ".."
 import { nativeFunctions } from "@/natives"
 import { CONFIG } from "@/shared/config"
 
@@ -11,7 +11,7 @@ export class VehicleParams {
     private _boot: "closed" | "open" = CONFIG.vehicle.params.boot
     private _objective: "on" | "off" = CONFIG.vehicle.params.objective
 
-    constructor(private vehicle: VehicleMp) {
+    constructor(private vehicle: Vehicle) {
         nativeFunctions.setVehicleParamsEx(
             vehicle.id,
             this._engine === "on",

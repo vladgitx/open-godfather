@@ -1,4 +1,4 @@
-export { mpServer as server } from "./modules/server"
+export { mpServer as server } from "./modules/mp-server"
 export { dispatcher as events } from "./modules/dispatcher"
 export { playerHandler as players } from "./modules/player"
 export { vehicleHandler as vehicles } from "./modules/vehicle"

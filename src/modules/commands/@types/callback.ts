@@ -1,3 +1,3 @@
-import { type PlayerMp } from "../../player"
+import { type Player } from "../../player"
 
-export type CommandCallback = (player: PlayerMp, ...params: (string | undefined)[]) => void | Promise<void>
+export type CommandCallback = (player: Player, ...params: (string | undefined)[]) => void | Promise<void>

@@ -1,5 +1,5 @@
 import { streamerNatives, type StreamerItemType } from "@/natives/streamer"
-import { type PlayerMp } from "../player"
+import { type Player } from "../player"
 import { type Vector3 } from "../vector3"
 import { type StreamerEntity } from "./instance"
 
@@ -9,7 +9,7 @@ export class StreamerHandler<T extends StreamerEntity> {
         private getItem: (id: number) => T | undefined,
     ) {}
 
-    countVisible(player: PlayerMp) {
+    countVisible(player: Player) {
         return streamerNatives.countVisibleItems(player.id, this.type)
     }
 

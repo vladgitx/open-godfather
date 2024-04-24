@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import { type PlayerMp } from "../player"
+import { type Player } from "../player"
 import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums"
-import { type CommandMp } from "../commands"
-import { type VehicleMp } from "../vehicle"
+import { type Command } from "../commands"
+import { type Vehicle } from "../vehicle"
 import { type Vector3 } from "../vector3"
 import EventEmitter from "events"
 
@@ -13,25 +13,25 @@ interface ServerEvents {
 }
 
 interface PlayerEvents {
-    playerConnect: [PlayerMp]
-    playerDisconnect: [PlayerMp, KickReasonsEnum]
-    playerCommand: [PlayerMp, string, CommandMp | undefined, () => void | Promise<void>]
-    playerSpawn: [PlayerMp]
-    playerFirstSpawn: [PlayerMp]
-    playerText: [PlayerMp, string]
-    playerStateChange: [PlayerMp, PlayerStatesEnum, PlayerStatesEnum]
-    playerEnterVehicle: [PlayerMp, VehicleMp]
-    playerExitVehicle: [PlayerMp, VehicleMp | undefined]
-    playerStartEnterVehicle: [PlayerMp, VehicleMp, boolean]
-    playerStartExitVehicle: [PlayerMp, VehicleMp]
-    playerDamage: [PlayerMp, PlayerMp | undefined, number, WeaponsEnum, BodyPartsEnum]
-    playerDeath: [PlayerMp, PlayerMp | undefined, WeaponsEnum]
-    playerShoot: [PlayerMp, WeaponsEnum, PlayerMp | VehicleMp | undefined, Vector3]
+    playerConnect: [Player]
+    playerDisconnect: [Player, KickReasonsEnum]
+    playerCommand: [Player, string, Command | undefined, () => void | Promise<void>]
+    playerSpawn: [Player]
+    playerFirstSpawn: [Player]
+    playerText: [Player, string]
+    playerStateChange: [Player, PlayerStatesEnum, PlayerStatesEnum]
+    playerEnterVehicle: [Player, Vehicle]
+    playerExitVehicle: [Player, Vehicle | undefined]
+    playerStartEnterVehicle: [Player, Vehicle, boolean]
+    playerStartExitVehicle: [Player, Vehicle]
+    playerDamage: [Player, Player | undefined, number, WeaponsEnum, BodyPartsEnum]
+    playerDeath: [Player, Player | undefined, WeaponsEnum]
+    playerShoot: [Player, WeaponsEnum, Player | Vehicle | undefined, Vector3]
 }
 
 interface VehicleEvents {
-    vehicleCreate: [VehicleMp]
-    vehicleDestroy: [VehicleMp]
+    vehicleCreate: [Vehicle]
+    vehicleDestroy: [Vehicle]
 }
 
 type EventMap = ServerEvents & PlayerEvents & VehicleEvents

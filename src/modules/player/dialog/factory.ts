@@ -1,10 +1,10 @@
-import { type PlayerMp } from "../instance"
+import { type Player } from "../instance"
 import type { DialogResponse } from "./@types/response"
 
 class PlayerDialogFactory {
     private promises = new Map<number, (result: DialogResponse | undefined) => void>()
 
-    async new(player: PlayerMp): Promise<DialogResponse | undefined> {
+    async new(player: Player): Promise<DialogResponse | undefined> {
         const existing = this.promises.get(player.id)
 
         if (existing) {
@@ -16,7 +16,7 @@ class PlayerDialogFactory {
         })
     }
 
-    destroy(player: PlayerMp, response: DialogResponse | undefined) {
+    destroy(player: Player, response: DialogResponse | undefined) {
         const existing = this.promises.get(player.id)
 
         if (existing) {
