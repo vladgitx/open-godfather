@@ -6,6 +6,7 @@ import { type Command } from "../commands"
 import { type Vehicle } from "../vehicle"
 import { type Vector3 } from "../vector3"
 import EventEmitter from "events"
+import { type Pickup } from "../pickup"
 
 interface ServerEvents {
     init: []
@@ -27,6 +28,7 @@ interface PlayerEvents {
     playerDamage: [Player, Player | undefined, number, WeaponsEnum, BodyPartsEnum]
     playerDeath: [Player, Player | undefined, WeaponsEnum]
     playerShoot: [Player, WeaponsEnum, Player | Vehicle | undefined, Vector3]
+    playerPickUpPickup: [Player, Pickup]
 }
 
 interface VehicleEvents {

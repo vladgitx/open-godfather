@@ -2,6 +2,7 @@ import "./modules/mp-server/@events"
 import "./modules/player/@events"
 import "./modules/vehicle/@events"
 import "./modules/commands/@events"
+import "./modules/pickup/@events"
 
 export { type Player } from "./modules/player"
 export { type PlayerAttachedObject } from "./modules/player/attached-objects"
