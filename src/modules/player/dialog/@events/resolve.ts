@@ -7,7 +7,7 @@ nativeEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam,
     const player = playerHandler.at(playerId)
 
     if (player) {
-        playerDialogFactory.destroy(player, { action: responseParam, item: listItemParam, input: inputText })
+        playerDialogFactory.destroy(player, { action: Boolean(responseParam), item: listItemParam, input: inputText })
     }
 })
 

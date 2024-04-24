@@ -49,7 +49,7 @@ class NativeEvents {
         samp.on("OnPlayerWeaponShot", callback)
     }
 
-    onDialogResponse(callback: (playerid: number, dialogId: number, response: boolean, listitem: number, inputText: string) => void) {
+    onDialogResponse(callback: (playerid: number, dialogId: number, response: number, listitem: number, inputText: string) => void) {
         samp.on("OnDialogResponse", callback)
     }
 
