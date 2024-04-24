@@ -234,64 +234,6 @@ class NativeFunctions {
         return samp.callNative("SetPlayerTeam", "ii", playerId, teamId) === 1
     }
 
-    create3DTextLabel = (
-        text: string,
-        color: string,
-        X: number,
-        Y: number,
-        Z: number,
-        DrawDistance: number,
-        virtualworld: number,
-        testLOS: boolean,
-    ): number | undefined => {
-        if (!text) {
-            return undefined
-        }
-
-        if (virtualworld === -1) {
-            return undefined
-        }
-
-        const res = samp.callNative(
-            "Create3DTextLabel",
-            "siffffii",
-            text,
-            parseInt(color + "FF", 16),
-            X,
-            Y,
-            Z,
-            DrawDistance,
-            virtualworld,
-            testLOS,
-        ) as number
-
-        if (res === 65535) {
-            return undefined
-        }
-
-        return res
-    }
-
-    delete3DTextLabel = (id: number) => {
-        return samp.callNative("Delete3DTextLabel", "i", id) === 1
-    }
-
-    attach3DTextLabelToPlayer = (id: number, playerId: number, OffsetX: number, OffsetY: number, OffsetZ: number) => {
-        return samp.callNative("Attach3DTextLabelToPlayer", "iifff", id, playerId, OffsetX, OffsetY, OffsetZ) === 1
-    }
-
-    attach3DTextLabelToVehicle = (id: number, vehicleId: number, OffsetX: number, OffsetY: number, OffsetZ: number) => {
-        return samp.callNative("Attach3DTextLabelToVehicle", "iifff", id, vehicleId, OffsetX, OffsetY, OffsetZ) === 1
-    }
-
-    update3DTextLabelText = (id: number, color: string, text: string) => {
-        if (text) {
-            samp.callNative("Update3DTextLabelText", "iis", id, parseInt(color + "FF", 16), text)
-            return true
-        }
-        return false
-    }
-
     setSpawnInfo(
         playerId: number,
         team: number,

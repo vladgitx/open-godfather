@@ -1,7 +1,7 @@
-import { nativeFunctions } from "@/natives"
 import { type TextLabel } from "../../text-label"
 import { type Vector3 } from "../../vector3"
 import { type Vehicle } from "../entity"
+import { streamerNatives } from "@/natives/streamer"
 
 export class VehicleTextLabels {
     private labels = new Set<TextLabel>()
@@ -13,9 +13,10 @@ export class VehicleTextLabels {
             return false
         }
 
-        if (!nativeFunctions.attach3DTextLabelToVehicle(label.id, this.vehicle.id, offset.x, offset.y, offset.z)) {
-            return false
-        }
+        streamerNatives.setIntData("textLabel", label.id, "attachedVehicle", this.vehicle.id)
+        streamerNatives.setFloatData("textLabel", label.id, "attachOffsetX", offset.x)
+        streamerNatives.setFloatData("textLabel", label.id, "attachOffsetY", offset.y)
+        streamerNatives.setFloatData("textLabel", label.id, "attachOffsetZ", offset.z)
 
         this.labels.add(label)
         label.attached = true

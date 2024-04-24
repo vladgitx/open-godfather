@@ -39,12 +39,6 @@ export const CONFIG = {
         distance: 12,
         expire: 5000,
     },
-    textLabel: {
-        color: "FFFFFF",
-        distance: 10,
-        world: 0,
-        testLos: true,
-    },
     playerAttachedObjects: {
         limit: 10,
     },

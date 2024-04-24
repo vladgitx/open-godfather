@@ -1,22 +1,25 @@
-import { Entity } from "../entity"
-import { nativeFunctions } from "@/natives"
+import { StreamerEntity } from "../streamer-entity"
+import { streamerNatives } from "@/natives/streamer"
 
-export class TextLabel extends Entity {
+export class TextLabel extends StreamerEntity {
     private _text: string
     private _color: string
     public attached = false
 
     constructor(id: number, text: string, color: string) {
-        super(id)
+        super(id, "textLabel")
 
         this._text = text
         this._color = color
     }
 
-    set text(text: string) {
-        if (nativeFunctions.update3DTextLabelText(this.id, this._color, text)) {
-            this._text = text
-        }
+    updateText(text: string, color?: string) {
+        color = color ?? this._color
+
+        streamerNatives.updateDynamic3dTextLabelText(this.id, color, text)
+
+        this._text = text
+        this._color = color
     }
 
     get text() {

@@ -111,6 +111,60 @@ class StreamerNatives {
         return samp.callNative("IsValidDynamicPickup", "i", pickupId) === 1
     }
 
+    createDynamic3dTextLabel(
+        text: string,
+        color: string,
+        position: Vector3,
+        drawDistance: number,
+        attachedPlayerId: number,
+        attachedVehicleId: number,
+        testLos: number,
+        world: number,
+        interior: number,
+        playerId: number,
+        streamDistance: number,
+        areaId: number,
+        priority: number,
+    ) {
+        const id = samp.callNative(
+            "CreateDynamic3DTextLabel",
+            "siffffiiiiiifii",
+            text,
+            parseInt(color + "FF", 16),
+            position.x,
+            position.y,
+            position.z,
+            drawDistance,
+            attachedPlayerId,
+            attachedVehicleId,
+            testLos,
+            world,
+            interior,
+            playerId,
+            streamDistance,
+            areaId,
+            priority,
+        ) as number
+
+        return id === INVALID_STREAMER_ID ? undefined : id
+    }
+
+    destroyDynamic3dTextLabel(textLabelId: number) {
+        samp.callNative("DestroyDynamic3DTextLabel", "i", textLabelId)
+    }
+
+    isValidDynamic3dTextLabel(textLabelId: number) {
+        return samp.callNative("IsValidDynamic3DTextLabel", "i", textLabelId) === 1
+    }
+
+    getDynamic3dTextLabelText(textLabelId: number) {
+        return samp.callNative("GetDynamic3DTextLabelText", "iSi", textLabelId, 256) as string
+    }
+
+    updateDynamic3dTextLabelText(textLabelId: number, color: string, text: string) {
+        samp.callNative("UpdateDynamic3DTextLabelText", "iis", textLabelId, parseInt(color + "FF", 16), text)
+    }
+
     getFloatData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData) {
         return samp.callNativeFloat(
             "Streamer_GetFloatData",
@@ -168,3 +222,11 @@ class StreamerNatives {
 }
 
 export const streamerNatives = new StreamerNatives()
+
+class StreamerEvents {
+    onPlayerPickUpDynamicPickup(callback: (playerId: number, pickupId: number) => void) {
+        samp.on("OnPlayerPickUpDynamicPickup", callback)
+    }
+}
+
+export const streamerEvents = new StreamerEvents()
