@@ -20,7 +20,12 @@ class PlayerDialogFactory {
         const existing = this.promises.get(player.id)
 
         if (existing) {
-            existing(response)
+            // @dockfries
+            // bug: does not trigger resolve of promise
+            // fix: it only works if you put it in an event loop
+            setTimeout(() => {
+                existing(response)
+            })
         }
 
         this.promises.delete(player.id)
