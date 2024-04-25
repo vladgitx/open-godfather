@@ -1,6 +1,6 @@
 # Open Godfather :warning: Unstable & Not Complete :warning:
 
-Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin using an object-oriented approach.
+Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin in an object-oriented manner.
 
 - [Starting a project](#starting-a-project)
 - [Usage example](#usage-example)
@@ -62,7 +62,7 @@ This library overrides some of the default SA-MP behavior in order to simplify t
 
 ### Connection and spawning
 
-Players are placed into spectate mode when they connect, and all that's left is to spawn them. **This behavior might change though!**
+Players are placed into spectate mode when they connect, and all that's left is to spawn them.
 
 ### Damage
 
