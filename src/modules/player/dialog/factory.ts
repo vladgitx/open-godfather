@@ -1,4 +1,4 @@
-import { type Player } from "../instance"
+import { type Player } from "../entity"
 import type { DialogResponse } from "./@types/response"
 
 class PlayerDialogFactory {

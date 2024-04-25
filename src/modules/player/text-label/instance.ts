@@ -1,6 +1,6 @@
 import { type TextLabel } from "../../text-label"
 import { type Vector3 } from "../../vector3"
-import { type Player } from "../instance"
+import { type Player } from "../entity"
 import { streamerNatives } from "@/natives/streamer"
 
 export class PlayerTextLabels {

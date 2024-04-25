@@ -1,5 +1,5 @@
 import { nativeFunctions } from "@/natives"
-import { type Player } from "../instance"
+import { type Player } from "../entity"
 
 export class PlayerAnimations {
     constructor(private player: Player) {}

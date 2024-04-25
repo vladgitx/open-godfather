@@ -1,7 +1,7 @@
 import { streamerNatives } from "@/natives/streamer"
 import { type Vector3 } from "../vector3"
 import { pickupFactory } from "./factory"
-import { type Pickup } from "./instance"
+import { type Pickup } from "./entity"
 import { StreamerHandler } from "../streamer-entity"
 import { type Player } from "../player"
 

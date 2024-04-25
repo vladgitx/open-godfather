@@ -1,6 +1,6 @@
 import { DialogStylesEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
-import { type Player } from "../instance"
+import { type Player } from "../entity"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
 import { playerDialogFactory } from "./factory"
 

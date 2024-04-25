@@ -1,5 +1,5 @@
 import { EntityFactory } from "../entity"
-import { Player } from "./instance"
+import { Player } from "./entity"
 
 class PlayerFactory extends EntityFactory<Player> {
     new(id: number) {

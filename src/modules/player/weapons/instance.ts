@@ -1,6 +1,6 @@
 import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
-import { type Player } from "../instance"
+import { type Player } from "../entity"
 
 export class PlayerWeapons {
     constructor(private player: Player) {}

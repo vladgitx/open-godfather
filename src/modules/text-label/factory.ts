@@ -1,5 +1,5 @@
 import { EntityFactory } from "../entity"
-import { TextLabel } from "./instance"
+import { TextLabel } from "./entity"
 
 class TextLabelFactory extends EntityFactory<TextLabel> {
     new(id: number, text: string, color: string) {

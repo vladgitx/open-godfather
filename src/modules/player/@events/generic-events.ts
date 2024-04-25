@@ -4,7 +4,7 @@ import { Vector3 } from "../../vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../handler"
 import { vehicleHandler } from "@/modules/vehicle"
-import { DEFAULT_PLAYER_TEAM } from "../instance"
+import { DEFAULT_PLAYER_TEAM } from "../entity"
 
 nativeEvents.onPlayerSpawn((playerId: number) => {
     const player = playerHandler.at(playerId)

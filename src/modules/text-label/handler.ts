@@ -1,6 +1,6 @@
 import { type Vector3 } from "../vector3"
 import { textLabelFactory } from "./factory"
-import { type TextLabel } from "./instance"
+import { type TextLabel } from "./entity"
 import { streamerNatives } from "@/natives/streamer"
 import { type Player } from "../player"
 import { StreamerHandler } from "../streamer-entity"
