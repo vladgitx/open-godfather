@@ -1,4 +1,4 @@
-# Open Godfather :warning: Unstable & Not Complete :warning:
+# Open Godfather :warning: Experimental :warning:
 
 Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin in an object-oriented manner.
 
@@ -87,7 +87,7 @@ og.events.on("playerCommand", (player, cmdText, command, call) => {
     if (command) {
         call()
     } else {
-        playerMessage.critical(player, `Command "${cmdText}" doesn't exist.`)
+        player.sendMessage(`Command "${cmdText}" doesn't exist.`)
     }
 })
 ```
