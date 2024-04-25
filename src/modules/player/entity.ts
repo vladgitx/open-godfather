@@ -41,20 +41,17 @@ export class Player extends Entity {
     }
 
     spawn(position = new Vector3(0, 0, 3), rotation = 0, world = 0, interior = 0) {
-        if (!this.spectating) {
-            if (this.state === PlayerStatesEnum.Wasted) {
-                // If in class selection
-                nativeFunctions.spawnPlayer(this.id)
-            }
-            return
-        }
-
         this.world = world
         this.interior = interior
 
         nativeFunctions.setSpawnInfo(this.id, DEFAULT_PLAYER_TEAM, this.skin, position, rotation)
 
-        this.spectating = false
+        if (this.spectating) {
+            this.spectating = false
+        } else if (this.state === PlayerStatesEnum.Wasted) {
+            // If in class selection
+            nativeFunctions.spawnPlayer(this.id)
+        }
     }
 
     kick(delay = 10) {
