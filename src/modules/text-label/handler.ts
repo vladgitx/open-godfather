@@ -48,10 +48,6 @@ class TextLabelHandler extends StreamerHandler<TextLabel> {
         streamerNatives.destroyDynamic3dTextLabel(label.id)
         textLabelFactory.destroy(label)
     }
-
-    at(id: number) {
-        return textLabelFactory.pool.get(id)
-    }
 }
 
-export const textLabelHandler = new TextLabelHandler("textLabel", (id) => textLabelFactory.pool.get(id))
+export const textLabelHandler = new TextLabelHandler("textLabel", textLabelFactory)

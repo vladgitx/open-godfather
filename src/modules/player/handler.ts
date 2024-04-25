@@ -3,8 +3,9 @@ import { CONFIG } from "@/shared/config"
 import { playerFactory } from "./factory"
 import { type Vector3 } from "../vector3"
 import { type Player } from "."
+import { EntityHandler } from "../entity"
 
-class PlayerHandler {
+class PlayerHandler extends EntityHandler<Player> {
     broadcast(message: string, color = CONFIG.message.color) {
         nativeFunctions.sendClientMessageToAll(color, message)
     }
@@ -27,14 +28,6 @@ class PlayerHandler {
         }
         return players
     }
-
-    get all() {
-        return playerFactory.pool.values()
-    }
-
-    at(id: number) {
-        return playerFactory.pool.get(id)
-    }
 }
 
-export const playerHandler = new PlayerHandler()
+export const playerHandler = new PlayerHandler(playerFactory)

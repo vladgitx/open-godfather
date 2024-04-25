@@ -2,12 +2,15 @@ import { streamerNatives, type StreamerItemType } from "@/natives/streamer"
 import { type Player } from "../player"
 import { type Vector3 } from "../vector3"
 import { type StreamerEntity } from "./instance"
+import { type EntityFactory, EntityHandler } from "../entity"
 
-export class StreamerHandler<T extends StreamerEntity> {
+export class StreamerHandler<T extends StreamerEntity> extends EntityHandler<T> {
     constructor(
         private type: StreamerItemType,
-        private getItem: (id: number) => T | undefined,
-    ) {}
+        factory: EntityFactory<T>,
+    ) {
+        super(factory)
+    }
 
     countVisible(player: Player) {
         return streamerNatives.countVisibleItems(player.id, this.type)
@@ -22,7 +25,7 @@ export class StreamerHandler<T extends StreamerEntity> {
         const itemIds = streamerNatives.getNearbyItems(position, this.type, maxItems, range, world)
 
         for (const itemId of itemIds) {
-            const item = this.getItem(itemId)
+            const item = this.at(itemId)
 
             if (item) {
                 items.push(item)

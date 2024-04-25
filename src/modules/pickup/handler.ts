@@ -40,10 +40,6 @@ class PickupHandler extends StreamerHandler<Pickup> {
         streamerNatives.destroyDynamicPickup(pickup.id)
         pickupFactory.destroy(pickup)
     }
-
-    at(id: number) {
-        return pickupFactory.pool.get(id)
-    }
 }
 
-export const pickupHandler = new PickupHandler("pickup", (id) => pickupFactory.pool.get(id))
+export const pickupHandler = new PickupHandler("pickup", pickupFactory)

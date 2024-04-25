@@ -3,8 +3,9 @@ import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { vehicleFactory } from "./factory"
 import { type Vehicle } from "./entity"
+import { EntityHandler } from "../entity"
 
-class VehicleHandler {
+class VehicleHandler extends EntityHandler<Vehicle> {
     new(
         model: number,
         position: Vector3,
@@ -28,10 +29,6 @@ class VehicleHandler {
         vehicleFactory.destroy(vehicle)
     }
 
-    at(id: number) {
-        return vehicleFactory.pool.get(id)
-    }
-
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {
         const vehicles = new Map<Vehicle, number>()
         for (const vehicle of this.all) {
@@ -50,10 +47,6 @@ class VehicleHandler {
         }
         return vehicles
     }
-
-    get all() {
-        return vehicleFactory.pool.values()
-    }
 }
 
-export const vehicleHandler = new VehicleHandler()
+export const vehicleHandler = new VehicleHandler(vehicleFactory)
