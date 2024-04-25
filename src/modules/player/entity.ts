@@ -9,6 +9,7 @@ import { Entity } from "../entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerTextLabels } from "./text-label"
 import { PlayerAttachedObjects } from "./attached-objects"
+import { type CameraCutStyle } from "@/natives/functions"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
@@ -52,6 +53,8 @@ export class Player extends Entity {
             // If in class selection
             nativeFunctions.spawnPlayer(this.id)
         }
+
+        this.setCameraBehind()
     }
 
     kick(delay = 10) {
@@ -63,6 +66,14 @@ export class Player extends Entity {
         setTimeout(() => {
             nativeFunctions.kick(this.id)
         }, delay)
+    }
+
+    setCameraBehind() {
+        nativeFunctions.setCameraBehindPlayer(this.id)
+    }
+
+    setCameraLookAt(position: Vector3, cutStyle: CameraCutStyle = "cut") {
+        nativeFunctions.setPlayerCameraLookAt(this.id, position, cutStyle)
     }
 
     set spectating(spectating: boolean) {
@@ -80,6 +91,14 @@ export class Player extends Entity {
 
     get position() {
         return nativeFunctions.getPlayerPosition(this.id)
+    }
+
+    set cameraPosition(position: Vector3) {
+        nativeFunctions.setPlayerCameraPos(this.id, position)
+    }
+
+    get cameraPosition() {
+        return nativeFunctions.getPlayerCameraPos(this.id)
     }
 
     set specialAction(action: SpecialActionsEnum) {

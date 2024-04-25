@@ -11,6 +11,13 @@ import {
 } from "../common/enums"
 import { Vector3 } from "../modules/vector3"
 
+const CAMERA_CUT_STYLES = {
+    move: 1,
+    cut: 2,
+} as const
+
+export type CameraCutStyle = keyof typeof CAMERA_CUT_STYLES
+
 class NativeFunctions {
     manualVehicleEngineAndLights = (): number => {
         return samp.callNative("ManualVehicleEngineAndLights", "")
@@ -506,6 +513,23 @@ class NativeFunctions {
             return CameraModesEnum.FollowPed
         }
         return samp.callNative("GetPlayerCameraMode", "i", playerId)
+    }
+
+    setPlayerCameraPos = (playerid: number, position: Vector3): number => {
+        return samp.callNative("SetPlayerCameraPos", "ifff", playerid, position.x, position.y, position.z)
+    }
+
+    setPlayerCameraLookAt = (playerid: number, position: Vector3, cut: CameraCutStyle): number => {
+        return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerid, position.x, position.y, position.z, CAMERA_CUT_STYLES[cut])
+    }
+
+    setCameraBehindPlayer = (playerid: number): number => {
+        return samp.callNative("SetCameraBehindPlayer", "i", playerid)
+    }
+
+    getPlayerCameraPos = (playerid: number) => {
+        const pos = samp.callNative("GetPlayerCameraPos", "iFFF", playerid) as number[]
+        return new Vector3(pos[0], pos[1], pos[2])
     }
 
     getPlayerState(playerId: number): PlayerStatesEnum | undefined {
