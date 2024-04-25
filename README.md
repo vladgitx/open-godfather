@@ -24,7 +24,7 @@ If you don't want to use the [Open Godfather CLI](https://github.com/vladgitx/og
     
 ## Usage example
 
-The player is immediately placed into spectate mode when they connect, and all that's left is to spawn them.
+Spawn a player based on the dialog's response.
 
 ```typescript
 import { og } from "open-godfather"
