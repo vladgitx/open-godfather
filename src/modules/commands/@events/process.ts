@@ -22,10 +22,19 @@ nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
     const command = commandFactory.pool.get(commandStr)
 
     if (command) {
-        dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params))
+        const hasListeners = dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params))
+
+        if (!hasListeners) {
+            // The command will be executed directly if no "playerCommand" event listener is defined by the developer.
+            void command.callback(player, ...params)
+        }
     } else {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        dispatcher.emit("playerCommand", player, commandStr, undefined, () => {})
+        const hasListeners = dispatcher.emit("playerCommand", player, commandStr, undefined, () => {})
+
+        if (!hasListeners) {
+            player.sendMessage("OG: Unknown command.")
+        }
     }
 
     return 1
