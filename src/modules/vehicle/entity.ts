@@ -1,4 +1,3 @@
-import { CONFIG } from "@/shared/config"
 import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { Entity } from "../entity"
@@ -14,8 +13,8 @@ export class Vehicle extends Entity {
 
     private _primaryColor: number
     private _secondaryColor: number
-    private _interior = CONFIG.vehicle.interior
-    private _plate = CONFIG.vehicle.plate
+    private _interior = 0
+    private _plate = ""
 
     constructor(
         id: number,

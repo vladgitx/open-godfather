@@ -1,12 +1,13 @@
-import { CONFIG } from "@/shared/config"
 import { type PlayerBonesEnum } from "@/shared/enums"
 import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../../vector3"
 import { type Player } from "../instance"
 import { PlayerAttachedObject } from "./entity"
 
+const MAX_PLAYER_ATTACHED_OBJECTS = 10
+
 export class PlayerAttachedObjects {
-    private attachedObjects = new Array<PlayerAttachedObject | undefined>(CONFIG.playerAttachedObjects.limit).fill(undefined)
+    private attachedObjects = new Array<PlayerAttachedObject | undefined>(MAX_PLAYER_ATTACHED_OBJECTS).fill(undefined)
 
     constructor(private player: Player) {}
 

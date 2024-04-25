@@ -1,15 +1,14 @@
 import { type Vehicle } from ".."
 import { nativeFunctions } from "@/natives"
-import { CONFIG } from "@/shared/config"
 
 export class VehicleParams {
-    private _engine: "on" | "off" = CONFIG.vehicle.params.engine
-    private _lights: "on" | "off" = CONFIG.vehicle.params.lights
-    private _alarm: "on" | "off" = CONFIG.vehicle.params.alarm
-    private _doors: "locked" | "unlocked" = CONFIG.vehicle.params.doors
-    private _bonnet: "closed" | "open" = CONFIG.vehicle.params.bonnet
-    private _boot: "closed" | "open" = CONFIG.vehicle.params.boot
-    private _objective: "on" | "off" = CONFIG.vehicle.params.objective
+    private _engine: "on" | "off" = "off"
+    private _lights: "on" | "off" = "off"
+    private _alarm: "on" | "off" = "off"
+    private _doors: "locked" | "unlocked" = "unlocked"
+    private _bonnet: "closed" | "open" = "closed"
+    private _boot: "closed" | "open" = "closed"
+    private _objective: "on" | "off" = "off"
 
     constructor(private vehicle: Vehicle) {
         nativeFunctions.setVehicleParamsEx(

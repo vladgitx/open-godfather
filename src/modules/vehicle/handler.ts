@@ -1,4 +1,3 @@
-import { CONFIG } from "@/shared/config"
 import { nativeFunctions } from "@/natives"
 import { type Vector3 } from "../vector3"
 import { vehicleFactory } from "./factory"
@@ -6,15 +5,7 @@ import { type Vehicle } from "./entity"
 import { EntityHandler } from "../entity"
 
 class VehicleHandler extends EntityHandler<Vehicle> {
-    new(
-        model: number,
-        position: Vector3,
-        rotation: number,
-        primaryColor = CONFIG.vehicle.primaryColor,
-        secondaryColor = CONFIG.vehicle.secondaryColor,
-        respawnDelay = CONFIG.vehicle.respawnDelay,
-        siren = CONFIG.vehicle.siren,
-    ) {
+    new(model: number, position: Vector3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
         const vehicleId = nativeFunctions.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
 
         if (vehicleId === undefined) {

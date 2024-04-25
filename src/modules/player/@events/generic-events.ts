@@ -1,10 +1,10 @@
 import { nativeEvents, nativeFunctions } from "@/natives"
-import { CONFIG } from "@/shared/config"
 import { type BodyPartsEnum, HitTypesEnum, type PlayerStatesEnum, type WeaponsEnum } from "@/shared/enums"
 import { Vector3 } from "../../vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../handler"
 import { vehicleHandler } from "@/modules/vehicle"
+import { DEFAULT_PLAYER_TEAM } from "../instance"
 
 nativeEvents.onPlayerSpawn((playerId: number) => {
     const player = playerHandler.at(playerId)
@@ -12,7 +12,7 @@ nativeEvents.onPlayerSpawn((playerId: number) => {
         return
     }
 
-    nativeFunctions.setPlayerTeam(playerId, CONFIG.player.team)
+    nativeFunctions.setPlayerTeam(playerId, DEFAULT_PLAYER_TEAM)
 
     if (player.getVariable("internal::firstSpawn") === undefined) {
         player.setVariable("internal::firstSpawn", true)

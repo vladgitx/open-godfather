@@ -1,7 +1,6 @@
-import { CONFIG } from "@/shared/config"
 import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums"
 import { nativeFunctions } from "@/natives"
-import { type Vector3 } from "../vector3"
+import { Vector3 } from "../vector3"
 import { type Vehicle, vehicleHandler } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
@@ -11,6 +10,8 @@ import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerTextLabels } from "./text-label"
 import { PlayerAttachedObjects } from "./attached-objects"
 
+export const DEFAULT_PLAYER_TEAM = 0
+
 export class Player extends Entity {
     readonly dialog = new PlayerDialog(this)
     readonly weapons = new PlayerWeapons(this)
@@ -19,9 +20,9 @@ export class Player extends Entity {
     readonly attachedObjects = new PlayerAttachedObjects(this)
 
     private _name = nativeFunctions.getPlayerName(this.id)
-    private _color = CONFIG.player.color
-    private _cash = CONFIG.player.cash
-    private _skin = CONFIG.player.skin
+    private _color = "FFFFFF"
+    private _cash = 0
+    private _skin = 0
     private _spectating = true
 
     constructor(id: number) {
@@ -30,21 +31,16 @@ export class Player extends Entity {
         nativeFunctions.setPlayerColor(this.id, this._color)
         nativeFunctions.givePlayerMoney(this.id, this._cash)
         nativeFunctions.setPlayerSkin(this.id, this._skin)
-        nativeFunctions.setPlayerTeam(this.id, CONFIG.player.team)
+        nativeFunctions.setPlayerTeam(this.id, DEFAULT_PLAYER_TEAM)
 
         nativeFunctions.togglePlayerSpectating(this.id, this._spectating)
     }
 
-    sendMessage(message: string, color = CONFIG.message.color) {
+    sendMessage(message: string, color = "FFFFFF") {
         nativeFunctions.sendClientMessage(this.id, color, message)
     }
 
-    spawn(
-        position = CONFIG.player.spawn.position,
-        rotation = CONFIG.player.spawn.rotation,
-        world = CONFIG.player.spawn.world,
-        interior = CONFIG.player.spawn.interior,
-    ) {
+    spawn(position = new Vector3(0, 0, 3), rotation = 0, world = 0, interior = 0) {
         if (!this.spectating) {
             if (this.state === PlayerStatesEnum.Wasted) {
                 // If in class selection
@@ -56,7 +52,7 @@ export class Player extends Entity {
         this.world = world
         this.interior = interior
 
-        nativeFunctions.setSpawnInfo(this.id, CONFIG.player.team, this.skin, position, rotation)
+        nativeFunctions.setSpawnInfo(this.id, DEFAULT_PLAYER_TEAM, this.skin, position, rotation)
 
         this.spectating = false
     }
@@ -199,12 +195,7 @@ export class Player extends Entity {
         return nativeFunctions.getPlayerCameraMode(this.id)
     }
 
-    setChatBubble(
-        text: string,
-        color = CONFIG.chatBubble.color,
-        drawDistance = CONFIG.chatBubble.distance,
-        expireTime = CONFIG.chatBubble.expire,
-    ) {
+    setChatBubble(text: string, color = "FFFFFF", drawDistance = 12, expireTime = 5000) {
         return nativeFunctions.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
     }
 

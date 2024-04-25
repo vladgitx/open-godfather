@@ -1,12 +1,11 @@
 import { nativeFunctions } from "@/natives"
-import { CONFIG } from "@/shared/config"
 import { playerFactory } from "./factory"
 import { type Vector3 } from "../vector3"
 import { type Player } from "."
 import { EntityHandler } from "../entity"
 
 class PlayerHandler extends EntityHandler<Player> {
-    broadcast(message: string, color = CONFIG.message.color) {
+    broadcast(message: string, color = "FFFFFF") {
         nativeFunctions.sendClientMessageToAll(color, message)
     }
 
