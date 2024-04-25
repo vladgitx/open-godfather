@@ -75,9 +75,10 @@ nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: num
     const player = playerHandler.at(playerId)
 
     if (player) {
-        const hasListeners = dispatcher.emit("playerDamage", player, playerHandler.at(issuerId), amount, weapon, bodyPart)
+        const issuer = playerHandler.at(issuerId)
+        const hasListeners = dispatcher.emit("playerDamage", player, issuer, amount, weapon, bodyPart)
 
-        if (!hasListeners) {
+        if (!hasListeners && issuer) {
             // All players have the same team, so they can't damage each other
             // Do the default SA-MP behavior if the developer doesn't define a "playerDamage" event
             player.health -= amount
