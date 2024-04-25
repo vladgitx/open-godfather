@@ -76,6 +76,14 @@ export class Player extends Entity {
         nativeFunctions.setPlayerCameraLookAt(this.id, position, cutStyle)
     }
 
+    interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "cut") {
+        nativeFunctions.interpolateCameraPos(this.id, from, to, time, cutStyle)
+    }
+
+    interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "cut") {
+        nativeFunctions.interpolateCameraLookAt(this.id, from, to, time, cutStyle)
+    }
+
     set spectating(spectating: boolean) {
         this._spectating = spectating
         nativeFunctions.togglePlayerSpectating(this.id, spectating)

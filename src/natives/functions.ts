@@ -19,6 +19,38 @@ const CAMERA_CUT_STYLES = {
 export type CameraCutStyle = keyof typeof CAMERA_CUT_STYLES
 
 class NativeFunctions {
+    interpolateCameraPos = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStyle): number => {
+        return samp.callNative(
+            "InterpolateCameraPos",
+            "iffffffii",
+            playerid,
+            from.x,
+            from.y,
+            from.z,
+            to.x,
+            to.y,
+            to.z,
+            time,
+            CAMERA_CUT_STYLES[cut],
+        )
+    }
+
+    interpolateCameraLookAt = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStyle): number => {
+        return samp.callNative(
+            "InterpolateCameraLookAt",
+            "iffffffii",
+            playerid,
+            from.x,
+            from.y,
+            from.z,
+            to.x,
+            to.y,
+            to.z,
+            time,
+            CAMERA_CUT_STYLES[cut],
+        )
+    }
+
     manualVehicleEngineAndLights = (): number => {
         return samp.callNative("ManualVehicleEngineAndLights", "")
     }
