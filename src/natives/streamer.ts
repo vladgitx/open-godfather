@@ -1,3 +1,4 @@
+import { hexToRgbaInt } from "@/lib/utils"
 import { Vector3 } from "@/modules/vector3"
 
 const INVALID_STREAMER_ID = 0
@@ -130,7 +131,7 @@ class StreamerNatives {
             "CreateDynamic3DTextLabel",
             "siffffiiiiiifii",
             text,
-            parseInt(color + "FF", 16),
+            hexToRgbaInt(color),
             position.x,
             position.y,
             position.z,
@@ -162,7 +163,7 @@ class StreamerNatives {
     }
 
     updateDynamic3dTextLabelText(textLabelId: number, color: string, text: string) {
-        samp.callNative("UpdateDynamic3DTextLabelText", "iis", textLabelId, parseInt(color + "FF", 16), text)
+        samp.callNative("UpdateDynamic3DTextLabelText", "iis", textLabelId, hexToRgbaInt(color), text)
     }
 
     getFloatData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData) {

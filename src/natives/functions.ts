@@ -1,3 +1,4 @@
+import { hexToRgbaInt } from "@/lib/utils"
 import {
     WeaponsEnum,
     type PlayerStatesEnum,
@@ -91,7 +92,7 @@ class NativeFunctions {
     }
 
     setPlayerColor = (playerId: number, color: string): void => {
-        samp.callNative("SetPlayerColor", "ii", playerId, parseInt(color + "FF", 16))
+        samp.callNative("SetPlayerColor", "ii", playerId, hexToRgbaInt(color))
     }
 
     setWeather = (weatherId: number): void => {
@@ -138,11 +139,11 @@ class NativeFunctions {
         const values = [playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ]
 
         if (materialcolor1 !== undefined) {
-            values.push(parseInt(materialcolor1 + "FF", 16))
+            values.push(hexToRgbaInt(materialcolor1))
         }
 
         if (materialcolor2 !== undefined) {
-            values.push(parseInt(materialcolor2 + "FF", 16))
+            values.push(hexToRgbaInt(materialcolor2))
         }
 
         return samp.callNative("SetPlayerAttachedObject", "iiiifffffffffii", ...values) === 1
@@ -282,10 +283,10 @@ class NativeFunctions {
 
     sendClientMessage(playerId: number, color: string, message: string): void {
         if (message.length > 90) {
-            samp.callNative("SendClientMessage", "iis", playerId, parseInt(color + "FF", 16), `${message.slice(0, 90)} ...`)
-            samp.callNative("SendClientMessage", "iis", playerId, parseInt(color + "FF", 16), `... ${message.slice(90)}`)
+            samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), `${message.slice(0, 90)} ...`)
+            samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), `... ${message.slice(90)}`)
         } else {
-            samp.callNative("SendClientMessage", "iis", playerId, parseInt(color + "FF", 16), message)
+            samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), message)
         }
     }
 
@@ -567,15 +568,15 @@ class NativeFunctions {
 
     sendClientMessageToAll(color: string, message: string): void {
         if (message.length > 90) {
-            samp.callNative("SendClientMessageToAll", "is", parseInt(color + "FF", 16), `${message.slice(0, 90)} ...`)
-            samp.callNative("SendClientMessageToAll", "is", parseInt(color + "FF", 16), `... ${message.slice(90)}`)
+            samp.callNative("SendClientMessageToAll", "is", hexToRgbaInt(color), `${message.slice(0, 90)} ...`)
+            samp.callNative("SendClientMessageToAll", "is", hexToRgbaInt(color), `... ${message.slice(90)}`)
         } else {
-            samp.callNative("SendClientMessageToAll", "is", parseInt(color + "FF", 16), message)
+            samp.callNative("SendClientMessageToAll", "is", hexToRgbaInt(color), message)
         }
     }
 
     setPlayerChatBubble = (playerId: number, text: string, color: string, drawdistance: number, expiretime: number): boolean => {
-        return samp.callNative("SetPlayerChatBubble", "isifi", playerId, text, parseInt(color + "FF", 16), drawdistance, expiretime) === 1
+        return samp.callNative("SetPlayerChatBubble", "isifi", playerId, text, hexToRgbaInt(color), drawdistance, expiretime) === 1
     }
 
     getVehicleModel(vehicleId: number): number | undefined {
