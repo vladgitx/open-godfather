@@ -10,11 +10,14 @@ class PlayerHandler extends EntityHandler<Player> {
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {
-        const players = new Map<Player, number>()
-        for (const player of this.all) {
+        const closestPlayers = new Map<Player, number>()
+        const onlinePlayers = this.all
+
+        for (const player of onlinePlayers) {
             if (world !== undefined && player.world !== world) {
                 continue
             }
+
             if (interior !== undefined && player.interior !== interior) {
                 continue
             }
@@ -22,10 +25,10 @@ class PlayerHandler extends EntityHandler<Player> {
             const distance = player.position.distance(position)
 
             if (distance < range) {
-                players.set(player, distance)
+                closestPlayers.set(player, distance)
             }
         }
-        return players
+        return closestPlayers
     }
 }
 
