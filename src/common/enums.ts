@@ -69,6 +69,11 @@ export enum BodyPartsEnum {
     Head = 9,
 }
 
+export enum CameraCutStylesEnum {
+    Move = 1,
+    Cut = 2,
+}
+
 export enum PlayerStatesEnum {
     None = 0,
     OnFoot = 1,

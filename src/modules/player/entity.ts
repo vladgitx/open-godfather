@@ -1,4 +1,4 @@
-import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/common/enums"
+import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum, CameraCutStylesEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../vector3"
 import { type Vehicle, vehicleHandler } from "../vehicle"
@@ -9,7 +9,6 @@ import { Entity } from "../entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerTextLabels } from "./text-label"
 import { PlayerAttachedObjects } from "./attached-objects"
-import { type CameraCutStyle } from "@/natives/functions"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
@@ -72,15 +71,15 @@ export class Player extends Entity {
         nativeFunctions.setCameraBehindPlayer(this.id)
     }
 
-    setCameraLookAt(position: Vector3, cutStyle: CameraCutStyle = "cut") {
+    setCameraLookAt(position: Vector3, cutStyle: CameraCutStylesEnum = CameraCutStylesEnum.Cut) {
         nativeFunctions.setPlayerCameraLookAt(this.id, position, cutStyle)
     }
 
-    interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "cut") {
+    interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStylesEnum = CameraCutStylesEnum.Move) {
         nativeFunctions.interpolateCameraPos(this.id, from, to, time, cutStyle)
     }
 
-    interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "cut") {
+    interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStylesEnum = CameraCutStylesEnum.Move) {
         nativeFunctions.interpolateCameraLookAt(this.id, from, to, time, cutStyle)
     }
 

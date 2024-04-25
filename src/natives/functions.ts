@@ -8,47 +8,17 @@ import {
     VehicleSeatsEnum,
     CameraModesEnum,
     WeaponSlotsEnum,
+    type CameraCutStylesEnum,
 } from "../common/enums"
 import { Vector3 } from "../modules/vector3"
 
-const CAMERA_CUT_STYLES = {
-    move: 1,
-    cut: 2,
-} as const
-
-export type CameraCutStyle = keyof typeof CAMERA_CUT_STYLES
-
 class NativeFunctions {
-    interpolateCameraPos = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStyle): number => {
-        return samp.callNative(
-            "InterpolateCameraPos",
-            "iffffffii",
-            playerid,
-            from.x,
-            from.y,
-            from.z,
-            to.x,
-            to.y,
-            to.z,
-            time,
-            CAMERA_CUT_STYLES[cut],
-        )
+    interpolateCameraPos = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStylesEnum): number => {
+        return samp.callNative("InterpolateCameraPos", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
-    interpolateCameraLookAt = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStyle): number => {
-        return samp.callNative(
-            "InterpolateCameraLookAt",
-            "iffffffii",
-            playerid,
-            from.x,
-            from.y,
-            from.z,
-            to.x,
-            to.y,
-            to.z,
-            time,
-            CAMERA_CUT_STYLES[cut],
-        )
+    interpolateCameraLookAt = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStylesEnum): number => {
+        return samp.callNative("InterpolateCameraLookAt", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
     manualVehicleEngineAndLights = (): number => {
@@ -551,8 +521,8 @@ class NativeFunctions {
         return samp.callNative("SetPlayerCameraPos", "ifff", playerid, position.x, position.y, position.z)
     }
 
-    setPlayerCameraLookAt = (playerid: number, position: Vector3, cut: CameraCutStyle): number => {
-        return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerid, position.x, position.y, position.z, CAMERA_CUT_STYLES[cut])
+    setPlayerCameraLookAt = (playerid: number, position: Vector3, cut: CameraCutStylesEnum): number => {
+        return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerid, position.x, position.y, position.z, cut)
     }
 
     setCameraBehindPlayer = (playerid: number): number => {
