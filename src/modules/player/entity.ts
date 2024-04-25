@@ -54,7 +54,7 @@ export class Player extends Entity {
             nativeFunctions.spawnPlayer(this.id)
         }
 
-        this.setCameraBehind()
+        this.resetCameraBehind()
     }
 
     kick(delay = 10) {
@@ -68,7 +68,7 @@ export class Player extends Entity {
         }, delay)
     }
 
-    setCameraBehind() {
+    resetCameraBehind() {
         nativeFunctions.setCameraBehindPlayer(this.id)
     }
 
