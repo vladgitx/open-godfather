@@ -1,4 +1,4 @@
-import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/shared/enums"
+import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../vector3"
 import { type Vehicle, vehicleHandler } from "../vehicle"

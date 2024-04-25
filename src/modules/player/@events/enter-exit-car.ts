@@ -1,6 +1,6 @@
 import { type Player } from ".."
 import { nativeFunctions } from "@/natives"
-import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/shared/enums"
+import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/common/enums"
 import { type Vehicle, vehicleHandler } from "../../vehicle"
 import { dispatcher } from "@/modules/dispatcher"
 

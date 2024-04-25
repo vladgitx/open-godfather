@@ -1,4 +1,4 @@
-import { DialogStylesEnum } from "@/shared/enums"
+import { DialogStylesEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
 import { type Player } from "../instance"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"

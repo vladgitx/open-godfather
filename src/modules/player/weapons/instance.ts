@@ -1,4 +1,4 @@
-import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/shared/enums"
+import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
 import { type Player } from "../instance"
 

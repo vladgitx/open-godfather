@@ -7,7 +7,7 @@ import {
     VehicleSeatsEnum,
     CameraModesEnum,
     WeaponSlotsEnum,
-} from "../shared/enums"
+} from "../common/enums"
 import { Vector3 } from "../modules/vector3"
 
 class NativeFunctions {

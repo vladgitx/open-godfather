@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { type Player } from "../player"
-import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/shared/enums"
+import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/common/enums"
 import { type Command } from "../commands"
 import { type Vehicle } from "../vehicle"
 import { type Vector3 } from "../vector3"

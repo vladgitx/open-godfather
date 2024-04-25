@@ -11,5 +11,5 @@ export { type Command, CommandCallback } from "./modules/commands"
 export { type TextLabel } from "./modules/text-label"
 export { type Pickup } from "./modules/pickup"
 
-export * from "./shared/enums"
+export * from "./common/enums"
 export * as og from "./og-export"

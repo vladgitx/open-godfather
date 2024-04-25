@@ -1,5 +1,5 @@
 import { nativeEvents, nativeFunctions } from "@/natives"
-import { type BodyPartsEnum, HitTypesEnum, type PlayerStatesEnum, type WeaponsEnum } from "@/shared/enums"
+import { type BodyPartsEnum, HitTypesEnum, type PlayerStatesEnum, type WeaponsEnum } from "@/common/enums"
 import { Vector3 } from "../../vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { playerHandler } from "../handler"

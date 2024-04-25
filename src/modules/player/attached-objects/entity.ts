@@ -1,4 +1,4 @@
-import { type PlayerBonesEnum } from "@/shared/enums"
+import { type PlayerBonesEnum } from "@/common/enums"
 import { Entity } from "../../entity"
 import { type Vector3 } from "../../vector3"
 
