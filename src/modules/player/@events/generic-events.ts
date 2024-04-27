@@ -36,7 +36,7 @@ nativeEvents.onPlayerText((playerId: number, text: string) => {
     if (player !== undefined) {
         const hasListeners = dispatcher.emit("playerText", player, text)
 
-        if (!hasListeners) {
+        if (!hasListeners && text) {
             playerHandler.broadcast(`${player.name}: ${text}`)
         }
     }
