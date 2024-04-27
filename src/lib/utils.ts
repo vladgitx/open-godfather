@@ -9,5 +9,9 @@ export function hexToRgbaInt(hex: string) {
         return parseInt(hex, 16)
     }
 
-    return 0xffffffff
+    return 0
+}
+
+export function rgbaIntToHex(rgba: number) {
+    return rgba.toString(16).padStart(6, "0")
 }

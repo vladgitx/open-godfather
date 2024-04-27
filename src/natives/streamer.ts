@@ -1,5 +1,6 @@
-import { hexToRgbaInt } from "@/lib/utils"
+import { hexToRgbaInt, rgbaIntToHex } from "@/lib/utils"
 import { Vector3 } from "@/modules/vector3"
+import type { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from ".."
 
 const INVALID_STREAMER_ID = 0
 
@@ -219,6 +220,124 @@ class StreamerNatives {
 
     setItemPos(itemType: StreamerItemType, itemId: number, position: Vector3) {
         samp.callNative("Streamer_SetItemPos", "iifff", STREAMER_ITEM_TYPES[itemType], itemId, position.x, position.y, position.z)
+    }
+
+    createDynamicObject(
+        model: number,
+        position: Vector3,
+        rotation: Vector3,
+        world: number,
+        interior: number,
+        playerId: number,
+        streamDistance: number,
+        drawDistance: number,
+        areaId: number,
+        priority: number,
+    ) {
+        const id = samp.callNative(
+            "CreateDynamicObject",
+            "iffffffiiiffii",
+            model,
+            position.x,
+            position.y,
+            position.z,
+            rotation.x,
+            rotation.y,
+            rotation.z,
+            world,
+            interior,
+            playerId,
+            streamDistance,
+            drawDistance,
+            areaId,
+            priority,
+        ) as number
+
+        return id === INVALID_STREAMER_ID ? undefined : id
+    }
+
+    destroyDynamicObject(objectId: number) {
+        samp.callNative("DestroyDynamicObject", "i", objectId)
+    }
+
+    isDynamicObjectMaterialUsed(objectId: number, materialIndex: number) {
+        return samp.callNative("IsDynamicObjectMaterialUsed", "ii", objectId, materialIndex) === 1
+    }
+
+    removeDynamicObjectMaterial(objectId: number, materialIndex: number) {
+        samp.callNative("RemoveDynamicObjectMaterial", "ii", objectId, materialIndex)
+    }
+
+    getDynamicObjectMaterial(objectId: number, materialIndex: number) {
+        const ret = samp.callNative("GetDynamicObjectMaterial", "iiISSIii", objectId, materialIndex, 80, 80) as [
+            number,
+            string,
+            string,
+            number,
+        ]
+
+        return {
+            model: ret[0],
+            txd: ret[1],
+            texture: ret[2],
+            color: rgbaIntToHex(ret[3]),
+        }
+    }
+
+    setDynamicObjectMaterial(
+        objectId: number,
+        materialIndex: number,
+        modelId: number,
+        txdName: string,
+        textureName: string,
+        materialColor: string,
+    ) {
+        samp.callNative(
+            "SetDynamicObjectMaterial",
+            "iiissi",
+            objectId,
+            materialIndex,
+            modelId,
+            txdName,
+            textureName,
+            hexToRgbaInt(materialColor),
+        )
+    }
+
+    isDynamicObjectMaterialTextUsed(objectId: number, materialIndex: number) {
+        return samp.callNative("IsDynamicObjectMaterialTextUsed", "ii", objectId, materialIndex) === 1
+    }
+
+    removeDynamicObjectMaterialText(objectId: number, materialIndex: number) {
+        samp.callNative("RemoveDynamicObjectMaterialText", "ii", objectId, materialIndex)
+    }
+
+    setDynamicObjectMaterialText(
+        objectId: number,
+        materialIndex: number,
+        text: string,
+        materialSize: MaterialTextSizesEnum,
+        fontFace: string,
+        fontSize: number,
+        bold: boolean,
+        fontColor: string,
+        backColor: string,
+        textAlignment: MaterialTextAlignmentsEnum,
+    ) {
+        samp.callNative(
+            "SetDynamicObjectMaterialText",
+            "iisisiiiii",
+            objectId,
+            materialIndex,
+            text,
+            materialSize,
+            fontFace,
+            fontSize,
+            bold,
+            hexToRgbaInt(fontColor),
+            hexToRgbaInt(backColor),
+            textAlignment,
+        )
     }
 }
 
