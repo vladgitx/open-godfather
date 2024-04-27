@@ -32,8 +32,13 @@ nativeEvents.onPlayerRequestClass((playerId: number) => {
 
 nativeEvents.onPlayerText((playerId: number, text: string) => {
     const player = playerHandler.at(playerId)
+
     if (player !== undefined) {
-        dispatcher.emit("playerText", player, text)
+        const hasListeners = dispatcher.emit("playerText", player, text)
+
+        if (!hasListeners) {
+            playerHandler.broadcast(`${player.name}: ${text}`)
+        }
     }
 
     return 0

@@ -92,6 +92,18 @@ og.events.on("playerCommand", (player, cmdText, command, call) => {
 })
 ```
 
+### Chat
+
+Same as commands and damage. Once you define a `playerText` listener, you have to manually broadcast the message to other players. The implementation is up to you, but this is what a global chat would look like:
+
+```typescript
+og.events.on("playerText", (player, text) => {
+    if (text) {
+        og.players.broadcast(`${player.name}: ${text}`)
+    }
+})
+```
+
 ### Colors
 
 You can use HEX colors for everything:
