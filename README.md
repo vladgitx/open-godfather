@@ -62,7 +62,7 @@ This library overrides some of the default SA-MP behavior in order to simplify t
 
 ### Connection and spawning
 
-Players are placed into spectate mode when they connect, and all that's left is to spawn them.
+Players are placed into spectate mode when they connect, and all that's left is to spawn them. Also, their name color is set to white.
 
 ### Damage
 
