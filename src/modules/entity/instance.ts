@@ -24,8 +24,13 @@ export class Entity {
 
     set exists(value: false) {
         for (const callback of this.cleanupCallbacks) {
-            callback()
+            try {
+                callback()
+            } catch (error) {
+                console.error("Error during entity cleanup:", error)
+            }
         }
+
         this.cleanupCallbacks = []
 
         this.id = INVALID_ENTITY_ID
