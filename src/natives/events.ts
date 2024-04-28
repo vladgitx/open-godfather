@@ -1,3 +1,5 @@
+import { type PlayerBonesEnum } from ".."
+
 class NativeEvents {
     onPlayerConnect(callback: (playerid: number) => void) {
         samp.on("OnPlayerConnect", callback)
@@ -63,6 +65,27 @@ class NativeEvents {
 
     onVehiclePaintjob(callback: (playerid: number, vehicleid: number, paintjobid: number) => void) {
         samp.on("OnVehiclePaintjob", callback)
+    }
+
+    onPlayerEditAttachedObject(
+        callback: (
+            playerid: number,
+            response: 0 | 1,
+            index: number,
+            model: number,
+            bone: PlayerBonesEnum,
+            offX: number,
+            offY: number,
+            offZ: number,
+            rotX: number,
+            rotY: number,
+            rotZ: number,
+            scaleX: number,
+            scaleY: number,
+            scaleZ: number,
+        ) => void,
+    ) {
+        samp.on("OnPlayerEditAttachedObject", callback)
     }
 }
 

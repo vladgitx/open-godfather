@@ -3,6 +3,7 @@ import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../../vector3"
 import { type Player } from "../entity"
 import { PlayerAttachedObject } from "./entity"
+import { editPromiseFactory } from "./edit-promises"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
 
@@ -54,6 +55,7 @@ export class PlayerAttachedObjects {
 
         if (success) {
             this.attachedObjects[slot] = new PlayerAttachedObject(
+                this.player,
                 slot,
                 model,
                 bone,
@@ -77,5 +79,14 @@ export class PlayerAttachedObjects {
 
             object.exists = false
         }
+    }
+
+    at(slot: number) {
+        return this.attachedObjects[slot]
+    }
+
+    edit(object: PlayerAttachedObject) {
+        nativeFunctions.editAttachedObject(this.player.id, object.id)
+        return editPromiseFactory.new(this.player)
     }
 }
