@@ -11,4 +11,8 @@ export class EntityHandler<T extends Entity> {
     at(id: number) {
         return this.factory.pool.get(id)
     }
+
+    checkEntityType(entity: Entity): entity is T {
+        return this.at(entity.id) === entity
+    }
 }
