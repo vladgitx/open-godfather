@@ -7,7 +7,6 @@ import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
 import { Entity } from "../entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
-import { PlayerTextLabels } from "./text-label"
 import { PlayerAttachedObjects } from "./attached-objects"
 
 export const DEFAULT_PLAYER_TEAM = 0
@@ -16,7 +15,6 @@ export class Player extends Entity {
     readonly dialog = new PlayerDialog(this)
     readonly weapons = new PlayerWeapons(this)
     readonly animations = new PlayerAnimations(this)
-    readonly textLabels = new PlayerTextLabels(this)
     readonly attachedObjects = new PlayerAttachedObjects(this)
 
     private _name = nativeFunctions.getPlayerName(this.id)
