@@ -4,6 +4,8 @@ import { Entity } from "../entity"
 import { type Player } from "../player"
 import { VehicleParams } from "./params"
 
+const REMOVE_PAINTJOB_ID = 3
+
 export class Vehicle extends Entity {
     public occupants = new Set<Player>()
 
@@ -29,12 +31,16 @@ export class Vehicle extends Entity {
         nativeFunctions.setVehicleNumberPlate(this.id, this._plate)
     }
 
+    repair() {
+        nativeFunctions.repairVehicle(this.id)
+    }
+
     set position(position: Vector3) {
-        nativeFunctions.setPlayerPosition(this.id, position.x, position.y, position.z)
+        nativeFunctions.setVehiclePosition(this.id, position.x, position.y, position.z)
     }
 
     get position() {
-        return nativeFunctions.getPlayerPosition(this.id)
+        return nativeFunctions.getVehiclePosition(this.id)
     }
 
     set velocity(velocity: Vector3) {
@@ -103,5 +109,15 @@ export class Vehicle extends Entity {
 
     get plate() {
         return this._plate
+    }
+
+    set paintjob(id: number | undefined) {
+        this.setVariable("vehicle::internal::paintjobId", id)
+        nativeFunctions.changeVehiclePaintjob(this.id, id ?? REMOVE_PAINTJOB_ID)
+    }
+
+    get paintjob() {
+        const paintjobId = this.getVariable("vehicle::internal::paintjobId") as number | undefined
+        return paintjobId === REMOVE_PAINTJOB_ID ? undefined : paintjobId
     }
 }

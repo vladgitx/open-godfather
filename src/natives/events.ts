@@ -60,6 +60,10 @@ class NativeEvents {
     onGameModeInit(callback: () => void) {
         samp.on("OnGameModeInit", callback)
     }
+
+    onVehiclePaintjob(callback: (playerid: number, vehicleid: number, paintjobid: number) => void) {
+        samp.on("OnVehiclePaintjob", callback)
+    }
 }
 
 export const nativeEvents = new NativeEvents()

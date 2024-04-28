@@ -128,6 +128,14 @@ class NativeFunctions {
         return samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2) === 1
     }
 
+    changeVehiclePaintjob = (vehicleid: number, paintjobid: number) => {
+        samp.callNative("ChangeVehiclePaintjob", "ii", vehicleid, paintjobid)
+    }
+
+    repairVehicle = (vehicleid: number): number => {
+        return samp.callNative("RepairVehicle", "i", vehicleid)
+    }
+
     setPlayerAttachedObject = (
         playerId: number,
         index: number,
