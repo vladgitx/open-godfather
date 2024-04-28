@@ -2,6 +2,7 @@ import { type Vector3 } from "@/modules/vector3"
 import { type Player } from "../entity"
 
 export interface EditResult {
+    changes: boolean
     offset: Vector3
     rotation: Vector3
     scale: Vector3

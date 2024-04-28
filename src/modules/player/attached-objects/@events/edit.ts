@@ -38,6 +38,7 @@ nativeEvents.onPlayerEditAttachedObject(
             )
 
             editPromiseFactory.destroy(player, {
+                changes: false,
                 offset: attachedObject.offset,
                 rotation: attachedObject.rotation,
                 scale: attachedObject.scale,
@@ -48,6 +49,7 @@ nativeEvents.onPlayerEditAttachedObject(
             attachedObject.setVariable("playerAttObj::internal::scale", new Vector3(scaleX, scaleY, scaleZ))
 
             editPromiseFactory.destroy(player, {
+                changes: true,
                 offset: new Vector3(offX, offY, offZ),
                 rotation: new Vector3(rotX, rotY, rotZ),
                 scale: new Vector3(scaleX, scaleY, scaleZ),

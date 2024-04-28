@@ -182,6 +182,10 @@ class NativeFunctions {
         return samp.callNative("DestroyVehicle", "i", vehicleId) === 1
     }
 
+    cancelEdit = (playerid: number): number => {
+        return samp.callNative("CancelEdit", "i", playerid)
+    }
+
     createVehicle = (
         modelId: number,
         position: Vector3,
