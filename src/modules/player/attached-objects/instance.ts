@@ -86,7 +86,7 @@ export class PlayerAttachedObjects {
     }
 
     enterEditMode(object: PlayerAttachedObject) {
-        this.player.exitObjectEditMode()
+        this.player.exitObjectEditMode() // TODO: bug, not the expected behavior. the player can't enter the edit mode after this
 
         this.player.setVariable("playerAttObj::internal::editObject", object)
         nativeFunctions.editAttachedObject(this.player.id, object.id)
