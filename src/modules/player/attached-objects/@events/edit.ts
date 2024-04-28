@@ -37,7 +37,11 @@ nativeEvents.onPlayerEditAttachedObject(
                 attachedObject.secondMaterialColor,
             )
 
-            editPromiseFactory.destroy(player, undefined)
+            editPromiseFactory.destroy(player, {
+                offset: attachedObject.offset,
+                rotation: attachedObject.rotation,
+                scale: attachedObject.scale,
+            })
         } else {
             attachedObject.setVariable("playerAttObj::internal::offset", new Vector3(offX, offY, offZ))
             attachedObject.setVariable("playerAttObj::internal::rotation", new Vector3(rotX, rotY, rotZ))
