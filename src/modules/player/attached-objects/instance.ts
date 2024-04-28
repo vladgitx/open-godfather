@@ -86,7 +86,11 @@ export class PlayerAttachedObjects {
     }
 
     enterEditMode(object: PlayerAttachedObject) {
+        this.player.exitObjectEditMode()
+
+        this.player.setVariable("playerAttObj::internal::editObject", object)
         nativeFunctions.editAttachedObject(this.player.id, object.id)
+
         return editPromiseFactory.new(this.player)
     }
 }

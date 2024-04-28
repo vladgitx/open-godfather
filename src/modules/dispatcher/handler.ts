@@ -30,6 +30,7 @@ interface PlayerEvents {
     playerShoot: [Player, WeaponsEnum, Player | Vehicle | undefined, Vector3]
     playerPickUpPickup: [Player, Pickup]
     playerChangeVehiclePaintjob: [Player, Vehicle, number | undefined]
+    playerExitObjectEditMode: [Player]
 }
 
 interface VehicleEvents {

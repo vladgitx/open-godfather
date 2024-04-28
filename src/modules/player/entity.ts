@@ -8,6 +8,7 @@ import { PlayerWeapons } from "./weapons"
 import { Entity } from "../entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerAttachedObjects } from "./attached-objects"
+import { dispatcher } from "../dispatcher"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
@@ -34,8 +35,9 @@ export class Player extends Entity {
         nativeFunctions.togglePlayerSpectating(this.id, this._spectating)
     }
 
-    exitEditMode() {
+    exitObjectEditMode() {
         nativeFunctions.cancelEdit(this.id)
+        dispatcher.emit("playerExitObjectEditMode", this)
     }
 
     sendMessage(message: string, color = "FFFFFF") {
