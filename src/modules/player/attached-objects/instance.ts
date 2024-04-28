@@ -85,7 +85,7 @@ export class PlayerAttachedObjects {
         return this.attachedObjects[slot]
     }
 
-    edit(object: PlayerAttachedObject) {
+    enterEditMode(object: PlayerAttachedObject) {
         nativeFunctions.editAttachedObject(this.player.id, object.id)
         return editPromiseFactory.new(this.player)
     }
