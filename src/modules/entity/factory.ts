@@ -6,7 +6,9 @@ export abstract class EntityFactory<T extends Entity> {
     abstract new(id: number, ...args: never): T | undefined
 
     destroy(entity: T) {
-        this.pool.delete(entity.id)
-        entity.exists = false
+        if (entity.exists) {
+            this.pool.delete(entity.id)
+            entity.exists = false
+        }
     }
 }
