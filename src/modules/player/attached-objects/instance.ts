@@ -9,7 +9,15 @@ const MAX_PLAYER_ATTACHED_OBJECTS = 10
 export class PlayerAttachedObjects {
     private attachedObjects = new Array<PlayerAttachedObject | undefined>(MAX_PLAYER_ATTACHED_OBJECTS).fill(undefined)
 
-    constructor(private player: Player) {}
+    constructor(private player: Player) {
+        player.onCleanup(() => {
+            for (const object of this.attachedObjects) {
+                if (object) {
+                    this.destroy(object)
+                }
+            }
+        })
+    }
 
     new(
         model: number,
@@ -21,6 +29,7 @@ export class PlayerAttachedObjects {
         secondMaterialColor?: string,
     ) {
         const slot = this.attachedObjects.indexOf(undefined)
+
         if (slot === -1) {
             return undefined
         }
@@ -61,18 +70,12 @@ export class PlayerAttachedObjects {
     }
 
     destroy(object: PlayerAttachedObject) {
-        nativeFunctions.removePlayerAttachedObject(this.player.id, object.id)
+        if (object.exists) {
+            nativeFunctions.removePlayerAttachedObject(this.player.id, object.id)
 
-        this.attachedObjects[object.id] = undefined
+            this.attachedObjects[object.id] = undefined
 
-        object.exists = false
-    }
-
-    destroyAll() {
-        for (const object of this.attachedObjects) {
-            if (object) {
-                this.destroy(object)
-            }
+            object.exists = false
         }
     }
 }
