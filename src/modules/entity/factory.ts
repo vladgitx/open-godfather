@@ -1,4 +1,4 @@
-import { type Entity } from "./instance"
+import { type Entity } from "./entity"
 
 export abstract class EntityFactory<T extends Entity> {
     pool = new Map<number, T>()

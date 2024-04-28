@@ -1,5 +1,5 @@
 import { type EntityFactory } from "./factory"
-import { type Entity } from "./instance"
+import { type Entity } from "./entity"
 
 export class EntityHandler<T extends Entity> {
     constructor(private factory: EntityFactory<T>) {}

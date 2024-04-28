@@ -1,7 +1,7 @@
 import { streamerNatives, type StreamerItemType } from "@/natives/streamer"
 import { type Player } from "../player"
 import { type Vector3 } from "../vector3"
-import { type StreamerEntity } from "./instance"
+import { type StreamerEntity } from "./entity"
 import { type EntityFactory, EntityHandler } from "../entity"
 
 export class StreamerHandler<T extends StreamerEntity> extends EntityHandler<T> {
