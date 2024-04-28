@@ -34,6 +34,10 @@ export class Player extends Entity {
         nativeFunctions.togglePlayerSpectating(this.id, this._spectating)
     }
 
+    exitEditMode() {
+        nativeFunctions.cancelEdit(this.id)
+    }
+
     sendMessage(message: string, color = "FFFFFF") {
         nativeFunctions.sendClientMessage(this.id, color, message)
     }
