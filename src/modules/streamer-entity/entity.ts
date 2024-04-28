@@ -26,14 +26,6 @@ export class StreamerEntity extends Entity {
         return streamerNatives.getIntData(this.type, this.id, "interiorId")
     }
 
-    set model(id: number) {
-        streamerNatives.setIntData(this.type, this.id, "modelId", id)
-    }
-
-    get model() {
-        return streamerNatives.getIntData(this.type, this.id, "modelId")
-    }
-
     set position(position: Vector3) {
         streamerNatives.setItemPos(this.type, this.id, position)
     }

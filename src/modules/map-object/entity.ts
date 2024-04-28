@@ -23,6 +23,14 @@ export class MapObject extends StreamerEntity {
         super(id, "object")
     }
 
+    set model(id: number) {
+        streamerNatives.setIntData("object", this.id, "modelId", id)
+    }
+
+    get model() {
+        return streamerNatives.getIntData("object", this.id, "modelId")
+    }
+
     setMaterialTexture(index: number, model: number, txd: string, texture: string, color = "") {
         this.materialTextures.set(index, { model, txd, texture, color })
         streamerNatives.setDynamicObjectMaterial(this.id, index, model, txd, texture, color)
