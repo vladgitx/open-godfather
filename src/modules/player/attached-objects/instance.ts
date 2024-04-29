@@ -3,9 +3,18 @@ import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../../vector3"
 import { type Player } from "../entity"
 import { PlayerAttachedObject } from "./entity"
-import { editPromiseFactory } from "./edit-promises"
+import { EntityPromises } from "@/modules/entity"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
+
+interface EditResult {
+    changes: boolean
+    offset: Vector3
+    rotation: Vector3
+    scale: Vector3
+}
+
+export const editModePromises = new EntityPromises<Player, EditResult>()
 
 export class PlayerAttachedObjects {
     private attachedObjects = new Array<PlayerAttachedObject | undefined>(MAX_PLAYER_ATTACHED_OBJECTS).fill(undefined)
@@ -91,6 +100,6 @@ export class PlayerAttachedObjects {
         this.player.setVariable("playerAttObj::internal::editObject", object)
         nativeFunctions.editAttachedObject(this.player.id, object.id)
 
-        return editPromiseFactory.new(this.player)
+        return editModePromises.new(this.player)
     }
 }

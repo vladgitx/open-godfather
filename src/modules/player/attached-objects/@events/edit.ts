@@ -1,10 +1,10 @@
 import { nativeEvents, nativeFunctions } from "@/natives"
 import { playerHandler } from "../../handler"
-import { editPromiseFactory } from "../edit-promises"
 import { Vector3 } from "@/modules/vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { type PlayerAttachedObject } from "../entity"
 import { type Player } from "../../entity"
+import { editModePromises } from "../instance"
 
 function resetEditingObject(player: Player, object: PlayerAttachedObject) {
     nativeFunctions.setPlayerAttachedObject(
@@ -25,7 +25,7 @@ function resetEditingObject(player: Player, object: PlayerAttachedObject) {
         object.secondMaterialColor,
     )
 
-    editPromiseFactory.destroy(player, {
+    editModePromises.resolve(player, {
         changes: false,
         offset: object.offset,
         rotation: object.rotation,
@@ -56,7 +56,7 @@ nativeEvents.onPlayerEditAttachedObject(
             attachedObject.setVariable("playerAttObj::internal::rotation", new Vector3(rotX, rotY, rotZ))
             attachedObject.setVariable("playerAttObj::internal::scale", new Vector3(scaleX, scaleY, scaleZ))
 
-            editPromiseFactory.destroy(player, {
+            editModePromises.resolve(player, {
                 changes: true,
                 offset: new Vector3(offX, offY, offZ),
                 rotation: new Vector3(rotX, rotY, rotZ),
@@ -79,5 +79,5 @@ dispatcher.on("playerExitObjectEditMode", (player) => {
 })
 
 dispatcher.on("playerDisconnect", (player) => {
-    editPromiseFactory.destroy(player, undefined)
+    editModePromises.resolve(player, undefined)
 })

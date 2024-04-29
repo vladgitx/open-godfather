@@ -2,7 +2,9 @@ import { DialogStylesEnum } from "@/common/enums"
 import { nativeFunctions } from "@/natives"
 import { type Player } from "../entity"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
-import { playerDialogFactory } from "./factory"
+import { EntityPromises } from "@/modules/entity"
+
+export const dialogPromises = new EntityPromises<Player, DialogResponse>()
 
 export class PlayerDialog {
     readonly show = new PlayerDialogShow(this.player)
@@ -10,7 +12,7 @@ export class PlayerDialog {
     constructor(private player: Player) {}
 
     hide(response?: DialogResponse) {
-        playerDialogFactory.destroy(this.player, response)
+        dialogPromises.resolve(this.player, response)
         nativeFunctions.hidePlayerDialog(this.player.id)
     }
 }
@@ -29,7 +31,7 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        return playerDialogFactory.new(this.player)
+        return dialogPromises.new(this.player)
     }
 
     async tablist(
@@ -48,7 +50,7 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        return playerDialogFactory.new(this.player)
+        return dialogPromises.new(this.player)
     }
 
     async tablistWithHeaders(
@@ -85,7 +87,7 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        return playerDialogFactory.new(this.player)
+        return dialogPromises.new(this.player)
     }
 
     async messageBox(
@@ -104,7 +106,7 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        return playerDialogFactory.new(this.player)
+        return dialogPromises.new(this.player)
     }
 
     async input(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse | undefined> {
@@ -118,7 +120,7 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        return playerDialogFactory.new(this.player)
+        return dialogPromises.new(this.player)
     }
 
     async password(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse | undefined> {
@@ -132,6 +134,6 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        return playerDialogFactory.new(this.player)
+        return dialogPromises.new(this.player)
     }
 }
