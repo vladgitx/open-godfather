@@ -4,6 +4,26 @@ import { type Vector3 } from "../../vector3"
 import { nativeFunctions } from "@/natives"
 import { type Player } from "../entity"
 
+function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
+    nativeFunctions.setPlayerAttachedObject(
+        player.id,
+        data.id,
+        data.model,
+        data.bone,
+        data.offset.x,
+        data.offset.y,
+        data.offset.z,
+        data.rotation.x,
+        data.rotation.y,
+        data.rotation.z,
+        data.scale.x,
+        data.scale.y,
+        data.scale.z,
+        data.firstMaterialColor,
+        data.secondMaterialColor,
+    )
+}
+
 export class PlayerAttachedObject extends Entity {
     private _bone: PlayerBonesEnum
     private _firstMaterialColor: string
@@ -33,24 +53,7 @@ export class PlayerAttachedObject extends Entity {
 
     set firstMaterialColor(value: string) {
         this._firstMaterialColor = value
-
-        nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
-            this.id,
-            this.model,
-            this.bone,
-            this.offset.x,
-            this.offset.y,
-            this.offset.z,
-            this.rotation.x,
-            this.rotation.y,
-            this.rotation.z,
-            this.scale.x,
-            this.scale.y,
-            this.scale.z,
-            value,
-            this.secondMaterialColor,
-        )
+        setPlayerAttachedObject(this.player, this)
     }
 
     get firstMaterialColor() {
@@ -59,24 +62,7 @@ export class PlayerAttachedObject extends Entity {
 
     set secondMaterialColor(value: string) {
         this._secondMaterialColor = value
-
-        nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
-            this.id,
-            this.model,
-            this.bone,
-            this.offset.x,
-            this.offset.y,
-            this.offset.z,
-            this.rotation.x,
-            this.rotation.y,
-            this.rotation.z,
-            this.scale.x,
-            this.scale.y,
-            this.scale.z,
-            this.firstMaterialColor,
-            value,
-        )
+        setPlayerAttachedObject(this.player, this)
     }
 
     get secondMaterialColor() {
@@ -85,24 +71,7 @@ export class PlayerAttachedObject extends Entity {
 
     set bone(value: PlayerBonesEnum) {
         this._bone = value
-
-        nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
-            this.id,
-            this.model,
-            value,
-            this.offset.x,
-            this.offset.y,
-            this.offset.z,
-            this.rotation.x,
-            this.rotation.y,
-            this.rotation.z,
-            this.scale.x,
-            this.scale.y,
-            this.scale.z,
-            this.firstMaterialColor,
-            this.secondMaterialColor,
-        )
+        setPlayerAttachedObject(this.player, this)
     }
 
     get bone() {
@@ -111,24 +80,7 @@ export class PlayerAttachedObject extends Entity {
 
     set offset(value: Vector3) {
         this.setVariable("playerAttObj::internal::offset", value)
-
-        nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
-            this.id,
-            this.model,
-            this.bone,
-            value.x,
-            value.y,
-            value.z,
-            this.rotation.x,
-            this.rotation.y,
-            this.rotation.z,
-            this.scale.x,
-            this.scale.y,
-            this.scale.z,
-            this.firstMaterialColor,
-            this.secondMaterialColor,
-        )
+        setPlayerAttachedObject(this.player, this)
     }
 
     get offset() {
@@ -137,24 +89,7 @@ export class PlayerAttachedObject extends Entity {
 
     set rotation(value: Vector3) {
         this.setVariable("playerAttObj::internal::rotation", value)
-
-        nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
-            this.id,
-            this.model,
-            this.bone,
-            this.offset.x,
-            this.offset.y,
-            this.offset.z,
-            value.x,
-            value.y,
-            value.z,
-            this.scale.x,
-            this.scale.y,
-            this.scale.z,
-            this.firstMaterialColor,
-            this.secondMaterialColor,
-        )
+        setPlayerAttachedObject(this.player, this)
     }
 
     get rotation() {
@@ -163,24 +98,7 @@ export class PlayerAttachedObject extends Entity {
 
     set scale(value: Vector3) {
         this.setVariable("playerAttObj::internal::scale", value)
-
-        nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
-            this.id,
-            this.model,
-            this.bone,
-            this.offset.x,
-            this.offset.y,
-            this.offset.z,
-            this.rotation.x,
-            this.rotation.y,
-            this.rotation.z,
-            value.x,
-            value.y,
-            value.z,
-            this.firstMaterialColor,
-            this.secondMaterialColor,
-        )
+        setPlayerAttachedObject(this.player, this)
     }
 
     get scale() {
