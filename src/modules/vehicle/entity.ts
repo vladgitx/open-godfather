@@ -6,6 +6,8 @@ import { VehicleParams } from "./params"
 
 const REMOVE_PAINTJOB_ID = 3
 
+export const vehicleInternalPaintjobId = new WeakMap<Vehicle, number>()
+
 export class Vehicle extends Entity {
     public occupants = new Set<Player>()
 
@@ -112,12 +114,17 @@ export class Vehicle extends Entity {
     }
 
     set paintjob(id: number | undefined) {
-        this.setVariable("vehicle::internal::paintjobId", id)
+        if (id === undefined) {
+            vehicleInternalPaintjobId.delete(this)
+        } else {
+            vehicleInternalPaintjobId.set(this, id)
+        }
+
         nativeFunctions.changeVehiclePaintjob(this.id, id ?? REMOVE_PAINTJOB_ID)
     }
 
     get paintjob() {
-        const paintjobId = this.getVariable("vehicle::internal::paintjobId") as number | undefined
+        const paintjobId = vehicleInternalPaintjobId.get(this)
         return paintjobId === REMOVE_PAINTJOB_ID ? undefined : paintjobId
     }
 }

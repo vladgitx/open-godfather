@@ -15,6 +15,7 @@ interface EditResult {
 }
 
 export const editModePromises = new EntityPromises<Player, EditResult>()
+export const editingObject = new WeakMap<Player, PlayerAttachedObject>()
 
 export class PlayerAttachedObjects {
     private attachedObjects = new Array<PlayerAttachedObject | undefined>(MAX_PLAYER_ATTACHED_OBJECTS).fill(undefined)
@@ -88,6 +89,11 @@ export class PlayerAttachedObjects {
 
             object.exists = false
         }
+
+        if (editingObject.get(this.player) === object) {
+            editingObject.delete(this.player)
+            editModePromises.resolve(this.player, undefined)
+        }
     }
 
     at(slot: number) {
@@ -97,7 +103,7 @@ export class PlayerAttachedObjects {
     enterEditMode(object: PlayerAttachedObject) {
         this.player.exitObjectEditMode() // TODO: bug, not the expected behavior. the player can't enter the edit mode after this
 
-        this.player.setVariable("playerAttObj::internal::editObject", object)
+        editingObject.set(this.player, object)
         nativeFunctions.editAttachedObject(this.player.id, object.id)
 
         return editModePromises.new(this.player)

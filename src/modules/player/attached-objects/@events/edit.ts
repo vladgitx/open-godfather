@@ -4,7 +4,7 @@ import { Vector3 } from "@/modules/vector3"
 import { dispatcher } from "@/modules/dispatcher"
 import { type PlayerAttachedObject } from "../entity"
 import { type Player } from "../../entity"
-import { editModePromises } from "../instance"
+import { editModePromises, editingObject } from "../instance"
 
 function resetEditingObject(player: Player, object: PlayerAttachedObject) {
     nativeFunctions.setPlayerAttachedObject(
@@ -32,7 +32,7 @@ function resetEditingObject(player: Player, object: PlayerAttachedObject) {
         scale: object.scale,
     })
 
-    player.setVariable("playerAttObj::internal::editObject", undefined)
+    editingObject.delete(player)
 }
 
 nativeEvents.onPlayerEditAttachedObject(
@@ -63,19 +63,19 @@ nativeEvents.onPlayerEditAttachedObject(
                 scale: new Vector3(scaleX, scaleY, scaleZ),
             })
 
-            player.setVariable("playerAttObj::internal::editObject", undefined)
+            editingObject.delete(player)
         }
     },
 )
 
 dispatcher.on("playerExitObjectEditMode", (player) => {
-    const attachedObject = player.getVariable("playerAttObj::internal::editObject") as PlayerAttachedObject | undefined
+    const object = editingObject.get(player)
 
-    if (attachedObject) {
-        resetEditingObject(player, attachedObject)
+    if (object) {
+        resetEditingObject(player, object)
     }
 
-    player.setVariable("playerAttObj::internal::editObject", undefined)
+    editingObject.delete(player)
 })
 
 dispatcher.on("playerDisconnect", (player) => {
