@@ -104,6 +104,15 @@ og.events.on("playerText", (player, text) => {
 })
 ```
 
+### Vehicle params
+
+The vehicle engine and lights are automatically set to manual, so vehicles spawn with the engine off. This is how you turn it on:
+
+```typescript
+vehicle.params.engine = "on"
+vehicle.params.lights = "on"
+```
+
 ### Colors
 
 You can use HEX colors for everything:
