@@ -1,13 +1,12 @@
 import { type PlayerBonesEnum } from "@/common/enums"
-import { Entity } from "../../entity"
 import { type Vector3 } from "../../vector3"
 import { nativeFunctions } from "@/natives"
 import { type Player } from "../entity"
 
-function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
+export function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
     nativeFunctions.setPlayerAttachedObject(
         player.id,
-        data.id,
+        data.slot,
         data.model,
         data.bone,
         data.offset.x,
@@ -24,14 +23,18 @@ function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
     )
 }
 
-export class PlayerAttachedObject extends Entity {
+export const attachedObjInternalOffset = new WeakMap<PlayerAttachedObject, Vector3>()
+export const attachedObjInternalRotation = new WeakMap<PlayerAttachedObject, Vector3>()
+export const attachedObjInternalScale = new WeakMap<PlayerAttachedObject, Vector3>()
+
+export class PlayerAttachedObject {
     private _bone: PlayerBonesEnum
     private _firstMaterialColor: string
     private _secondMaterialColor: string
 
     constructor(
         private player: Player,
-        slot: number,
+        readonly slot: number,
         readonly model: number,
         bone: PlayerBonesEnum,
         offset: Vector3,
@@ -40,11 +43,9 @@ export class PlayerAttachedObject extends Entity {
         firstMaterialColor: string,
         secondMaterialColor: string,
     ) {
-        super(slot)
-
-        this.setVariable("playerAttObj::internal::offset", offset)
-        this.setVariable("playerAttObj::internal::rotation", rotation)
-        this.setVariable("playerAttObj::internal::scale", scale)
+        attachedObjInternalOffset.set(this, offset)
+        attachedObjInternalRotation.set(this, rotation)
+        attachedObjInternalScale.set(this, scale)
 
         this._bone = bone
         this._firstMaterialColor = firstMaterialColor
@@ -79,29 +80,32 @@ export class PlayerAttachedObject extends Entity {
     }
 
     set offset(value: Vector3) {
-        this.setVariable("playerAttObj::internal::offset", value)
+        attachedObjInternalOffset.set(this, value)
         setPlayerAttachedObject(this.player, this)
     }
 
     get offset() {
-        return this.getVariable("playerAttObj::internal::offset") as Vector3
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return attachedObjInternalOffset.get(this)!
     }
 
     set rotation(value: Vector3) {
-        this.setVariable("playerAttObj::internal::rotation", value)
+        attachedObjInternalRotation.set(this, value)
         setPlayerAttachedObject(this.player, this)
     }
 
     get rotation() {
-        return this.getVariable("playerAttObj::internal::rotation") as Vector3
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return attachedObjInternalRotation.get(this)!
     }
 
     set scale(value: Vector3) {
-        this.setVariable("playerAttObj::internal::scale", value)
+        attachedObjInternalScale.set(this, value)
         setPlayerAttachedObject(this.player, this)
     }
 
     get scale() {
-        return this.getVariable("playerAttObj::internal::scale") as Vector3
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return attachedObjInternalScale.get(this)!
     }
 }

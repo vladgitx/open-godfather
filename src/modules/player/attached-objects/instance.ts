@@ -82,12 +82,9 @@ export class PlayerAttachedObjects {
     }
 
     destroy(object: PlayerAttachedObject) {
-        if (object.exists) {
-            nativeFunctions.removePlayerAttachedObject(this.player.id, object.id)
-
-            const slot = object.id
-            object.exists = false // The object.id is changed in the object.exists setter
-            this.slots[slot] = undefined
+        if (this.slots[object.slot] === object) {
+            nativeFunctions.removePlayerAttachedObject(this.player.id, object.slot)
+            this.slots[object.slot] = undefined
         }
 
         if (editingObject.get(this.player) === object) {
@@ -104,7 +101,7 @@ export class PlayerAttachedObjects {
         this.player.exitObjectEditMode() // TODO: bug, not the expected behavior. the player can't enter the edit mode after this
 
         editingObject.set(this.player, object)
-        nativeFunctions.editAttachedObject(this.player.id, object.id)
+        nativeFunctions.editAttachedObject(this.player.id, object.slot)
 
         return editModePromises.new(this.player)
     }

@@ -1,29 +1,19 @@
-import { nativeEvents, nativeFunctions } from "@/natives"
+import { nativeEvents } from "@/natives"
 import { playerHandler } from "../../handler"
 import { Vector3 } from "@/modules/vector3"
 import { dispatcher } from "@/modules/dispatcher"
-import { type PlayerAttachedObject } from "../entity"
+import {
+    attachedObjInternalOffset,
+    attachedObjInternalRotation,
+    attachedObjInternalScale,
+    setPlayerAttachedObject,
+    type PlayerAttachedObject,
+} from "../entity"
 import { type Player } from "../../entity"
 import { editModePromises, editingObject } from "../instance"
 
 function resetEditingObject(player: Player, object: PlayerAttachedObject) {
-    nativeFunctions.setPlayerAttachedObject(
-        player.id,
-        object.id,
-        object.model,
-        object.bone,
-        object.offset.x,
-        object.offset.y,
-        object.offset.z,
-        object.rotation.x,
-        object.rotation.y,
-        object.rotation.z,
-        object.scale.x,
-        object.scale.y,
-        object.scale.z,
-        object.firstMaterialColor,
-        object.secondMaterialColor,
-    )
+    setPlayerAttachedObject(player, object)
 
     editModePromises.resolve(player, {
         changes: false,
@@ -52,9 +42,9 @@ nativeEvents.onPlayerEditAttachedObject(
         if (response !== 1) {
             resetEditingObject(player, attachedObject)
         } else {
-            attachedObject.setVariable("playerAttObj::internal::offset", new Vector3(offX, offY, offZ))
-            attachedObject.setVariable("playerAttObj::internal::rotation", new Vector3(rotX, rotY, rotZ))
-            attachedObject.setVariable("playerAttObj::internal::scale", new Vector3(scaleX, scaleY, scaleZ))
+            attachedObjInternalOffset.set(attachedObject, new Vector3(offX, offY, offZ))
+            attachedObjInternalRotation.set(attachedObject, new Vector3(rotX, rotY, rotZ))
+            attachedObjInternalScale.set(attachedObject, new Vector3(scaleX, scaleY, scaleZ))
 
             editModePromises.resolve(player, {
                 changes: true,
