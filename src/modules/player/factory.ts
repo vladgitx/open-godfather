@@ -1,3 +1,4 @@
+import { dispatcher } from "../dispatcher"
 import { EntityFactory } from "../entity"
 import { Player } from "./entity"
 
@@ -9,6 +10,8 @@ class PlayerFactory extends EntityFactory<Player> {
 
         const player = new Player(id)
         this.pool.set(id, player)
+
+        dispatcher.emit("entityInstantiate", player)
 
         return player
     }

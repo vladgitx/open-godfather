@@ -1,3 +1,4 @@
+import { dispatcher } from "../dispatcher"
 import { EntityFactory } from "../entity"
 import { MapObject } from "./entity"
 
@@ -9,6 +10,8 @@ class MapObjectFactory extends EntityFactory<MapObject> {
 
         const object = new MapObject(id)
         this.pool.set(id, object)
+
+        dispatcher.emit("entityInstantiate", object)
 
         return object
     }

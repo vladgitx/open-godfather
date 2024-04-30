@@ -1,3 +1,4 @@
+import { dispatcher } from "../dispatcher"
 import { type Entity } from "./entity"
 
 export abstract class EntityFactory<T extends Entity> {
@@ -7,6 +8,8 @@ export abstract class EntityFactory<T extends Entity> {
 
     destroy(entity: T) {
         if (entity.exists) {
+            dispatcher.emit("entityDestroy", entity)
+
             const id = entity.id // The entity.id is changed in the entity.exists setter
             entity.exists = false
 

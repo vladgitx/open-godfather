@@ -7,6 +7,7 @@ import { type Vehicle } from "../vehicle"
 import { type Vector3 } from "../vector3"
 import EventEmitter from "events"
 import { type Pickup } from "../pickup"
+import { type Entity } from "../entity"
 
 interface ServerEvents {
     init: []
@@ -38,7 +39,12 @@ interface VehicleEvents {
     vehicleDestroy: [Vehicle]
 }
 
-type EventMap = ServerEvents & PlayerEvents & VehicleEvents
+interface EntityEvents {
+    entityInstantiate: [Entity]
+    entityDestroy: [Entity]
+}
+
+type EventMap = ServerEvents & PlayerEvents & VehicleEvents & EntityEvents
 
 class Dispatcher extends EventEmitter {
     emit<K extends keyof EventMap>(event: K, ...args: EventMap[K]): boolean {
