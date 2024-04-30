@@ -20,7 +20,7 @@ export class PlayerDialog {
 class PlayerDialogShow {
     constructor(private player: Player) {}
 
-    async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse | undefined> {
+    async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
@@ -34,12 +34,7 @@ class PlayerDialogShow {
         return dialogPromises.new(this.player)
     }
 
-    async tablist(
-        caption: string,
-        items: string[][],
-        primaryButton: string,
-        secondaryButton = "",
-    ): Promise<ListDialogResponse | undefined> {
+    async tablist(caption: string, items: string[][], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
@@ -59,7 +54,7 @@ class PlayerDialogShow {
         items: string[] | string[][],
         primaryButton: string,
         secondaryButton = "",
-    ): Promise<ListDialogResponse | undefined> {
+    ): Promise<ListDialogResponse> {
         let headerString = ""
         let itemsString = ""
 
@@ -90,12 +85,7 @@ class PlayerDialogShow {
         return dialogPromises.new(this.player)
     }
 
-    async messageBox(
-        caption: string,
-        info: string,
-        primaryButton: string,
-        secondaryButton = "",
-    ): Promise<MessageDialogResponse | undefined> {
+    async messageBox(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<MessageDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
@@ -109,7 +99,7 @@ class PlayerDialogShow {
         return dialogPromises.new(this.player)
     }
 
-    async input(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse | undefined> {
+    async input(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
@@ -123,7 +113,7 @@ class PlayerDialogShow {
         return dialogPromises.new(this.player)
     }
 
-    async password(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse | undefined> {
+    async password(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),

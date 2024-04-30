@@ -44,8 +44,8 @@ export class Vector3 {
     inFrontXY(angle: number, distance: number, newZ?: number): Vector3 {
         const radians = (-angle * Math.PI) / 180 // In SA-MP, angles are reversed
 
-        const offsetX = Math.cos(radians) * distance
-        const offsetY = Math.sin(radians) * distance
+        const offsetX = Math.sin(radians) * distance
+        const offsetY = Math.cos(radians) * distance
 
         return new Vector3(this.x + offsetX, this.y + offsetY, newZ ?? this.z)
     }
