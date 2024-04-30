@@ -1,18 +1,18 @@
 import { type Vector3 } from "../vector3"
-import { textLabelFactory } from "./factory"
-import { type TextLabel } from "./entity"
+import { TextLabel } from "./entity"
 import { streamerNatives } from "@/natives/streamer"
 import { type Player } from "../player"
 import { StreamerHandler } from "../streamer-entity"
+import { EntityFactory } from "../entity"
 
-const DEFAULT_DRAW_DISTANCE = 20
+const textLabelFactory = new EntityFactory<TextLabel, typeof TextLabel>((id, text, color) => new TextLabel(id, text, color))
 
 class TextLabelHandler extends StreamerHandler<TextLabel> {
     new(
         text: string,
         color: string,
         position: Vector3,
-        drawDistance = DEFAULT_DRAW_DISTANCE,
+        drawDistance = 20,
         onlyVisibleFor?: {
             world?: number
             interior?: number

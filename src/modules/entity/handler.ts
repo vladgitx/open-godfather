@@ -2,7 +2,7 @@ import { type EntityFactory } from "./factory"
 import { type Entity } from "./entity"
 
 export class EntityHandler<T extends Entity> {
-    constructor(private factory: EntityFactory<T>) {}
+    constructor(private factory: EntityFactory<T, never>) {}
 
     get all() {
         return this.factory.pool.values()

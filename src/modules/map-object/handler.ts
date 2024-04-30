@@ -1,9 +1,11 @@
 import { streamerNatives } from "@/natives/streamer"
 import { StreamerHandler } from "../streamer-entity"
 import { type Vector3 } from "../vector3"
-import { type MapObject } from "./entity"
-import { objectFactory } from "./factory"
+import { MapObject } from "./entity"
 import { type Player } from "../player"
+import { EntityFactory } from "../entity"
+
+const objectFactory = new EntityFactory<MapObject, typeof MapObject>((id) => new MapObject(id))
 
 class MapObjectHandler extends StreamerHandler<MapObject> {
     new(
