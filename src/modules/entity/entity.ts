@@ -1,10 +1,17 @@
 const INVALID_ENTITY_ID = -1
 
 export class Entity {
+    private _id: number
     private variables = new Map<string, unknown>()
     private cleanupCallbacks: (() => void)[] = []
 
-    constructor(public id: number) {}
+    constructor(id: number) {
+        this._id = id
+    }
+
+    get id() {
+        return this._id
+    }
 
     onCleanup(callback: () => void) {
         this.cleanupCallbacks.push(callback)
@@ -33,10 +40,10 @@ export class Entity {
 
         this.cleanupCallbacks = []
 
-        this.id = INVALID_ENTITY_ID
+        this._id = INVALID_ENTITY_ID
     }
 
     get exists(): boolean {
-        return this.id !== INVALID_ENTITY_ID
+        return this._id !== INVALID_ENTITY_ID
     }
 }
