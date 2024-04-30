@@ -4,6 +4,7 @@ import "./modules/vehicle/@events"
 import "./modules/command/@events"
 import "./modules/pickup/@events"
 
+export { type Entity } from "./modules/entity"
 export { type Player } from "./modules/player"
 export { type PlayerAttachedObject } from "./modules/player/attached-objects"
 export { type Vehicle } from "./modules/vehicle"
