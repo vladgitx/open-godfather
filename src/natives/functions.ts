@@ -643,6 +643,106 @@ class NativeFunctions {
     showNameTags = (show: number): number => {
         return samp.callNative("ShowNameTags", "i", show)
     }
+
+    textDrawCreate = (x: number, y: number, text: string): number => {
+        return samp.callNative("TextDrawCreate", "ffs", x, y, text)
+    }
+
+    textDrawDestroy = (text: number): number => {
+        return samp.callNative("TextDrawDestroy", "i", text)
+    }
+
+    textDrawShowForPlayer = (playerid: number, text: number): number => {
+        return samp.callNative("TextDrawShowForPlayer", "ii", playerid, text)
+    }
+
+    textDrawHideForPlayer = (playerid: number, text: number): number => {
+        return samp.callNative("TextDrawHideForPlayer", "ii", playerid, text)
+    }
+
+    textDrawShowForAll = (text: number): number => {
+        return samp.callNative("TextDrawShowForAll", "i", text)
+    }
+
+    textDrawHideForAll = (text: number): number => {
+        return samp.callNative("TextDrawHideForAll", "i", text)
+    }
+
+    selectTextDraw = (playerid: number, hovercolor: string): number => {
+        return samp.callNative("SelectTextDraw", "ii", playerid, hexToRgbaInt(hovercolor))
+    }
+
+    cancelSelectTextDraw = (playerid: number): number => {
+        return samp.callNative("CancelSelectTextDraw", "i", playerid)
+    }
+
+    textDrawLetterSize = (text: number, x: number, y: number): number => {
+        return samp.callNative("TextDrawLetterSize", "iff", text, x, y)
+    }
+
+    textDrawTextSize = (text: number, x: number, y: number): number => {
+        return samp.callNative("TextDrawTextSize", "iff", text, x, y)
+    }
+
+    textDrawAlignment = (text: number, alignment: number): number => {
+        return samp.callNative("TextDrawAlignment", "ii", text, alignment)
+    }
+
+    textDrawColor = (text: number, color: string): number => {
+        return samp.callNative("TextDrawColor", "ii", text, hexToRgbaInt(color))
+    }
+
+    textDrawUseBox = (text: number, use: number): number => {
+        return samp.callNative("TextDrawUseBox", "ii", text, use)
+    }
+
+    textDrawBoxColor = (text: number, color: string): number => {
+        return samp.callNative("TextDrawBoxColor", "ii", text, hexToRgbaInt(color))
+    }
+
+    textDrawSetShadow = (text: number, size: number): number => {
+        return samp.callNative("TextDrawSetShadow", "ii", text, size)
+    }
+
+    textDrawSetOutline = (text: number, size: number): number => {
+        return samp.callNative("TextDrawSetOutline", "ii", text, size)
+    }
+
+    textDrawBackgroundColor = (text: number, color: string): number => {
+        return samp.callNative("TextDrawBackgroundColor", "ii", text, hexToRgbaInt(color))
+    }
+
+    textDrawFont = (text: number, font: number): number => {
+        return samp.callNative("TextDrawFont", "ii", text, font)
+    }
+
+    textDrawSetProportional = (text: number, set: number): number => {
+        return samp.callNative("TextDrawSetProportional", "ii", text, set)
+    }
+
+    textDrawSetSelectable = (text: number, set: number): number => {
+        return samp.callNative("TextDrawSetSelectable", "ii", text, set)
+    }
+
+    textDrawSetString = (text: number, string: string): number => {
+        return samp.callNative("TextDrawSetString", "is", text, string)
+    }
+
+    textDrawSetPreviewModel = (text: number, modelindex: number): number => {
+        return samp.callNative("TextDrawSetPreviewModel", "ii", text, modelindex)
+    }
+
+    textDrawSetPreviewRot = (text: number, fRotX: number, fRotY: number, fRotZ: number, fZoom: number): number => {
+        return samp.callNative("TextDrawSetPreviewRot", "iffff", text, fRotX, fRotY, fRotZ, fZoom)
+    }
+
+    textDrawSetPreviewVehCol = (text: number, color1: number, color2: number): number => {
+        return samp.callNative("TextDrawSetPreviewVehCol", "iii", text, color1, color2)
+    }
+
+    textDrawSetPos(textId: number, x: number, y: number) {
+        samp.callNative("TextDrawSetPos", "iff", textId, x, y)
+    }
 }
 
 export const nativeFunctions = new NativeFunctions()

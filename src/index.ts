@@ -12,6 +12,7 @@ export { type Command, CommandCallback } from "./modules/command"
 export { type TextLabel } from "./modules/text-label"
 export { type Pickup } from "./modules/pickup"
 export { type MapObject } from "./modules/map-object"
+export { type Textdraw } from "./modules/textdraw"
 
 export * from "./common/enums"
 export * as og from "./og-export"

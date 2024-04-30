@@ -237,3 +237,18 @@ export enum MaterialTextAlignmentsEnum {
     Center = 1,
     Right = 2,
 }
+
+export enum TextDrawAlignmentsEnum {
+    Left = 0,
+    Center = 1,
+    Right = 2,
+}
+
+export enum TextDrawFontsEnum {
+    Font_0 = 0,
+    Font_1 = 1,
+    Font_2 = 2,
+    Font_3 = 3,
+    Sprite = 4,
+    ModelPreview = 5,
+}
