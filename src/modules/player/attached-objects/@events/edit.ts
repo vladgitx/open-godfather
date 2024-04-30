@@ -15,13 +15,7 @@ import { editModePromises, editingObject } from "../instance"
 function resetEditingObject(player: Player, object: PlayerAttachedObject) {
     setPlayerAttachedObject(player, object)
 
-    editModePromises.resolve(player, {
-        changes: false,
-        offset: object.offset,
-        rotation: object.rotation,
-        scale: object.scale,
-    })
-
+    editModePromises.resolve(player, undefined)
     editingObject.delete(player)
 }
 
@@ -47,7 +41,6 @@ nativeEvents.onPlayerEditAttachedObject(
             attachedObjInternalScale.set(attachedObject, new Vector3(scaleX, scaleY, scaleZ))
 
             editModePromises.resolve(player, {
-                changes: true,
                 offset: new Vector3(offX, offY, offZ),
                 rotation: new Vector3(rotX, rotY, rotZ),
                 scale: new Vector3(scaleX, scaleY, scaleZ),
