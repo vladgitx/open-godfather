@@ -9,7 +9,7 @@ export class EntityPromises<T extends Entity, K> {
 
         if (!this.toRejectOnCleanup.has(entity)) {
             entity.onCleanup(() => {
-                this.reject(entity, "Entity was destroyed")
+                this.reject(entity, new Error("Entity was destroyed"))
             })
 
             this.toRejectOnCleanup.add(entity)
@@ -35,8 +35,8 @@ export class EntityPromises<T extends Entity, K> {
         this.promises.delete(entity.id)
     }
 
-    reject(entity: T, reason: string) {
-        this.promises.get(entity.id)?.reject(new Error(reason))
+    reject(entity: T, reason: Error) {
+        this.promises.get(entity.id)?.reject(reason)
         this.promises.delete(entity.id)
     }
 }
