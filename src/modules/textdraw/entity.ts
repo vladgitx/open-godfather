@@ -5,7 +5,8 @@ import { nativeFunctions } from "@/natives"
 import { playerHandler, type Player } from "../player"
 
 export class Textdraw extends Entity {
-    private showingForPlayers = new WeakSet<Player>()
+    private toRemoveFromSetOnCleanup = new WeakSet<Player>()
+    private showingForPlayers = new Set<Player>()
 
     private _position: { x: number; y: number }
     private _text: string
@@ -66,9 +67,23 @@ export class Textdraw extends Entity {
         this._previewVehicleColor = previewVehicleColor
     }
 
+    private reshowForAllPlayers() {
+        for (const player of this.showingForPlayers) {
+            nativeFunctions.textDrawShowForPlayer(player.id, this.id)
+        }
+    }
+
     showForPlayer(player: Player) {
         nativeFunctions.textDrawShowForPlayer(player.id, this.id)
         this.showingForPlayers.add(player)
+
+        if (!this.toRemoveFromSetOnCleanup.has(player)) {
+            player.onCleanup(() => {
+                this.showingForPlayers.delete(player)
+            })
+
+            this.toRemoveFromSetOnCleanup.add(player)
+        }
     }
 
     hideForPlayer(player: Player) {
@@ -87,22 +102,26 @@ export class Textdraw extends Entity {
 
         for (const player of players) {
             this.showingForPlayers.add(player)
+
+            if (!this.toRemoveFromSetOnCleanup.has(player)) {
+                player.onCleanup(() => {
+                    this.showingForPlayers.delete(player)
+                })
+
+                this.toRemoveFromSetOnCleanup.add(player)
+            }
         }
     }
 
     hideForAllPlayers() {
         nativeFunctions.textDrawHideForAll(this.id)
-
-        const players = playerHandler.all
-
-        for (const player of players) {
-            this.showingForPlayers.delete(player)
-        }
+        this.showingForPlayers.clear()
     }
 
     setLetterSize(width: number, height: number) {
         this._letterSize = { width, height }
         nativeFunctions.textDrawLetterSize(this.id, width, height)
+        this.reshowForAllPlayers()
     }
 
     getLetterSize() {
@@ -112,6 +131,7 @@ export class Textdraw extends Entity {
     setTextSize(width: number, height: number) {
         this._textSize = { width, height }
         nativeFunctions.textDrawTextSize(this.id, width, height)
+        this.reshowForAllPlayers()
     }
 
     getTextSize() {
@@ -121,6 +141,7 @@ export class Textdraw extends Entity {
     set alignment(value: TextDrawAlignmentsEnum) {
         this._alignment = value
         nativeFunctions.textDrawAlignment(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get alignment(): TextDrawAlignmentsEnum | undefined {
@@ -130,6 +151,7 @@ export class Textdraw extends Entity {
     set textColor(value: string) {
         this._textColor = value
         nativeFunctions.textDrawColor(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get textColor(): string | undefined {
@@ -139,6 +161,7 @@ export class Textdraw extends Entity {
     set usingBox(value: boolean) {
         this._useBox = value
         nativeFunctions.textDrawUseBox(this.id, Number(value))
+        this.reshowForAllPlayers()
     }
 
     get usingBox(): boolean | undefined {
@@ -148,6 +171,7 @@ export class Textdraw extends Entity {
     set boxColor(value: string) {
         this._boxColor = value
         nativeFunctions.textDrawBoxColor(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get boxColor(): string | undefined {
@@ -157,6 +181,7 @@ export class Textdraw extends Entity {
     set shadowSize(value: number) {
         this._shadowSize = value
         nativeFunctions.textDrawSetShadow(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get shadowSize(): number | undefined {
@@ -166,6 +191,7 @@ export class Textdraw extends Entity {
     set outlineSize(value: number) {
         this._outlineSize = value
         nativeFunctions.textDrawSetOutline(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get outlineSize(): number | undefined {
@@ -175,6 +201,7 @@ export class Textdraw extends Entity {
     set backgroundColor(value: string) {
         this._backgroundColor = value
         nativeFunctions.textDrawBackgroundColor(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get backgroundColor(): string | undefined {
@@ -184,6 +211,7 @@ export class Textdraw extends Entity {
     set font(value: TextDrawFontsEnum) {
         this._font = value
         nativeFunctions.textDrawFont(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get font(): TextDrawFontsEnum | undefined {
@@ -193,6 +221,7 @@ export class Textdraw extends Entity {
     set proportional(value: boolean) {
         this._proportional = value
         nativeFunctions.textDrawSetProportional(this.id, Number(value))
+        this.reshowForAllPlayers()
     }
 
     get proportional(): boolean | undefined {
@@ -202,6 +231,7 @@ export class Textdraw extends Entity {
     set selectable(value: boolean) {
         this._selectable = value
         nativeFunctions.textDrawSetSelectable(this.id, Number(value))
+        this.reshowForAllPlayers()
     }
 
     get selectable(): boolean | undefined {
@@ -220,6 +250,7 @@ export class Textdraw extends Entity {
     set previewModel(value: number) {
         this._previewModel = value
         nativeFunctions.textDrawSetPreviewModel(this.id, value)
+        this.reshowForAllPlayers()
     }
 
     get previewModel(): number | undefined {
@@ -229,6 +260,7 @@ export class Textdraw extends Entity {
     setPreviewRotation(rotation: Vector3, zoom: number) {
         this._previewRotation = { rotation, zoom }
         nativeFunctions.textDrawSetPreviewRot(this.id, rotation.x, rotation.y, rotation.z, zoom)
+        this.reshowForAllPlayers()
     }
 
     getPreviewRotation() {
@@ -238,6 +270,7 @@ export class Textdraw extends Entity {
     setPreviewVehicleColor(primary: number, secondary: number) {
         this._previewVehicleColor = { primary, secondary }
         nativeFunctions.textDrawSetPreviewVehCol(this.id, primary, secondary)
+        this.reshowForAllPlayers()
     }
 
     getPreviewVehicleColor() {
@@ -247,6 +280,7 @@ export class Textdraw extends Entity {
     setPosition(x: number, y: number) {
         this._position = { x, y }
         nativeFunctions.textDrawSetPos(this.id, x, y)
+        this.reshowForAllPlayers()
     }
 
     getPosition() {

@@ -1,6 +1,6 @@
 {
     "name": "open-godfather",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Node.js library for building open.mp scripts with the samp-node plugin.",
     "main": "build/index.js",
     "types": "build/types/index.d.ts",
