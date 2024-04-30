@@ -3,7 +3,7 @@ import { StreamerEntity } from "../streamer-entity"
 import { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from "@/common/enums"
 
 export class MapObject extends StreamerEntity {
-    private materialTextures = new Map<number, { model: number; txd: string; texture: string; color?: string }>()
+    private materialTextures = new Map<number, { model: number; textureLibrary?: string; textureName?: string; color?: string }>()
 
     private materialTexts = new Map<
         number,
@@ -31,9 +31,9 @@ export class MapObject extends StreamerEntity {
         return streamerNatives.getIntData("object", this.id, "modelId")
     }
 
-    setMaterialTexture(index: number, model: number, txd: string, texture: string, color = "") {
-        this.materialTextures.set(index, { model, txd, texture, color })
-        streamerNatives.setDynamicObjectMaterial(this.id, index, model, txd, texture, color)
+    setMaterialTexture(index: number, model: number, library?: string, name?: string, color = "") {
+        this.materialTextures.set(index, { model, textureLibrary: library, textureName: name, color })
+        streamerNatives.setDynamicObjectMaterial(this.id, index, model, library ?? "none", name ?? "none", color)
     }
 
     getMaterialTexture(index: number) {
