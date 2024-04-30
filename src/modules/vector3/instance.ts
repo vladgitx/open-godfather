@@ -46,12 +46,7 @@ export class Vector3 {
     }
 
     inFrontXY(angle: number, distance: number, z?: number): Vector3 {
-        const dx = Math.cos(angle) * distance
-        const dy = Math.sin(angle) * distance
-
-        const newX = this.x + dx
-        const newY = this.y + dy
-
-        return new Vector3(newX, newY, z ?? this.z)
+        const r = angle * Math.PI / 180
+        return new Vector3(this.x + Math.sin(r) * distance, this.y - Math.cos(r) * distance, z ?? this.z)
     }
 }

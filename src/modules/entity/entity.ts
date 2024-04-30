@@ -39,7 +39,6 @@ export class Entity {
         }
 
         this.cleanupCallbacks = []
-
         this._id = INVALID_ENTITY_ID
     }
 
