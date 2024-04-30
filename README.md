@@ -30,11 +30,18 @@ Spawn a player based on the dialog's response.
 import { og } from "open-godfather"
 
 og.events.on("playerConnect", async (player) => {
-    const result = await player.dialog.show.messageBox("Hey", "Wanna spawn?", "Yes", "No")
-	
-    if (result?.action) {
-        player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
-        player.sendMessage("Welcome to the server!")
+    try {
+        const result = await player.dialog.show.messageBox("Hey", "Wanna spawn?", "Yes", "No")
+        
+        if (result.action) {
+            player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
+            player.sendMessage("Have fun")
+        } else {
+            player.sendMessage("Bye-bye")
+            player.kick()
+        }
+    } catch (error) {
+        console.error("The player probably disconnected with the dialog open")
     }
 })
 ```
