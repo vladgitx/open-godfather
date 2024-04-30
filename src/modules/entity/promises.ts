@@ -2,14 +2,14 @@ import { type Entity } from "./entity"
 
 export class EntityPromises<T extends Entity, K> {
     private toRejectOnCleanup = new WeakSet<T>()
-    private promises = new Map<number, { resolve: (result: K) => void; reject: () => void }>()
+    private promises = new Map<number, { resolve: (result: K) => void; reject: (reason: Error) => void }>()
 
     async new(entity: T): Promise<K> {
-        this.promises.get(entity.id)?.reject()
+        this.promises.get(entity.id)?.reject(new Error("Promise was overridden by another promise"))
 
         if (!this.toRejectOnCleanup.has(entity)) {
             entity.onCleanup(() => {
-                this.reject(entity)
+                this.reject(entity, "Entity was destroyed")
             })
 
             this.toRejectOnCleanup.add(entity)
@@ -35,8 +35,8 @@ export class EntityPromises<T extends Entity, K> {
         this.promises.delete(entity.id)
     }
 
-    reject(entity: T) {
-        this.promises.get(entity.id)?.reject()
+    reject(entity: T, reason: string) {
+        this.promises.get(entity.id)?.reject(new Error(reason))
         this.promises.delete(entity.id)
     }
 }

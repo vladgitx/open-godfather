@@ -89,7 +89,7 @@ export class PlayerAttachedObjects {
 
         if (editingObject.get(this.player) === object) {
             editingObject.delete(this.player)
-            editModePromises.reject(this.player)
+            editModePromises.reject(this.player, "Player attached object was destroyed")
         }
     }
 
