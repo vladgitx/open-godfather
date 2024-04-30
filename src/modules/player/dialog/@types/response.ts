@@ -1,15 +1,25 @@
-export interface ListDialogResponse {
-    action: boolean
-    item: number
-}
+export type ListDialogResponse =
+    | {
+          action: true
+          item: number
+      }
+    | {
+          action: false
+          item: undefined
+      }
 
 export interface MessageDialogResponse {
     action: boolean
 }
 
-export interface InputDialogResponse {
-    action: boolean
-    input: string
-}
+export type InputDialogResponse =
+    | {
+          action: true
+          input: string
+      }
+    | {
+          action: false
+          input: undefined
+      }
 
 export type DialogResponse = ListDialogResponse & InputDialogResponse & MessageDialogResponse

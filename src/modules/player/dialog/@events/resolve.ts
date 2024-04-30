@@ -6,6 +6,12 @@ nativeEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam,
     const player = playerHandler.at(playerId)
 
     if (player) {
-        dialogPromises.resolve(player, { action: Boolean(responseParam), item: listItemParam, input: inputText })
+        const action = Boolean(responseParam)
+
+        if (action) {
+            dialogPromises.resolve(player, { action, item: listItemParam, input: inputText })
+        } else {
+            dialogPromises.resolve(player, { action, item: undefined, input: undefined })
+        }
     }
 })
