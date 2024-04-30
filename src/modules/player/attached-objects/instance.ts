@@ -18,11 +18,11 @@ export const editModePromises = new EntityPromises<Player, EditResult>()
 export const editingObject = new WeakMap<Player, PlayerAttachedObject>()
 
 export class PlayerAttachedObjects {
-    private attachedObjects = new Array<PlayerAttachedObject | undefined>(MAX_PLAYER_ATTACHED_OBJECTS).fill(undefined)
+    private slots = new Array<PlayerAttachedObject | undefined>(MAX_PLAYER_ATTACHED_OBJECTS).fill(undefined)
 
     constructor(private player: Player) {
         player.onCleanup(() => {
-            for (const object of this.attachedObjects) {
+            for (const object of this.slots) {
                 if (object) {
                     this.destroy(object)
                 }
@@ -39,7 +39,7 @@ export class PlayerAttachedObjects {
         firstMaterialColor?: string,
         secondMaterialColor?: string,
     ) {
-        const slot = this.attachedObjects.indexOf(undefined)
+        const slot = this.slots.indexOf(undefined)
 
         if (slot === -1) {
             return undefined
@@ -64,7 +64,7 @@ export class PlayerAttachedObjects {
         )
 
         if (success) {
-            this.attachedObjects[slot] = new PlayerAttachedObject(
+            this.slots[slot] = new PlayerAttachedObject(
                 this.player,
                 slot,
                 model,
@@ -75,7 +75,7 @@ export class PlayerAttachedObjects {
                 firstMaterialColor ?? "",
                 secondMaterialColor ?? "",
             )
-            return this.attachedObjects[slot]
+            return this.slots[slot]
         }
 
         return undefined
@@ -85,19 +85,19 @@ export class PlayerAttachedObjects {
         if (object.exists) {
             nativeFunctions.removePlayerAttachedObject(this.player.id, object.id)
 
-            this.attachedObjects[object.id] = undefined
-
-            object.exists = false
+            const slot = object.id
+            object.exists = false // The object.id is changed in the object.exists setter
+            this.slots[slot] = undefined
         }
 
         if (editingObject.get(this.player) === object) {
             editingObject.delete(this.player)
-            editModePromises.resolve(this.player, undefined)
+            editModePromises.reject(this.player)
         }
     }
 
     at(slot: number) {
-        return this.attachedObjects[slot]
+        return this.slots[slot]
     }
 
     enterEditMode(object: PlayerAttachedObject) {

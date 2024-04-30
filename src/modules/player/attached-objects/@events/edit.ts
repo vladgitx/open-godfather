@@ -74,10 +74,4 @@ dispatcher.on("playerExitObjectEditMode", (player) => {
     if (object) {
         resetEditingObject(player, object)
     }
-
-    editingObject.delete(player)
-})
-
-dispatcher.on("playerDisconnect", (player) => {
-    editModePromises.resolve(player, undefined)
 })

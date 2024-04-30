@@ -11,8 +11,8 @@ export class PlayerDialog {
 
     constructor(private player: Player) {}
 
-    hide(response?: DialogResponse) {
-        dialogPromises.resolve(this.player, response)
+    hide() {
+        dialogPromises.reject(this.player)
         nativeFunctions.hidePlayerDialog(this.player.id)
     }
 }
