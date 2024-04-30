@@ -1,13 +1,9 @@
 export class Vector3 {
-    x: number
-    y: number
-    z: number
-
-    constructor(x = 0, y = 0, z = 0) {
-        this.x = x
-        this.y = y
-        this.z = z
-    }
+    constructor(
+        public x = 0,
+        public y = 0,
+        public z = 0,
+    ) {}
 
     add(v: Vector3): Vector3 {
         return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z)
@@ -45,8 +41,12 @@ export class Vector3 {
         return Math.sqrt(dx * dx + dy * dy + dz * dz)
     }
 
-    inFrontXY(angle: number, distance: number, z?: number): Vector3 {
-        const r = angle * Math.PI / 180
-        return new Vector3(this.x + Math.sin(r) * distance, this.y - Math.cos(r) * distance, z ?? this.z)
+    inFrontXY(angle: number, distance: number, newZ?: number): Vector3 {
+        const radians = (-angle * Math.PI) / 180 // In SA-MP, angles are reversed
+
+        const offsetX = Math.cos(radians) * distance
+        const offsetY = Math.sin(radians) * distance
+
+        return new Vector3(this.x + offsetX, this.y + offsetY, newZ ?? this.z)
     }
 }
