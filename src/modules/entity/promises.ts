@@ -5,7 +5,13 @@ export class EntityPromises<T extends Entity, K> {
     private promises = new Map<number, { resolve: (result: K) => void; reject: (reason: Error) => void }>()
 
     async new(entity: T): Promise<K> {
-        this.promises.get(entity.id)?.reject(new Error("Promise was overridden by another promise"))
+        this.promises
+            .get(entity.id)
+            ?.reject(
+                new Error(
+                    "Promise was overridden by another promise of the same type! e.g. a new dialog was opened before the previous one was closed.",
+                ),
+            )
 
         if (!this.toRejectOnCleanup.has(entity)) {
             entity.onCleanup(() => {

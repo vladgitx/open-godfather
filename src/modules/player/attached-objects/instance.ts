@@ -7,13 +7,13 @@ import { EntityPromises } from "@/modules/entity"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
 
-interface EditResult {
+export interface AttachedObjectEditResult {
     offset: Vector3
     rotation: Vector3
     scale: Vector3
 }
 
-export const editModePromises = new EntityPromises<Player, EditResult | undefined>()
+export const editModePromises = new EntityPromises<Player, AttachedObjectEditResult | undefined>()
 export const editingObject = new WeakMap<Player, PlayerAttachedObject>()
 
 export class PlayerAttachedObjects {

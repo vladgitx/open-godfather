@@ -1,2 +1,2 @@
-export { PlayerAttachedObjects } from "./instance"
+export { PlayerAttachedObjects, AttachedObjectEditResult } from "./instance"
 export { PlayerAttachedObject } from "./entity"
