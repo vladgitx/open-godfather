@@ -126,4 +126,16 @@ class PlayerDialogShow {
 
         return dialogPromises.new(this.player)
     }
+
+    noPromise(style: DialogStylesEnum, caption: string, info: string, primaryButton: string, secondaryButton = "") {
+        nativeFunctions.showPlayerDialog(
+            this.player.id,
+            Math.floor(Math.random() * 32767),
+            style,
+            caption,
+            info,
+            primaryButton,
+            secondaryButton,
+        )
+    }
 }
