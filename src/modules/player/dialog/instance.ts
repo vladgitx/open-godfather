@@ -137,5 +137,7 @@ class PlayerDialogShow {
             primaryButton,
             secondaryButton,
         )
+
+        dialogPromises.reject(this.player, new Error("A 'no promise' dialog overrided the previous dialog promise"))
     }
 }
