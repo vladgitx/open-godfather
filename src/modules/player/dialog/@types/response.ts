@@ -5,7 +5,7 @@ export type ListDialogResponse =
       }
     | {
           action: false
-          item: undefined
+          item?: never
       }
 
 export interface MessageDialogResponse {
@@ -19,7 +19,7 @@ export type InputDialogResponse =
       }
     | {
           action: false
-          input: undefined
+          input?: never
       }
 
 export type DialogResponse = ListDialogResponse & InputDialogResponse & MessageDialogResponse

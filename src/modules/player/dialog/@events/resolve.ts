@@ -11,7 +11,7 @@ nativeEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam,
         if (action) {
             dialogPromises.resolve(player, { action, item: listItemParam, input: inputText })
         } else {
-            dialogPromises.resolve(player, { action, item: undefined, input: undefined })
+            dialogPromises.resolve(player, { action })
         }
     }
 })
