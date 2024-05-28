@@ -44,7 +44,11 @@ interface EntityEvents {
     entityDestroy: [Entity]
 }
 
-type EventMap = ServerEvents & PlayerEvents & VehicleEvents & EntityEvents
+interface CommandEvents {
+    commandRegister: [Command]
+}
+
+type EventMap = ServerEvents & PlayerEvents & VehicleEvents & EntityEvents & CommandEvents
 
 class Dispatcher extends EventEmitter {
     emit<K extends keyof EventMap>(event: K, ...args: EventMap[K]): boolean {

@@ -1,3 +1,4 @@
+import { dispatcher } from "../dispatcher"
 import { type CommandCallback } from "./@types/callback"
 import { Command } from "./instance"
 
@@ -36,6 +37,8 @@ class CommandFactory {
         for (const alias of aliases) {
             this.pool.set(alias, command)
         }
+
+        dispatcher.emit("commandRegister", command)
 
         return command
     }
