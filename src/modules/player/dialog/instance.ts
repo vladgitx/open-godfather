@@ -89,7 +89,7 @@ class PlayerDialogShow {
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.TablistHeaders,
             caption || " ",
-            headerString + "\n" + itemsString || "\n",
+            (headerString || "\n") + "\n" + (itemsString || "\n"),
             primaryButton || " ",
             secondaryButton,
         )
