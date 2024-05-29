@@ -21,43 +21,43 @@ class PlayerDialogShow {
     constructor(private player: Player) {}
 
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
-        if (items.length === 0) {
-            throw new Error(
-                "List dialog must have at least one item. You should check the length of the items array before calling this method.",
-            )
-        }
-
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.List,
             caption || " ",
-            items.join("\n"),
+            items.join("\n") || "\n",
             primaryButton || " ",
             secondaryButton,
         )
 
-        return dialogPromises.new(this.player)
+        const promise = await dialogPromises.new(this.player)
+
+        if (items.length === 0) {
+            return { action: false }
+        }
+
+        return promise
     }
 
     async tablist(caption: string, items: string[][], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
-        if (items.length === 0) {
-            throw new Error(
-                "Tablist dialog must have at least one item. You should check the length of the items array before calling this method.",
-            )
-        }
-
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Tablist,
             caption || " ",
-            items.map((columns) => columns.join("\t")).join("\n"),
+            items.map((columns) => columns.join("\t")).join("\n") || "\n",
             primaryButton || " ",
             secondaryButton,
         )
 
-        return dialogPromises.new(this.player)
+        const promise = await dialogPromises.new(this.player)
+
+        if (items.length === 0) {
+            return { action: false }
+        }
+
+        return promise
     }
 
     async tablistWithHeaders(
@@ -67,12 +67,6 @@ class PlayerDialogShow {
         primaryButton: string,
         secondaryButton = "",
     ): Promise<ListDialogResponse> {
-        if (items.length === 0) {
-            throw new Error(
-                "Tablist dialog must have at least one item. You should check the length of the items array before calling this method.",
-            )
-        }
-
         let headerString = ""
         let itemsString = ""
 
@@ -95,12 +89,18 @@ class PlayerDialogShow {
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.TablistHeaders,
             caption || " ",
-            headerString + "\n" + itemsString,
+            headerString + "\n" + itemsString || "\n",
             primaryButton || " ",
             secondaryButton,
         )
 
-        return dialogPromises.new(this.player)
+        const promise = await dialogPromises.new(this.player)
+
+        if (items.length === 0) {
+            return { action: false }
+        }
+
+        return promise
     }
 
     async messageBox(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<MessageDialogResponse> {
