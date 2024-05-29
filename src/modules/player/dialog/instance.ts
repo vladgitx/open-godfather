@@ -21,13 +21,19 @@ class PlayerDialogShow {
     constructor(private player: Player) {}
 
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
+        if (items.length === 0) {
+            throw new Error(
+                "List dialog must have at least one item. You should check the length of the items array before calling this method.",
+            )
+        }
+
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.List,
-            caption,
+            caption || " ",
             items.join("\n"),
-            primaryButton,
+            primaryButton || " ",
             secondaryButton,
         )
 
@@ -35,13 +41,19 @@ class PlayerDialogShow {
     }
 
     async tablist(caption: string, items: string[][], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
+        if (items.length === 0) {
+            throw new Error(
+                "Tablist dialog must have at least one item. You should check the length of the items array before calling this method.",
+            )
+        }
+
         nativeFunctions.showPlayerDialog(
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Tablist,
-            caption,
+            caption || " ",
             items.map((columns) => columns.join("\t")).join("\n"),
-            primaryButton,
+            primaryButton || " ",
             secondaryButton,
         )
 
@@ -55,6 +67,12 @@ class PlayerDialogShow {
         primaryButton: string,
         secondaryButton = "",
     ): Promise<ListDialogResponse> {
+        if (items.length === 0) {
+            throw new Error(
+                "Tablist dialog must have at least one item. You should check the length of the items array before calling this method.",
+            )
+        }
+
         let headerString = ""
         let itemsString = ""
 
@@ -76,9 +94,9 @@ class PlayerDialogShow {
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.TablistHeaders,
-            caption,
+            caption || " ",
             headerString + "\n" + itemsString,
-            primaryButton,
+            primaryButton || " ",
             secondaryButton,
         )
 
@@ -90,9 +108,9 @@ class PlayerDialogShow {
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.MessageBox,
-            caption,
-            info,
-            primaryButton,
+            caption || " ",
+            info || " ",
+            primaryButton || " ",
             secondaryButton,
         )
 
@@ -104,9 +122,9 @@ class PlayerDialogShow {
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Input,
-            caption,
-            info,
-            primaryButton,
+            caption || " ",
+            info || " ",
+            primaryButton || " ",
             secondaryButton,
         )
 
@@ -118,9 +136,9 @@ class PlayerDialogShow {
             this.player.id,
             Math.floor(Math.random() * 32767),
             DialogStylesEnum.Password,
-            caption,
-            info,
-            primaryButton,
+            caption || " ",
+            info || " ",
+            primaryButton || " ",
             secondaryButton,
         )
 
@@ -132,9 +150,9 @@ class PlayerDialogShow {
             this.player.id,
             Math.floor(Math.random() * 32767),
             style,
-            caption,
-            info,
-            primaryButton,
+            caption || " ",
+            info || " ",
+            primaryButton || " ",
             secondaryButton,
         )
 
