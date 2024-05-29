@@ -7,17 +7,17 @@ class CommandFactory {
 
     new = (name: string, aliases: string[], callback: CommandCallback) => {
         if (aliases.includes(name)) {
-            throw new Error(`Command ${name} cannot be an alias of itself`)
+            throw new Error(`Command ${name} cannot have an alias with the same name`)
         }
 
         if (this.pool.get(name)) {
             // It throws a TypeError at runtime if the function is not an arrow function
-            throw new Error(`Command ${name} already exists`)
+            throw new Error(`Duplicate command name: ${name}`)
         }
 
         for (const alias of aliases) {
             if (this.pool.get(alias)) {
-                throw new Error(`You're using alias ${alias} for command ${name}, but that alias already exists as another command`)
+                throw new Error(`You can't use alias ${alias} for command ${name}, because a command with that name already exists`)
             }
         }
 
@@ -26,8 +26,10 @@ class CommandFactory {
                 throw new Error(`Command name ${name} is used as an alias for command ${command.name}`)
             }
 
-            if (aliases.some((alias) => command.aliases.includes(alias))) {
-                throw new Error(`Command ${name} shares the same aliases as command ${command.name}`)
+            const sharedAlias = command.aliases.find((alias) => aliases.includes(alias))
+
+            if (sharedAlias) {
+                throw new Error(`Command ${name} shares alias ${sharedAlias} with command ${command.name}`)
             }
         }
 
