@@ -4,6 +4,7 @@ import { type Player } from "../entity"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
 import { EntityPromises } from "@/modules/entity"
 
+const MAX_DIALOG_ID = 32767 // Used when generating a random dialog ID
 export const dialogPromises = new EntityPromises<Player, DialogResponse>()
 
 export class PlayerDialog {
@@ -23,7 +24,7 @@ class PlayerDialogShow {
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             DialogStylesEnum.List,
             caption || " ",
             items.join("\n") || "\n",
@@ -31,19 +32,17 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        const promise = await dialogPromises.new(this.player)
-
         if (items.length === 0) {
             return { action: false }
         }
 
-        return promise
+        return dialogPromises.new(this.player)
     }
 
     async tablist(caption: string, items: string[][], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             DialogStylesEnum.Tablist,
             caption || " ",
             items.map((columns) => columns.join("\t")).join("\n") || "\n",
@@ -51,13 +50,11 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        const promise = await dialogPromises.new(this.player)
-
         if (items.length === 0) {
             return { action: false }
         }
 
-        return promise
+        return dialogPromises.new(this.player)
     }
 
     async tablistWithHeaders(
@@ -86,7 +83,7 @@ class PlayerDialogShow {
 
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             DialogStylesEnum.TablistHeaders,
             caption || " ",
             (headerString || "\n") + "\n" + (itemsString || "\n"),
@@ -94,19 +91,17 @@ class PlayerDialogShow {
             secondaryButton,
         )
 
-        const promise = await dialogPromises.new(this.player)
-
         if (items.length === 0) {
             return { action: false }
         }
 
-        return promise
+        return dialogPromises.new(this.player)
     }
 
     async messageBox(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<MessageDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             DialogStylesEnum.MessageBox,
             caption || " ",
             info || " ",
@@ -120,7 +115,7 @@ class PlayerDialogShow {
     async input(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             DialogStylesEnum.Input,
             caption || " ",
             info || " ",
@@ -134,7 +129,7 @@ class PlayerDialogShow {
     async password(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse> {
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             DialogStylesEnum.Password,
             caption || " ",
             info || " ",
@@ -148,7 +143,7 @@ class PlayerDialogShow {
     noPromise(style: DialogStylesEnum, caption: string, info: string, primaryButton: string, secondaryButton = "") {
         nativeFunctions.showPlayerDialog(
             this.player.id,
-            Math.floor(Math.random() * 32767),
+            Math.floor(Math.random() * MAX_DIALOG_ID),
             style,
             caption || " ",
             info || " ",
