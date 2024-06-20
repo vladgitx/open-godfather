@@ -214,7 +214,7 @@ class StreamerNatives {
     }
 
     getItemPos(itemType: StreamerItemType, itemId: number) {
-        const pos = samp.callNative("Streamer_GetItemPos", "ii", STREAMER_ITEM_TYPES[itemType], itemId) as number[]
+        const pos = samp.callNative("Streamer_GetItemPos", "iiFFF", STREAMER_ITEM_TYPES[itemType], itemId) as number[]
         return new Vector3(pos[0], pos[1], pos[2])
     }
 
