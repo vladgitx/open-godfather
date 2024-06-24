@@ -13,6 +13,19 @@ import {
 import { Vector3 } from "../modules/vector3"
 
 class NativeFunctions {
+    getVehicleSpawnInfo(vehicleId: number) {
+        const data = samp.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleId) as number[]
+
+        return {
+            spawnX: data[0],
+            spawnY: data[1],
+            spawnZ: data[2],
+            spawnAngle: data[3],
+            primaryColor: data[4],
+            secondaryColor: data[5],
+        }
+    }
+
     interpolateCameraPos = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStylesEnum): number => {
         return samp.callNative("InterpolateCameraPos", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }

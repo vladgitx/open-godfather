@@ -1,5 +1,5 @@
 import { nativeFunctions } from "@/natives"
-import { type Vector3 } from "../vector3"
+import { Vector3 } from "../vector3"
 import { Entity } from "../entity"
 import { type Player } from "../player"
 import { VehicleParams } from "./params"
@@ -31,6 +31,11 @@ export class Vehicle extends Entity {
 
         nativeFunctions.linkVehicleToInterior(this.id, this._interior)
         nativeFunctions.setVehicleNumberPlate(this.id, this._plate)
+    }
+
+    getSpawnInfo() {
+        const info = nativeFunctions.getVehicleSpawnInfo(this.id)
+        return { position: new Vector3(info.spawnX, info.spawnY, info.spawnZ), angle: info.spawnAngle }
     }
 
     repair() {
