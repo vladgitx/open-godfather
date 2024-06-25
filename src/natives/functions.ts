@@ -13,6 +13,21 @@ import {
 import { Vector3 } from "../modules/vector3"
 
 class NativeFunctions {
+    getVehicleDamageStatus(vehicleId: number) {
+        const data = samp.callNative("GetVehicleDamageStatus", "iIIII", vehicleId) as number[]
+
+        return {
+            panels: data[0],
+            doors: data[1],
+            lights: data[2],
+            tires: data[3],
+        }
+    }
+
+    updateVehicleDamageStatus(vehicleId: number, panels: number, doors: number, lights: number, tires: number) {
+        samp.callNative("UpdateVehicleDamageStatus", "iiiii", vehicleId, panels, doors, lights, tires)
+    }
+
     getVehicleSpawnInfo(vehicleId: number) {
         const data = samp.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleId) as number[]
 

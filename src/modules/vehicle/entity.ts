@@ -33,6 +33,22 @@ export class Vehicle extends Entity {
         nativeFunctions.setVehicleNumberPlate(this.id, this._plate)
     }
 
+    getDamageStatus() {
+        return nativeFunctions.getVehicleDamageStatus(this.id)
+    }
+
+    setDamageStatus(status: Partial<{ panels: number; doors: number; lights: number; tires: number }>) {
+        const currentStatus = this.getDamageStatus()
+
+        nativeFunctions.updateVehicleDamageStatus(
+            this.id,
+            status.panels ?? currentStatus.panels,
+            status.doors ?? currentStatus.doors,
+            status.lights ?? currentStatus.lights,
+            status.tires ?? currentStatus.tires,
+        )
+    }
+
     getSpawnInfo() {
         const info = nativeFunctions.getVehicleSpawnInfo(this.id)
         return { position: new Vector3(info.spawnX, info.spawnY, info.spawnZ), angle: info.spawnAngle }
