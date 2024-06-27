@@ -1,4 +1,5 @@
 import { nativeFunctions } from "@/natives"
+import { dispatcher } from "../dispatcher"
 
 class MultiplayerServer {
     private _name = "open gf server"
@@ -13,15 +14,17 @@ class MultiplayerServer {
     private _disabledNameTags = false
 
     constructor() {
-        this.name = this._name
-        this.language = this._language
-        this.website = this._website
-        this.map = this._map
-        this.mode = this._mode
-        this.stuntBonuses = this._stuntBonuses
-        this.nameTagDistance = this._nameTagDistance
-        this.hour = this._hour
-        this.weather = this._weather
+        dispatcher.on("init", () => {
+            this.name = this._name
+            this.language = this._language
+            this.website = this._website
+            this.map = this._map
+            this.mode = this._mode
+            this.stuntBonuses = this._stuntBonuses
+            this.nameTagDistance = this._nameTagDistance
+            this.hour = this._hour
+            this.weather = this._weather
+        })
     }
 
     set disabledNameTags(disabledNameTags: boolean) {

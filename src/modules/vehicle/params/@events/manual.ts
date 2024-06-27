@@ -1,3 +1,6 @@
+import { dispatcher } from "@/modules/dispatcher"
 import { nativeFunctions } from "@/natives"
 
-nativeFunctions.manualVehicleEngineAndLights()
+dispatcher.on("init", () => {
+    nativeFunctions.manualVehicleEngineAndLights()
+})
