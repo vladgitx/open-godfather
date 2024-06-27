@@ -13,6 +13,29 @@ import {
 import { Vector3 } from "../modules/vector3"
 
 class NativeFunctions {
+    setVehicleParamsCarWindows(vehicleId: number, frontLeft: boolean, frontRight: boolean, rearLeft: boolean, rearRight: boolean) {
+        samp.callNative(
+            "SetVehicleParamsCarWindows",
+            "iiiii",
+            vehicleId,
+            frontLeft ? 1 : 0,
+            frontRight ? 1 : 0,
+            rearLeft ? 1 : 0,
+            rearRight ? 1 : 0,
+        )
+    }
+
+    getVehicleParamsCarWindows(vehicleId: number) {
+        const data = samp.callNative("GetVehicleParamsCarWindows", "iIIII", vehicleId) as number[]
+
+        return {
+            frontLeft: Boolean(data[0]),
+            frontRight: Boolean(data[1]),
+            rearLeft: Boolean(data[2]),
+            rearRight: Boolean(data[3]),
+        }
+    }
+
     getVehicleDamageStatus(vehicleId: number) {
         const data = samp.callNative("GetVehicleDamageStatus", "iIIII", vehicleId) as number[]
 

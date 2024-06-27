@@ -1,7 +1,90 @@
 import { type Vehicle } from ".."
 import { nativeFunctions } from "@/natives"
 
+class VehicleWindows {
+    private _driver: "open" | "closed" = "closed"
+    private _passenger: "open" | "closed" = "closed"
+    private _backLeft: "open" | "closed" = "closed"
+    private _backRight: "open" | "closed" = "closed"
+
+    constructor(private vehicle: Vehicle) {
+        nativeFunctions.setVehicleParamsCarWindows(
+            this.vehicle.id,
+            this._driver !== "open",
+            this._passenger !== "open",
+            this._backLeft !== "open",
+            this._backRight !== "open",
+        )
+    }
+
+    set driver(value: "open" | "closed") {
+        this._driver = value
+
+        nativeFunctions.setVehicleParamsCarWindows(
+            this.vehicle.id,
+            this._driver !== "open",
+            this._passenger !== "open",
+            this._backLeft !== "open",
+            this._backRight !== "open",
+        )
+    }
+
+    get driver() {
+        return this._driver
+    }
+
+    set passenger(value: "open" | "closed") {
+        this._passenger = value
+
+        nativeFunctions.setVehicleParamsCarWindows(
+            this.vehicle.id,
+            this._driver !== "open",
+            this._passenger !== "open",
+            this._backLeft !== "open",
+            this._backRight !== "open",
+        )
+    }
+
+    get passenger() {
+        return this._passenger
+    }
+
+    set backLeft(value: "open" | "closed") {
+        this._backLeft = value
+
+        nativeFunctions.setVehicleParamsCarWindows(
+            this.vehicle.id,
+            this._driver !== "open",
+            this._passenger !== "open",
+            this._backLeft !== "open",
+            this._backRight !== "open",
+        )
+    }
+
+    get backLeft() {
+        return this._backLeft
+    }
+
+    set backRight(value: "open" | "closed") {
+        this._backRight = value
+
+        nativeFunctions.setVehicleParamsCarWindows(
+            this.vehicle.id,
+            this._driver !== "open",
+            this._passenger !== "open",
+            this._backLeft !== "open",
+            this._backRight !== "open",
+        )
+    }
+
+    get backRight() {
+        return this._backRight
+    }
+}
+
 export class VehicleParams {
+    readonly windows = new VehicleWindows(this.vehicle)
+
     private _engine: "on" | "off" = "off"
     private _lights: "on" | "off" = "off"
     private _alarm: "on" | "off" = "off"
