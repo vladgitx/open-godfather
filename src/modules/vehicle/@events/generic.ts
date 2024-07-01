@@ -2,6 +2,7 @@ import { dispatcher } from "@/modules/dispatcher"
 import { vehicleHandler } from "../handler"
 import { playerHandler } from "@/modules/player"
 
+// "OnVehicleSpawn" is a misleading name because it's called only when the vehicle RESPAWNS
 samp.on("OnVehicleSpawn", (vehicleId) => {
     const vehicle = vehicleHandler.at(vehicleId)
 
@@ -13,11 +14,11 @@ samp.on("OnVehicleSpawn", (vehicleId) => {
     }
 })
 
-samp.on("OnVehicleDeath", (vehicleId, killerId) => {
+samp.on("OnVehicleDeath", (vehicleId, closestPlayerId) => {
     const vehicle = vehicleHandler.at(vehicleId)
-    const killer = playerHandler.at(killerId)
+    const closestPlayer = playerHandler.at(closestPlayerId)
 
     if (vehicle) {
-        dispatcher.emit("vehicleDeath", vehicle, killer)
+        dispatcher.emit("vehicleDeath", vehicle, closestPlayer)
     }
 })
