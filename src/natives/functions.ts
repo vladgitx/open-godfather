@@ -354,11 +354,25 @@ class NativeFunctions {
     }
 
     sendClientMessage(playerId: number, color: string, message: string): void {
-        if (message.length > 90) {
-            samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), `${message.slice(0, 90)} ...`)
-            samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), `... ${message.slice(90)}`)
-        } else {
+        if (message.length <= 90) {
             samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), message)
+            return
+        }
+
+        const parts = Math.ceil(message.length / 90)
+
+        samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), message.slice(0, 90) + " ...")
+
+        for (let i = 1; i < parts; i++) {
+            const part = message.slice(i * 90, (i + 1) * 90)
+
+            samp.callNative(
+                "SendClientMessage",
+                "iis",
+                playerId,
+                hexToRgbaInt(color),
+                i === parts - 1 ? "... " + part : "... " + part + " ...",
+            )
         }
     }
 
