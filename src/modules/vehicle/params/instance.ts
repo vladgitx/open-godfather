@@ -1,4 +1,4 @@
-import { type Vehicle } from ".."
+import { type Vehicle } from "../entity"
 import { nativeFunctions } from "@/natives"
 
 class VehicleWindows {
@@ -8,13 +8,18 @@ class VehicleWindows {
     private _backRight: "open" | "closed" = "closed"
 
     constructor(private vehicle: Vehicle) {
-        nativeFunctions.setVehicleParamsCarWindows(
-            this.vehicle.id,
-            this._driver !== "open",
-            this._passenger !== "open",
-            this._backLeft !== "open",
-            this._backRight !== "open",
-        )
+        this.reset()
+    }
+
+    reset() {
+        const state = "closed" as "open" | "closed"
+
+        this._driver = state
+        this._passenger = state
+        this._backLeft = state
+        this._backRight = state
+
+        nativeFunctions.setVehicleParamsCarWindows(this.vehicle.id, state !== "open", state !== "open", state !== "open", state !== "open")
     }
 
     set driver(value: "open" | "closed") {
@@ -94,8 +99,20 @@ export class VehicleParams {
     private _objective: "on" | "off" = "off"
 
     constructor(private vehicle: Vehicle) {
+        this.reset()
+    }
+
+    reset() {
+        this._engine = "off" as "on" | "off"
+        this._lights = "off" as "on" | "off"
+        this._alarm = "off" as "on" | "off"
+        this._doors = "unlocked" as "locked" | "unlocked"
+        this._bonnet = "closed" as "open" | "closed"
+        this._boot = "closed" as "open" | "closed"
+        this._objective = "off" as "on" | "off"
+
         nativeFunctions.setVehicleParamsEx(
-            vehicle.id,
+            this.vehicle.id,
             this._engine === "on",
             this._lights === "on",
             this._alarm === "on",

@@ -35,8 +35,7 @@ interface PlayerEvents {
 }
 
 interface VehicleEvents {
-    vehicleCreate: [Vehicle]
-    vehicleDestroy: [Vehicle]
+    vehicleRespawn: [Vehicle]
 }
 
 interface EntityEvents {
