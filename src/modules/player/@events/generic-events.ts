@@ -6,6 +6,14 @@ import { playerHandler } from "../handler"
 import { vehicleHandler } from "@/modules/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
 
+samp.on("OnPlayerKeyStateChange", (playerId, newKeys, oldKeys) => {
+    const player = playerHandler.at(playerId)
+
+    if (player !== undefined) {
+        dispatcher.emit("playerKeyStateChange", player, newKeys, oldKeys)
+    }
+})
+
 nativeEvents.onPlayerSpawn((playerId: number) => {
     const player = playerHandler.at(playerId)
     if (player === undefined) {

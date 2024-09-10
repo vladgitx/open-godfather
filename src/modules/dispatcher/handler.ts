@@ -32,6 +32,7 @@ interface PlayerEvents {
     playerPickUpPickup: [Player, Pickup]
     playerChangeVehiclePaintjob: [Player, Vehicle, number | undefined]
     playerExitObjectEditMode: [Player]
+    playerKeyStateChange: [Player, number, number]
 }
 
 interface VehicleEvents {
