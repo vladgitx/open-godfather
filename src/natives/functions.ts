@@ -12,6 +12,9 @@ import {
 } from "../common/enums"
 import { Vector3 } from "../modules/vector3"
 
+export const INVALID_PLAYER_ID = 0xffff
+export const INVALID_VEHICLE_ID = 0xffff
+
 class NativeFunctions {
     setVehicleParamsCarWindows(vehicleId: number, frontLeft: boolean, frontRight: boolean, rearLeft: boolean, rearRight: boolean) {
         samp.callNative(

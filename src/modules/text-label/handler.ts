@@ -4,6 +4,7 @@ import { streamerNatives } from "@/natives/streamer"
 import { type Player } from "../player"
 import { StreamerHandler } from "../streamer-entity"
 import { EntityFactory } from "../entity"
+import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/natives/functions"
 
 const textLabelFactory = new EntityFactory<TextLabel, typeof TextLabel>((id, text, color) => new TextLabel(id, text, color))
 
@@ -26,8 +27,8 @@ class TextLabelHandler extends StreamerHandler<TextLabel> {
             color,
             position,
             drawDistance,
-            -1,
-            -1,
+            INVALID_PLAYER_ID,
+            INVALID_VEHICLE_ID,
             testLos ? 1 : 0,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,

@@ -9,7 +9,7 @@ samp.on("OnVehicleSpawn", (vehicleId) => {
     if (vehicle) {
         vehicle.params.reset()
         vehicle.params.windows.reset()
-        
+
         dispatcher.emit("vehicleRespawn", vehicle)
     }
 })
