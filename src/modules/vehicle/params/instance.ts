@@ -1,3 +1,4 @@
+import { dispatcher } from "@/modules/dispatcher"
 import { type Vehicle } from "../entity"
 import { nativeFunctions } from "@/natives"
 
@@ -124,6 +125,7 @@ export class VehicleParams {
     }
 
     set engine(value: "on" | "off") {
+        const stateChanged = this._engine !== value
         this._engine = value
 
         const params = nativeFunctions.getVehicleParamsEx(this.vehicle.id)
@@ -137,6 +139,8 @@ export class VehicleParams {
             params.boot,
             params.objective,
         )
+
+        stateChanged && dispatcher.emit("vehicleEngineStateChange", this.vehicle, this._engine)
     }
 
     get engine() {
