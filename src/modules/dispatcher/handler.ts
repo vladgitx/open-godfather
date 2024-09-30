@@ -8,6 +8,7 @@ import { type Vector3 } from "../vector3"
 import EventEmitter from "events"
 import { type Pickup } from "../pickup"
 import { type Entity } from "../entity"
+import { type Checkpoint } from "../checkpoint"
 
 interface ServerEvents {
     init: []
@@ -33,6 +34,8 @@ interface PlayerEvents {
     playerChangeVehiclePaintjob: [Player, Vehicle, number | undefined]
     playerExitObjectEditMode: [Player]
     playerKeyStateChange: [Player, number, number]
+    playerEnterCheckpoint: [Player, Checkpoint]
+    playerLeaveCheckpoint: [Player, Checkpoint]
 }
 
 interface VehicleEvents {
@@ -113,4 +116,4 @@ class Dispatcher extends EventEmitter {
     }
 }
 
-export const dispatcher = new Dispatcher()
+export const dispatcher = new Dispatcher().setMaxListeners(20)

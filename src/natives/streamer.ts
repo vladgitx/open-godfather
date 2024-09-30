@@ -75,6 +75,59 @@ const STREAMER_ITEM_DATA = {
 type StreamerItemData = keyof typeof STREAMER_ITEM_DATA
 
 class StreamerNatives {
+    createDynamicCheckpoint(
+        position: Vector3,
+        size: number,
+        worldId: number,
+        interiorId: number,
+        playerId: number,
+        streamDistance: number,
+        areaId: number,
+        priority: number,
+    ) {
+        const id = samp.callNative(
+            "CreateDynamicCP",
+            "ffffiiifii",
+            position.x,
+            position.y,
+            position.z,
+            size,
+            worldId,
+            interiorId,
+            playerId,
+            streamDistance,
+            areaId,
+            priority,
+        ) as number
+
+        return id === INVALID_STREAMER_ID ? undefined : id
+    }
+
+    destroyDynamicCheckpoint(id: number) {
+        samp.callNative("DestroyDynamicCP", "i", id)
+    }
+
+    isValidDynamicCheckpoint(id: number) {
+        return samp.callNative("IsValidDynamicCP", "i", id) === 1
+    }
+
+    togglePlayerDynamicCheckpoint(playerId: number, checkpointId: number, toggle: boolean) {
+        samp.callNative("TogglePlayerDynamicCP", "iii", playerId, checkpointId, toggle ? 1 : 0)
+    }
+
+    togglePlayerAllDynamicCheckpoints(playerId: number, toggle: boolean) {
+        samp.callNative("TogglePlayerAllDynamicCPs", "ii", playerId, toggle ? 1 : 0)
+    }
+
+    isPlayerInDynamicCheckpoint(playerId: number, checkpointId: number) {
+        return samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId) === 1
+    }
+
+    getPlayerVisibleDynamicCheckpoint(playerId: number) {
+        const id = samp.callNative("GetPlayerVisibleDynamicCP", "i", playerId) as number
+        return id === INVALID_STREAMER_ID ? undefined : id
+    }
+
     createDynamicPickup(
         modelId: number,
         type: number,
@@ -346,6 +399,14 @@ export const streamerNatives = new StreamerNatives()
 class StreamerEvents {
     onPlayerPickUpDynamicPickup(callback: (playerId: number, pickupId: number) => void) {
         samp.on("OnPlayerPickUpDynamicPickup", callback)
+    }
+
+    onPlayerEnterDynamicCheckpoint(callback: (playerId: number, checkpointId: number) => void) {
+        samp.on("OnPlayerEnterDynamicCP", callback)
+    }
+
+    onPlayerLeaveDynamicCheckpoint(callback: (playerId: number, checkpointId: number) => void) {
+        samp.on("OnPlayerLeaveDynamicCP", callback)
     }
 }
 
