@@ -1,9 +1,22 @@
 export class Vector3 {
-    constructor(
-        public x = 0,
-        public y = 0,
-        public z = 0,
-    ) {}
+    public x: number
+    public y: number
+    public z: number
+
+    constructor(x?: number, y?: number, z?: number)
+    constructor(vector: Partial<{ x: number; y: number; z: number }>)
+
+    constructor(x: number | Partial<{ x: number; y: number; z: number }> = 0, y = 0, z = 0) {
+        if (typeof x === "object") {
+            this.x = x.x ?? 0
+            this.y = x.y ?? 0
+            this.z = x.z ?? 0
+        } else {
+            this.x = x
+            this.y = y
+            this.z = z
+        }
+    }
 
     add(v: Vector3): Vector3 {
         return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z)
