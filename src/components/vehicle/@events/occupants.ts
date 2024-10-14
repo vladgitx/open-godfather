@@ -1,13 +1,23 @@
 import { dispatcher } from "@/lib/dispatcher"
+import { type Vehicle } from "../entity"
+import { type Player } from "@/components/player"
+
+const vehicleOccupants = new WeakMap<Vehicle, Set<Player>>()
 
 dispatcher.on("playerEnterVehicle", (player, vehicle) => {
-    vehicle.occupants.add(player)
+    vehicleOccupants.set(vehicle, (vehicleOccupants.get(vehicle) ?? new Set()).add(player))
 })
 
 dispatcher.on("playerExitVehicle", (player, vehicle) => {
-    vehicle?.occupants.delete(player)
+    vehicle && vehicleOccupants.get(vehicle)?.delete(player)
 })
 
 dispatcher.on("playerDisconnect", (player) => {
-    player.vehicle?.occupants.delete(player)
+    const { vehicle } = player
+
+    vehicle && vehicleOccupants.get(vehicle)?.delete(player)
 })
+
+export function getVehicleOccupants(vehicle: Vehicle): Player[] {
+    return [...(vehicleOccupants.get(vehicle) ?? [])]
+}

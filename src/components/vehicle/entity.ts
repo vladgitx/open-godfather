@@ -1,16 +1,14 @@
 import { nativeFunctions } from "@/natives"
 import { Vector3 } from "../../lib/vector3"
 import { Entity } from "../../lib/entity"
-import { type Player } from "../player"
 import { VehicleParams } from "./params"
+import { getVehicleOccupants } from "./@events/occupants"
 
 const REMOVE_PAINTJOB_ID = 3
 
 export const vehicleInternalPaintjobId = new WeakMap<Vehicle, number>()
 
 export class Vehicle extends Entity {
-    public occupants = new Set<Player>()
-
     readonly params = new VehicleParams(this)
 
     private _primaryColor: number
@@ -147,5 +145,9 @@ export class Vehicle extends Entity {
     get paintjob() {
         const paintjobId = vehicleInternalPaintjobId.get(this)
         return paintjobId === REMOVE_PAINTJOB_ID ? undefined : paintjobId
+    }
+
+    get occupants() {
+        return getVehicleOccupants(this)
     }
 }
