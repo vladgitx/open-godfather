@@ -16,7 +16,7 @@ export class EntityHandler<T extends Entity> {
         return this.at(entity.id) === entity
     }
 
-    checkAnyType(anything: unknown): anything is T {
-        return this.factory.instanceOf(anything)
+    checkInstanceOf(anything: unknown): anything is T {
+        return this.factory.checkInstanceOf(anything)
     }
 }

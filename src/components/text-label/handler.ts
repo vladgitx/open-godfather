@@ -42,12 +42,13 @@ class TextLabelHandler extends StreamerHandler<TextLabel> {
             return undefined
         }
 
-        return textLabelFactory.new(labelId, text, color)
-    }
+        const textLabel = textLabelFactory.new(labelId, text, color)
 
-    destroy(label: TextLabel) {
-        streamerNatives.destroyDynamic3dTextLabel(label.id)
-        textLabelFactory.destroy(label)
+        textLabel?.onCleanup(() => {
+            streamerNatives.destroyDynamic3dTextLabel(labelId)
+        })
+
+        return textLabel
     }
 }
 

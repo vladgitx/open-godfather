@@ -37,12 +37,13 @@ class MapObjectHandler extends StreamerHandler<MapObject> {
             return undefined
         }
 
-        return objectFactory.new(objectId)
-    }
+        const object = objectFactory.new(objectId)
 
-    destroy(object: MapObject) {
-        streamerNatives.destroyDynamicObject(object.id)
-        objectFactory.destroy(object)
+        object?.onCleanup(() => {
+            streamerNatives.destroyDynamicObject(objectId)
+        })
+
+        return object
     }
 }
 

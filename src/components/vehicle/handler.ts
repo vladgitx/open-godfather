@@ -13,12 +13,13 @@ class VehicleHandler extends EntityHandler<Vehicle> {
             return undefined
         }
 
-        return vehicleFactory.new(vehicleId, model, primaryColor, secondaryColor)
-    }
+        const vehicle = vehicleFactory.new(vehicleId, model, primaryColor, secondaryColor)
 
-    destroy(vehicle: Vehicle) {
-        nativeFunctions.destroyVehicle(vehicle.id)
-        vehicleFactory.destroy(vehicle)
+        vehicle?.onCleanup(() => {
+            nativeFunctions.destroyVehicle(vehicleId)
+        })
+
+        return vehicle
     }
 
     getClosest(position: Vector3, range: number, world?: number, interior?: number) {

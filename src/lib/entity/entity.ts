@@ -1,4 +1,8 @@
-const INVALID_ENTITY_ID = -1
+import { dispatcher } from "../dispatcher"
+
+const INVALID_ENTITY_ID_UNDER = 0
+
+let lastUsedInvalidEntityId = INVALID_ENTITY_ID_UNDER - 1
 
 export class Entity {
     private _id: number
@@ -29,7 +33,17 @@ export class Entity {
         return this.variables.delete(name)
     }
 
-    set exists(value: false) {
+    get exists(): boolean {
+        return this._id >= INVALID_ENTITY_ID_UNDER
+    }
+
+    destroy() {
+        if (!this.exists) {
+            return
+        }
+
+        dispatcher.emit("entityDestroy", this)
+
         for (const callback of this.cleanupCallbacks) {
             try {
                 callback()
@@ -39,10 +53,6 @@ export class Entity {
         }
 
         this.cleanupCallbacks = []
-        this._id = INVALID_ENTITY_ID
-    }
-
-    get exists(): boolean {
-        return this._id !== INVALID_ENTITY_ID
+        this._id = lastUsedInvalidEntityId--
     }
 }

@@ -34,12 +34,13 @@ class CheckpointHandler extends StreamerHandler<Checkpoint> {
             return undefined
         }
 
-        return checkpointFactory.new(checkpointId)
-    }
+        const checkpoint = checkpointFactory.new(checkpointId)
 
-    destroy(checkpoint: Checkpoint) {
-        streamerNatives.destroyDynamicCheckpoint(checkpoint.id)
-        checkpointFactory.destroy(checkpoint)
+        checkpoint?.onCleanup(() => {
+            streamerNatives.destroyDynamicCheckpoint(checkpointId)
+        })
+
+        return checkpoint
     }
 
     toggleFor(player: Player, checkpoint: Checkpoint, toggle: boolean) {

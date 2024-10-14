@@ -35,12 +35,13 @@ class PickupHandler extends StreamerHandler<Pickup> {
             return undefined
         }
 
-        return pickupFactory.new(pickupId)
-    }
+        const pickup = pickupFactory.new(pickupId)
 
-    destroy(pickup: Pickup) {
-        streamerNatives.destroyDynamicPickup(pickup.id)
-        pickupFactory.destroy(pickup)
+        pickup?.onCleanup(() => {
+            streamerNatives.destroyDynamicPickup(pickupId)
+        })
+
+        return pickup
     }
 }
 

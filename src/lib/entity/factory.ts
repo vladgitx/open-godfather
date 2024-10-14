@@ -14,28 +14,18 @@ export class EntityFactory<T extends Entity, K extends new (...args: [...Constru
         }
 
         const entity = new this.constructible(id, ...restArgs)
-
         this.pool.set(id, entity)
+
+        entity.onCleanup(() => {
+            this.pool.delete(id)
+        })
 
         dispatcher.emit("entityInstantiate", entity)
 
         return entity
     }
 
-    destroy(entity: T): void {
-        if (!entity.exists) {
-            return
-        }
-
-        dispatcher.emit("entityDestroy", entity)
-
-        const id = entity.id // The entity.id is changed in the entity.exists setter
-        entity.exists = false
-
-        this.pool.delete(id)
-    }
-
-    instanceOf(anything: unknown): anything is T {
+    checkInstanceOf(anything: unknown): anything is T {
         return anything instanceof this.constructible
     }
 }

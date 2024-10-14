@@ -17,6 +17,11 @@ nativeEvents.onPlayerConnect((playerId) => {
         const player = playerFactory.new(playerId)
 
         if (player) {
+            player.onCleanup(() => {
+                clearTimeout(playerTimeoutIds.get(playerId))
+                playerTimeoutIds.delete(playerId)
+            })
+
             dispatcher.emit("playerConnect", player)
         }
     }, 1000)
@@ -25,13 +30,10 @@ nativeEvents.onPlayerConnect((playerId) => {
 })
 
 nativeEvents.onPlayerDisconnect((playerId, reason) => {
-    clearTimeout(playerTimeoutIds.get(playerId))
-    playerTimeoutIds.delete(playerId)
-
     const player = playerHandler.at(playerId)
 
     if (player) {
         dispatcher.emit("playerDisconnect", player, reason)
-        playerFactory.destroy(player)
+        player.destroy()
     }
 })

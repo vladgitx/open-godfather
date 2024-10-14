@@ -3,7 +3,6 @@ import { StreamerEntity } from "../../lib/streamer-entity"
 import { streamerNatives } from "@/natives/streamer"
 import { vehicleHandler, type Vehicle } from "../vehicle"
 import { type Vector3 } from "../../lib/vector3"
-import { textLabelHandler } from "./handler"
 
 export class TextLabel extends StreamerEntity {
     private _text: string
@@ -57,10 +56,11 @@ export class TextLabel extends StreamerEntity {
         streamerNatives.setFloatData("textLabel", this.id, "attachOffsetZ", offset.z)
 
         entity.onCleanup(() => {
-            textLabelHandler.destroy(this)
+            this.destroy()
         })
 
         this.attached = true
+
         return true
     }
 }
