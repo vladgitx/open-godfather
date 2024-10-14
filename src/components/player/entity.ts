@@ -9,6 +9,7 @@ import { Entity } from "../../lib/entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerAttachedObjects } from "./attached-objects"
 import { dispatcher } from "../../lib/dispatcher"
+import { PlayerEvents } from "./events"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
@@ -17,6 +18,7 @@ export class Player extends Entity {
     readonly weapons = new PlayerWeapons(this)
     readonly animations = new PlayerAnimations(this)
     readonly attachedObjects = new PlayerAttachedObjects(this)
+    readonly events = new PlayerEvents(this)
 
     private _name = nativeFunctions.getPlayerName(this.id)
     private _color = "FFFFFF"
