@@ -1,5 +1,5 @@
 import { nativeEvents, nativeFunctions } from "@/natives"
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { playerFactory, playerHandler } from "../handler"
 
 // TODO: find the actual issue and fix it

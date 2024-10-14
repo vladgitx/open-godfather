@@ -1,9 +1,9 @@
 import { nativeFunctions } from "@/natives"
-import { type Vector3 } from "../../modules/vector3"
+import { type Vector3 } from "../../lib/vector3"
 import { Player } from "./entity"
-import { EntityFactory, EntityHandler } from "../../modules/entity"
+import { EntityFactory, EntityHandler } from "../../lib/entity"
 
-export const playerFactory = new EntityFactory<Player, typeof Player>((id) => new Player(id))
+export const playerFactory = new EntityFactory<Player, typeof Player>(Player)
 
 class PlayerHandler extends EntityHandler<Player> {
     broadcast(message: string, color = "FFFFFF") {

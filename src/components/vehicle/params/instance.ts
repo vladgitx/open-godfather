@@ -1,4 +1,4 @@
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { type Vehicle } from "../entity"
 import { nativeFunctions } from "@/natives"
 

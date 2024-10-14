@@ -1,11 +1,11 @@
 import { streamerNatives } from "@/natives/streamer"
-import { EntityFactory } from "../../modules/entity"
+import { EntityFactory } from "../../lib/entity"
 import { type Player } from "../player"
-import { StreamerHandler } from "../../modules/streamer-entity"
-import { type Vector3 } from "../../modules/vector3"
+import { StreamerHandler } from "../../lib/streamer-entity"
+import { type Vector3 } from "../../lib/vector3"
 import { Checkpoint } from "./entity"
 
-const checkpointFactory = new EntityFactory<Checkpoint, typeof Checkpoint>((id) => new Checkpoint(id))
+const checkpointFactory = new EntityFactory<Checkpoint, typeof Checkpoint>(Checkpoint)
 
 class CheckpointHandler extends StreamerHandler<Checkpoint> {
     new(

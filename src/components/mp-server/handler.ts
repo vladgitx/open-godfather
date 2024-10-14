@@ -1,5 +1,5 @@
 import { nativeFunctions } from "@/natives"
-import { dispatcher } from "../../modules/dispatcher"
+import { dispatcher } from "../../lib/dispatcher"
 
 class MultiplayerServer {
     private _name = "open gf server"

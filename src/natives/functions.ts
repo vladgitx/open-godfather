@@ -9,8 +9,8 @@ import {
     CameraModesEnum,
     WeaponSlotsEnum,
     type CameraCutStylesEnum,
-} from "../common/enums"
-import { Vector3 } from "../modules/vector3"
+} from "../lib/enums"
+import { Vector3 } from "../lib/vector3"
 
 export const INVALID_PLAYER_ID = 0xffff
 export const INVALID_VEHICLE_ID = 0xffff

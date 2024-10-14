@@ -1,7 +1,7 @@
 import { nativeEvents } from "@/natives"
 import { vehicleHandler } from "../handler"
 import { playerHandler } from "@/components/player"
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { vehicleInternalPaintjobId } from "../entity"
 
 nativeEvents.onVehiclePaintjob((playerid, vehicleid, paintjobid) => {

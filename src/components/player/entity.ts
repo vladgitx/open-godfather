@@ -1,14 +1,14 @@
-import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum, CameraCutStylesEnum } from "@/common/enums"
+import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum, CameraCutStylesEnum } from "@/lib/enums"
 import { nativeFunctions } from "@/natives"
-import { Vector3 } from "../../modules/vector3"
+import { Vector3 } from "../../lib/vector3"
 import { type Vehicle, vehicleHandler } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
-import { Entity } from "../../modules/entity"
+import { Entity } from "../../lib/entity"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
 import { PlayerAttachedObjects } from "./attached-objects"
-import { dispatcher } from "../../modules/dispatcher"
+import { dispatcher } from "../../lib/dispatcher"
 
 export const DEFAULT_PLAYER_TEAM = 0
 

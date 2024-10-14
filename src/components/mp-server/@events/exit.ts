@@ -1,4 +1,4 @@
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { nativeEvents } from "@/natives"
 
 nativeEvents.onGameModeExit(() => {

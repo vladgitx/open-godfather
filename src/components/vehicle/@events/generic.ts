@@ -1,4 +1,4 @@
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { vehicleHandler } from "../handler"
 import { playerHandler } from "@/components/player"
 

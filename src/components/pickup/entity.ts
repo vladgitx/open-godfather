@@ -1,5 +1,5 @@
 import { streamerNatives } from "@/natives/streamer"
-import { StreamerEntity } from "../../modules/streamer-entity"
+import { StreamerEntity } from "../../lib/streamer-entity"
 
 export class Pickup extends StreamerEntity {
     constructor(id: number) {

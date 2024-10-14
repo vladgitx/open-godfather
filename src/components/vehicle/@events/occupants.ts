@@ -1,4 +1,4 @@
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 
 dispatcher.on("playerEnterVehicle", (player, vehicle) => {
     vehicle.occupants.add(player)

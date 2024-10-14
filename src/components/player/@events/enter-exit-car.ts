@@ -1,8 +1,8 @@
 import { type Player } from ".."
 import { nativeFunctions } from "@/natives"
-import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/common/enums"
+import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/lib/enums"
 import { type Vehicle, vehicleHandler } from "../../vehicle"
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 
 const lastVehicleIds = new WeakMap<Player, number>()
 

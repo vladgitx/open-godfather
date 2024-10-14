@@ -1,7 +1,7 @@
 import { playerHandler } from "@/components/player"
 import { streamerEvents } from "@/natives/streamer"
 import { pickupHandler } from "../handler"
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 
 streamerEvents.onPlayerPickUpDynamicPickup((playerId, pickupId) => {
     const player = playerHandler.at(playerId)

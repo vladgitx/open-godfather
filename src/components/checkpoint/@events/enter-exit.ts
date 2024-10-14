@@ -1,7 +1,7 @@
 import { playerHandler } from "@/components/player"
 import { streamerEvents } from "@/natives/streamer"
 import { checkpointHandler } from "../handler"
-import { dispatcher } from "@/modules/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { Checkpoint } from "../entity"
 
 streamerEvents.onPlayerEnterDynamicCheckpoint((playerId, checkpointId) => {

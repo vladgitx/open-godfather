@@ -1,20 +1,20 @@
 import { dispatcher } from "../dispatcher"
 import { type Entity } from "./entity"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class EntityFactory<T extends Entity, K extends new (id: number, ...args: any[]) => T> {
-    public pool = new Map<number, T>()
+export class EntityFactory<T extends Entity, K extends new (...args: [...ConstructorParameters<typeof Entity>, ...never[]]) => T> {
+    readonly pool = new Map<number, T>()
 
-    constructor(private createInstance: (...args: ConstructorParameters<K>) => T) {}
+    constructor(private constructible: K) {}
 
-    new(...args: ConstructorParameters<K>) {
-        const id = args[0]
+    new(...args: ConstructorParameters<K>): T | undefined {
+        const [id, ...restArgs] = args
 
         if (this.pool.has(id)) {
             return undefined
         }
 
-        const entity = this.createInstance(...args)
+        const entity = new this.constructible(id, ...restArgs)
+
         this.pool.set(id, entity)
 
         dispatcher.emit("entityInstantiate", entity)
@@ -22,7 +22,7 @@ export class EntityFactory<T extends Entity, K extends new (id: number, ...args:
         return entity
     }
 
-    destroy(entity: T) {
+    destroy(entity: T): void {
         if (!entity.exists) {
             return
         }
@@ -33,5 +33,9 @@ export class EntityFactory<T extends Entity, K extends new (id: number, ...args:
         entity.exists = false
 
         this.pool.delete(id)
+    }
+
+    instanceOf(anything: unknown): anything is T {
+        return anything instanceof this.constructible
     }
 }

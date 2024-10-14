@@ -1,8 +1,8 @@
 import { nativeFunctions } from "@/natives"
-import { EntityFactory, EntityHandler } from "../../modules/entity"
+import { EntityFactory, EntityHandler } from "../../lib/entity"
 import { Textdraw } from "./entity"
 
-const textdrawFactory = new EntityFactory<Textdraw, typeof Textdraw>((...args) => new Textdraw(...args))
+const textdrawFactory = new EntityFactory<Textdraw, typeof Textdraw>(Textdraw)
 
 class TextdrawHandler extends EntityHandler<Textdraw> {
     new(x: number, y: number, text: string) {

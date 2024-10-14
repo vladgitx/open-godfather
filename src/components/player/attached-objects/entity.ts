@@ -1,5 +1,5 @@
-import { type PlayerBonesEnum } from "@/common/enums"
-import { type Vector3 } from "../../../modules/vector3"
+import { type PlayerBonesEnum } from "@/lib/enums"
+import { type Vector3 } from "../../../lib/vector3"
 import { nativeFunctions } from "@/natives"
 import { type Player } from "../entity"
 

@@ -1,11 +1,9 @@
 import { nativeFunctions } from "@/natives"
-import { type Vector3 } from "../../modules/vector3"
+import { type Vector3 } from "../../lib/vector3"
 import { Vehicle } from "./entity"
-import { EntityFactory, EntityHandler } from "../../modules/entity"
+import { EntityFactory, EntityHandler } from "../../lib/entity"
 
-const vehicleFactory = new EntityFactory<Vehicle, typeof Vehicle>(
-    (id, model, primaryColor, secondaryColor) => new Vehicle(id, model, primaryColor, secondaryColor),
-)
+const vehicleFactory = new EntityFactory<Vehicle, typeof Vehicle>(Vehicle)
 
 class VehicleHandler extends EntityHandler<Vehicle> {
     new(model: number, position: Vector3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {

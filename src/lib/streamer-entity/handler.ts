@@ -7,7 +7,7 @@ import { type EntityFactory, EntityHandler } from "../entity"
 export class StreamerHandler<T extends StreamerEntity> extends EntityHandler<T> {
     constructor(
         private type: StreamerItemType,
-        factory: EntityFactory<T, never>,
+        factory: EntityFactory<T, new (...args: [...ConstructorParameters<typeof StreamerEntity>, ...never[]]) => T>,
     ) {
         super(factory)
     }

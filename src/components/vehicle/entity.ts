@@ -1,6 +1,6 @@
 import { nativeFunctions } from "@/natives"
-import { Vector3 } from "../../modules/vector3"
-import { Entity } from "../../modules/entity"
+import { Vector3 } from "../../lib/vector3"
+import { Entity } from "../../lib/entity"
 import { type Player } from "../player"
 import { VehicleParams } from "./params"
 

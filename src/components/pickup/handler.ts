@@ -1,11 +1,11 @@
 import { streamerNatives } from "@/natives/streamer"
-import { type Vector3 } from "../../modules/vector3"
+import { type Vector3 } from "../../lib/vector3"
 import { Pickup } from "./entity"
-import { StreamerHandler } from "../../modules/streamer-entity"
+import { StreamerHandler } from "../../lib/streamer-entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../modules/entity"
+import { EntityFactory } from "../../lib/entity"
 
-const pickupFactory = new EntityFactory<Pickup, typeof Pickup>((id) => new Pickup(id))
+const pickupFactory = new EntityFactory<Pickup, typeof Pickup>(Pickup)
 
 class PickupHandler extends StreamerHandler<Pickup> {
     new(

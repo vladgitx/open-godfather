@@ -1,5 +1,5 @@
 import { type Player } from "../player"
-import { StreamerEntity } from "../../modules/streamer-entity"
+import { StreamerEntity } from "../../lib/streamer-entity"
 
 export class Checkpoint extends StreamerEntity {
     private playerEnterCallbacks: ((player: Player, checkpoint: Checkpoint) => void)[] = []
