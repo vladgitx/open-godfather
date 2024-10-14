@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import { type Player } from "../../components/player"
+import { type Player } from "../components/player"
 import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/lib/enums"
-import { type Command } from "../../components/command"
-import { type Vehicle } from "../../components/vehicle"
-import { type Vector3 } from "../vector3"
+import { type Command } from "../components/command"
+import { type Vehicle } from "../components/vehicle"
+import { type Vector3 } from "./vector3"
 import EventEmitter from "events"
-import { type Pickup } from "../../components/pickup"
-import { type Entity } from "../entity"
-import { type Checkpoint } from "../../components/checkpoint"
+import { type Pickup } from "../components/pickup"
+import { type Entity } from "./entity"
+import { type Checkpoint } from "../components/checkpoint"
 
 interface ServerEvents {
     init: []

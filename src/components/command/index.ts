@@ -1,3 +1,2 @@
-export { type Command } from "./instance"
-export { commandHandler } from "./handler"
-export { CommandCallback } from "./@types/callback"
+export { type Command } from "./entity"
+export { commandHandler, CommandCallback } from "./handler"

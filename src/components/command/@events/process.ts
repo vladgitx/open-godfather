@@ -1,5 +1,5 @@
 import { nativeEvents } from "@/natives"
-import { commandFactory } from "../factory"
+import { commandHandler } from "../handler"
 import { dispatcher } from "@/lib/dispatcher"
 import { playerHandler } from "@/components/player"
 
@@ -19,7 +19,7 @@ nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
         return 1
     }
 
-    const command = commandFactory.pool.get(commandStr)
+    const command = commandHandler.at(commandStr)
 
     if (command) {
         const hasListeners = dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params))

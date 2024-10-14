@@ -1,2 +1,1 @@
-import "./init"
-import "./exit"
+import "./init-exit"
