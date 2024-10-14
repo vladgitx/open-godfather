@@ -1,5 +1,5 @@
 import { streamerNatives, type StreamerItemType } from "@/natives/streamer"
-import { type Player } from "../player"
+import { type Player } from "../../components/player"
 import { type Vector3 } from "../vector3"
 import { type StreamerEntity } from "./entity"
 import { type EntityFactory, EntityHandler } from "../entity"
