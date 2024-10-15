@@ -8,7 +8,7 @@
         "declaration": true,
         "declarationDir": "./build/types",
         "outDir": "./build",
-        "noEmit": true,
+        "noEmit": false,
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,

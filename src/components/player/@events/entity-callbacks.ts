@@ -1,11 +1,11 @@
 import type { Vehicle } from "@/components/vehicle"
 import type { BodyPartsEnum, PlayerStatesEnum, WeaponsEnum } from "@/utils/enums"
 import type { Player } from "../entity"
-import type { Vector3 } from "@/exports"
 import type { Pickup } from "@/components/pickup"
 import type { Checkpoint } from "@/components/checkpoint"
 import { dispatcher } from "@/core/dispatcher"
 import { EventCallbacks } from "@/core/event-callbacks"
+import { type Vector3 } from "@/core/vector3"
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type PlayerEventMap = {
