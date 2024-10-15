@@ -9,7 +9,7 @@ export class Entity<EventMap extends Record<string, unknown[]> = Record<string |
     private destroyed = false
 
     readonly events = new EventCallbacks<EventMap>()
-    readonly variables = new KeyValueVariables<{ pula: string }>()
+    readonly variables = new KeyValueVariables()
 
     readonly referenceId = lastUsedReferenceId++
 
