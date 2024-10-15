@@ -22,8 +22,8 @@ nativeEvents.onPlayerSpawn((playerId: number) => {
 
     nativeFunctions.setPlayerTeam(playerId, DEFAULT_PLAYER_TEAM)
 
-    if (player.getVariable("internal::firstSpawn") === undefined) {
-        player.setVariable("internal::firstSpawn", true)
+    if (!player.variables.has("internal::firstSpawn")) {
+        player.variables.set("internal::firstSpawn", true)
         dispatcher.emit("playerFirstSpawn", player)
     }
 

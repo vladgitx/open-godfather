@@ -1,14 +1,5 @@
-import { type Entity } from "./entity"
-
-export class EntityEvents<EventMap extends Record<string, unknown[]> = Record<never, never>> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private callbacks = new Map<keyof EventMap, ((...args: any[]) => void)[]>()
-
-    constructor(entity: Entity) {
-        entity.onCleanup(() => {
-            this.callbacks.clear()
-        })
-    }
+export class EventCallbacks<EventMap extends Record<string, unknown[]> = Record<never, never>> {
+    private callbacks = new Map<keyof EventMap, ((...args: unknown[]) => void)[]>()
 
     on<K extends keyof EventMap>(eventName: K, callback: (...args: EventMap[K]) => void) {
         if (!this.callbacks.has(eventName)) {
@@ -28,11 +19,11 @@ export class EntityEvents<EventMap extends Record<string, unknown[]> = Record<ne
     }
 
     static emit<EventMap extends Record<string, unknown[]>, K extends keyof EventMap>(
-        entityEvents: EntityEvents<EventMap>,
+        eventCallbacks: EventCallbacks<EventMap>,
         eventName: K,
         ...args: EventMap[K]
     ) {
-        const callbacks = entityEvents.callbacks.get(eventName) ?? []
+        const callbacks = eventCallbacks.callbacks.get(eventName) ?? []
 
         for (const callback of callbacks) {
             try {
@@ -42,12 +33,8 @@ export class EntityEvents<EventMap extends Record<string, unknown[]> = Record<ne
             }
         }
     }
-}
 
-export function emitEntityEvent<EventMap extends Record<string, unknown[]>, K extends keyof EventMap>(
-    entityEvents: EntityEvents<EventMap>,
-    eventName: K,
-    ...args: EventMap[K]
-) {
-    EntityEvents.emit(entityEvents, eventName, ...args)
+    static clearListeners(eventCallbacks: EventCallbacks<Record<string | symbol | number, unknown[]>>) {
+        eventCallbacks.callbacks.clear()
+    }
 }

@@ -1,5 +1,6 @@
 import { dispatcher } from "../dispatcher"
-import { EntityEvents } from "./events"
+import { EventCallbacks } from "../event-callbacks"
+import { KeyValueVariables } from "../variables"
 
 const INVALID_ENTITY_ID_UNDER = 0
 
@@ -7,13 +8,18 @@ let lastUsedInvalidEntityId = INVALID_ENTITY_ID_UNDER - 1
 
 export class Entity<EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>> {
     private _id: number
-    private variables = new Map<string, unknown>()
     private cleanupCallbacks: (() => void)[] = []
 
-    readonly events = new EntityEvents<EventMap>(this)
+    readonly events = new EventCallbacks<EventMap>()
+    readonly variables = new KeyValueVariables<{ pula: string }>()
 
     constructor(id: number) {
         this._id = id
+
+        this.onCleanup(() => {
+            EventCallbacks.clearListeners(this.events)
+            this.variables.clear()
+        })
     }
 
     get id() {
@@ -22,18 +28,6 @@ export class Entity<EventMap extends Record<string, unknown[]> = Record<string |
 
     onCleanup(callback: () => void) {
         this.cleanupCallbacks.push(callback)
-    }
-
-    setVariable(name: string, value: unknown) {
-        this.variables.set(name, value)
-    }
-
-    getVariable(name: string) {
-        return this.variables.get(name)
-    }
-
-    deleteVariable(name: string) {
-        return this.variables.delete(name)
     }
 
     get exists(): boolean {

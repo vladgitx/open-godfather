@@ -4,8 +4,8 @@ import type { Player } from "../entity"
 import type { Vector3 } from "@/og-export"
 import type { Pickup } from "@/components/pickup"
 import type { Checkpoint } from "@/components/checkpoint"
-import { emitEntityEvent } from "@/lib/entity"
 import { dispatcher } from "@/lib/dispatcher"
+import { EventCallbacks } from "@/lib/event-callbacks"
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type PlayerEventMap = {
@@ -26,13 +26,13 @@ export type PlayerEventMap = {
 }
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
-    emitEntityEvent(player.events, "stateChange", newState, oldState)
+    EventCallbacks.emit(player.events, "stateChange", newState, oldState)
 })
 
 dispatcher.on("playerEnterVehicle", (player, vehicle) => {
-    emitEntityEvent(player.events, "enterVehicle", vehicle)
+    EventCallbacks.emit(player.events, "enterVehicle", vehicle)
 })
 
 dispatcher.on("playerExitVehicle", (player, vehicle) => {
-    emitEntityEvent(player.events, "exitVehicle", vehicle)
+    EventCallbacks.emit(player.events, "exitVehicle", vehicle)
 })

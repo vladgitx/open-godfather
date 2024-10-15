@@ -5,7 +5,7 @@ export class EntityHandler<T extends Entity> {
     constructor(private factory: EntityFactory<T, new (...args: [...ConstructorParameters<typeof Entity>, ...never[]]) => T>) {}
 
     get all() {
-        return this.factory.pool.values()
+        return [...this.factory.pool.values()]
     }
 
     at(id: number) {
