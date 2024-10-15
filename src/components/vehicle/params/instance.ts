@@ -1,6 +1,6 @@
-import { dispatcher } from "@/lib/dispatcher"
+import { dispatcher } from "@/core/dispatcher"
 import { type Vehicle } from "../entity"
-import { nativeFunctions } from "@/natives"
+import { nativeFunctions } from "@/wrapper"
 
 class VehicleWindows {
     private _driver: "open" | "closed" = "closed"

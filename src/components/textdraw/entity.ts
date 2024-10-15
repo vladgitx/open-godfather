@@ -1,7 +1,7 @@
-import type { TextDrawFontsEnum, TextDrawAlignmentsEnum } from "@/lib/enums"
-import { Entity } from "../../lib/entity"
-import { type Vector3 } from "../../lib/vector3"
-import { nativeFunctions } from "@/natives"
+import type { TextDrawFontsEnum, TextDrawAlignmentsEnum } from "@/utils/enums"
+import { Entity } from "../../core/entity"
+import { type Vector3 } from "../../core/vector3"
+import { nativeFunctions } from "@/wrapper"
 import { playerHandler, type Player } from "../player"
 
 export class Textdraw extends Entity {

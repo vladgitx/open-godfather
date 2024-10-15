@@ -1,9 +1,9 @@
-import { streamerNatives } from "@/natives/streamer"
-import { type Vector3 } from "../../lib/vector3"
+import { streamerNatives } from "@/wrapper/streamer"
+import { type Vector3 } from "../../core/vector3"
 import { Pickup } from "./entity"
-import { StreamerHandler } from "../../lib/streamer-entity"
+import { StreamerHandler } from "../../core/streamer-entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../lib/entity"
+import { EntityFactory } from "../../core/entity"
 
 const pickupFactory = new EntityFactory<Pickup, typeof Pickup>(Pickup)
 

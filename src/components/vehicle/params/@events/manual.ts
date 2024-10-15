@@ -1,5 +1,5 @@
-import { dispatcher } from "@/lib/dispatcher"
-import { nativeFunctions } from "@/natives"
+import { dispatcher } from "@/core/dispatcher"
+import { nativeFunctions } from "@/wrapper"
 
 dispatcher.on("init", () => {
     nativeFunctions.manualVehicleEngineAndLights()

@@ -1,6 +1,6 @@
-import { nativeFunctions } from "@/natives"
-import { Vector3 } from "../../lib/vector3"
-import { Entity } from "../../lib/entity"
+import { nativeFunctions } from "@/wrapper"
+import { Vector3 } from "../../core/vector3"
+import { Entity } from "../../core/entity"
 import { VehicleParams } from "./params"
 import { getVehicleOccupants } from "./@events/occupants"
 

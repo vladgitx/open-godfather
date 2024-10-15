@@ -1,4 +1,4 @@
-import { type StreamerItemType, streamerNatives } from "@/natives/streamer"
+import { type StreamerItemType, streamerNatives } from "@/wrapper/streamer"
 import { Entity } from "../entity"
 import { type Vector3 } from "../vector3"
 

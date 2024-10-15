@@ -1,9 +1,9 @@
-import { type PlayerBonesEnum } from "@/lib/enums"
-import { nativeFunctions } from "@/natives"
-import { Vector3 } from "../../../lib/vector3"
+import { type PlayerBonesEnum } from "@/utils/enums"
+import { nativeFunctions } from "@/wrapper"
+import { Vector3 } from "../../../core/vector3"
 import { type Player } from "../entity"
 import { PlayerAttachedObject } from "./entity"
-import { EntityPromises } from "@/lib/entity"
+import { EntityPromises } from "@/core/entity"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
 

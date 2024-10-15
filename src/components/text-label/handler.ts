@@ -1,10 +1,10 @@
-import { type Vector3 } from "../../lib/vector3"
+import { type Vector3 } from "../../core/vector3"
 import { TextLabel } from "./entity"
-import { streamerNatives } from "@/natives/streamer"
+import { streamerNatives } from "@/wrapper/streamer"
 import { type Player } from "../player"
-import { StreamerHandler } from "../../lib/streamer-entity"
-import { EntityFactory } from "../../lib/entity"
-import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/natives/functions"
+import { StreamerHandler } from "../../core/streamer-entity"
+import { EntityFactory } from "../../core/entity"
+import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/functions"
 
 const textLabelFactory = new EntityFactory<TextLabel, typeof TextLabel>(TextLabel)
 

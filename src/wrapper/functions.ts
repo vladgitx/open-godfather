@@ -1,4 +1,4 @@
-import { hexToRgbaInt } from "@/lib/utils"
+import { hexToRgbaInt } from "@/utils/miscellaneous"
 import {
     WeaponsEnum,
     type PlayerStatesEnum,
@@ -9,8 +9,8 @@ import {
     CameraModesEnum,
     WeaponSlotsEnum,
     type CameraCutStylesEnum,
-} from "../lib/enums"
-import { Vector3 } from "../lib/vector3"
+} from "../utils/enums"
+import { Vector3 } from "../core/vector3"
 
 export const INVALID_PLAYER_ID = 0xffff
 export const INVALID_VEHICLE_ID = 0xffff

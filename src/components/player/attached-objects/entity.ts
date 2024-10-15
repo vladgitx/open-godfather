@@ -1,6 +1,6 @@
-import { type PlayerBonesEnum } from "@/lib/enums"
-import { type Vector3 } from "../../../lib/vector3"
-import { nativeFunctions } from "@/natives"
+import { type PlayerBonesEnum } from "@/utils/enums"
+import { type Vector3 } from "../../../core/vector3"
+import { nativeFunctions } from "@/wrapper"
 import { type Player } from "../entity"
 
 export function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {

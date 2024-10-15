@@ -1,4 +1,4 @@
-import { Entity } from "@/lib/entity"
+import { Entity } from "@/core/entity"
 import { type CommandCallback } from "./handler"
 
 export class Command extends Entity {

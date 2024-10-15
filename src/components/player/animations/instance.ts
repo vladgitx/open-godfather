@@ -1,4 +1,4 @@
-import { nativeFunctions } from "@/natives"
+import { nativeFunctions } from "@/wrapper"
 import { type Player } from "../entity"
 
 export class PlayerAnimations {

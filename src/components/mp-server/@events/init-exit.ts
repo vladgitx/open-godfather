@@ -1,5 +1,5 @@
-import { dispatcher } from "@/lib/dispatcher"
-import { nativeEvents } from "@/natives"
+import { dispatcher } from "@/core/dispatcher"
+import { nativeEvents } from "@/wrapper"
 
 nativeEvents.onGameModeInit(() => {
     dispatcher.emit("init")

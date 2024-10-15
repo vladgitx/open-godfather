@@ -1,5 +1,5 @@
-import { hexToRgbaInt, rgbaIntToHex } from "@/lib/utils"
-import { Vector3 } from "@/lib/vector3"
+import { hexToRgbaInt, rgbaIntToHex } from "@/utils/miscellaneous"
+import { Vector3 } from "@/core/vector3"
 import type { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from ".."
 
 const INVALID_STREAMER_ID = 0

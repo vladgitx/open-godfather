@@ -1,8 +1,8 @@
 import { playerHandler } from "@/components/player"
-import { streamerEvents } from "@/natives/streamer"
+import { streamerEvents } from "@/wrapper/streamer"
 import { checkpointHandler } from "../handler"
-import { dispatcher } from "@/lib/dispatcher"
-import { EventCallbacks } from "@/lib/event-callbacks"
+import { dispatcher } from "@/core/dispatcher"
+import { EventCallbacks } from "@/core/event-callbacks"
 
 streamerEvents.onPlayerEnterDynamicCheckpoint((playerId, checkpointId) => {
     const player = playerHandler.at(playerId)

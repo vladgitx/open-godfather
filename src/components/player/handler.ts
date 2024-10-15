@@ -1,7 +1,7 @@
-import { nativeFunctions } from "@/natives"
-import { type Vector3 } from "../../lib/vector3"
+import { nativeFunctions } from "@/wrapper"
+import { type Vector3 } from "../../core/vector3"
 import { Player } from "./entity"
-import { EntityFactory, EntityHandler } from "../../lib/entity"
+import { EntityFactory, EntityHandler } from "../../core/entity"
 
 export const playerFactory = new EntityFactory<Player, typeof Player>(Player)
 

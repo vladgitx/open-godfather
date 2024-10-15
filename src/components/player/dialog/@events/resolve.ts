@@ -1,4 +1,4 @@
-import { nativeEvents } from "@/natives"
+import { nativeEvents } from "@/wrapper"
 import { playerHandler } from "../../handler"
 import { dialogPromises } from "../instance"
 

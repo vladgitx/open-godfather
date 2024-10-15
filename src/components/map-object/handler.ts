@@ -1,9 +1,9 @@
-import { streamerNatives } from "@/natives/streamer"
-import { StreamerHandler } from "../../lib/streamer-entity"
-import { type Vector3 } from "../../lib/vector3"
+import { streamerNatives } from "@/wrapper/streamer"
+import { StreamerHandler } from "../../core/streamer-entity"
+import { type Vector3 } from "../../core/vector3"
 import { MapObject } from "./entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../lib/entity"
+import { EntityFactory } from "../../core/entity"
 
 const objectFactory = new EntityFactory<MapObject, typeof MapObject>(MapObject)
 

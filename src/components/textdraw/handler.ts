@@ -1,5 +1,5 @@
-import { nativeFunctions } from "@/natives"
-import { EntityFactory, EntityHandler } from "../../lib/entity"
+import { nativeFunctions } from "@/wrapper"
+import { EntityFactory, EntityHandler } from "../../core/entity"
 import { Textdraw } from "./entity"
 
 const textdrawFactory = new EntityFactory<Textdraw, typeof Textdraw>(Textdraw)

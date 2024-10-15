@@ -1,5 +1,5 @@
-import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/lib/enums"
-import { nativeFunctions } from "@/natives"
+import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/utils/enums"
+import { nativeFunctions } from "@/wrapper"
 import { type Player } from "../entity"
 
 export class PlayerWeapons {

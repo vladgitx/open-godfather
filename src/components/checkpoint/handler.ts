@@ -1,8 +1,8 @@
-import { streamerNatives } from "@/natives/streamer"
-import { EntityFactory } from "../../lib/entity"
+import { streamerNatives } from "@/wrapper/streamer"
+import { EntityFactory } from "../../core/entity"
 import { type Player } from "../player"
-import { StreamerHandler } from "../../lib/streamer-entity"
-import { type Vector3 } from "../../lib/vector3"
+import { StreamerHandler } from "../../core/streamer-entity"
+import { type Vector3 } from "../../core/vector3"
 import { Checkpoint } from "./entity"
 
 const checkpointFactory = new EntityFactory<Checkpoint, typeof Checkpoint>(Checkpoint)

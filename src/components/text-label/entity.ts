@@ -1,8 +1,8 @@
 import { type Player, playerHandler } from "../player"
-import { StreamerEntity } from "../../lib/streamer-entity"
-import { streamerNatives } from "@/natives/streamer"
+import { StreamerEntity } from "../../core/streamer-entity"
+import { streamerNatives } from "@/wrapper/streamer"
 import { vehicleHandler, type Vehicle } from "../vehicle"
-import { type Vector3 } from "../../lib/vector3"
+import { type Vector3 } from "../../core/vector3"
 
 export class TextLabel extends StreamerEntity {
     private _text: string

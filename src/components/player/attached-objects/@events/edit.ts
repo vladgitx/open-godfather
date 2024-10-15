@@ -1,7 +1,7 @@
-import { nativeEvents } from "@/natives"
+import { nativeEvents } from "@/wrapper"
 import { playerHandler } from "../../handler"
-import { Vector3 } from "@/lib/vector3"
-import { dispatcher } from "@/lib/dispatcher"
+import { Vector3 } from "@/core/vector3"
+import { dispatcher } from "@/core/dispatcher"
 import {
     attachedObjInternalOffset,
     attachedObjInternalRotation,

@@ -1,6 +1,6 @@
-import { streamerNatives } from "@/natives/streamer"
-import { StreamerEntity } from "../../lib/streamer-entity"
-import { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from "@/lib/enums"
+import { streamerNatives } from "@/wrapper/streamer"
+import { StreamerEntity } from "../../core/streamer-entity"
+import { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from "@/utils/enums"
 
 export class MapObject extends StreamerEntity {
     private materialTextures = new Map<number, { model: number; textureLibrary?: string; textureName?: string; color?: string }>()

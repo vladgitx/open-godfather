@@ -1,6 +1,6 @@
-import { nativeEvents } from "@/natives"
+import { nativeEvents } from "@/wrapper"
 import { commandHandler } from "../handler"
-import { dispatcher } from "@/lib/dispatcher"
+import { dispatcher } from "@/core/dispatcher"
 import { playerHandler } from "@/components/player"
 
 nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {

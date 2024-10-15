@@ -1,8 +1,8 @@
-import { DialogStylesEnum } from "@/lib/enums"
-import { nativeFunctions } from "@/natives"
+import { DialogStylesEnum } from "@/utils/enums"
+import { nativeFunctions } from "@/wrapper"
 import { type Player } from "../entity"
 import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
-import { EntityPromises } from "@/lib/entity"
+import { EntityPromises } from "@/core/entity"
 
 const MAX_DIALOG_ID = 32767 // Used when generating a random dialog ID
 export const dialogPromises = new EntityPromises<Player, DialogResponse>()

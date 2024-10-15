@@ -1,5 +1,5 @@
-import { nativeEvents } from "@/natives"
-import { dispatcher } from "@/lib/dispatcher"
+import { nativeEvents } from "@/wrapper"
+import { dispatcher } from "@/core/dispatcher"
 import { playerFactory, playerHandler } from "../handler"
 
 nativeEvents.onPlayerConnect((playerId) => {

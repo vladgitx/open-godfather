@@ -1,5 +1,5 @@
 import { type Player } from "../player"
-import { StreamerEntity } from "../../lib/streamer-entity"
+import { StreamerEntity } from "../../core/streamer-entity"
 
 export class Checkpoint extends StreamerEntity<{
     playerEnter: [Player]
