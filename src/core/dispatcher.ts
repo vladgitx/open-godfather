@@ -119,3 +119,7 @@ class Dispatcher extends EventEmitter {
 }
 
 export const dispatcher = new Dispatcher()
+
+export const events = {
+    on: dispatcher.on.bind(dispatcher),
+}
