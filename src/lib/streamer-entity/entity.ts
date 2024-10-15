@@ -2,7 +2,9 @@ import { type StreamerItemType, streamerNatives } from "@/natives/streamer"
 import { Entity } from "../entity"
 import { type Vector3 } from "../vector3"
 
-export class StreamerEntity extends Entity {
+export class StreamerEntity<
+    EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>,
+> extends Entity<EventMap> {
     constructor(
         id: number,
         private type: StreamerItemType,

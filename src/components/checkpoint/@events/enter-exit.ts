@@ -2,7 +2,7 @@ import { playerHandler } from "@/components/player"
 import { streamerEvents } from "@/natives/streamer"
 import { checkpointHandler } from "../handler"
 import { dispatcher } from "@/lib/dispatcher"
-import { Checkpoint } from "../entity"
+import { EventCallbacks } from "@/lib/event-callbacks"
 
 streamerEvents.onPlayerEnterDynamicCheckpoint((playerId, checkpointId) => {
     const player = playerHandler.at(playerId)
@@ -10,10 +10,7 @@ streamerEvents.onPlayerEnterDynamicCheckpoint((playerId, checkpointId) => {
 
     if (player && checkpoint) {
         dispatcher.emit("playerEnterCheckpoint", player, checkpoint)
-
-        Checkpoint.getEnterCallbacks(checkpoint).forEach((cb) => {
-            cb(player, checkpoint)
-        })
+        EventCallbacks.emit(checkpoint.events, "playerEnter", player)
     }
 })
 
@@ -23,9 +20,6 @@ streamerEvents.onPlayerLeaveDynamicCheckpoint((playerId, checkpointId) => {
 
     if (player && checkpoint) {
         dispatcher.emit("playerLeaveCheckpoint", player, checkpoint)
-
-        Checkpoint.getLeaveCallbacks(checkpoint).forEach((cb) => {
-            cb(player, checkpoint)
-        })
+        EventCallbacks.emit(checkpoint.events, "playerLeave", player)
     }
 })
