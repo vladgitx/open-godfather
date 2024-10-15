@@ -57,35 +57,35 @@ type EventMap = ServerEvents & PlayerEvents & VehicleEvents & EntityEvents & Com
 
 class Dispatcher extends EventEmitter {
     emit<K extends keyof EventMap>(event: K, ...args: EventMap[K]): boolean {
-        return super.emit(event, ...(args as EventMap[K][]))
+        return super.emit(event, ...args)
     }
 
     addListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.addListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.addListener(event, listener)
     }
 
     on<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.on(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.on(event, listener)
     }
 
     once<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.once(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.once(event, listener)
     }
 
     prependListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.prependListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.prependListener(event, listener)
     }
 
     prependOnceListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.prependOnceListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.prependOnceListener(event, listener)
     }
 
     removeListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.removeListener(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.removeListener(event, listener)
     }
 
     off<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.off(event, listener as (...args: EventMap[K][]) => void | Promise<void>)
+        return super.off(event, listener)
     }
 
     removeAllListeners<K extends keyof EventMap>(event?: K): this {
@@ -117,4 +117,4 @@ class Dispatcher extends EventEmitter {
     }
 }
 
-export const dispatcher = new Dispatcher().setMaxListeners(20)
+export const dispatcher = new Dispatcher()
