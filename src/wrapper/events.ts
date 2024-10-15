@@ -1,4 +1,4 @@
-import { type PlayerBonesEnum } from ".."
+import { type PlayerBonesEnum } from "@/utils/enums"
 
 class NativeEvents {
     onPlayerConnect(callback: (playerid: number) => void) {

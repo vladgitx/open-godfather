@@ -1,6 +1,6 @@
 import { hexToRgbaInt, rgbaIntToHex } from "@/utils/miscellaneous"
 import { Vector3 } from "@/core/vector3"
-import type { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from ".."
+import type { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from "@/utils/enums"
 
 export const INVALID_STREAMER_ID = 0
 
