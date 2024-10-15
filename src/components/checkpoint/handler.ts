@@ -1,13 +1,13 @@
 import { streamerNatives } from "@/wrapper/streamer"
 import { EntityFactory } from "../../core/base-entity"
 import { type Player } from "../player"
-import { StreamerHandler } from "../../core/streamer-entity"
+import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Vector3 } from "../../core/vector3"
 import { Checkpoint } from "./entity"
 
 const checkpointFactory = new EntityFactory<Checkpoint, typeof Checkpoint>(Checkpoint)
 
-class CheckpointHandler extends StreamerHandler<Checkpoint> {
+class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
     new(
         position: Vector3,
         size = 3.0,

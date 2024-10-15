@@ -1,5 +1,5 @@
 import { streamerNatives } from "@/wrapper/streamer"
-import { StreamerHandler } from "../../core/streamer-entity"
+import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Vector3 } from "../../core/vector3"
 import { MapObject } from "./entity"
 import { type Player } from "../player"
@@ -7,7 +7,7 @@ import { EntityFactory } from "../../core/base-entity"
 
 const objectFactory = new EntityFactory<MapObject, typeof MapObject>(MapObject)
 
-class MapObjectHandler extends StreamerHandler<MapObject> {
+class MapObjectHandler extends StreamerEntityHandler<MapObject> {
     new(
         model: number,
         position: Vector3,

@@ -1,7 +1,7 @@
 import { type EntityFactory, EntityHandler } from "../base-entity"
 import { type SampEntity } from "./entity"
 
-export class SampHandler<T extends SampEntity> extends EntityHandler<T> {
+export class SampEntityHandler<T extends SampEntity> extends EntityHandler<T> {
     private sampIdToReferenceId = new Map<number, number>()
 
     constructor(factory: EntityFactory<T, new (...args: never[]) => T>) {

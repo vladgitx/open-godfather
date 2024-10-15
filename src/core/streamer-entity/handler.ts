@@ -4,7 +4,7 @@ import { type Vector3 } from "../vector3"
 import { type StreamerEntity } from "./entity"
 import { type EntityFactory, EntityHandler } from "../base-entity"
 
-export class StreamerHandler<T extends StreamerEntity> extends EntityHandler<T> {
+export class StreamerEntityHandler<T extends StreamerEntity> extends EntityHandler<T> {
     private streamerIdToReferenceId = new Map<number, number>()
 
     constructor(

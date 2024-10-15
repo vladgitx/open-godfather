@@ -1,13 +1,13 @@
 import { streamerNatives } from "@/wrapper/streamer"
 import { type Vector3 } from "../../core/vector3"
 import { Pickup } from "./entity"
-import { StreamerHandler } from "../../core/streamer-entity"
+import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Player } from "../player"
 import { EntityFactory } from "../../core/base-entity"
 
 const pickupFactory = new EntityFactory<Pickup, typeof Pickup>(Pickup)
 
-class PickupHandler extends StreamerHandler<Pickup> {
+class PickupHandler extends StreamerEntityHandler<Pickup> {
     new(
         model: number,
         position: Vector3,

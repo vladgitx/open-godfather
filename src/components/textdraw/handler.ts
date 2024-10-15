@@ -1,11 +1,11 @@
 import { nativeFunctions } from "@/wrapper"
 import { EntityFactory } from "../../core/base-entity"
 import { Textdraw } from "./entity"
-import { SampHandler } from "@/core/samp-entity"
+import { SampEntityHandler } from "@/core/samp-entity"
 
 const textdrawFactory = new EntityFactory<Textdraw, typeof Textdraw>(Textdraw)
 
-class TextdrawHandler extends SampHandler<Textdraw> {
+class TextdrawHandler extends SampEntityHandler<Textdraw> {
     new(x: number, y: number, text: string) {
         const textdrawId = nativeFunctions.textDrawCreate(x, y, text)
         const textdraw = textdrawFactory.new(textdrawId, { x, y }, text)

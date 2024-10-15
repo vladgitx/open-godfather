@@ -2,13 +2,13 @@ import { type Vector3 } from "../../core/vector3"
 import { TextLabel } from "./entity"
 import { streamerNatives } from "@/wrapper/streamer"
 import { type Player } from "../player"
-import { StreamerHandler } from "../../core/streamer-entity"
+import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { EntityFactory } from "../../core/base-entity"
 import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/functions"
 
 const textLabelFactory = new EntityFactory<TextLabel, typeof TextLabel>(TextLabel)
 
-class TextLabelHandler extends StreamerHandler<TextLabel> {
+class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
     new(
         text: string,
         color: string,

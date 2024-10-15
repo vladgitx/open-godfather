@@ -1,2 +1,2 @@
 export { StreamerEntity } from "./entity"
-export { StreamerHandler } from "./handler"
+export { StreamerEntityHandler } from "./handler"

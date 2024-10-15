@@ -2,11 +2,11 @@ import { nativeFunctions } from "@/wrapper"
 import { type Vector3 } from "../../core/vector3"
 import { Vehicle } from "./entity"
 import { EntityFactory } from "../../core/base-entity"
-import { SampHandler } from "@/core/samp-entity"
+import { SampEntityHandler } from "@/core/samp-entity"
 
 const vehicleFactory = new EntityFactory<Vehicle, typeof Vehicle>(Vehicle)
 
-class VehicleHandler extends SampHandler<Vehicle> {
+class VehicleHandler extends SampEntityHandler<Vehicle> {
     new(model: number, position: Vector3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
         const vehicleId = nativeFunctions.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
 
