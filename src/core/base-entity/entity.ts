@@ -1,10 +1,10 @@
 import { dispatcher } from "../dispatcher"
-import { EventCallbacks } from "../event-callbacks"
+import { EventCallbacks, type EventMapInterface } from "../event-callbacks"
 import { KeyValueVariables } from "../variables"
 
 let lastUsedReferenceId = 0
 
-export class Entity<EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>> {
+export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
     private cleanupCallbacks: (() => void)[] = []
     private destroyed = false
 

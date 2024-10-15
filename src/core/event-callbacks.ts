@@ -1,4 +1,6 @@
-export class EventCallbacks<EventMap extends Record<string, unknown[]> = Record<never, never>> {
+export type EventMapInterface = Record<string | symbol | number, unknown[]>
+
+export class EventCallbacks<EventMap extends EventMapInterface = EventMapInterface> {
     private callbacks = new Map<keyof EventMap, ((...args: unknown[]) => void)[]>()
 
     on<K extends keyof EventMap>(eventName: K, callback: (...args: EventMap[K]) => void) {
@@ -18,7 +20,7 @@ export class EventCallbacks<EventMap extends Record<string, unknown[]> = Record<
         }
     }
 
-    static emit<EventMap extends Record<string, unknown[]>, K extends keyof EventMap>(
+    static emit<EventMap extends EventMapInterface, K extends keyof EventMap>(
         eventCallbacks: EventCallbacks<EventMap>,
         eventName: K,
         ...args: EventMap[K]
@@ -34,7 +36,7 @@ export class EventCallbacks<EventMap extends Record<string, unknown[]> = Record<
         }
     }
 
-    static clearListeners(eventCallbacks: EventCallbacks<Record<string | symbol | number, unknown[]>>) {
+    static clearListeners(eventCallbacks: EventCallbacks) {
         eventCallbacks.callbacks.clear()
     }
 }

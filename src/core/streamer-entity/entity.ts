@@ -1,9 +1,10 @@
 import { INVALID_STREAMER_ID, type StreamerItemType, streamerNatives } from "@/wrapper/streamer"
 import { Entity } from "../base-entity"
 import { type Vector3 } from "../vector3"
+import { type EventMapInterface } from "../event-callbacks"
 
 export class StreamerEntity<
-    EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>,
+    EventMap extends EventMapInterface = EventMapInterface,
 > extends Entity<EventMap> {
     private _streamerId: number
 

@@ -1,6 +1,7 @@
 import { Entity } from "../base-entity"
+import { type EventMapInterface } from "../event-callbacks"
 
-export class SampEntity<EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>> extends Entity<EventMap> {
+export class SampEntity<EventMap extends EventMapInterface = EventMapInterface> extends Entity<EventMap> {
     private _sampId: number
 
     constructor(sampId: number, invalidSampId: number) {
