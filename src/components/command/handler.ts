@@ -4,8 +4,6 @@ import { Command } from "./entity"
 
 export type CommandCallback = (player: Player, ...params: (string | undefined)[]) => void | Promise<void>
 
-let lastUsedCommandId = 0
-
 class CommandHandler {
     private readonly namesAndAliases = new Map<string, Command>()
 
@@ -37,7 +35,7 @@ class CommandHandler {
             }
         }
 
-        const command = new Command(++lastUsedCommandId, name, aliases, callback)
+        const command = new Command(name, aliases, callback)
 
         this.namesAndAliases.set(name, command)
 
@@ -46,14 +44,6 @@ class CommandHandler {
         }
 
         dispatcher.emit("commandRegister", command)
-
-        command.onCleanup(() => {
-            this.namesAndAliases.delete(name)
-
-            for (const alias of aliases) {
-                this.namesAndAliases.delete(alias)
-            }
-        })
 
         return command
     }
