@@ -15,14 +15,14 @@ export class PlayerAnimations {
         time: number,
         forceSync = true,
     ) {
-        nativeFunctions.applyAnimation(this.player.id, library, name, speed, loop, lockX, lockY, freeze, time, forceSync)
+        nativeFunctions.applyAnimation(this.player.sampId, library, name, speed, loop, lockX, lockY, freeze, time, forceSync)
     }
 
     clear() {
-        nativeFunctions.clearAnimations(this.player.id, true)
+        nativeFunctions.clearAnimations(this.player.sampId, true)
     }
 
     get currentIndex() {
-        return nativeFunctions.getPlayerAnimationIndex(this.player.id)
+        return nativeFunctions.getPlayerAnimationIndex(this.player.sampId)
     }
 }

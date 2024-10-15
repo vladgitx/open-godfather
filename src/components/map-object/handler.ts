@@ -3,7 +3,7 @@ import { StreamerHandler } from "../../core/streamer-entity"
 import { type Vector3 } from "../../core/vector3"
 import { MapObject } from "./entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../core/entity"
+import { EntityFactory } from "../../core/base-entity"
 
 const objectFactory = new EntityFactory<MapObject, typeof MapObject>(MapObject)
 
@@ -26,7 +26,7 @@ class MapObjectHandler extends StreamerHandler<MapObject> {
             rotation,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,
-            onlyVisibleFor?.player?.id ?? -1,
+            onlyVisibleFor?.player?.sampId ?? -1,
             streamDistance,
             streamDistance,
             -1,

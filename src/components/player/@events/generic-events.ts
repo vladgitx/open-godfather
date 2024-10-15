@@ -7,7 +7,7 @@ import { vehicleHandler } from "@/components/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
 
 samp.on("OnPlayerKeyStateChange", (playerId, newKeys, oldKeys) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (player !== undefined) {
         dispatcher.emit("playerKeyStateChange", player, newKeys, oldKeys)
@@ -15,7 +15,8 @@ samp.on("OnPlayerKeyStateChange", (playerId, newKeys, oldKeys) => {
 })
 
 nativeEvents.onPlayerSpawn((playerId: number) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
+
     if (player === undefined) {
         return
     }
@@ -31,7 +32,7 @@ nativeEvents.onPlayerSpawn((playerId: number) => {
 })
 
 nativeEvents.onPlayerRequestClass((playerId: number) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (player !== undefined) {
         player.spawn()
@@ -39,7 +40,7 @@ nativeEvents.onPlayerRequestClass((playerId: number) => {
 })
 
 nativeEvents.onPlayerText((playerId: number, text: string) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (player !== undefined) {
         const hasListeners = dispatcher.emit("playerText", player, text)
@@ -53,15 +54,16 @@ nativeEvents.onPlayerText((playerId: number, text: string) => {
 })
 
 nativeEvents.onPlayerStateChange((playerId: number, newState: PlayerStatesEnum, oldState: PlayerStatesEnum) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
+
     if (player !== undefined) {
         dispatcher.emit("playerStateChange", player, newState, oldState)
     }
 })
 
 nativeEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenger: boolean) => {
-    const player = playerHandler.at(playerId)
-    const vehicle = vehicleHandler.at(vehicleId)
+    const player = playerHandler.atSampId(playerId)
+    const vehicle = vehicleHandler.atSampId(vehicleId)
 
     if (player !== undefined && vehicle !== undefined) {
         dispatcher.emit("playerStartEnterVehicle", player, vehicle, asPassenger)
@@ -69,8 +71,8 @@ nativeEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassen
 })
 
 nativeEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
-    const player = playerHandler.at(playerId)
-    const vehicle = vehicleHandler.at(vehicleId)
+    const player = playerHandler.atSampId(playerId)
+    const vehicle = vehicleHandler.atSampId(vehicleId)
 
     if (player !== undefined && vehicle !== undefined) {
         dispatcher.emit("playerStartExitVehicle", player, vehicle)
@@ -78,17 +80,18 @@ nativeEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
 })
 
 nativeEvents.onPlayerDeath((playerId: number, killerId: number, weapon: WeaponsEnum) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
+
     if (player) {
-        dispatcher.emit("playerDeath", player, playerHandler.at(killerId), weapon)
+        dispatcher.emit("playerDeath", player, playerHandler.atSampId(killerId), weapon)
     }
 })
 
 nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: number, weapon: WeaponsEnum, bodyPart: BodyPartsEnum) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (player) {
-        const issuer = playerHandler.at(issuerId)
+        const issuer = playerHandler.atSampId(issuerId)
         const hasListeners = dispatcher.emit("playerDamage", player, issuer, amount, weapon, bodyPart)
 
         if (!hasListeners && issuer) {
@@ -101,13 +104,14 @@ nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: num
 
 nativeEvents.onPlayerWeaponShot(
     (playerId: number, weapon: WeaponsEnum, hitType: HitTypesEnum, hitId: number, fX: number, fY: number, fZ: number) => {
-        const player = playerHandler.at(playerId)
+        const player = playerHandler.atSampId(playerId)
+
         if (player) {
             const hitEntity =
                 hitType === HitTypesEnum.Player
-                    ? playerHandler.at(hitId)
+                    ? playerHandler.atSampId(hitId)
                     : hitType === HitTypesEnum.Vehicle
-                      ? vehicleHandler.at(hitId)
+                      ? vehicleHandler.atSampId(hitId)
                       : undefined
 
             dispatcher.emit("playerShoot", player, weapon, hitEntity, new Vector3(fX, fY, fZ))

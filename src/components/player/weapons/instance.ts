@@ -6,11 +6,11 @@ export class PlayerWeapons {
     constructor(private player: Player) {}
 
     setSkill(weapon: WeaponSkillsEnum, level: number) {
-        return nativeFunctions.setPlayerSkillLevel(this.player.id, weapon, level)
+        return nativeFunctions.setPlayerSkillLevel(this.player.sampId, weapon, level)
     }
 
     add(weapon: WeaponsEnum, ammo: number) {
-        return nativeFunctions.givePlayerWeapon(this.player.id, weapon, ammo)
+        return nativeFunctions.givePlayerWeapon(this.player.sampId, weapon, ammo)
     }
 
     remove(weapon: WeaponsEnum) {
@@ -33,19 +33,19 @@ export class PlayerWeapons {
     }
 
     reset() {
-        return nativeFunctions.resetPlayerWeapons(this.player.id)
+        return nativeFunctions.resetPlayerWeapons(this.player.sampId)
     }
 
     at(slot: WeaponSlotsEnum) {
-        return nativeFunctions.getPlayerWeaponData(this.player.id, slot)
+        return nativeFunctions.getPlayerWeaponData(this.player.sampId, slot)
     }
 
     set holding(weapon: WeaponsEnum) {
-        nativeFunctions.setPlayerArmedWeapon(this.player.id, weapon)
+        nativeFunctions.setPlayerArmedWeapon(this.player.sampId, weapon)
     }
 
     get holding() {
-        return nativeFunctions.getPlayerWeapon(this.player.id)
+        return nativeFunctions.getPlayerWeapon(this.player.sampId)
     }
 
     get all() {

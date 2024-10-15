@@ -4,7 +4,7 @@ import { PlayerStatesEnum, type VehicleSeatsEnum } from "@/utils/enums"
 import { type Vehicle, vehicleHandler } from "../../vehicle"
 import { dispatcher } from "@/core/dispatcher"
 
-const lastVehicleIds = new WeakMap<Player, number>()
+const lastVehicleReferenceId = new WeakMap<Player, number>()
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
     if (
@@ -19,7 +19,7 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
             return
         }
 
-        lastVehicleIds.set(player, currentVehicle.id)
+        lastVehicleReferenceId.set(player, currentVehicle.referenceId)
         dispatcher.emit("playerEnterVehicle", player, currentVehicle)
     } else if (
         // Check if a player is not in a vehicle and was in a vehicle before
@@ -27,14 +27,14 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
         newState !== PlayerStatesEnum.Passenger &&
         newState !== PlayerStatesEnum.Driver
     ) {
-        const lastVehicleId = lastVehicleIds.get(player)
+        const lastVehicleRefId = lastVehicleReferenceId.get(player)
 
-        if (lastVehicleId === undefined) {
+        if (lastVehicleRefId === undefined) {
             return
         }
 
-        lastVehicleIds.delete(player)
-        dispatcher.emit("playerExitVehicle", player, vehicleHandler.at(lastVehicleId))
+        lastVehicleReferenceId.delete(player)
+        dispatcher.emit("playerExitVehicle", player, vehicleHandler.atReferenceId(lastVehicleRefId))
     }
 })
 
@@ -42,12 +42,12 @@ export function putInVehicleWithEvent(player: Player, vehicle: Vehicle, seat: Ve
     const oldVehicle = player.vehicle
 
     if (!oldVehicle || oldVehicle === vehicle) {
-        return nativeFunctions.putPlayerInVehicle(player.id, vehicle.id, seat)
+        return nativeFunctions.putPlayerInVehicle(player.sampId, vehicle.sampId, seat)
     }
 
     dispatcher.emit("playerExitVehicle", player, oldVehicle)
 
-    nativeFunctions.putPlayerInVehicle(player.id, vehicle.id, seat)
+    nativeFunctions.putPlayerInVehicle(player.sampId, vehicle.sampId, seat)
 
     dispatcher.emit("playerEnterVehicle", player, vehicle)
 

@@ -4,7 +4,7 @@ import { dispatcher } from "@/core/dispatcher"
 import { playerHandler } from "@/components/player"
 
 nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (!player) {
         return 1

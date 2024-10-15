@@ -19,21 +19,21 @@ export class MapObject extends StreamerEntity {
         }
     >()
 
-    constructor(id: number) {
-        super(id, "object")
+    constructor(streamerId: number) {
+        super(streamerId, "object")
     }
 
     set model(id: number) {
-        streamerNatives.setIntData("object", this.id, "modelId", id)
+        streamerNatives.setIntData("object", this.streamerId, "modelId", id)
     }
 
     get model() {
-        return streamerNatives.getIntData("object", this.id, "modelId")
+        return streamerNatives.getIntData("object", this.streamerId, "modelId")
     }
 
     setMaterialTexture(index: number, model: number, library?: string, name?: string, color = "") {
         this.materialTextures.set(index, { model, textureLibrary: library, textureName: name, color })
-        streamerNatives.setDynamicObjectMaterial(this.id, index, model, library ?? "none", name ?? "none", color)
+        streamerNatives.setDynamicObjectMaterial(this.streamerId, index, model, library ?? "none", name ?? "none", color)
     }
 
     getMaterialTexture(index: number) {
@@ -42,7 +42,7 @@ export class MapObject extends StreamerEntity {
 
     removeMaterialTexture(index: number) {
         this.materialTextures.delete(index)
-        streamerNatives.removeDynamicObjectMaterial(this.id, index)
+        streamerNatives.removeDynamicObjectMaterial(this.streamerId, index)
     }
 
     setMaterialText(
@@ -59,7 +59,7 @@ export class MapObject extends StreamerEntity {
         this.materialTexts.set(index, { text, size, fontFace, fontSize, bold, fontColor, backColor, textAlignment })
 
         streamerNatives.setDynamicObjectMaterialText(
-            this.id,
+            this.streamerId,
             index,
             text,
             size,
@@ -78,6 +78,6 @@ export class MapObject extends StreamerEntity {
 
     removeMaterialText(index: number) {
         this.materialTexts.delete(index)
-        streamerNatives.removeDynamicObjectMaterialText(this.id, index)
+        streamerNatives.removeDynamicObjectMaterialText(this.streamerId, index)
     }
 }

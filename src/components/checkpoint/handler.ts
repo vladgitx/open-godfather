@@ -1,5 +1,5 @@
 import { streamerNatives } from "@/wrapper/streamer"
-import { EntityFactory } from "../../core/entity"
+import { EntityFactory } from "../../core/base-entity"
 import { type Player } from "../player"
 import { StreamerHandler } from "../../core/streamer-entity"
 import { type Vector3 } from "../../core/vector3"
@@ -24,7 +24,7 @@ class CheckpointHandler extends StreamerHandler<Checkpoint> {
             size,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,
-            onlyVisibleFor?.player?.id ?? -1,
+            onlyVisibleFor?.player?.sampId ?? -1,
             streamDistance,
             -1,
             priority,
@@ -44,19 +44,19 @@ class CheckpointHandler extends StreamerHandler<Checkpoint> {
     }
 
     toggleFor(player: Player, checkpoint: Checkpoint, toggle: boolean) {
-        streamerNatives.togglePlayerDynamicCheckpoint(player.id, checkpoint.id, toggle)
+        streamerNatives.togglePlayerDynamicCheckpoint(player.sampId, checkpoint.streamerId, toggle)
     }
 
     toggleAllFor(player: Player, toggle: boolean) {
-        streamerNatives.togglePlayerAllDynamicCheckpoints(player.id, toggle)
+        streamerNatives.togglePlayerAllDynamicCheckpoints(player.sampId, toggle)
     }
 
     isPlayerIn(player: Player, checkpoint: Checkpoint) {
-        return streamerNatives.isPlayerInDynamicCheckpoint(player.id, checkpoint.id)
+        return streamerNatives.isPlayerInDynamicCheckpoint(player.sampId, checkpoint.streamerId)
     }
 
     getVisibleForPlayer(player: Player) {
-        const id = streamerNatives.getPlayerVisibleDynamicCheckpoint(player.id)
+        const id = streamerNatives.getPlayerVisibleDynamicCheckpoint(player.sampId)
 
         if (id === undefined) {
             return undefined

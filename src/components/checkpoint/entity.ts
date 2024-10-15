@@ -5,7 +5,7 @@ export class Checkpoint extends StreamerEntity<{
     playerEnter: [Player]
     playerLeave: [Player]
 }> {
-    constructor(id: number) {
-        super(id, "checkpoint")
+    constructor(streamerId: number) {
+        super(streamerId, "checkpoint")
     }
 }

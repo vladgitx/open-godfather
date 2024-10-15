@@ -5,7 +5,7 @@ import "./components/command/@events"
 import "./components/pickup/@events"
 import "./components/checkpoint/@events"
 
-export { type Entity } from "./core/entity"
+export { type Entity } from "./core/base-entity"
 export { type StreamerEntity } from "./core/streamer-entity"
 export { type Player } from "./components/player"
 export { type PlayerAttachedObject, AttachedObjectEditResult } from "./components/player/attached-objects"

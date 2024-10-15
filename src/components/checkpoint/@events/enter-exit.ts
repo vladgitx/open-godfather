@@ -5,8 +5,8 @@ import { dispatcher } from "@/core/dispatcher"
 import { EventCallbacks } from "@/core/event-callbacks"
 
 streamerEvents.onPlayerEnterDynamicCheckpoint((playerId, checkpointId) => {
-    const player = playerHandler.at(playerId)
-    const checkpoint = checkpointHandler.at(checkpointId)
+    const player = playerHandler.atSampId(playerId)
+    const checkpoint = checkpointHandler.atStreamerId(checkpointId)
 
     if (player && checkpoint) {
         dispatcher.emit("playerEnterCheckpoint", player, checkpoint)
@@ -15,8 +15,8 @@ streamerEvents.onPlayerEnterDynamicCheckpoint((playerId, checkpointId) => {
 })
 
 streamerEvents.onPlayerLeaveDynamicCheckpoint((playerId, checkpointId) => {
-    const player = playerHandler.at(playerId)
-    const checkpoint = checkpointHandler.at(checkpointId)
+    const player = playerHandler.atSampId(playerId)
+    const checkpoint = checkpointHandler.atStreamerId(checkpointId)
 
     if (player && checkpoint) {
         dispatcher.emit("playerLeaveCheckpoint", player, checkpoint)

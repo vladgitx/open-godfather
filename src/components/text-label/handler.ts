@@ -3,7 +3,7 @@ import { TextLabel } from "./entity"
 import { streamerNatives } from "@/wrapper/streamer"
 import { type Player } from "../player"
 import { StreamerHandler } from "../../core/streamer-entity"
-import { EntityFactory } from "../../core/entity"
+import { EntityFactory } from "../../core/base-entity"
 import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/functions"
 
 const textLabelFactory = new EntityFactory<TextLabel, typeof TextLabel>(TextLabel)
@@ -32,7 +32,7 @@ class TextLabelHandler extends StreamerHandler<TextLabel> {
             testLos ? 1 : 0,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,
-            onlyVisibleFor?.player?.id ?? -1,
+            onlyVisibleFor?.player?.sampId ?? -1,
             drawDistance,
             -1,
             priority,

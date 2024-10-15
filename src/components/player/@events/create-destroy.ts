@@ -11,7 +11,7 @@ nativeEvents.onPlayerConnect((playerId) => {
 })
 
 nativeEvents.onPlayerDisconnect((playerId, reason) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (player) {
         dispatcher.emit("playerDisconnect", player, reason)

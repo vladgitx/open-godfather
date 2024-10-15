@@ -21,7 +21,7 @@ function resetEditingObject(player: Player, object: PlayerAttachedObject) {
 
 nativeEvents.onPlayerEditAttachedObject(
     (playerid, response, index, model, bone, offX, offY, offZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ) => {
-        const player = playerHandler.at(playerid)
+        const player = playerHandler.atSampId(playerid)
 
         if (!player) {
             return

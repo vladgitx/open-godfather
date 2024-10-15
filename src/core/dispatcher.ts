@@ -7,7 +7,7 @@ import { type Vehicle } from "../components/vehicle"
 import { type Vector3 } from "./vector3"
 import EventEmitter from "events"
 import { type Pickup } from "../components/pickup"
-import { type Entity } from "./entity"
+import { type Entity } from "./base-entity"
 import { type Checkpoint } from "../components/checkpoint"
 
 interface ServerEvents {
@@ -47,6 +47,7 @@ interface VehicleEvents {
 interface EntityEvents {
     entityInstantiate: [Entity]
     entityDestroy: [Entity]
+    entityCleanup: [Entity]
 }
 
 interface CommandEvents {

@@ -5,8 +5,8 @@ import { dispatcher } from "@/core/dispatcher"
 import { vehicleInternalPaintjobId } from "../entity"
 
 nativeEvents.onVehiclePaintjob((playerid, vehicleid, paintjobid) => {
-    const player = playerHandler.at(playerid)
-    const vehicle = vehicleHandler.at(vehicleid)
+    const player = playerHandler.atSampId(playerid)
+    const vehicle = vehicleHandler.atSampId(vehicleid)
 
     if (vehicle) {
         vehicleInternalPaintjobId.set(vehicle, paintjobid)

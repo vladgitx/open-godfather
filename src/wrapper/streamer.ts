@@ -2,7 +2,7 @@ import { hexToRgbaInt, rgbaIntToHex } from "@/utils/miscellaneous"
 import { Vector3 } from "@/core/vector3"
 import type { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from ".."
 
-const INVALID_STREAMER_ID = 0
+export const INVALID_STREAMER_ID = 0
 
 const STREAMER_ITEM_TYPES = {
     object: 0,

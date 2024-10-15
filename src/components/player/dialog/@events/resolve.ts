@@ -3,7 +3,7 @@ import { playerHandler } from "../../handler"
 import { dialogPromises } from "../instance"
 
 nativeEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam, inputText) => {
-    const player = playerHandler.at(playerId)
+    const player = playerHandler.atSampId(playerId)
 
     if (player) {
         const action = Boolean(responseParam)

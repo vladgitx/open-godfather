@@ -3,7 +3,7 @@ import { type Vector3 } from "../../core/vector3"
 import { Pickup } from "./entity"
 import { StreamerHandler } from "../../core/streamer-entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../core/entity"
+import { EntityFactory } from "../../core/base-entity"
 
 const pickupFactory = new EntityFactory<Pickup, typeof Pickup>(Pickup)
 
@@ -25,7 +25,7 @@ class PickupHandler extends StreamerHandler<Pickup> {
             position,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,
-            onlyVisibleFor?.player?.id ?? -1,
+            onlyVisibleFor?.player?.sampId ?? -1,
             streamDistance,
             -1,
             priority,

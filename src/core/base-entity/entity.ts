@@ -2,44 +2,39 @@ import { dispatcher } from "../dispatcher"
 import { EventCallbacks } from "../event-callbacks"
 import { KeyValueVariables } from "../variables"
 
-const INVALID_ENTITY_ID_UNDER = 0
-
-let lastUsedInvalidEntityId = INVALID_ENTITY_ID_UNDER - 1
+let lastUsedReferenceId = 0
 
 export class Entity<EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>> {
-    private _id: number
     private cleanupCallbacks: (() => void)[] = []
+    private destroyed = false
 
     readonly events = new EventCallbacks<EventMap>()
     readonly variables = new KeyValueVariables<{ pula: string }>()
 
-    constructor(id: number) {
-        this._id = id
+    readonly referenceId = lastUsedReferenceId++
 
+    constructor() {
         this.onCleanup(() => {
             EventCallbacks.clearListeners(this.events)
             this.variables.clear()
         })
     }
 
-    get id() {
-        return this._id
-    }
-
     onCleanup(callback: () => void) {
         this.cleanupCallbacks.push(callback)
     }
 
-    get exists(): boolean {
-        return this._id >= INVALID_ENTITY_ID_UNDER
+    get exists() {
+        return !this.destroyed
     }
 
     destroy() {
-        if (!this.exists) {
+        if (this.destroyed) {
             return
         }
 
         dispatcher.emit("entityDestroy", this)
+        dispatcher.emit("entityCleanup", this)
 
         for (const callback of this.cleanupCallbacks) {
             try {
@@ -50,6 +45,6 @@ export class Entity<EventMap extends Record<string, unknown[]> = Record<string |
         }
 
         this.cleanupCallbacks = []
-        this._id = lastUsedInvalidEntityId--
+        this.destroyed = true
     }
 }

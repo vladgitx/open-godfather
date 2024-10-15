@@ -3,7 +3,7 @@ import { nativeFunctions } from "@/wrapper"
 import { Vector3 } from "../../../core/vector3"
 import { type Player } from "../entity"
 import { PlayerAttachedObject } from "./entity"
-import { EntityPromises } from "@/core/entity"
+import { EntityPromises } from "@/core/base-entity"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
 
@@ -45,7 +45,7 @@ export class PlayerAttachedObjects {
         }
 
         const success = nativeFunctions.setPlayerAttachedObject(
-            this.player.id,
+            this.player.sampId,
             slot,
             model,
             bone,
@@ -82,7 +82,7 @@ export class PlayerAttachedObjects {
 
     destroy(object: PlayerAttachedObject) {
         if (this.slots[object.slot] === object) {
-            nativeFunctions.removePlayerAttachedObject(this.player.id, object.slot)
+            nativeFunctions.removePlayerAttachedObject(this.player.sampId, object.slot)
             this.slots[object.slot] = undefined
         }
 
@@ -100,7 +100,7 @@ export class PlayerAttachedObjects {
         this.player.exitObjectEditMode() // TODO: bug, not the expected behavior. the player can't enter the edit mode after this
 
         editingObject.set(this.player, object)
-        nativeFunctions.editAttachedObject(this.player.id, object.slot)
+        nativeFunctions.editAttachedObject(this.player.sampId, object.slot)
 
         return editModePromises.new(this.player)
     }

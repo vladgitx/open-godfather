@@ -5,7 +5,7 @@ import { type Player } from "../entity"
 
 export function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
     nativeFunctions.setPlayerAttachedObject(
-        player.id,
+        player.sampId,
         data.slot,
         data.model,
         data.bone,
