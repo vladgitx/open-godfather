@@ -1,13 +1,16 @@
 import { dispatcher } from "../dispatcher"
+import { EntityEvents } from "./events"
 
 const INVALID_ENTITY_ID_UNDER = 0
 
 let lastUsedInvalidEntityId = INVALID_ENTITY_ID_UNDER - 1
 
-export class Entity {
+export class Entity<EventMap extends Record<string, unknown[]> = Record<string | symbol | number, unknown[]>> {
     private _id: number
     private variables = new Map<string, unknown>()
     private cleanupCallbacks: (() => void)[] = []
+
+    readonly events = new EntityEvents<EventMap>(this)
 
     constructor(id: number) {
         this._id = id

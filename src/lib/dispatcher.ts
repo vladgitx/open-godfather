@@ -61,31 +61,31 @@ class Dispatcher extends EventEmitter {
     }
 
     addListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.addListener(event, listener)
+        return super.addListener(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     on<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.on(event, listener)
+        return super.on(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     once<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.once(event, listener)
+        return super.once(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     prependListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.prependListener(event, listener)
+        return super.prependListener(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     prependOnceListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.prependOnceListener(event, listener)
+        return super.prependOnceListener(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     removeListener<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.removeListener(event, listener)
+        return super.removeListener(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     off<K extends keyof EventMap>(event: K, listener: (...args: EventMap[K]) => void | Promise<void>): this {
-        return super.off(event, listener)
+        return super.off(event, listener as (...args: unknown[]) => void | Promise<void>)
     }
 
     removeAllListeners<K extends keyof EventMap>(event?: K): this {
