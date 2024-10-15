@@ -1,7 +1,7 @@
 import type { Vehicle } from "@/components/vehicle"
 import type { BodyPartsEnum, PlayerStatesEnum, WeaponsEnum } from "@/utils/enums"
 import type { Player } from "../entity"
-import type { Vector3 } from "@/og-export"
+import type { Vector3 } from "@/exports"
 import type { Pickup } from "@/components/pickup"
 import type { Checkpoint } from "@/components/checkpoint"
 import { dispatcher } from "@/core/dispatcher"
