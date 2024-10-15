@@ -7,7 +7,7 @@
     "scripts": {
         "format": "prettier -w --log-level silent '{,src/**/}*.{js,jsx,ts,tsx,mjs,json}'",
         "lint": "npx eslint src/**/*.ts",
-        "build": "rollup -c",
+        "build": "rollup -c && tsc-alias -p tsconfig.json",
         "pre-commit": "npm run format && npm run lint && npm run build",
         "prepare": "npm run build"
     },
@@ -33,6 +33,7 @@
         "prettier": "^3.2.4",
         "rollup": "^4.9.5",
         "rollup-plugin-delete": "^2.0.0",
+        "tsc-alias": "^1.8.10",
         "tslib": "^2.6.2",
         "typescript": "^5.2.2",
         "typescript-eslint": "^7.7.0"
