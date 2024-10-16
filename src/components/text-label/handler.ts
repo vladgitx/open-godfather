@@ -3,12 +3,9 @@ import { TextLabel } from "./entity"
 import { streamerNatives } from "@/wrapper/streamer"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "../../core/streamer-entity"
-import { EntityFactory } from "../../core/base-entity"
 import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/functions"
 
-const textLabelFactory = new EntityFactory<TextLabel, typeof TextLabel>(TextLabel)
-
-class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
+class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel> {
     new(
         text: string,
         color: string,
@@ -42,7 +39,7 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
             return undefined
         }
 
-        const textLabel = textLabelFactory.new(labelId, text, color)
+        const textLabel = TextLabelHandler.createInstance(this, labelId, text, color)
 
         textLabel?.onCleanup(() => {
             streamerNatives.destroyDynamic3dTextLabel(labelId)
@@ -52,4 +49,4 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
     }
 }
 
-export const textLabelHandler = new TextLabelHandler("textLabel", textLabelFactory)
+export const textLabelHandler = new TextLabelHandler(TextLabel, "textLabel")

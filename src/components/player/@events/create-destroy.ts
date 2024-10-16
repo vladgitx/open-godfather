@@ -1,9 +1,10 @@
 import { nativeEvents } from "@/wrapper"
 import { dispatcher } from "@/core/dispatcher"
-import { playerFactory, playerHandler } from "../handler"
+import { playerHandler } from "../handler"
+import { EntityHandler } from "@/core/base-entity"
 
 nativeEvents.onPlayerConnect((playerId) => {
-    const player = playerFactory.new(playerId)
+    const player = EntityHandler.createInstance(playerHandler, playerId)
 
     if (player) {
         dispatcher.emit("playerConnect", player)

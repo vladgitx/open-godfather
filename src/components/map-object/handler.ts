@@ -3,11 +3,8 @@ import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Vector3 } from "../../core/vector3"
 import { MapObject } from "./entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../core/base-entity"
 
-const objectFactory = new EntityFactory<MapObject, typeof MapObject>(MapObject)
-
-class MapObjectHandler extends StreamerEntityHandler<MapObject> {
+class MapObjectHandler extends StreamerEntityHandler<MapObject, typeof MapObject> {
     new(
         model: number,
         position: Vector3,
@@ -37,7 +34,7 @@ class MapObjectHandler extends StreamerEntityHandler<MapObject> {
             return undefined
         }
 
-        const object = objectFactory.new(objectId)
+        const object = MapObjectHandler.createInstance(this, objectId)
 
         object?.onCleanup(() => {
             streamerNatives.destroyDynamicObject(objectId)
@@ -47,4 +44,4 @@ class MapObjectHandler extends StreamerEntityHandler<MapObject> {
     }
 }
 
-export const objectHandler = new MapObjectHandler("object", objectFactory)
+export const objectHandler = new MapObjectHandler(MapObject, "object")

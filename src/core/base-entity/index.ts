@@ -1,4 +1,3 @@
 export { Entity } from "./entity"
-export { EntityFactory } from "./factory"
-export { EntityHandler } from "./handler"
+export { EntityHandler, type Constructible } from "./handler"
 export { EntityPromises } from "./promises"

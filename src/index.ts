@@ -29,7 +29,7 @@ export { textdrawHandler as textdraws } from "./components/textdraw"
 export { checkpointHandler as checkpoints } from "./components/checkpoint"
 export { events } from "./core/dispatcher"
 export { Vector3 } from "./core/vector3"
-export { Entity, EntityHandler, EntityFactory, EntityPromises } from "./core/base-entity"
+export { Entity, EntityHandler, EntityPromises } from "./core/base-entity"
 export { EventCallbacks } from "./core/event-callbacks"
 export { KeyValueVariables } from "./core/variables"
 

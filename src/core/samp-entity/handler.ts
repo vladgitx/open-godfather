@@ -1,13 +1,13 @@
-import { type EntityFactory, EntityHandler } from "../base-entity"
+import { type Constructible, EntityHandler } from "../base-entity"
 import { type SampEntity } from "./entity"
 
-export class SampEntityHandler<T extends SampEntity> extends EntityHandler<T> {
+export class SampEntityHandler<T extends SampEntity, C extends Constructible<T>> extends EntityHandler<T, C> {
     private sampIdToReferenceId = new Map<number, number>()
 
-    constructor(factory: EntityFactory<T, new (...args: never[]) => T>) {
-        super(factory)
+    constructor(constructible: C) {
+        super(constructible)
 
-        factory.events.on("addToPool", (entity) => {
+        this.events.on("addToPool", (entity) => {
             this.sampIdToReferenceId.set(entity.sampId, entity.referenceId)
 
             entity.onCleanup(() => {
@@ -18,6 +18,7 @@ export class SampEntityHandler<T extends SampEntity> extends EntityHandler<T> {
 
     atSampId(sampId: number) {
         const referenceId = this.sampIdToReferenceId.get(sampId)
+
         return referenceId !== undefined ? this.atReferenceId(referenceId) : undefined
     }
 }

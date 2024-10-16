@@ -2,18 +2,18 @@ import { streamerNatives, type StreamerItemType } from "@/wrapper/streamer"
 import { type Player } from "../../components/player"
 import { type Vector3 } from "../vector3"
 import { type StreamerEntity } from "./entity"
-import { type EntityFactory, EntityHandler } from "../base-entity"
+import { type Constructible, EntityHandler } from "../base-entity"
 
-export class StreamerEntityHandler<T extends StreamerEntity> extends EntityHandler<T> {
+export class StreamerEntityHandler<T extends StreamerEntity, C extends Constructible<T>> extends EntityHandler<T, C> {
     private streamerIdToReferenceId = new Map<number, number>()
 
     constructor(
+        constructible: C,
         private type: StreamerItemType,
-        factory: EntityFactory<T, new (...args: never[]) => T>,
     ) {
-        super(factory)
+        super(constructible)
 
-        factory.events.on("addToPool", (entity) => {
+        this.events.on("addToPool", (entity) => {
             this.streamerIdToReferenceId.set(entity.streamerId, entity.referenceId)
 
             entity.onCleanup(() => {
@@ -25,6 +25,7 @@ export class StreamerEntityHandler<T extends StreamerEntity> extends EntityHandl
 
     atStreamerId(streamerId: number) {
         const referenceId = this.streamerIdToReferenceId.get(streamerId)
+
         return referenceId !== undefined ? this.atReferenceId(referenceId) : undefined
     }
 

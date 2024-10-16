@@ -1,12 +1,9 @@
 import { nativeFunctions } from "@/wrapper"
 import { type Vector3 } from "../../core/vector3"
 import { Player } from "./entity"
-import { EntityFactory } from "../../core/base-entity"
 import { SampEntityHandler } from "@/core/samp-entity"
 
-export const playerFactory = new EntityFactory<Player, typeof Player>(Player)
-
-class PlayerHandler extends SampEntityHandler<Player> {
+class PlayerHandler extends SampEntityHandler<Player, typeof Player> {
     broadcast(message: string, color = "FFFFFF") {
         nativeFunctions.sendClientMessageToAll(color, message)
     }
@@ -34,4 +31,4 @@ class PlayerHandler extends SampEntityHandler<Player> {
     }
 }
 
-export const playerHandler = new PlayerHandler(playerFactory)
+export const playerHandler = new PlayerHandler(Player)

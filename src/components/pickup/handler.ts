@@ -3,11 +3,8 @@ import { type Vector3 } from "../../core/vector3"
 import { Pickup } from "./entity"
 import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Player } from "../player"
-import { EntityFactory } from "../../core/base-entity"
 
-const pickupFactory = new EntityFactory<Pickup, typeof Pickup>(Pickup)
-
-class PickupHandler extends StreamerEntityHandler<Pickup> {
+class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
     new(
         model: number,
         position: Vector3,
@@ -35,7 +32,7 @@ class PickupHandler extends StreamerEntityHandler<Pickup> {
             return undefined
         }
 
-        const pickup = pickupFactory.new(pickupId)
+        const pickup = PickupHandler.createInstance(this, pickupId)
 
         pickup?.onCleanup(() => {
             streamerNatives.destroyDynamicPickup(pickupId)
@@ -45,4 +42,4 @@ class PickupHandler extends StreamerEntityHandler<Pickup> {
     }
 }
 
-export const pickupHandler = new PickupHandler("pickup", pickupFactory)
+export const pickupHandler = new PickupHandler(Pickup, "pickup")

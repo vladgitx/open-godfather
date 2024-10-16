@@ -1,13 +1,10 @@
 import { streamerNatives } from "@/wrapper/streamer"
-import { EntityFactory } from "../../core/base-entity"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Vector3 } from "../../core/vector3"
 import { Checkpoint } from "./entity"
 
-const checkpointFactory = new EntityFactory<Checkpoint, typeof Checkpoint>(Checkpoint)
-
-class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
+class CheckpointHandler extends StreamerEntityHandler<Checkpoint, typeof Checkpoint> {
     new(
         position: Vector3,
         size = 3.0,
@@ -34,7 +31,7 @@ class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
             return undefined
         }
 
-        const checkpoint = checkpointFactory.new(checkpointId)
+        const checkpoint = CheckpointHandler.createInstance(this, checkpointId)
 
         checkpoint?.onCleanup(() => {
             streamerNatives.destroyDynamicCheckpoint(checkpointId)
@@ -62,8 +59,8 @@ class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
             return undefined
         }
 
-        return checkpointFactory.pool.get(id)
+        return this.atStreamerId(id)
     }
 }
 
-export const checkpointHandler = new CheckpointHandler("checkpoint", checkpointFactory)
+export const checkpointHandler = new CheckpointHandler(Checkpoint, "checkpoint")

@@ -1,15 +1,38 @@
-import { type EntityFactory } from "./factory"
 import { type Entity } from "./entity"
+import { EventCallbacks } from "../event-callbacks"
+import { dispatcher } from "../dispatcher"
 
-export class EntityHandler<T extends Entity> {
-    constructor(private factory: EntityFactory<T, new (...args: never[]) => T>) {}
+export type Constructible<T> = new (...args: never[]) => T
+
+export class EntityHandler<T extends Entity, C extends Constructible<T>> {
+    private pool = new Map<number, T>() // key: referenceId, value: entity
+    readonly events = new EventCallbacks<{ addToPool: [T] }>()
+
+    constructor(private constructible: C) {}
+
+    static createInstance<T extends Entity, C extends Constructible<T>>(
+        entityHandler: EntityHandler<T, C>,
+        ...args: ConstructorParameters<C>
+    ): T | undefined {
+        const entity = new entityHandler.constructible(...args)
+        entityHandler.pool.set(entity.referenceId, entity)
+
+        dispatcher.emit("entityInstantiate", entity)
+        EventCallbacks.emit(entityHandler.events, "addToPool", entity)
+
+        entity.onCleanup(() => {
+            entityHandler.pool.delete(entity.referenceId)
+        })
+
+        return entity
+    }
 
     get all() {
-        return [...this.factory.pool.values()]
+        return [...this.pool.values()]
     }
 
     atReferenceId(referenceId: number) {
-        return this.factory.pool.get(referenceId)
+        return this.pool.get(referenceId)
     }
 
     checkEntityType(entity: Entity): entity is T {
@@ -17,6 +40,6 @@ export class EntityHandler<T extends Entity> {
     }
 
     checkInstanceOf(anything: unknown): anything is T {
-        return this.factory.checkInstanceOf(anything)
+        return anything instanceof this.constructible
     }
 }
