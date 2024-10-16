@@ -36,7 +36,7 @@ class MapObjectHandler extends StreamerEntityHandler<MapObject, typeof MapObject
 
         const object = MapObjectHandler.createInstance(this, objectId)
 
-        object?.onCleanup(() => {
+        object.onCleanup(() => {
             streamerNatives.destroyDynamicObject(objectId)
         })
 

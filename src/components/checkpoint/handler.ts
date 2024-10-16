@@ -33,7 +33,7 @@ class CheckpointHandler extends StreamerEntityHandler<Checkpoint, typeof Checkpo
 
         const checkpoint = CheckpointHandler.createInstance(this, checkpointId)
 
-        checkpoint?.onCleanup(() => {
+        checkpoint.onCleanup(() => {
             streamerNatives.destroyDynamicCheckpoint(checkpointId)
         })
 

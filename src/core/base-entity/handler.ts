@@ -13,7 +13,7 @@ export class EntityHandler<T extends Entity, C extends Constructible<T>> {
     static createInstance<T extends Entity, C extends Constructible<T>>(
         entityHandler: EntityHandler<T, C>,
         ...args: ConstructorParameters<C>
-    ): T | undefined {
+    ): T {
         const entity = new entityHandler.constructible(...args)
         entityHandler.pool.set(entity.referenceId, entity)
 

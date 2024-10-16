@@ -13,7 +13,7 @@ class VehicleHandler extends SampEntityHandler<Vehicle, typeof Vehicle> {
 
         const vehicle = VehicleHandler.createInstance(this, vehicleId, model, primaryColor, secondaryColor)
 
-        vehicle?.onCleanup(() => {
+        vehicle.onCleanup(() => {
             nativeFunctions.destroyVehicle(vehicleId)
         })
 

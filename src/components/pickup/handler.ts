@@ -34,7 +34,7 @@ class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
 
         const pickup = PickupHandler.createInstance(this, pickupId)
 
-        pickup?.onCleanup(() => {
+        pickup.onCleanup(() => {
             streamerNatives.destroyDynamicPickup(pickupId)
         })
 

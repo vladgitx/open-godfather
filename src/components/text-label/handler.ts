@@ -41,7 +41,7 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel
 
         const textLabel = TextLabelHandler.createInstance(this, labelId, text, color)
 
-        textLabel?.onCleanup(() => {
+        textLabel.onCleanup(() => {
             streamerNatives.destroyDynamic3dTextLabel(labelId)
         })
 

@@ -7,7 +7,7 @@ class TextdrawHandler extends SampEntityHandler<Textdraw, typeof Textdraw> {
         const textdrawId = nativeFunctions.textDrawCreate(x, y, text)
         const textdraw = TextdrawHandler.createInstance(this, textdrawId, { x, y }, text)
 
-        textdraw?.onCleanup(() => {
+        textdraw.onCleanup(() => {
             nativeFunctions.textDrawDestroy(textdrawId)
         })
 

@@ -5,10 +5,7 @@ import { EntityHandler } from "@/core/base-entity"
 
 nativeEvents.onPlayerConnect((playerId) => {
     const player = EntityHandler.createInstance(playerHandler, playerId)
-
-    if (player) {
-        dispatcher.emit("playerConnect", player)
-    }
+    dispatcher.emit("playerConnect", player)
 })
 
 nativeEvents.onPlayerDisconnect((playerId, reason) => {
