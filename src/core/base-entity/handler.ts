@@ -1,7 +1,6 @@
 import { type Entity } from "./entity"
 import { EventCallbacks } from "../event-callbacks"
-
-export type Constructible<T> = new (...args: never[]) => T
+import { type Constructible } from "@/utils/types"
 
 export class EntityHandler<T extends Entity, C extends Constructible<T>> {
     private pool = new Map<number, T>() // key: referenceId, value: entity

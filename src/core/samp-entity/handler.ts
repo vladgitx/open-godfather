@@ -1,4 +1,5 @@
-import { type Constructible, EntityHandler } from "../base-entity"
+import { type Constructible } from "@/utils/types"
+import { EntityHandler } from "../base-entity"
 import { type SampEntity } from "./entity"
 
 export class SampEntityHandler<T extends SampEntity, C extends Constructible<T>> extends EntityHandler<T, C> {

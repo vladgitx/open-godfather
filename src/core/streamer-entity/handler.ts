@@ -2,7 +2,8 @@ import { streamerNatives, type StreamerItemType } from "@/wrapper/streamer"
 import { type Player } from "../../components/player"
 import { type Vector3 } from "../vector3"
 import { type StreamerEntity } from "./entity"
-import { type Constructible, EntityHandler } from "../base-entity"
+import { EntityHandler } from "../base-entity"
+import { type Constructible } from "@/utils/types"
 
 export class StreamerEntityHandler<T extends StreamerEntity, C extends Constructible<T>> extends EntityHandler<T, C> {
     private streamerIdToReferenceId = new Map<number, number>()
