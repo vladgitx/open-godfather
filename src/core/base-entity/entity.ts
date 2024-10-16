@@ -14,6 +14,8 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
     readonly referenceId = lastUsedReferenceId++
 
     constructor() {
+        dispatcher.emit("entityInstantiate", this)
+
         this.onCleanup(() => {
             EventCallbacks.clearListeners(this.events)
             this.variables.clear()

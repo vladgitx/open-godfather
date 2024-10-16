@@ -1,6 +1,5 @@
 import { type Entity } from "./entity"
 import { EventCallbacks } from "../event-callbacks"
-import { dispatcher } from "../dispatcher"
 
 export type Constructible<T> = new (...args: never[]) => T
 
@@ -17,7 +16,6 @@ export class EntityHandler<T extends Entity, C extends Constructible<T>> {
         const entity = new entityHandler.constructible(...args)
         entityHandler.pool.set(entity.referenceId, entity)
 
-        dispatcher.emit("entityInstantiate", entity)
         EventCallbacks.emit(entityHandler.events, "addToPool", entity)
 
         entity.onCleanup(() => {
