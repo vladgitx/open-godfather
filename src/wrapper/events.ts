@@ -1,6 +1,10 @@
 import { type PlayerBonesEnum } from "@/utils/enums"
 
 class NativeEvents {
+    onPlayerKeyStateChange(callback: (playerid: number, newkeys: number, oldkeys: number) => void) {
+        samp.on("OnPlayerKeyStateChange", callback)
+    }
+
     onPlayerConnect(callback: (playerid: number) => void) {
         samp.on("OnPlayerConnect", callback)
     }
@@ -86,6 +90,14 @@ class NativeEvents {
         ) => void,
     ) {
         samp.on("OnPlayerEditAttachedObject", callback)
+    }
+
+    onVehicleSpawn(callback: (vehicleid: number) => void) {
+        samp.on("OnVehicleSpawn", callback)
+    }
+
+    onVehicleDeath(callback: (vehicleid: number, killerid: number) => void) {
+        samp.on("OnVehicleDeath", callback)
     }
 }
 

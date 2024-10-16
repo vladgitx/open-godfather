@@ -6,10 +6,10 @@ import { playerHandler } from "../handler"
 import { vehicleHandler } from "@/components/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
 
-samp.on("OnPlayerKeyStateChange", (playerId, newKeys, oldKeys) => {
+nativeEvents.onPlayerKeyStateChange((playerId, newKeys, oldKeys) => {
     const player = playerHandler.atSampId(playerId)
 
-    if (player !== undefined) {
+    if (player) {
         dispatcher.emit("playerKeyStateChange", player, newKeys, oldKeys)
     }
 })

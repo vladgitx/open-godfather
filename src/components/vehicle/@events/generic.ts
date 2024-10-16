@@ -1,9 +1,10 @@
 import { dispatcher } from "@/core/dispatcher"
 import { vehicleHandler } from "../handler"
 import { playerHandler } from "@/components/player"
+import { nativeEvents } from "@/wrapper"
 
 // "OnVehicleSpawn" is a misleading name because it's called only when the vehicle RESPAWNS
-samp.on("OnVehicleSpawn", (vehicleId) => {
+nativeEvents.onVehicleSpawn((vehicleId) => {
     const vehicle = vehicleHandler.atSampId(vehicleId)
 
     if (vehicle) {
@@ -14,7 +15,7 @@ samp.on("OnVehicleSpawn", (vehicleId) => {
     }
 })
 
-samp.on("OnVehicleDeath", (vehicleId, closestPlayerId) => {
+nativeEvents.onVehicleDeath((vehicleId, closestPlayerId) => {
     const vehicle = vehicleHandler.atSampId(vehicleId)
     const closestPlayer = playerHandler.atSampId(closestPlayerId)
 
