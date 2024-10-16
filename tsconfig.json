@@ -9,6 +9,7 @@
         "declarationDir": "./build/types",
         "outDir": "./build",
         "noEmit": false,
+        "emitDeclarationOnly": true,
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,

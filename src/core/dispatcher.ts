@@ -120,6 +120,8 @@ class Dispatcher extends EventEmitter {
 
 export const dispatcher = new Dispatcher()
 
-export const events = {
-    on: dispatcher.on.bind(dispatcher),
+class Events {
+    on = dispatcher.on.bind(dispatcher)
 }
+
+export const events = new Events()
