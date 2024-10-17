@@ -1,6 +1,7 @@
 import { hexToRgbaInt, rgbaIntToHex } from "@/utils/miscellaneous"
 import { Vector3 } from "@/core/vector3"
-import type { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from "@/utils/enums"
+import type { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "@/utils/enums"
+import { type EnumValue } from "@/utils/types"
 
 export const INVALID_STREAMER_ID = 0
 
@@ -369,13 +370,13 @@ class StreamerNatives {
         objectId: number,
         materialIndex: number,
         text: string,
-        materialSize: MaterialTextSizesEnum,
+        materialSize: EnumValue<typeof MATERIAL_TEXT_SIZES>,
         fontFace: string,
         fontSize: number,
         bold: boolean,
         fontColor: string,
         backColor: string,
-        textAlignment: MaterialTextAlignmentsEnum,
+        textAlignment: EnumValue<typeof MATERIAL_TEXT_ALIGNMENTS>,
     ) {
         samp.callNative(
             "SetDynamicObjectMaterialText",

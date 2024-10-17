@@ -1,8 +1,8 @@
-import type { TextDrawFontsEnum, TextDrawAlignmentsEnum } from "@/utils/enums"
 import { type Vector3 } from "../../core/vector3"
 import { nativeFunctions } from "@/wrapper"
 import { playerHandler, type Player } from "../player"
 import { SampEntity } from "@/core/samp-entity"
+import { TEXT_DRAW_ALIGNMENTS, TEXT_DRAW_FONTS, type TextDrawAlignment, type TextDrawFont } from "@/utils/enums"
 
 const INVALID_TEXTDRAW_ID = 0xffff
 
@@ -15,8 +15,8 @@ export class Textdraw extends SampEntity {
     private _textColor?: string
     private _boxColor?: string
     private _backgroundColor?: string
-    private _alignment?: TextDrawAlignmentsEnum
-    private _font?: TextDrawFontsEnum
+    private _alignment?: TextDrawAlignment
+    private _font?: TextDrawFont
     private _letterSize?: { width: number; height: number }
     private _textSize?: { width: number; height: number }
     private _outlineSize?: number
@@ -35,8 +35,8 @@ export class Textdraw extends SampEntity {
         textColor?: string,
         boxColor?: string,
         backgroundColor?: string,
-        alignment?: TextDrawAlignmentsEnum,
-        font?: TextDrawFontsEnum,
+        alignment?: TextDrawAlignment,
+        font?: TextDrawFont,
         letterSize?: { width: number; height: number },
         textSize?: { width: number; height: number },
         outlineSize?: number,
@@ -140,13 +140,13 @@ export class Textdraw extends SampEntity {
         return this._textSize
     }
 
-    set alignment(value: TextDrawAlignmentsEnum) {
+    set alignment(value: TextDrawAlignment) {
         this._alignment = value
-        nativeFunctions.textDrawAlignment(this.sampId, value)
+        nativeFunctions.textDrawAlignment(this.sampId, TEXT_DRAW_ALIGNMENTS[value])
         this.reshowForAllPlayers()
     }
 
-    get alignment(): TextDrawAlignmentsEnum | undefined {
+    get alignment(): TextDrawAlignment | undefined {
         return this._alignment
     }
 
@@ -210,13 +210,13 @@ export class Textdraw extends SampEntity {
         return this._backgroundColor
     }
 
-    set font(value: TextDrawFontsEnum) {
+    set font(value: TextDrawFont) {
         this._font = value
-        nativeFunctions.textDrawFont(this.sampId, value)
+        nativeFunctions.textDrawFont(this.sampId, TEXT_DRAW_FONTS[value])
         this.reshowForAllPlayers()
     }
 
-    get font(): TextDrawFontsEnum | undefined {
+    get font(): TextDrawFont | undefined {
         return this._font
     }
 

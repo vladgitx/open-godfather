@@ -1,6 +1,6 @@
 import { streamerNatives } from "@/wrapper/streamer"
 import { StreamerEntity } from "../../core/streamer-entity"
-import { MaterialTextAlignmentsEnum, MaterialTextSizesEnum } from "@/utils/enums"
+import { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES, type MaterialTextAlignment, type MaterialTextSize } from "@/utils/enums"
 
 export class MapObject extends StreamerEntity {
     private materialTextures = new Map<number, { model: number; textureLibrary?: string; textureName?: string; color?: string }>()
@@ -9,13 +9,13 @@ export class MapObject extends StreamerEntity {
         number,
         {
             text: string
-            size: MaterialTextSizesEnum
+            size: MaterialTextSize
             fontFace: string
             fontSize: number
             bold: boolean
             fontColor: string
             backColor: string
-            textAlignment: MaterialTextAlignmentsEnum
+            textAlignment: MaterialTextAlignment
         }
     >()
 
@@ -48,13 +48,13 @@ export class MapObject extends StreamerEntity {
     setMaterialText(
         index: number,
         text: string,
-        size: MaterialTextSizesEnum = MaterialTextSizesEnum._256x128,
+        size: MaterialTextSize = "256x128",
         fontFace = "Arial",
         fontSize = 24,
         bold = true,
         fontColor = "FFFFFF",
         backColor = "",
-        textAlignment: MaterialTextAlignmentsEnum = MaterialTextAlignmentsEnum.Left,
+        textAlignment: MaterialTextAlignment = "left",
     ) {
         this.materialTexts.set(index, { text, size, fontFace, fontSize, bold, fontColor, backColor, textAlignment })
 
@@ -62,13 +62,13 @@ export class MapObject extends StreamerEntity {
             this.streamerId,
             index,
             text,
-            size,
+            MATERIAL_TEXT_SIZES[size],
             fontFace,
             fontSize,
             bold,
             fontColor,
             backColor,
-            textAlignment,
+            MATERIAL_TEXT_ALIGNMENTS[textAlignment],
         )
     }
 

@@ -1,9 +1,9 @@
-import { type PlayerBonesEnum } from "@/utils/enums"
 import { nativeFunctions } from "@/wrapper"
 import { Vector3 } from "../../../core/vector3"
 import { type Player } from "../entity"
 import { PlayerAttachedObject } from "./entity"
 import { EntityPromises } from "@/core/base-entity"
+import { PLAYER_BONES, type PlayerBone } from "@/utils/enums"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
 
@@ -31,7 +31,7 @@ export class PlayerAttachedObjects {
 
     new(
         model: number,
-        bone: PlayerBonesEnum,
+        bone: PlayerBone,
         offset?: Vector3,
         rotation?: Vector3,
         scale?: Vector3,
@@ -48,7 +48,7 @@ export class PlayerAttachedObjects {
             this.player.sampId,
             slot,
             model,
-            bone,
+            PLAYER_BONES[bone],
             offset?.x,
             offset?.y,
             offset?.z,

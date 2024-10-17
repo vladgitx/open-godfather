@@ -1,19 +1,20 @@
-import { type WeaponSkillsEnum, WeaponSlotsEnum, WeaponsEnum } from "@/utils/enums"
 import { nativeFunctions } from "@/wrapper"
 import { type Player } from "../entity"
+import { type Weapon, WEAPON_SKILLS, WEAPON_SLOTS, WEAPONS, type WeaponSkill, type WeaponSlot } from "@/utils/enums"
+import { getEnumKeyByValue, typedObjectKeys } from "@/utils/miscellaneous"
 
 export class PlayerWeapons {
     constructor(private player: Player) {}
 
-    setSkill(weapon: WeaponSkillsEnum, level: number) {
-        return nativeFunctions.setPlayerSkillLevel(this.player.sampId, weapon, level)
+    setSkill(weapon: WeaponSkill, level: number) {
+        return nativeFunctions.setPlayerSkillLevel(this.player.sampId, WEAPON_SKILLS[weapon], level)
     }
 
-    add(weapon: WeaponsEnum, ammo: number) {
-        return nativeFunctions.givePlayerWeapon(this.player.sampId, weapon, ammo)
+    add(weapon: Weapon, ammo: number) {
+        return nativeFunctions.givePlayerWeapon(this.player.sampId, WEAPONS[weapon], ammo)
     }
 
-    remove(weapon: WeaponsEnum) {
+    remove(weapon: Weapon) {
         const weapons = this.all
         const holding = this.holding
 
@@ -28,7 +29,7 @@ export class PlayerWeapons {
         if (holding !== weapon) {
             this.holding = holding
         } else {
-            this.holding = WeaponsEnum.Fist
+            this.holding = "fist"
         }
     }
 
@@ -36,24 +37,28 @@ export class PlayerWeapons {
         return nativeFunctions.resetPlayerWeapons(this.player.sampId)
     }
 
-    at(slot: WeaponSlotsEnum) {
-        return nativeFunctions.getPlayerWeaponData(this.player.sampId, slot)
+    at(slot: WeaponSlot) {
+        const data = nativeFunctions.getPlayerWeaponData(this.player.sampId, WEAPON_SLOTS[slot])
+
+        return data ? { model: getEnumKeyByValue(WEAPONS, data.model)!, ammo: data.ammo } : undefined
     }
 
-    set holding(weapon: WeaponsEnum) {
-        nativeFunctions.setPlayerArmedWeapon(this.player.sampId, weapon)
+    set holding(weapon: Weapon) {
+        nativeFunctions.setPlayerArmedWeapon(this.player.sampId, WEAPONS[weapon])
     }
 
     get holding() {
-        return nativeFunctions.getPlayerWeapon(this.player.sampId)
+        return getEnumKeyByValue(WEAPONS, nativeFunctions.getPlayerWeapon(this.player.sampId)) ?? "fist"
     }
 
     get all() {
-        const weapons: { model: WeaponsEnum; ammo: number }[] = []
+        const weapons: { model: Weapon; ammo: number }[] = []
 
-        const values = Object.values(WeaponSlotsEnum).filter((v) => !isNaN(Number(v)))
-        for (const value of values) {
-            const weapon = this.at(value as WeaponSlotsEnum)
+        const weaponSlots = typedObjectKeys(WEAPON_SLOTS)
+
+        for (const weaponSlot of weaponSlots) {
+            const weapon = this.at(weaponSlot)
+
             if (weapon) {
                 weapons.push(weapon)
             }

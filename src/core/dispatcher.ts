@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { type Player } from "../components/player"
-import type { BodyPartsEnum, KickReasonsEnum, PlayerStatesEnum, WeaponsEnum } from "@/utils/enums"
 import { type Command } from "../components/command"
 import { type Vehicle } from "../components/vehicle"
 import { type Vector3 } from "./vector3"
@@ -9,6 +8,7 @@ import EventEmitter from "events"
 import { type Pickup } from "../components/pickup"
 import { type Entity } from "./base-entity"
 import { type Checkpoint } from "../components/checkpoint"
+import type { BodyPart, KickReason, PlayerState, Weapon } from "@/utils/enums"
 
 interface ServerEvents {
     init: []
@@ -17,19 +17,19 @@ interface ServerEvents {
 
 interface PlayerEvents {
     playerConnect: [Player]
-    playerDisconnect: [Player, KickReasonsEnum]
+    playerDisconnect: [Player, KickReason]
     playerCommand: [Player, string, Command | undefined, () => void | Promise<void>]
     playerSpawn: [Player]
     playerFirstSpawn: [Player]
     playerText: [Player, string]
-    playerStateChange: [Player, PlayerStatesEnum, PlayerStatesEnum]
+    playerStateChange: [Player, PlayerState, PlayerState]
     playerEnterVehicle: [Player, Vehicle]
     playerExitVehicle: [Player, Vehicle | undefined]
     playerStartEnterVehicle: [Player, Vehicle, boolean]
     playerStartExitVehicle: [Player, Vehicle]
-    playerDamage: [Player, Player | undefined, number, WeaponsEnum, BodyPartsEnum]
-    playerDeath: [Player, Player | undefined, WeaponsEnum]
-    playerShoot: [Player, WeaponsEnum, Player | Vehicle | undefined, Vector3]
+    playerDamage: [Player, Player | undefined, number, Weapon, BodyPart]
+    playerDeath: [Player, Player | undefined, Weapon]
+    playerShoot: [Player, Weapon, Player | Vehicle | undefined, Vector3]
     playerPickUpPickup: [Player, Pickup]
     playerChangeVehiclePaintjob: [Player, Vehicle, number | undefined]
     playerExitObjectEditMode: [Player]

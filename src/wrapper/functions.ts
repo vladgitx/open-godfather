@@ -1,16 +1,16 @@
 import { hexToRgbaInt } from "@/utils/miscellaneous"
-import {
-    WeaponsEnum,
-    type PlayerStatesEnum,
-    type DialogStylesEnum,
-    type WeaponSkillsEnum,
-    type SpecialActionsEnum,
-    VehicleSeatsEnum,
-    CameraModesEnum,
-    WeaponSlotsEnum,
-    type CameraCutStylesEnum,
-} from "../utils/enums"
 import { Vector3 } from "../core/vector3"
+import {
+    type CAMERA_CUT_STYLES,
+    CAMERA_MODES,
+    type DIALOG_STYLES,
+    type SPECIAL_ACTIONS,
+    VEHICLE_SEATS,
+    type WEAPON_SKILLS,
+    WEAPON_SLOTS,
+    WEAPONS,
+} from "@/utils/enums"
+import { type EnumValue } from "@/utils/types"
 
 export const INVALID_PLAYER_ID = 0xffff
 export const INVALID_VEHICLE_ID = 0xffff
@@ -67,11 +67,23 @@ class NativeFunctions {
         }
     }
 
-    interpolateCameraPos = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStylesEnum): number => {
+    interpolateCameraPos = (
+        playerid: number,
+        from: Vector3,
+        to: Vector3,
+        time: number,
+        cut: EnumValue<typeof CAMERA_CUT_STYLES>,
+    ): number => {
         return samp.callNative("InterpolateCameraPos", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
-    interpolateCameraLookAt = (playerid: number, from: Vector3, to: Vector3, time: number, cut: CameraCutStylesEnum): number => {
+    interpolateCameraLookAt = (
+        playerid: number,
+        from: Vector3,
+        to: Vector3,
+        time: number,
+        cut: EnumValue<typeof CAMERA_CUT_STYLES>,
+    ): number => {
         return samp.callNative("InterpolateCameraLookAt", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
@@ -139,10 +151,11 @@ class NativeFunctions {
         return new Vector3(res[0], res[1], res[2])
     }
 
-    getWeaponName = (weaponId: WeaponsEnum): string => {
-        if (weaponId < WeaponsEnum.Fist || weaponId > WeaponsEnum.Collision) {
+    getWeaponName = (weaponId: EnumValue<typeof WEAPONS>): string => {
+        if (weaponId < WEAPONS.fist || weaponId > WEAPONS.collision) {
             return "invalid_weapon"
         }
+
         return samp.callNative("GetWeaponName", "iSi", weaponId, 32)
     }
 
@@ -150,7 +163,7 @@ class NativeFunctions {
         return samp.callNative("SetVehicleVelocity", "ifff", vehicleId, velocity.x, velocity.y, velocity.z) === 1
     }
 
-    setPlayerSkillLevel = (playerId: number, skillType: WeaponSkillsEnum, level: number): boolean => {
+    setPlayerSkillLevel = (playerId: number, skillType: EnumValue<typeof WEAPON_SKILLS>, level: number): boolean => {
         return samp.callNative("SetPlayerSkillLevel", "iii", playerId, skillType, level) === 1
     }
 
@@ -273,7 +286,7 @@ class NativeFunctions {
     showPlayerDialog = (
         playerId: number,
         dialogId: number,
-        styleId: DialogStylesEnum,
+        styleId: EnumValue<typeof DIALOG_STYLES>,
         caption: string,
         info: string,
         button1: string,
@@ -316,13 +329,13 @@ class NativeFunctions {
         skinId: number,
         position: Vector3,
         rotation: number,
-        weapons: { weapon: WeaponsEnum; ammo: number }[] = [],
+        weapons: { weapon: EnumValue<typeof WEAPONS>; ammo: number }[] = [],
     ): void {
-        const weapon1 = weapons[0]?.weapon ?? WeaponsEnum.Fist
+        const weapon1 = weapons[0]?.weapon ?? WEAPONS.fist
         const weapon1ammo = weapons[0]?.ammo ?? 0
-        const weapon2 = weapons[1]?.weapon ?? WeaponsEnum.Fist
+        const weapon2 = weapons[1]?.weapon ?? WEAPONS.fist
         const weapon2ammo = weapons[1]?.ammo ?? 0
-        const weapon3 = weapons[2]?.weapon ?? WeaponsEnum.Fist
+        const weapon3 = weapons[2]?.weapon ?? WEAPONS.fist
         const weapon3ammo = weapons[2]?.ammo ?? 0
 
         samp.callNative(
@@ -434,19 +447,21 @@ class NativeFunctions {
         }
     }
 
-    getPlayerVehicleSeat = (playerId: number): VehicleSeatsEnum | undefined => {
+    getPlayerVehicleSeat = (playerId: number): number | undefined => {
         const res = samp.callNative("GetPlayerVehicleSeat", "i", playerId)
+
         if (res === -1) {
             return undefined
         }
+
         return res
     }
 
-    getPlayerSpecialAction = (playerId: number): SpecialActionsEnum => {
+    getPlayerSpecialAction = (playerId: number): number => {
         return samp.callNative("GetPlayerSpecialAction", "i", playerId)
     }
 
-    setPlayerSpecialAction = (playerId: number, actionId: SpecialActionsEnum): boolean => {
+    setPlayerSpecialAction = (playerId: number, actionId: EnumValue<typeof SPECIAL_ACTIONS>): boolean => {
         return samp.callNative("SetPlayerSpecialAction", "ii", playerId, actionId) === 1
     }
 
@@ -483,14 +498,15 @@ class NativeFunctions {
         return samp.callNative("ResetPlayerMoney", "i", playerId) === 1
     }
 
-    givePlayerWeapon = (playerId: number, weaponId: WeaponsEnum, ammo: number): boolean => {
+    givePlayerWeapon = (playerId: number, weaponId: EnumValue<typeof WEAPONS>, ammo: number): boolean => {
         return samp.callNative("GivePlayerWeapon", "iii", playerId, weaponId, ammo) === 1
     }
 
-    getPlayerWeapon = (playerId: number): WeaponsEnum => {
+    getPlayerWeapon = (playerId: number): number => {
         if (!this.isPlayerConnected(playerId)) {
-            return WeaponsEnum.Fist
+            return WEAPONS.fist
         }
+
         return samp.callNative("GetPlayerWeapon", "i", playerId)
     }
 
@@ -498,7 +514,7 @@ class NativeFunctions {
         return samp.callNative("ResetPlayerWeapons", "i", playerId) === 1
     }
 
-    setPlayerArmedWeapon = (playerId: number, weaponId: WeaponsEnum) => {
+    setPlayerArmedWeapon = (playerId: number, weaponId: EnumValue<typeof WEAPONS>) => {
         return samp.callNative("SetPlayerArmedWeapon", "ii", playerId, weaponId) === 1
     }
 
@@ -556,11 +572,11 @@ class NativeFunctions {
         return samp.callNative("GetPlayerArmour", "iF", playerId)
     }
 
-    putPlayerInVehicle(playerId: number, vehicleId: number, seat = VehicleSeatsEnum.Driver): boolean {
+    putPlayerInVehicle(playerId: number, vehicleId: number, seat: EnumValue<typeof VEHICLE_SEATS> = VEHICLE_SEATS.driver): boolean {
         return samp.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seat) === 1
     }
 
-    getPlayerWeaponData = (playerId: number, slot: WeaponSlotsEnum): { model: WeaponsEnum; ammo: number } | undefined => {
+    getPlayerWeaponData = (playerId: number, slot: EnumValue<typeof WEAPON_SLOTS>): { model: number; ammo: number } | undefined => {
         if (!this.isPlayerConnected(playerId)) {
             return undefined
         }
@@ -571,7 +587,7 @@ class NativeFunctions {
             return undefined
         }
 
-        if (slot !== WeaponSlotsEnum.Unarmed && res[0] === 0) {
+        if (slot !== WEAPON_SLOTS.unarmed && res[0] === 0) {
             return undefined
         }
 
@@ -590,10 +606,11 @@ class NativeFunctions {
         return vehicleId
     }
 
-    getPlayerCameraMode = (playerId: number): CameraModesEnum => {
+    getPlayerCameraMode = (playerId: number): number => {
         if (!this.isPlayerConnected(playerId)) {
-            return CameraModesEnum.FollowPed
+            return CAMERA_MODES["follow-ped"]
         }
+
         return samp.callNative("GetPlayerCameraMode", "i", playerId)
     }
 
@@ -601,7 +618,7 @@ class NativeFunctions {
         return samp.callNative("SetPlayerCameraPos", "ifff", playerid, position.x, position.y, position.z)
     }
 
-    setPlayerCameraLookAt = (playerid: number, position: Vector3, cut: CameraCutStylesEnum): number => {
+    setPlayerCameraLookAt = (playerid: number, position: Vector3, cut: EnumValue<typeof CAMERA_CUT_STYLES>): number => {
         return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerid, position.x, position.y, position.z, cut)
     }
 
@@ -614,10 +631,11 @@ class NativeFunctions {
         return new Vector3(pos[0], pos[1], pos[2])
     }
 
-    getPlayerState(playerId: number): PlayerStatesEnum | undefined {
+    getPlayerState(playerId: number): number | undefined {
         if (!this.isPlayerConnected(playerId)) {
             return undefined
         }
+
         return samp.callNative("GetPlayerState", "i", playerId)
     }
 

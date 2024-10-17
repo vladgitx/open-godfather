@@ -1,14 +1,14 @@
-import { type PlayerBonesEnum } from "@/utils/enums"
 import { type Vector3 } from "../../../core/vector3"
 import { nativeFunctions } from "@/wrapper"
 import { type Player } from "../entity"
+import { PLAYER_BONES, type PlayerBone } from "@/utils/enums"
 
 export function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
     nativeFunctions.setPlayerAttachedObject(
         player.sampId,
         data.slot,
         data.model,
-        data.bone,
+        PLAYER_BONES[data.bone],
         data.offset.x,
         data.offset.y,
         data.offset.z,
@@ -28,7 +28,7 @@ export const attachedObjInternalRotation = new WeakMap<PlayerAttachedObject, Vec
 export const attachedObjInternalScale = new WeakMap<PlayerAttachedObject, Vector3>()
 
 export class PlayerAttachedObject {
-    private _bone: PlayerBonesEnum
+    private _bone: PlayerBone
     private _firstMaterialColor: string
     private _secondMaterialColor: string
 
@@ -36,7 +36,7 @@ export class PlayerAttachedObject {
         private player: Player,
         readonly slot: number,
         readonly model: number,
-        bone: PlayerBonesEnum,
+        bone: PlayerBone,
         offset: Vector3,
         rotation: Vector3,
         scale: Vector3,
@@ -70,7 +70,7 @@ export class PlayerAttachedObject {
         return this._secondMaterialColor
     }
 
-    set bone(value: PlayerBonesEnum) {
+    set bone(value: PlayerBone) {
         this._bone = value
         setPlayerAttachedObject(this.player, this)
     }

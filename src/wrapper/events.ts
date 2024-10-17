@@ -1,5 +1,3 @@
-import { type PlayerBonesEnum } from "@/utils/enums"
-
 class NativeEvents {
     onPlayerKeyStateChange(callback: (playerid: number, newkeys: number, oldkeys: number) => void) {
         samp.on("OnPlayerKeyStateChange", callback)
@@ -77,7 +75,7 @@ class NativeEvents {
             response: 0 | 1,
             index: number,
             model: number,
-            bone: PlayerBonesEnum,
+            bone: number,
             offX: number,
             offY: number,
             offZ: number,

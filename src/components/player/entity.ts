@@ -1,4 +1,3 @@
-import { PlayerStatesEnum, type SpecialActionsEnum, VehicleSeatsEnum, CameraCutStylesEnum } from "@/utils/enums"
 import { nativeFunctions } from "@/wrapper"
 import { Vector3 } from "../../core/vector3"
 import { type Vehicle, vehicleHandler } from "../vehicle"
@@ -11,6 +10,16 @@ import { dispatcher } from "../../core/dispatcher"
 import { type PlayerEventMap } from "./@events/entity-callbacks"
 import { INVALID_PLAYER_ID } from "@/wrapper/functions"
 import { SampEntity } from "@/core/samp-entity"
+import {
+    CAMERA_CUT_STYLES,
+    type CameraCutStyle,
+    PLAYER_STATES,
+    type PlayerState,
+    SPECIAL_ACTIONS,
+    type SpecialAction,
+    type VehicleSeat,
+} from "@/utils/enums"
+import { getEnumKeyByValue } from "@/utils/miscellaneous"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
@@ -52,7 +61,7 @@ export class Player extends SampEntity<PlayerEventMap> {
 
         if (this.spectating) {
             this.spectating = false
-        } else if (this.state === PlayerStatesEnum.Wasted) {
+        } else if (this.state === "wasted") {
             // If in class selection
             nativeFunctions.spawnPlayer(this.sampId)
         }
@@ -75,16 +84,16 @@ export class Player extends SampEntity<PlayerEventMap> {
         nativeFunctions.setCameraBehindPlayer(this.sampId)
     }
 
-    setCameraLookAt(position: Vector3, cutStyle: CameraCutStylesEnum = CameraCutStylesEnum.Cut) {
-        nativeFunctions.setPlayerCameraLookAt(this.sampId, position, cutStyle)
+    setCameraLookAt(position: Vector3, cutStyle: CameraCutStyle = "cut") {
+        nativeFunctions.setPlayerCameraLookAt(this.sampId, position, CAMERA_CUT_STYLES[cutStyle])
     }
 
-    interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStylesEnum = CameraCutStylesEnum.Move) {
-        nativeFunctions.interpolateCameraPos(this.sampId, from, to, time, cutStyle)
+    interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "move") {
+        nativeFunctions.interpolateCameraPos(this.sampId, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 
-    interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStylesEnum = CameraCutStylesEnum.Move) {
-        nativeFunctions.interpolateCameraLookAt(this.sampId, from, to, time, cutStyle)
+    interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "move") {
+        nativeFunctions.interpolateCameraLookAt(this.sampId, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 
     set spectating(spectating: boolean) {
@@ -112,12 +121,12 @@ export class Player extends SampEntity<PlayerEventMap> {
         return nativeFunctions.getPlayerCameraPos(this.sampId)
     }
 
-    set specialAction(action: SpecialActionsEnum) {
-        nativeFunctions.setPlayerSpecialAction(this.sampId, action)
+    set specialAction(action: SpecialAction) {
+        nativeFunctions.setPlayerSpecialAction(this.sampId, SPECIAL_ACTIONS[action])
     }
 
     get specialAction() {
-        return nativeFunctions.getPlayerSpecialAction(this.sampId)
+        return getEnumKeyByValue(SPECIAL_ACTIONS, nativeFunctions.getPlayerSpecialAction(this.sampId))!
     }
 
     set skin(skin: number) {
@@ -227,18 +236,20 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     get spawned() {
-        const state = this.state
+        const { state } = this
+
         if (state === undefined) {
             return undefined
         }
-        return state !== PlayerStatesEnum.Wasted && state !== PlayerStatesEnum.Spectating && state !== PlayerStatesEnum.None
+
+        return state !== "wasted" && state !== "spectating" && state !== "none"
     }
 
-    get state(): PlayerStatesEnum | undefined {
-        return nativeFunctions.getPlayerState(this.sampId)
+    get state(): PlayerState | undefined {
+        return getEnumKeyByValue(PLAYER_STATES, nativeFunctions.getPlayerState(this.sampId))
     }
 
-    putIntoVehicle(vehicle: Vehicle, seat = VehicleSeatsEnum.Driver) {
+    putIntoVehicle(vehicle: Vehicle, seat: VehicleSeat = "driver") {
         return putInVehicleWithEvent(this, vehicle, seat)
     }
 

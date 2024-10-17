@@ -1,10 +1,11 @@
 import { nativeEvents, nativeFunctions } from "@/wrapper"
-import { type BodyPartsEnum, HitTypesEnum, type PlayerStatesEnum, type WeaponsEnum } from "@/utils/enums"
 import { Vector3 } from "../../../core/vector3"
 import { dispatcher } from "@/core/dispatcher"
 import { playerHandler } from "../handler"
 import { vehicleHandler } from "@/components/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
+import { BODY_PARTS, HIT_TYPES, PLAYER_STATES, WEAPONS } from "@/utils/enums"
+import { getEnumKeyByValue } from "@/utils/miscellaneous"
 
 nativeEvents.onPlayerKeyStateChange((playerId, newKeys, oldKeys) => {
     const player = playerHandler.atSampId(playerId)
@@ -53,11 +54,16 @@ nativeEvents.onPlayerText((playerId: number, text: string) => {
     return 0
 })
 
-nativeEvents.onPlayerStateChange((playerId: number, newState: PlayerStatesEnum, oldState: PlayerStatesEnum) => {
+nativeEvents.onPlayerStateChange((playerId: number, newState: number, oldState: number) => {
     const player = playerHandler.atSampId(playerId)
 
     if (player !== undefined) {
-        dispatcher.emit("playerStateChange", player, newState, oldState)
+        dispatcher.emit(
+            "playerStateChange",
+            player,
+            getEnumKeyByValue(PLAYER_STATES, newState)!,
+            getEnumKeyByValue(PLAYER_STATES, oldState)!,
+        )
     }
 })
 
@@ -79,20 +85,28 @@ nativeEvents.onPlayerExitVehicle((playerId: number, vehicleId: number) => {
     }
 })
 
-nativeEvents.onPlayerDeath((playerId: number, killerId: number, weapon: WeaponsEnum) => {
+nativeEvents.onPlayerDeath((playerId: number, killerId: number, weapon: number) => {
     const player = playerHandler.atSampId(playerId)
 
     if (player) {
-        dispatcher.emit("playerDeath", player, playerHandler.atSampId(killerId), weapon)
+        dispatcher.emit("playerDeath", player, playerHandler.atSampId(killerId), getEnumKeyByValue(WEAPONS, weapon)!)
     }
 })
 
-nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: number, weapon: WeaponsEnum, bodyPart: BodyPartsEnum) => {
+nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: number, weapon: number, bodyPart: number) => {
     const player = playerHandler.atSampId(playerId)
 
     if (player) {
         const issuer = playerHandler.atSampId(issuerId)
-        const hasListeners = dispatcher.emit("playerDamage", player, issuer, amount, weapon, bodyPart)
+
+        const hasListeners = dispatcher.emit(
+            "playerDamage",
+            player,
+            issuer,
+            amount,
+            getEnumKeyByValue(WEAPONS, weapon)!,
+            getEnumKeyByValue(BODY_PARTS, bodyPart)!,
+        )
 
         if (!hasListeners && issuer) {
             // All players have the same team, so they can't damage each other
@@ -102,20 +116,18 @@ nativeEvents.onPlayerTakeDamage((playerId: number, issuerId: number, amount: num
     }
 })
 
-nativeEvents.onPlayerWeaponShot(
-    (playerId: number, weapon: WeaponsEnum, hitType: HitTypesEnum, hitId: number, fX: number, fY: number, fZ: number) => {
-        const player = playerHandler.atSampId(playerId)
+nativeEvents.onPlayerWeaponShot((playerId: number, weapon: number, hitType: number, hitId: number, fX: number, fY: number, fZ: number) => {
+    const player = playerHandler.atSampId(playerId)
 
-        if (player) {
-            const hitEntity =
-                hitType === HitTypesEnum.Player
-                    ? playerHandler.atSampId(hitId)
-                    : hitType === HitTypesEnum.Vehicle
-                      ? vehicleHandler.atSampId(hitId)
-                      : undefined
+    if (player) {
+        const hitEntity =
+            hitType === HIT_TYPES.player
+                ? playerHandler.atSampId(hitId)
+                : hitType === HIT_TYPES.vehicle
+                  ? vehicleHandler.atSampId(hitId)
+                  : undefined
 
-            dispatcher.emit("playerShoot", player, weapon, hitEntity, new Vector3(fX, fY, fZ))
-        }
-        return 1
-    },
-)
+        dispatcher.emit("playerShoot", player, getEnumKeyByValue(WEAPONS, weapon)!, hitEntity, new Vector3(fX, fY, fZ))
+    }
+    return 1
+})

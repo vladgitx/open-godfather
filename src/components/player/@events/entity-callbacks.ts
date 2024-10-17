@@ -1,22 +1,22 @@
 import type { Vehicle } from "@/components/vehicle"
-import type { BodyPartsEnum, PlayerStatesEnum, WeaponsEnum } from "@/utils/enums"
 import type { Player } from "../entity"
 import type { Pickup } from "@/components/pickup"
 import type { Checkpoint } from "@/components/checkpoint"
 import { dispatcher } from "@/core/dispatcher"
 import { EventCallbacks } from "@/core/event-callbacks"
 import { type Vector3 } from "@/core/vector3"
+import type { BodyPart, PlayerState, Weapon } from "@/utils/enums"
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type PlayerEventMap = {
-    stateChange: [PlayerStatesEnum, PlayerStatesEnum]
+    stateChange: [PlayerState, PlayerState]
     enterVehicle: [Vehicle]
     exitVehicle: [Vehicle | undefined]
     startEnterVehicle: [Vehicle, boolean]
     startExitVehicle: [Vehicle]
-    damage: [Player | undefined, number, WeaponsEnum, BodyPartsEnum]
-    death: [Player | undefined, WeaponsEnum]
-    shoot: [WeaponsEnum, Player | Vehicle | undefined, Vector3]
+    damage: [Player | undefined, number, Weapon, BodyPart]
+    death: [Player | undefined, Weapon]
+    shoot: [Weapon, Player | Vehicle | undefined, Vector3]
     pickUpPickup: [Pickup]
     changeVehiclePaintjob: [Vehicle, number | undefined]
     exitObjectEditMode: [Player]

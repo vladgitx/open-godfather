@@ -1,254 +1,248 @@
-export enum WeaponsEnum {
-    Fist = 0,
-    BrassKnuckles = 1,
-    GolfClub = 2,
-    Nightstick = 3,
-    Knife = 4,
-    BaseballBat = 5,
-    Shovel = 6,
-    PoolCue = 7,
-    Katana = 8,
-    Chainsaw = 9,
-    PurpleDildo = 10,
-    Dildo = 11,
-    Vibrator = 12,
-    SilverVibrator = 13,
-    Flower = 14,
-    Cane = 15,
-    Grenade = 16,
-    TearGas = 17,
-    MolotovCocktail = 18,
-    Colt45 = 22,
-    SilencedColt45 = 23,
-    DesertEagle = 24,
-    Shotgun = 25,
-    SawnoffShotgun = 26,
-    CombatShotgun = 27,
-    Uzi = 28,
-    MP5 = 29,
-    AK47 = 30,
-    M4 = 31,
-    Tec9 = 32,
-    CountryRifle = 33,
-    Sniper = 34,
-    RocketLauncher = 35,
-    HeatSeeker = 36,
-    Flamethrower = 37,
-    Minigun = 38,
-    Satchel = 39,
-    Detonator = 40,
-    SprayCan = 41,
-    FireExtinguisher = 42,
-    Camera = 43,
-    NightVisionGoggles = 44,
-    ThermalGoggles = 45,
-    Parachute = 46,
-    Vehicle = 49,
-    HelicopterBlades = 50,
-    Explosion = 51,
-    Drown = 53,
-    Collision = 54,
+export const DIALOG_STYLES = {
+    "message-box": 0,
+    input: 1,
+    list: 2,
+    password: 3,
+    tablist: 4,
+    "tablist-headers": 5,
+} as const
+
+export type DialogStyle = keyof typeof DIALOG_STYLES
+
+export const WEAPONS = {
+    fist: 0,
+    "brass-knuckles": 1,
+    "golf-club": 2,
+    nightstick: 3,
+    knife: 4,
+    "baseball-bat": 5,
+    shovel: 6,
+    "pool-cue": 7,
+    katana: 8,
+    chainsaw: 9,
+    "purple-dildo": 10,
+    dildo: 11,
+    vibrator: 12,
+    "silver-vibrator": 13,
+    flower: 14,
+    cane: 15,
+    grenade: 16,
+    "tear-gas": 17,
+    "molotov-cocktail": 18,
+    colt45: 22,
+    "silenced-colt45": 23,
+    "desert-eagle": 24,
+    shotgun: 25,
+    "sawnoff-shotgun": 26,
+    "combat-shotgun": 27,
+    uzi: 28,
+    mp5: 29,
+    ak47: 30,
+    m4: 31,
+    tec9: 32,
+    "country-rifle": 33,
+    sniper: 34,
+    "rocket-launcher": 35,
+    "heat-seeker": 36,
+    flamethrower: 37,
+    minigun: 38,
+    satchel: 39,
+    detonator: 40,
+    spraycan: 41,
+    "fire-extinguisher": 42,
+    camera: 43,
+    "night-vision-goggles": 44,
+    "thermal-goggles": 45,
+    parachute: 46,
+    vehicle: 49,
+    "helicopter-blades": 50,
+    explosion: 51,
+    drown: 53,
+    collision: 54,
+} as const
+
+export type Weapon = keyof typeof WEAPONS
+
+export const BODY_PARTS = {
+    torso: 3,
+    groin: 4,
+    "left-arm": 5,
+    "right-arm": 6,
+    "left-leg": 7,
+    "right-leg": 8,
+    head: 9,
 }
 
-export enum DialogStylesEnum {
-    MessageBox = 0,
-    Input = 1,
-    List = 2,
-    Password = 3,
-    Tablist = 4,
-    TablistHeaders = 5,
-}
+export type BodyPart = keyof typeof BODY_PARTS
 
-export enum BodyPartsEnum {
-    Torso = 3,
-    Groin = 4,
-    LeftArm = 5,
-    RightArm = 6,
-    LeftLeg = 7,
-    RightLeg = 8,
-    Head = 9,
-}
+export const CAMERA_CUT_STYLES = { move: 1, cut: 2 } as const
 
-export enum CameraCutStylesEnum {
-    Move = 1,
-    Cut = 2,
-}
+export type CameraCutStyle = keyof typeof CAMERA_CUT_STYLES
 
-export enum PlayerStatesEnum {
-    None = 0,
-    OnFoot = 1,
-    Driver = 2,
-    Passenger = 3,
-    ExitVehicle = 4,
-    EnterVehicleDriver = 5,
-    EnterVehiclePassenger = 6,
-    Wasted = 7,
-    Spawned = 8,
-    Spectating = 9,
-}
+export const PLAYER_STATES = {
+    none: 0,
+    "on-foot": 1,
+    driver: 2,
+    passenger: 3,
+    "exit-vehicle": 4,
+    "enter-vehicle-driver": 5,
+    "enter-vehicle-passenger": 6,
+    wasted: 7,
+    spawned: 8,
+    spectating: 9,
+} as const
 
-export enum PlayerBonesEnum {
-    Spine = 1,
-    Head = 2,
-    LeftUpperArm = 3,
-    RightUpperArm = 4,
-    LeftHand = 5,
-    RightHand = 6,
-    LeftThigh = 7,
-    RightThigh = 8,
-    LeftFoot = 9,
-    RightFoot = 10,
-    RightCalf = 11,
-    LeftCalf = 12,
-    LeftForearm = 13,
-    RightForearm = 14,
-    LeftClavicle = 15,
-    RightClavicle = 16,
-    Neck = 17,
-    Jaw = 18,
-}
+export type PlayerState = keyof typeof PLAYER_STATES
 
-export enum KickReasonsEnum {
-    Crash = 0,
-    Quit = 1,
-    Kick = 2,
-    Custom = 3,
-    ModeEnd = 4,
-}
+export const PLAYER_BONES = {
+    spine: 1,
+    head: 2,
+    "left-upper-arm": 3,
+    "right-upper-arm": 4,
+    "left-hand": 5,
+    "right-hand": 6,
+    "left-thigh": 7,
+    "right-thigh": 8,
+    "left-foot": 9,
+    "right-foot": 10,
+    "right-calf": 11,
+    "left-calf": 12,
+    "left-forearm": 13,
+    "right-forearm": 14,
+    "left-clavicle": 15,
+    "right-clavicle": 16,
+    neck: 17,
+    jaw: 18,
+} as const
 
-export enum SpecialActionsEnum {
-    None = 0,
-    Duck = 1,
-    UseJetpack = 2,
-    EnterVehicle = 3,
-    ExitVehicle = 4,
-    Dance1 = 5,
-    Dance2 = 6,
-    Dance3 = 7,
-    Dance4 = 8,
-    HandsUp = 10,
-    UseCellphone = 11,
-    Sitting = 12,
-    StopUseCellphone = 13,
-    DrinkBeer = 20,
-    SmokeCiggy = 21,
-    DrinkWine = 22,
-    DrinkSprunk = 23,
-    Cuffed = 24,
-    Carry = 25,
-    Pissing = 68,
-}
+export type PlayerBone = keyof typeof PLAYER_BONES
 
-export enum FightStylesEnum {
-    Normal = 4,
-    Boxing = 5,
-    KungFu = 6,
-    KneeHead = 7,
-    GrabKick = 15,
-    Elbow = 16,
-}
+export const KICK_REASONS = { crash: 0, quit: 1, kick: 2, custom: 3, "mode-end": 4 } as const
 
-export enum WeaponSkillsEnum {
-    Colt45 = 0,
-    SilencedColt45 = 1,
-    DesertEagle = 2,
-    Shotgun = 3,
-    SawnoffShotgun = 4,
-    CombatShotgun = 5,
-    Uzi = 6,
-    MP5 = 7,
-    AK47 = 8,
-    M4 = 9,
-    Sniper = 10,
-}
+export type KickReason = keyof typeof KICK_REASONS
 
-export enum VehicleSeatsEnum {
-    Driver = 0,
-    Passenger = 1,
-    RearLeft = 2,
-    RearRight = 3,
-}
+export const SPECIAL_ACTIONS = {
+    none: 0,
+    duck: 1,
+    "use-jetpack": 2,
+    "enter-vehicle": 3,
+    "exit-vehicle": 4,
+    dance1: 5,
+    dance2: 6,
+    dance3: 7,
+    dance4: 8,
+    "hands-up": 10,
+    "use-cellphone": 11,
+    sitting: 12,
+    "stop-use-cellphone": 13,
+    "drink-beer": 20,
+    "smoke-ciggy": 21,
+    "drink-wine": 22,
+    "drink-sprunk": 23,
+    cuffed: 24,
+    carry: 25,
+    pissing: 68,
+} as const
 
-export enum CameraModesEnum {
-    Train = 3,
-    FollowPed = 4,
-    SniperAiming = 7,
-    RocketLauncherAiming = 8,
-    Fixed = 15,
-    VehicleFront = 16,
-    FollowVehicle = 18,
-    FollowBoat = 22,
-    WeaponAiming = 46,
-    HeatSeekerAiming = 51,
-    OtherWeaponAiming = 53,
-    PassengerAiming = 55,
-    DwHeliChase = 56,
-    DwCamMan = 57,
-    DwBirdy = 58,
-    DwPlaneSpotter = 59,
-    DwPlaneCam1 = 62,
-    DwPlaneCam2 = 63,
-    DwPlaneCam3 = 64,
-}
+export type SpecialAction = keyof typeof SPECIAL_ACTIONS
 
-export enum WeaponSlotsEnum {
-    Unarmed = 0,
-    Melee = 1,
-    Pistol = 2,
-    Shotgun = 3,
-    MachineGun = 4,
-    AssaultRifle = 5,
-    LongRifle = 6,
-    Artillery = 7,
-    Explosives = 8,
-    Equipment = 9,
-    Gift = 10,
-    Gadget = 11,
-    Detonator = 12,
-}
+export const FIGHT_STYLES = { normal: 4, boxing: 5, "kung-fu": 6, "knee-head": 7, "grab-kick": 15, elbow: 16 } as const
 
-export enum HitTypesEnum {
-    None = 0,
-    Player = 1,
-    Vehicle = 2,
-    Object = 3,
-    PlayerObject = 4,
-}
+export type FightStyle = keyof typeof FIGHT_STYLES
 
-export enum MaterialTextSizesEnum {
-    _32x32 = 10,
-    _64x32 = 20,
-    _64x64 = 30,
-    _128x32 = 40,
-    _128x64 = 50,
-    _128x128 = 60,
-    _256x32 = 70,
-    _256x64 = 80,
-    _256x128 = 90,
-    _256x256 = 100,
-    _512x64 = 110,
-    _512x128 = 120,
-    _512x256 = 130,
-    _512x512 = 140,
-}
+export const WEAPON_SKILLS = {
+    colt45: 0,
+    "silenced-colt45": 1,
+    "desert-eagle": 2,
+    shotgun: 3,
+    "sawnoff-shotgun": 4,
+    "combat-shotgun": 5,
+    uzi: 6,
+    mp5: 7,
+    ak47: 8,
+    m4: 9,
+    sniper: 10,
+} as const
 
-export enum MaterialTextAlignmentsEnum {
-    Left = 0,
-    Center = 1,
-    Right = 2,
-}
+export type WeaponSkill = keyof typeof WEAPON_SKILLS
 
-export enum TextDrawAlignmentsEnum {
-    Left = 0,
-    Center = 1,
-    Right = 2,
-}
+export const VEHICLE_SEATS = { driver: 0, passenger: 1, "rear-left": 2, "rear-right": 3 } as const
 
-export enum TextDrawFontsEnum {
-    Font_0 = 0,
-    Font_1 = 1,
-    Font_2 = 2,
-    Font_3 = 3,
-    Sprite = 4,
-    ModelPreview = 5,
-}
+export type VehicleSeat = keyof typeof VEHICLE_SEATS
+
+export const CAMERA_MODES = {
+    train: 3,
+    "follow-ped": 4,
+    "sniper-aiming": 7,
+    "rocket-launcher-aiming": 8,
+    fixed: 15,
+    "vehicle-front": 16,
+    "follow-vehicle": 18,
+    "follow-boat": 22,
+    "weapon-aiming": 46,
+    "heat-seeker-aiming": 51,
+    "other-weapon-aiming": 53,
+    "passenger-aiming": 55,
+    "dw-heli-chase": 56,
+    "dw-cam-man": 57,
+    "dw-birdy": 58,
+    "dw-plane-spotter": 59,
+    "dw-plane-cam1": 62,
+    "dw-plane-cam2": 63,
+    "dw-plane-cam3": 64,
+} as const
+
+export type CameraMode = keyof typeof CAMERA_MODES
+
+export const WEAPON_SLOTS = {
+    unarmed: 0,
+    melee: 1,
+    pistol: 2,
+    shotgun: 3,
+    "machine-gun": 4,
+    "assault-rifle": 5,
+    "long-rifle": 6,
+    artillery: 7,
+    explosives: 8,
+    equipment: 9,
+    gift: 10,
+    gadget: 11,
+    detonator: 12,
+} as const
+
+export type WeaponSlot = keyof typeof WEAPON_SLOTS
+
+export const HIT_TYPES = { none: 0, player: 1, vehicle: 2, object: 3, "player-object": 4 } as const
+
+export type HitType = keyof typeof HIT_TYPES
+
+export const MATERIAL_TEXT_SIZES = {
+    "32x32": 10,
+    "64x32": 20,
+    "64x64": 30,
+    "128x32": 40,
+    "128x64": 50,
+    "128x128": 60,
+    "256x32": 70,
+    "256x64": 80,
+    "256x128": 90,
+    "256x256": 100,
+    "512x64": 110,
+    "512x128": 120,
+    "512x256": 130,
+    "512x512": 140,
+} as const
+
+export type MaterialTextSize = keyof typeof MATERIAL_TEXT_SIZES
+
+export const MATERIAL_TEXT_ALIGNMENTS = { left: 0, center: 1, right: 2 } as const
+
+export type MaterialTextAlignment = keyof typeof MATERIAL_TEXT_ALIGNMENTS
+
+export const TEXT_DRAW_ALIGNMENTS = { left: 0, center: 1, right: 2 } as const
+
+export type TextDrawAlignment = keyof typeof TEXT_DRAW_ALIGNMENTS
+
+export const TEXT_DRAW_FONTS = { font0: 0, font1: 1, font2: 2, font3: 3, sprite: 4, "model-preview": 5 } as const
+
+export type TextDrawFont = keyof typeof TEXT_DRAW_FONTS
