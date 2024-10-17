@@ -94,6 +94,32 @@ class VehicleWindows {
     }
 }
 
+function setVehicleParamsFromData(
+    vehicle: Vehicle,
+    data: Partial<{
+        engine: boolean
+        lights: boolean
+        alarm: boolean
+        doors: boolean
+        bonnet: boolean
+        boot: boolean
+        objective: boolean
+    }>,
+) {
+    const params = nativeFunctions.getVehicleParamsEx(vehicle.sampId)
+
+    nativeFunctions.setVehicleParamsEx(
+        vehicle.sampId,
+        data.engine ?? params.engine === 1,
+        data.lights ?? params.lights === 1,
+        data.alarm ?? params.alarm === 1,
+        data.doors ?? params.doors === 1,
+        data.bonnet ?? params.bonnet === 1,
+        data.boot ?? params.boot === 1,
+        data.objective ?? params.objective === 1,
+    )
+}
+
 export class VehicleParams {
     readonly windows = new VehicleWindows(this.vehicle)
 
@@ -132,21 +158,11 @@ export class VehicleParams {
 
     set engine(value: "on" | "off") {
         const stateChanged = this._engine !== value
+
         this._engine = value
+        setVehicleParamsFromData(this.vehicle, { engine: value === "on" })
 
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            this._engine === "on",
-            params.lights,
-            params.alarm,
-            params.doors,
-            params.bonnet,
-            params.boot,
-            params.objective,
-        )
-
-        stateChanged && dispatcher.emit("vehicleEngineStateChange", this.vehicle, this._engine)
+        stateChanged && dispatcher.emit("vehicleEngineStateChange", this.vehicle, value)
     }
 
     get engine() {
@@ -155,18 +171,7 @@ export class VehicleParams {
 
     set lights(value: "on" | "off") {
         this._lights = value
-
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            params.engine,
-            this._lights === "on",
-            params.alarm,
-            params.doors,
-            params.bonnet,
-            params.boot,
-            params.objective,
-        )
+        setVehicleParamsFromData(this.vehicle, { lights: value === "on" })
     }
 
     get lights() {
@@ -175,18 +180,7 @@ export class VehicleParams {
 
     set alarm(value: "on" | "off") {
         this._alarm = value
-
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            params.engine,
-            params.lights,
-            this._alarm === "on",
-            params.doors,
-            params.bonnet,
-            params.boot,
-            params.objective,
-        )
+        setVehicleParamsFromData(this.vehicle, { alarm: value === "on" })
     }
 
     get alarm() {
@@ -195,18 +189,7 @@ export class VehicleParams {
 
     set doors(value: "locked" | "unlocked") {
         this._doors = value
-
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            params.engine,
-            params.lights,
-            params.alarm,
-            this._doors === "locked",
-            params.bonnet,
-            params.boot,
-            params.objective,
-        )
+        setVehicleParamsFromData(this.vehicle, { doors: value === "locked" })
     }
 
     get doors() {
@@ -215,18 +198,7 @@ export class VehicleParams {
 
     set hood(value: "closed" | "open") {
         this._bonnet = value
-
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            params.engine,
-            params.lights,
-            params.alarm,
-            params.doors,
-            this._bonnet === "open",
-            params.boot,
-            params.objective,
-        )
+        setVehicleParamsFromData(this.vehicle, { bonnet: value === "open" })
     }
 
     get hood() {
@@ -235,18 +207,7 @@ export class VehicleParams {
 
     set trunk(value: "closed" | "open") {
         this._boot = value
-
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            params.engine,
-            params.lights,
-            params.alarm,
-            params.doors,
-            params.bonnet,
-            this._boot === "open",
-            params.objective,
-        )
+        setVehicleParamsFromData(this.vehicle, { boot: value === "open" })
     }
 
     get trunk() {
@@ -255,18 +216,7 @@ export class VehicleParams {
 
     set objective(value: "on" | "off") {
         this._objective = value
-
-        const params = nativeFunctions.getVehicleParamsEx(this.vehicle.sampId)
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            params.engine,
-            params.lights,
-            params.alarm,
-            params.doors,
-            params.bonnet,
-            params.boot,
-            this._objective === "on",
-        )
+        setVehicleParamsFromData(this.vehicle, { objective: value === "on" })
     }
 
     get objective() {

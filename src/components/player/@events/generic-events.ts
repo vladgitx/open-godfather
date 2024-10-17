@@ -67,12 +67,12 @@ nativeEvents.onPlayerStateChange((playerId: number, newState: number, oldState: 
     }
 })
 
-nativeEvents.onPlayerEnterVehicle((playerId: number, vehicleId: number, asPassenger: boolean) => {
+nativeEvents.onPlayerEnterVehicle((playerId, vehicleId, asPassenger) => {
     const player = playerHandler.atSampId(playerId)
     const vehicle = vehicleHandler.atSampId(vehicleId)
 
     if (player !== undefined && vehicle !== undefined) {
-        dispatcher.emit("playerStartEnterVehicle", player, vehicle, asPassenger)
+        dispatcher.emit("playerStartEnterVehicle", player, vehicle, asPassenger === 1)
     }
 })
 

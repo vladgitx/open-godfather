@@ -1,12 +1,18 @@
-export class Vector3 {
+export interface Position3 {
+    x: number
+    y: number
+    z: number
+}
+
+export class Vector3 implements Position3 {
     public x: number
     public y: number
     public z: number
 
     constructor(x?: number, y?: number, z?: number)
-    constructor(vector: Partial<{ x: number; y: number; z: number }>)
+    constructor(position: Partial<Position3>)
 
-    constructor(x: number | Partial<{ x: number; y: number; z: number }> = 0, y = 0, z = 0) {
+    constructor(x: number | Partial<Position3> = 0, y = 0, z = 0) {
         if (typeof x === "object") {
             this.x = x.x ?? 0
             this.y = x.y ?? 0
@@ -18,24 +24,28 @@ export class Vector3 {
         }
     }
 
-    add(v: Vector3): Vector3 {
-        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z)
+    add(position: Position3): Vector3 {
+        return new Vector3(this.x + position.x, this.y + position.y, this.z + position.z)
     }
 
-    subtract(v: Vector3): Vector3 {
-        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z)
+    subtract(position: Position3): Vector3 {
+        return new Vector3(this.x - position.x, this.y - position.y, this.z - position.z)
     }
 
     scale(scalar: number): Vector3 {
         return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar)
     }
 
-    dot(v: Vector3): number {
-        return this.x * v.x + this.y * v.y + this.z * v.z
+    dot(position: Position3): number {
+        return this.x * position.x + this.y * position.y + this.z * position.z
     }
 
-    cross(v: Vector3): Vector3 {
-        return new Vector3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x)
+    cross(position: Position3): Vector3 {
+        return new Vector3(
+            this.y * position.z - this.z * position.y,
+            this.z * position.x - this.x * position.z,
+            this.x * position.y - this.y * position.x,
+        )
     }
 
     length(): number {
@@ -47,10 +57,10 @@ export class Vector3 {
         return len > 0 ? this.scale(1 / len) : new Vector3()
     }
 
-    distance(v: Vector3): number {
-        const dx = this.x - v.x
-        const dy = this.y - v.y
-        const dz = this.z - v.z
+    distance(position: Position3): number {
+        const dx = this.x - position.x
+        const dy = this.y - position.y
+        const dz = this.z - position.z
         return Math.sqrt(dx * dx + dy * dy + dz * dz)
     }
 

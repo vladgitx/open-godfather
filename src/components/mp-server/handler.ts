@@ -91,7 +91,7 @@ class MultiplayerServer {
 
     set stuntBonuses(stuntBonuses: boolean) {
         this._stuntBonuses = stuntBonuses
-        nativeFunctions.enableStuntBonusForAll(this._stuntBonuses)
+        nativeFunctions.enableStuntBonusForAll(this._stuntBonuses ? 1 : 0)
     }
 
     get stuntBonuses() {

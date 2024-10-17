@@ -1,5 +1,5 @@
 import { nativeFunctions } from "@/wrapper"
-import { Vector3 } from "../../core/vector3"
+import { type Position3, Vector3 } from "../../core/vector3"
 import { VehicleParams } from "./params"
 import { getVehicleOccupants } from "./@events/occupants"
 import { INVALID_VEHICLE_ID } from "@/wrapper/functions"
@@ -57,15 +57,15 @@ export class Vehicle extends SampEntity {
         nativeFunctions.repairVehicle(this.sampId)
     }
 
-    set position(position: Vector3) {
+    set position(position: Position3) {
         nativeFunctions.setVehiclePosition(this.sampId, position.x, position.y, position.z)
     }
 
-    get position() {
-        return nativeFunctions.getVehiclePosition(this.sampId)
+    get position(): Vector3 {
+        return new Vector3(nativeFunctions.getVehiclePosition(this.sampId))
     }
 
-    set velocity(velocity: Vector3) {
+    set velocity(velocity: Position3) {
         nativeFunctions.setVehicleVelocity(this.sampId, velocity)
     }
 

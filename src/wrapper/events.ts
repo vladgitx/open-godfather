@@ -1,59 +1,80 @@
+import type { BODY_PARTS, HIT_TYPES, KICK_REASONS, PLAYER_BONES, PLAYER_STATES, WEAPONS } from "@/utils/enums"
+import type { EnumValue } from "@/utils/types"
+
 class NativeEvents {
-    onPlayerKeyStateChange(callback: (playerid: number, newkeys: number, oldkeys: number) => void) {
+    onPlayerKeyStateChange(callback: (playerId: number, newKeys: number, oldKeys: number) => void) {
         samp.on("OnPlayerKeyStateChange", callback)
     }
 
-    onPlayerConnect(callback: (playerid: number) => void) {
+    onPlayerConnect(callback: (playerId: number) => void) {
         samp.on("OnPlayerConnect", callback)
     }
 
-    onPlayerDisconnect(callback: (playerid: number, reason: number) => void) {
+    onPlayerDisconnect(callback: (playerId: number, reason: EnumValue<typeof KICK_REASONS>) => void) {
         samp.on("OnPlayerDisconnect", callback)
     }
 
-    onPlayerSpawn(callback: (playerid: number) => void) {
+    onPlayerSpawn(callback: (playerId: number) => void) {
         samp.on("OnPlayerSpawn", callback)
     }
 
-    onPlayerDeath(callback: (playerid: number, killerid: number, reason: number) => void) {
+    onPlayerDeath(callback: (playerId: number, killerid: number, reason: EnumValue<typeof WEAPONS>) => void) {
         samp.on("OnPlayerDeath", callback)
     }
 
-    onPlayerText(callback: (playerid: number, text: string) => void) {
+    onPlayerText(callback: (playerId: number, text: string) => void) {
         samp.on("OnPlayerText", callback)
     }
 
-    onPlayerCommandText(callback: (playerid: number, cmdtext: string) => void) {
+    onPlayerCommandText(callback: (playerId: number, cmdText: string) => void) {
         samp.on("OnPlayerCommandText", callback)
     }
 
-    onPlayerRequestClass(callback: (playerid: number, classid: number) => void) {
+    onPlayerRequestClass(callback: (playerId: number, classId: number) => void) {
         samp.on("OnPlayerRequestClass", callback)
     }
 
-    onPlayerEnterVehicle(callback: (playerid: number, vehicleid: number, ispassenger: boolean) => void) {
+    onPlayerEnterVehicle(callback: (playerId: number, vehicleId: number, isPassenger: 0 | 1) => void) {
         samp.on("OnPlayerEnterVehicle", callback)
     }
 
-    onPlayerExitVehicle(callback: (playerid: number, vehicleid: number) => void) {
+    onPlayerExitVehicle(callback: (playerId: number, vehicleId: number) => void) {
         samp.on("OnPlayerExitVehicle", callback)
     }
 
-    onPlayerStateChange(callback: (playerid: number, newstate: number, oldstate: number) => void) {
+    onPlayerStateChange(
+        callback: (playerId: number, newState: EnumValue<typeof PLAYER_STATES>, oldState: EnumValue<typeof PLAYER_STATES>) => void,
+    ) {
         samp.on("OnPlayerStateChange", callback)
     }
 
-    onPlayerTakeDamage(callback: (playerid: number, issuerid: number, amount: number, weaponid: number, bodypart: number) => void) {
+    onPlayerTakeDamage(
+        callback: (
+            playerId: number,
+            issuerId: number,
+            amount: number,
+            weaponId: EnumValue<typeof WEAPONS>,
+            bodyPart: EnumValue<typeof BODY_PARTS>,
+        ) => void,
+    ) {
         samp.on("OnPlayerTakeDamage", callback)
     }
 
     onPlayerWeaponShot(
-        callback: (playerid: number, weaponid: number, hittype: number, hitid: number, x: number, y: number, z: number) => void,
+        callback: (
+            playerId: number,
+            weaponId: EnumValue<typeof WEAPONS>,
+            hitType: EnumValue<typeof HIT_TYPES>,
+            hitId: number,
+            x: number,
+            y: number,
+            z: number,
+        ) => void,
     ) {
         samp.on("OnPlayerWeaponShot", callback)
     }
 
-    onDialogResponse(callback: (playerid: number, dialogId: number, response: number, listitem: number, inputText: string) => void) {
+    onDialogResponse(callback: (playerId: number, dialogId: number, response: 1 | 0, listitem: number, inputText: string) => void) {
         samp.on("OnDialogResponse", callback)
     }
 
@@ -65,17 +86,17 @@ class NativeEvents {
         samp.on("OnGameModeInit", callback)
     }
 
-    onVehiclePaintjob(callback: (playerid: number, vehicleid: number, paintjobid: number) => void) {
+    onVehiclePaintjob(callback: (playerId: number, vehicleId: number, paintjobId: number) => void) {
         samp.on("OnVehiclePaintjob", callback)
     }
 
     onPlayerEditAttachedObject(
         callback: (
-            playerid: number,
+            playerId: number,
             response: 0 | 1,
             index: number,
             model: number,
-            bone: number,
+            bone: EnumValue<typeof PLAYER_BONES>,
             offX: number,
             offY: number,
             offZ: number,
@@ -90,11 +111,11 @@ class NativeEvents {
         samp.on("OnPlayerEditAttachedObject", callback)
     }
 
-    onVehicleSpawn(callback: (vehicleid: number) => void) {
+    onVehicleSpawn(callback: (vehicleId: number) => void) {
         samp.on("OnVehicleSpawn", callback)
     }
 
-    onVehicleDeath(callback: (vehicleid: number, killerid: number) => void) {
+    onVehicleDeath(callback: (vehicleId: number, killerId: number) => void) {
         samp.on("OnVehicleDeath", callback)
     }
 }

@@ -1,5 +1,5 @@
 import { nativeFunctions } from "@/wrapper"
-import { Vector3 } from "../../core/vector3"
+import { type Position3, Vector3 } from "../../core/vector3"
 import { type Vehicle, vehicleHandler } from "../vehicle"
 import { PlayerAnimations } from "./animations"
 import { PlayerDialog } from "./dialog"
@@ -105,15 +105,15 @@ export class Player extends SampEntity<PlayerEventMap> {
         return this._spectating
     }
 
-    set position(position: Vector3) {
+    set position(position: Position3) {
         nativeFunctions.setPlayerPosition(this.sampId, position.x, position.y, position.z)
     }
 
-    get position() {
-        return nativeFunctions.getPlayerPosition(this.sampId)
+    get position(): Vector3 {
+        return new Vector3(nativeFunctions.getPlayerPosition(this.sampId))
     }
 
-    set cameraPosition(position: Vector3) {
+    set cameraPosition(position: Position3) {
         nativeFunctions.setPlayerCameraPos(this.sampId, position)
     }
 

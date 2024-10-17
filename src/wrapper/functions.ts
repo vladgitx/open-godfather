@@ -1,9 +1,9 @@
 import { hexToRgbaInt } from "@/utils/miscellaneous"
-import { Vector3 } from "../core/vector3"
 import {
     type CAMERA_CUT_STYLES,
     CAMERA_MODES,
     type DIALOG_STYLES,
+    type PLAYER_BONES,
     type SPECIAL_ACTIONS,
     VEHICLE_SEATS,
     type WEAPON_SKILLS,
@@ -11,6 +11,7 @@ import {
     WEAPONS,
 } from "@/utils/enums"
 import { type EnumValue } from "@/utils/types"
+import { type Position3 } from "@/core/vector3"
 
 export const INVALID_PLAYER_ID = 0xffff
 export const INVALID_VEHICLE_ID = 0xffff
@@ -29,13 +30,13 @@ class NativeFunctions {
     }
 
     getVehicleParamsCarWindows(vehicleId: number) {
-        const data = samp.callNative("GetVehicleParamsCarWindows", "iIIII", vehicleId) as number[]
+        const data = samp.callNative("GetVehicleParamsCarWindows", "iIIII", vehicleId) as (-1 | 0 | 1)[]
 
         return {
-            frontLeft: Boolean(data[0]),
-            frontRight: Boolean(data[1]),
-            rearLeft: Boolean(data[2]),
-            rearRight: Boolean(data[3]),
+            frontLeft: data[0],
+            frontRight: data[1],
+            rearLeft: data[2],
+            rearRight: data[3],
         }
     }
 
@@ -67,28 +68,26 @@ class NativeFunctions {
         }
     }
 
-    interpolateCameraPos = (
-        playerid: number,
-        from: Vector3,
-        to: Vector3,
-        time: number,
-        cut: EnumValue<typeof CAMERA_CUT_STYLES>,
-    ): number => {
-        return samp.callNative("InterpolateCameraPos", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
+    interpolateCameraPos = (playerId: number, from: Position3, to: Position3, time: number, cut: EnumValue<typeof CAMERA_CUT_STYLES>) => {
+        samp.callNative("InterpolateCameraPos", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
     interpolateCameraLookAt = (
-        playerid: number,
-        from: Vector3,
-        to: Vector3,
+        playerId: number,
+        from: Position3,
+        to: Position3,
         time: number,
         cut: EnumValue<typeof CAMERA_CUT_STYLES>,
-    ): number => {
-        return samp.callNative("InterpolateCameraLookAt", "iffffffii", playerid, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
+    ) => {
+        samp.callNative("InterpolateCameraLookAt", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
-    manualVehicleEngineAndLights = (): number => {
-        return samp.callNative("ManualVehicleEngineAndLights", "")
+    manualVehicleEngineAndLights = () => {
+        samp.callNative("ManualVehicleEngineAndLights", "")
+    }
+
+    setVehicleNumberPlate = (vehicleId: number, numberPlate: string) => {
+        samp.callNative("SetVehicleNumberPlate", "is", vehicleId, numberPlate)
     }
 
     setVehicleParamsEx = (
@@ -100,29 +99,23 @@ class NativeFunctions {
         bonnet: boolean,
         boot: boolean,
         objective: boolean,
-    ): boolean => {
-        return samp.callNative("SetVehicleParamsEx", "iiiiiiii", vehicleId, engine, lights, alarm, doors, bonnet, boot, objective) === 1
+    ) => {
+        samp.callNative(
+            "SetVehicleParamsEx",
+            "iiiiiiii",
+            vehicleId,
+            engine ? 1 : 0,
+            lights ? 1 : 0,
+            alarm ? 1 : 0,
+            doors ? 1 : 0,
+            bonnet ? 1 : 0,
+            boot ? 1 : 0,
+            objective ? 1 : 0,
+        )
     }
 
-    setVehicleNumberPlate = (vehicleId: number, numberplate: string) => {
-        return samp.callNative("SetVehicleNumberPlate", "is", vehicleId, numberplate) === 1
-    }
-
-    getVehicleParamsEx = (
-        vehicleId: number,
-    ): { engine: boolean; lights: boolean; alarm: boolean; doors: boolean; bonnet: boolean; boot: boolean; objective: boolean } => {
-        if (!this.isValidVehicle(vehicleId)) {
-            return {
-                engine: false,
-                lights: false,
-                alarm: false,
-                doors: false,
-                bonnet: false,
-                boot: false,
-                objective: false,
-            }
-        }
-        const res = samp.callNative("GetVehicleParamsEx", "iIIIIIII", vehicleId) as boolean[]
+    getVehicleParamsEx = (vehicleId: number) => {
+        const res = samp.callNative("GetVehicleParamsEx", "iIIIIIII", vehicleId) as (-1 | 0 | 1)[]
 
         return {
             engine: res[0],
@@ -135,36 +128,29 @@ class NativeFunctions {
         }
     }
 
-    getServerTickRate = (): number => {
-        return samp.callNative("GetServerTickRate", "")
+    getServerTickRate = () => {
+        return samp.callNative("GetServerTickRate", "") as number
     }
 
     disableInteriorEnterExits = (): void => {
         samp.callNative("DisableInteriorEnterExits", "")
     }
 
-    getVehicleVelocity = (vehicleId: number): Vector3 => {
-        if (!this.isValidVehicle(vehicleId)) {
-            return new Vector3()
-        }
+    getVehicleVelocity = (vehicleId: number) => {
         const res = samp.callNative("GetVehicleVelocity", "iFFF", vehicleId) as number[]
-        return new Vector3(res[0], res[1], res[2])
+        return { x: res[0], y: res[1], z: res[2] }
     }
 
-    getWeaponName = (weaponId: EnumValue<typeof WEAPONS>): string => {
-        if (weaponId < WEAPONS.fist || weaponId > WEAPONS.collision) {
-            return "invalid_weapon"
-        }
-
-        return samp.callNative("GetWeaponName", "iSi", weaponId, 32)
+    getWeaponName = (weaponId: EnumValue<typeof WEAPONS>) => {
+        return samp.callNative("GetWeaponName", "iSi", weaponId, 32) as string
     }
 
-    setVehicleVelocity = (vehicleId: number, velocity: Vector3) => {
-        return samp.callNative("SetVehicleVelocity", "ifff", vehicleId, velocity.x, velocity.y, velocity.z) === 1
+    setVehicleVelocity = (vehicleId: number, velocity: Position3) => {
+        samp.callNative("SetVehicleVelocity", "ifff", vehicleId, velocity.x, velocity.y, velocity.z)
     }
 
-    setPlayerSkillLevel = (playerId: number, skillType: EnumValue<typeof WEAPON_SKILLS>, level: number): boolean => {
-        return samp.callNative("SetPlayerSkillLevel", "iii", playerId, skillType, level) === 1
+    setPlayerSkillLevel = (playerId: number, skillType: EnumValue<typeof WEAPON_SKILLS>, level: number) => {
+        samp.callNative("SetPlayerSkillLevel", "iii", playerId, skillType, level)
     }
 
     setPlayerColor = (playerId: number, color: string): void => {
@@ -183,31 +169,31 @@ class NativeFunctions {
         samp.callNative("SetNameTagDrawDistance", "f", distance)
     }
 
-    enableStuntBonusForAll = (enable: boolean): void => {
-        samp.callNative("EnableStuntBonusForAll", "i", enable ? 1 : 0)
+    enableStuntBonusForAll = (enable: 0 | 1): void => {
+        samp.callNative("EnableStuntBonusForAll", "i", enable)
     }
 
     sendRconCommand = (command: string): void => {
         samp.callNative("SendRconCommand", "s", command)
     }
 
-    changeVehicleColor = (vehicleId: number, color1: number, color2: number): boolean => {
-        return samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2) === 1
+    changeVehicleColor = (vehicleId: number, color1: number, color2: number) => {
+        samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2)
     }
 
-    changeVehiclePaintjob = (vehicleid: number, paintjobid: number) => {
-        samp.callNative("ChangeVehiclePaintjob", "ii", vehicleid, paintjobid)
+    changeVehiclePaintjob = (vehicleId: number, paintjobId: number) => {
+        samp.callNative("ChangeVehiclePaintjob", "ii", vehicleId, paintjobId)
     }
 
-    repairVehicle = (vehicleid: number): number => {
-        return samp.callNative("RepairVehicle", "i", vehicleid)
+    repairVehicle = (vehicleId: number) => {
+        samp.callNative("RepairVehicle", "i", vehicleId)
     }
 
     setPlayerAttachedObject = (
         playerId: number,
         index: number,
-        modelid: number,
-        bone: number,
+        modelId: number,
+        bone: EnumValue<typeof PLAYER_BONES>,
         fOffsetX = 0,
         fOffsetY = 0,
         fOffsetZ = 0,
@@ -220,7 +206,7 @@ class NativeFunctions {
         materialcolor1?: string,
         materialcolor2?: string,
     ) => {
-        const values = [playerId, index, modelid, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ]
+        const values = [playerId, index, modelId, bone, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ]
 
         if (materialcolor1 !== undefined) {
             values.push(hexToRgbaInt(materialcolor1))
@@ -249,13 +235,13 @@ class NativeFunctions {
         return samp.callNative("DestroyVehicle", "i", vehicleId) === 1
     }
 
-    cancelEdit = (playerid: number): number => {
-        return samp.callNative("CancelEdit", "i", playerid)
+    cancelEdit = (playerId: number): number => {
+        return samp.callNative("CancelEdit", "i", playerId)
     }
 
     createVehicle = (
         modelId: number,
-        position: Vector3,
+        position: Position3,
         rotation: number,
         primaryColor = -1,
         secondaryColor = -1,
@@ -327,7 +313,7 @@ class NativeFunctions {
         playerId: number,
         team: number,
         skinId: number,
-        position: Vector3,
+        position: Position3,
         rotation: number,
         weapons: { weapon: EnumValue<typeof WEAPONS>; ammo: number }[] = [],
     ): void {
@@ -526,24 +512,15 @@ class NativeFunctions {
         return samp.callNative("IsPlayerConnected", "i", playerId) === 1
     }
 
-    getPlayerPosition(playerId: number): Vector3 {
-        if (!this.isPlayerConnected(playerId)) {
-            return new Vector3()
-        }
-
+    getPlayerPosition(playerId: number): Position3 {
         const pos = samp.callNative("GetPlayerPos", "iFFF", playerId) as number[]
-
-        return new Vector3(pos[0], pos[1], pos[2])
+        return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
-    getVehiclePosition = (vehicleId: number): Vector3 => {
-        if (!this.isValidVehicle(vehicleId)) {
-            return new Vector3()
-        }
-
+    getVehiclePosition = (vehicleId: number): Position3 => {
         const pos = samp.callNative("GetVehiclePos", "iFFF", vehicleId) as number[]
 
-        return new Vector3(pos[0], pos[1], pos[2])
+        return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
     setPlayerPosition(playerId: number, x: number, y: number, z: number): boolean {
@@ -555,9 +532,6 @@ class NativeFunctions {
     }
 
     getPlayerHealth(playerId: number): number {
-        if (!this.isPlayerConnected(playerId)) {
-            return 100
-        }
         return samp.callNative("GetPlayerHealth", "iF", playerId)
     }
 
@@ -566,9 +540,6 @@ class NativeFunctions {
     }
 
     getPlayerArmour(playerId: number): number {
-        if (!this.isPlayerConnected(playerId)) {
-            return 0
-        }
         return samp.callNative("GetPlayerArmour", "iF", playerId)
     }
 
@@ -614,28 +585,24 @@ class NativeFunctions {
         return samp.callNative("GetPlayerCameraMode", "i", playerId)
     }
 
-    setPlayerCameraPos = (playerid: number, position: Vector3): number => {
-        return samp.callNative("SetPlayerCameraPos", "ifff", playerid, position.x, position.y, position.z)
+    setPlayerCameraPos = (playerId: number, position: Position3): number => {
+        return samp.callNative("SetPlayerCameraPos", "ifff", playerId, position.x, position.y, position.z)
     }
 
-    setPlayerCameraLookAt = (playerid: number, position: Vector3, cut: EnumValue<typeof CAMERA_CUT_STYLES>): number => {
-        return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerid, position.x, position.y, position.z, cut)
+    setPlayerCameraLookAt = (playerId: number, position: Position3, cut: EnumValue<typeof CAMERA_CUT_STYLES>): number => {
+        return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerId, position.x, position.y, position.z, cut)
     }
 
-    setCameraBehindPlayer = (playerid: number): number => {
-        return samp.callNative("SetCameraBehindPlayer", "i", playerid)
+    setCameraBehindPlayer = (playerId: number): number => {
+        return samp.callNative("SetCameraBehindPlayer", "i", playerId)
     }
 
-    getPlayerCameraPos = (playerid: number) => {
-        const pos = samp.callNative("GetPlayerCameraPos", "iFFF", playerid) as number[]
-        return new Vector3(pos[0], pos[1], pos[2])
+    getPlayerCameraPos = (playerId: number) => {
+        const pos = samp.callNative("GetPlayerCameraPos", "iFFF", playerId) as number[]
+        return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
     getPlayerState(playerId: number): number | undefined {
-        if (!this.isPlayerConnected(playerId)) {
-            return undefined
-        }
-
         return samp.callNative("GetPlayerState", "i", playerId)
     }
 
@@ -738,12 +705,12 @@ class NativeFunctions {
         return samp.callNative("TextDrawDestroy", "i", text)
     }
 
-    textDrawShowForPlayer = (playerid: number, text: number): number => {
-        return samp.callNative("TextDrawShowForPlayer", "ii", playerid, text)
+    textDrawShowForPlayer = (playerId: number, text: number): number => {
+        return samp.callNative("TextDrawShowForPlayer", "ii", playerId, text)
     }
 
-    textDrawHideForPlayer = (playerid: number, text: number): number => {
-        return samp.callNative("TextDrawHideForPlayer", "ii", playerid, text)
+    textDrawHideForPlayer = (playerId: number, text: number): number => {
+        return samp.callNative("TextDrawHideForPlayer", "ii", playerId, text)
     }
 
     textDrawShowForAll = (text: number): number => {
@@ -754,12 +721,12 @@ class NativeFunctions {
         return samp.callNative("TextDrawHideForAll", "i", text)
     }
 
-    selectTextDraw = (playerid: number, hovercolor: string): number => {
-        return samp.callNative("SelectTextDraw", "ii", playerid, hexToRgbaInt(hovercolor))
+    selectTextDraw = (playerId: number, hovercolor: string): number => {
+        return samp.callNative("SelectTextDraw", "ii", playerId, hexToRgbaInt(hovercolor))
     }
 
-    cancelSelectTextDraw = (playerid: number): number => {
-        return samp.callNative("CancelSelectTextDraw", "i", playerid)
+    cancelSelectTextDraw = (playerId: number): number => {
+        return samp.callNative("CancelSelectTextDraw", "i", playerId)
     }
 
     textDrawLetterSize = (text: number, x: number, y: number): number => {

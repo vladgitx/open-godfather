@@ -7,7 +7,7 @@ export class PlayerWeapons {
     constructor(private player: Player) {}
 
     setSkill(weapon: WeaponSkill, level: number) {
-        return nativeFunctions.setPlayerSkillLevel(this.player.sampId, WEAPON_SKILLS[weapon], level)
+        nativeFunctions.setPlayerSkillLevel(this.player.sampId, WEAPON_SKILLS[weapon], level)
     }
 
     add(weapon: Weapon, ammo: number) {
