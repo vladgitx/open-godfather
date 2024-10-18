@@ -3,10 +3,11 @@ import { type Position3, Vector3 } from "../../lib/vector3"
 import { VehicleParams } from "./params"
 import { getVehicleOccupants } from "./@events/occupants"
 import { GameEntity } from "@/lib/entity/game"
+import { type VehicleEventMap } from "./@events/entity-event-bus"
 
 const REMOVE_PAINTJOB_ID = 3
 
-export class Vehicle extends GameEntity {
+export class Vehicle extends GameEntity<VehicleEventMap> {
     readonly params = new VehicleParams(this)
 
     private _primaryColor: number
