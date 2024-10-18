@@ -27,22 +27,27 @@ If you don't want to use the [Open Godfather CLI](https://github.com/vladgitx/og
 Spawn a player based on the dialog's response.
 
 ```typescript
-import { og } from "open-godfather"
+import * as og from "open-godfather"
 
 og.events.on("playerConnect", async (player) => {
+    // The dialog show methods return a promise that will throw an error if it fails, some of the reasons include:
+    // - it's overriden (in this case, another dialog pops up)
+    // - the entity is destroyed (in this case, the player disconnects)
+
     try {
         const result = await player.dialog.show.messageBox("Hey", "Wanna spawn?", "Yes", "No")
         
         if (result.action) {
             player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
-            player.sendMessage("Have fun")
+
+            player.events.on("enterVehicle", (vehicle) => {
+                player.sendMessage(`You entered a vehicle! (ID ${vehicle.id})`)
+            })
         } else {
             player.sendMessage("Bye-bye")
             player.kick()
         }
-    } catch (error) {
-        console.error("The player probably disconnected with the dialog open")
-    }
+    } catch () {}
 })
 ```
 
