@@ -4,7 +4,7 @@ import { type Vehicle, vehicles } from "../../vehicle"
 import { dispatcher } from "@/lib/dispatcher"
 import { VEHICLE_SEATS, type VehicleSeat } from "@/wrapper/game/enums.public"
 
-const lastVehicleReferenceId = new WeakMap<Player, number>()
+const lastVehicleReferenceId = new WeakMap<Player, bigint>()
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
     if (

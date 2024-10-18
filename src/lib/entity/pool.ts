@@ -29,7 +29,7 @@ export class EntityPool<T extends Entity> {
         return this.map.get(key)
     }
 
-    atRefId(referenceId: number) {
+    atRefId(referenceId: bigint) {
         const entities = this.map.values()
 
         for (const entity of entities) {
