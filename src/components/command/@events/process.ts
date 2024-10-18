@@ -1,10 +1,10 @@
-import { nativeEvents } from "@/wrapper"
-import { commandHandler } from "../handler"
-import { dispatcher } from "@/core/dispatcher"
-import { playerHandler } from "@/components/player"
+import { gameCallbacks } from "@/wrapper/game"
+import { commands } from "../main"
+import { dispatcher } from "@/lib/dispatcher"
+import { players } from "@/components/player"
 
-nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
-    const player = playerHandler.atSampId(playerId)
+gameCallbacks.onPlayerCommandText((playerId: number, cmdText: string) => {
+    const player = players.pool.at(playerId)
 
     if (!player) {
         return 1
@@ -19,7 +19,7 @@ nativeEvents.onPlayerCommandText((playerId: number, cmdText: string) => {
         return 1
     }
 
-    const command = commandHandler.at(commandStr)
+    const command = commands.at(commandStr)
 
     if (command) {
         const hasListeners = dispatcher.emit("playerCommand", player, commandStr, command, () => command.callback(player, ...params))

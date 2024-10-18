@@ -1,15 +1,15 @@
-import { nativeEvents } from "@/wrapper"
-import { vehicleHandler } from "../handler"
-import { playerHandler } from "@/components/player"
-import { dispatcher } from "@/core/dispatcher"
-import { vehicleInternalPaintjobId } from "../entity"
+import { gameCallbacks } from "@/wrapper/game"
+import { vehicles } from "../handler"
+import { players } from "@/components/player"
+import { dispatcher } from "@/lib/dispatcher"
+import { Vehicle } from "../entity"
 
-nativeEvents.onVehiclePaintjob((playerid, vehicleid, paintjobid) => {
-    const player = playerHandler.atSampId(playerid)
-    const vehicle = vehicleHandler.atSampId(vehicleid)
+gameCallbacks.onVehiclePaintjob((playerid, vehicleid, paintjobid) => {
+    const player = players.pool.at(playerid)
+    const vehicle = vehicles.pool.at(vehicleid)
 
     if (vehicle) {
-        vehicleInternalPaintjobId.set(vehicle, paintjobid)
+        Vehicle.setInternalPaintjobId(vehicle, paintjobid)
 
         if (player) {
             dispatcher.emit("playerChangeVehiclePaintjob", player, vehicle, vehicle.paintjob)

@@ -1,9 +1,9 @@
-import { nativeEvents } from "@/wrapper"
-import { playerHandler } from "../../handler"
+import { gameCallbacks } from "@/wrapper/game"
+import { players } from "../../handler"
 import { dialogPromises } from "../instance"
 
-nativeEvents.onDialogResponse((playerId, dialogId, responseParam, listItemParam, inputText) => {
-    const player = playerHandler.atSampId(playerId)
+gameCallbacks.onDialogResponse((playerId, dialogId, responseParam, listItemParam, inputText) => {
+    const player = players.pool.at(playerId)
 
     if (player) {
         const action = Boolean(responseParam)

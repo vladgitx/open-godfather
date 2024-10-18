@@ -1,0 +1,1 @@
+export { gameServer } from "./handler"

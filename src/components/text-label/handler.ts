@@ -1,9 +1,10 @@
-import { type Vector3 } from "../../core/vector3"
+import { type Vector3 } from "../../lib/vector3"
 import { TextLabel } from "./entity"
-import { streamerNatives } from "@/wrapper/streamer"
 import { type Player } from "../player"
-import { StreamerEntityHandler } from "../../core/streamer-entity"
-import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/functions"
+import { StreamerEntityHandler } from "@/lib/entity/streamer"
+import { EntityPool } from "@/lib/entity"
+import { streamerNatives } from "@/wrapper/streamer"
+import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/game"
 
 class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel> {
     new(
@@ -29,7 +30,7 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel
             testLos ? 1 : 0,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,
-            onlyVisibleFor?.player?.sampId ?? -1,
+            onlyVisibleFor?.player?.id ?? -1,
             drawDistance,
             -1,
             priority,
@@ -39,7 +40,8 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel
             return undefined
         }
 
-        const textLabel = TextLabelHandler.createInstance(this, labelId, text, color)
+        const textLabel = new TextLabel(labelId, text, color)
+        EntityPool.add(this.pool, labelId, textLabel)
 
         textLabel.onCleanup(() => {
             streamerNatives.destroyDynamic3dTextLabel(labelId)
@@ -49,4 +51,4 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel
     }
 }
 
-export const textLabelHandler = new TextLabelHandler(TextLabel, "textLabel")
+export const textLabels = new TextLabelHandler(TextLabel, "textLabel")

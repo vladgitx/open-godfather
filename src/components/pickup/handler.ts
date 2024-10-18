@@ -1,8 +1,9 @@
 import { streamerNatives } from "@/wrapper/streamer"
-import { type Vector3 } from "../../core/vector3"
+import { type Vector3 } from "../../lib/vector3"
 import { Pickup } from "./entity"
-import { StreamerEntityHandler } from "../../core/streamer-entity"
 import { type Player } from "../player"
+import { StreamerEntityHandler } from "@/lib/entity/streamer"
+import { EntityPool } from "@/lib/entity"
 
 class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
     new(
@@ -22,7 +23,7 @@ class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
             position,
             onlyVisibleFor?.world ?? -1,
             onlyVisibleFor?.interior ?? -1,
-            onlyVisibleFor?.player?.sampId ?? -1,
+            onlyVisibleFor?.player?.id ?? -1,
             streamDistance,
             -1,
             priority,
@@ -32,7 +33,8 @@ class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
             return undefined
         }
 
-        const pickup = PickupHandler.createInstance(this, pickupId)
+        const pickup = new Pickup(pickupId)
+        EntityPool.add(this.pool, pickupId, pickup)
 
         pickup.onCleanup(() => {
             streamerNatives.destroyDynamicPickup(pickupId)
@@ -42,4 +44,4 @@ class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
     }
 }
 
-export const pickupHandler = new PickupHandler(Pickup, "pickup")
+export const pickups = new PickupHandler(Pickup, "pickup")

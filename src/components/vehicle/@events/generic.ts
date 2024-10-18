@@ -1,11 +1,11 @@
-import { dispatcher } from "@/core/dispatcher"
-import { vehicleHandler } from "../handler"
-import { playerHandler } from "@/components/player"
-import { nativeEvents } from "@/wrapper"
+import { dispatcher } from "@/lib/dispatcher"
+import { vehicles } from "../handler"
+import { players } from "@/components/player"
+import { gameCallbacks } from "@/wrapper/game"
 
 // "OnVehicleSpawn" is a misleading name because it's called only when the vehicle RESPAWNS
-nativeEvents.onVehicleSpawn((vehicleId) => {
-    const vehicle = vehicleHandler.atSampId(vehicleId)
+gameCallbacks.onVehicleSpawn((vehicleId) => {
+    const vehicle = vehicles.pool.at(vehicleId)
 
     if (vehicle) {
         vehicle.params.reset()
@@ -15,9 +15,9 @@ nativeEvents.onVehicleSpawn((vehicleId) => {
     }
 })
 
-nativeEvents.onVehicleDeath((vehicleId, closestPlayerId) => {
-    const vehicle = vehicleHandler.atSampId(vehicleId)
-    const closestPlayer = playerHandler.atSampId(closestPlayerId)
+gameCallbacks.onVehicleDeath((vehicleId, closestPlayerId) => {
+    const vehicle = vehicles.pool.at(vehicleId)
+    const closestPlayer = players.pool.at(closestPlayerId)
 
     if (vehicle) {
         dispatcher.emit("vehicleDeath", vehicle, closestPlayer)

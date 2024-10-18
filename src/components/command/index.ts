@@ -1,2 +1,1 @@
-export { type Command } from "./entity"
-export { commandHandler, CommandCallback } from "./handler"
+export { commands, CommandCallback, type Command } from "./main"

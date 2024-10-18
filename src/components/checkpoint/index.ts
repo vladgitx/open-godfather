@@ -1,2 +1,2 @@
 export { type Checkpoint } from "./entity"
-export { checkpointHandler } from "./handler"
+export { checkpoints } from "./handler"

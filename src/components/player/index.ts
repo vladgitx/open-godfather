@@ -1,2 +1,2 @@
 export { type Player } from "./entity"
-export { playerHandler } from "./handler"
+export { players } from "./handler"

@@ -1,18 +1,22 @@
-import { nativeFunctions } from "@/wrapper"
-import { type Vector3 } from "../../core/vector3"
+import { gameNatives } from "@/wrapper/game"
+import { type Vector3 } from "../../lib/vector3"
 import { Player } from "./entity"
-import { SampEntityHandler } from "@/core/samp-entity"
+import { EntityPool } from "@/lib/entity"
 
-class PlayerHandler extends SampEntityHandler<Player, typeof Player> {
+class PlayerHandler {
+    readonly pool = new EntityPool<Player>(Player)
+
     broadcast(message: string, color = "FFFFFF") {
-        nativeFunctions.sendClientMessageToAll(color, message)
+        gameNatives.sendClientMessageToAll(color, message)
     }
 
-    getClosest(position: Vector3, range: number, world?: number, interior?: number) {
-        const closestPlayers = new Map<Player, number>()
-        const onlinePlayers = this.all
+    getClosest(position: Vector3, range = Infinity, world?: number, interior?: number) {
+        let closestPlayer: Player | undefined = undefined
+        let closestDistance = range
 
-        for (const player of onlinePlayers) {
+        const players = this.pool.all
+
+        for (const player of players) {
             if (world !== undefined && player.world !== world) {
                 continue
             }
@@ -23,12 +27,14 @@ class PlayerHandler extends SampEntityHandler<Player, typeof Player> {
 
             const distance = player.position.distance(position)
 
-            if (distance < range) {
-                closestPlayers.set(player, distance)
+            if (distance < closestDistance) {
+                closestPlayer = player
+                closestDistance = distance
             }
         }
-        return closestPlayers
+
+        return closestPlayer
     }
 }
 
-export const playerHandler = new PlayerHandler(Player)
+export const players = new PlayerHandler()

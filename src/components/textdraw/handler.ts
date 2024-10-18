@@ -1,18 +1,22 @@
-import { nativeFunctions } from "@/wrapper"
+import { gameNatives } from "@/wrapper/game"
 import { Textdraw } from "./entity"
-import { SampEntityHandler } from "@/core/samp-entity"
+import { EntityPool } from "@/lib/entity"
 
-class TextdrawHandler extends SampEntityHandler<Textdraw, typeof Textdraw> {
+class TextdrawHandler {
+    readonly pool = new EntityPool<Textdraw>(Textdraw)
+
     new(x: number, y: number, text: string) {
-        const textdrawId = nativeFunctions.textDrawCreate(x, y, text)
-        const textdraw = TextdrawHandler.createInstance(this, textdrawId, { x, y }, text)
+        const textdrawId = gameNatives.textDrawCreate(x, y, text)
+
+        const textdraw = new Textdraw(textdrawId, { x, y }, text)
+        EntityPool.add(this.pool, textdrawId, textdraw)
 
         textdraw.onCleanup(() => {
-            nativeFunctions.textDrawDestroy(textdrawId)
+            gameNatives.textDrawDestroy(textdrawId)
         })
 
         return textdraw
     }
 }
 
-export const textdrawHandler = new TextdrawHandler(Textdraw)
+export const textdraws = new TextdrawHandler()

@@ -1,43 +1,53 @@
-import { nativeFunctions } from "@/wrapper"
-import { type Vector3 } from "../../core/vector3"
+import { gameNatives } from "@/wrapper/game"
+import { type Vector3 } from "../../lib/vector3"
 import { Vehicle } from "./entity"
-import { SampEntityHandler } from "@/core/samp-entity"
+import { EntityPool } from "@/lib/entity"
 
-class VehicleHandler extends SampEntityHandler<Vehicle, typeof Vehicle> {
+class VehicleHandler {
+    readonly pool = new EntityPool<Vehicle>(Vehicle)
+
     new(model: number, position: Vector3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
-        const vehicleId = nativeFunctions.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
+        const vehicleId = gameNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
 
         if (vehicleId === undefined) {
             return undefined
         }
 
-        const vehicle = VehicleHandler.createInstance(this, vehicleId, model, primaryColor, secondaryColor)
+        const vehicle = new Vehicle(vehicleId, model, primaryColor, secondaryColor)
+        EntityPool.add(this.pool, vehicleId, vehicle)
 
         vehicle.onCleanup(() => {
-            nativeFunctions.destroyVehicle(vehicleId)
+            gameNatives.destroyVehicle(vehicleId)
         })
 
         return vehicle
     }
 
-    getClosest(position: Vector3, range: number, world?: number, interior?: number) {
-        const vehicles = new Map<Vehicle, number>()
-        for (const vehicle of this.all) {
+    getClosest(position: Vector3, range = Infinity, world?: number, interior?: number) {
+        let closestVehicle: Vehicle | undefined = undefined
+        let closestDistance = range
+
+        const vehicles = this.pool.all
+
+        for (const vehicle of vehicles) {
             if (world !== undefined && vehicle.world !== world) {
                 continue
             }
+
             if (interior !== undefined && vehicle.interior !== interior) {
                 continue
             }
 
             const distance = vehicle.position.distance(position)
 
-            if (distance < range) {
-                vehicles.set(vehicle, distance)
+            if (distance < closestDistance) {
+                closestVehicle = vehicle
+                closestDistance = distance
             }
         }
-        return vehicles
+
+        return closestVehicle
     }
 }
 
-export const vehicleHandler = new VehicleHandler(Vehicle)
+export const vehicles = new VehicleHandler()

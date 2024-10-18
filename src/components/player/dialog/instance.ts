@@ -1,20 +1,48 @@
-import { nativeFunctions } from "@/wrapper"
+import { gameNatives } from "@/wrapper/game"
 import { type Player } from "../entity"
-import type { DialogResponse, InputDialogResponse, ListDialogResponse, MessageDialogResponse } from "./@types/response"
-import { EntityPromises } from "@/core/base-entity"
-import { DIALOG_STYLES, type DialogStyle } from "@/utils/enums"
+import { EntityPromises } from "@/lib/entity"
+import { DIALOG_STYLES, type DialogStyle } from "@/wrapper/game/enums.public"
 
 const MAX_DIALOG_ID = 32767 // Used when generating a random dialog ID
+
+export type ListDialogResponse =
+    | {
+          action: true
+          item: number
+      }
+    | {
+          action: false
+          item?: never
+      }
+
+export interface MessageDialogResponse {
+    action: boolean
+}
+
+export type InputDialogResponse =
+    | {
+          action: true
+          input: string
+      }
+    | {
+          action: false
+          input?: never
+      }
+
+export type DialogResponse = ListDialogResponse & InputDialogResponse & MessageDialogResponse
+
 export const dialogPromises = new EntityPromises<Player, DialogResponse>()
 
 export class PlayerDialog {
-    readonly show = new PlayerDialogShow(this.player)
-
     constructor(private player: Player) {}
+
+    get show() {
+        return new PlayerDialogShow(this.player)
+    }
 
     hide() {
         dialogPromises.reject(this.player, new Error("Dialog was hidden from player"))
-        nativeFunctions.hidePlayerDialog(this.player.sampId)
+        gameNatives.hidePlayerDialog(this.player.id)
     }
 }
 
@@ -22,8 +50,8 @@ class PlayerDialogShow {
     constructor(private player: Player) {}
 
     async list(caption: string, items: string[], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES.list,
             caption || " ",
@@ -40,8 +68,8 @@ class PlayerDialogShow {
     }
 
     async tablist(caption: string, items: string[][], primaryButton: string, secondaryButton = ""): Promise<ListDialogResponse> {
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES.tablist,
             caption || " ",
@@ -81,8 +109,8 @@ class PlayerDialogShow {
             itemsString = (items as string[][]).map((columns) => columns.join("\t")).join("\n")
         }
 
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES["tablist-headers"],
             caption || " ",
@@ -99,8 +127,8 @@ class PlayerDialogShow {
     }
 
     async messageBox(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<MessageDialogResponse> {
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES["message-box"],
             caption || " ",
@@ -113,8 +141,8 @@ class PlayerDialogShow {
     }
 
     async input(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse> {
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES.input,
             caption || " ",
@@ -127,8 +155,8 @@ class PlayerDialogShow {
     }
 
     async password(caption: string, info: string, primaryButton: string, secondaryButton = ""): Promise<InputDialogResponse> {
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES.password,
             caption || " ",
@@ -141,8 +169,8 @@ class PlayerDialogShow {
     }
 
     noPromise(style: DialogStyle, caption: string, info: string, primaryButton: string, secondaryButton = "") {
-        nativeFunctions.showPlayerDialog(
-            this.player.sampId,
+        gameNatives.showPlayerDialog(
+            this.player.id,
             Math.floor(Math.random() * MAX_DIALOG_ID),
             DIALOG_STYLES[style],
             caption || " ",

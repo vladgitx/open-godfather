@@ -1,11 +1,11 @@
-import { playerHandler } from "@/components/player"
-import { streamerEvents } from "@/wrapper/streamer"
-import { pickupHandler } from "../handler"
-import { dispatcher } from "@/core/dispatcher"
+import { players } from "@/components/player"
+import { pickups } from "../handler"
+import { dispatcher } from "@/lib/dispatcher"
+import { streamerCallbacks } from "@/wrapper/streamer"
 
-streamerEvents.onPlayerPickUpDynamicPickup((playerId, pickupId) => {
-    const player = playerHandler.atSampId(playerId)
-    const pickup = pickupHandler.atStreamerId(pickupId)
+streamerCallbacks.onPlayerPickUpDynamicPickup((playerId, pickupId) => {
+    const player = players.pool.at(playerId)
+    const pickup = pickups.pool.at(pickupId)
 
     if (player && pickup) {
         dispatcher.emit("playerPickUpPickup", player, pickup)

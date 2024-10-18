@@ -1,6 +1,6 @@
-import { dispatcher } from "@/core/dispatcher"
-import { nativeFunctions } from "@/wrapper"
+import { dispatcher } from "@/lib/dispatcher"
+import { gameNatives } from "@/wrapper/game"
 
 dispatcher.on("init", () => {
-    nativeFunctions.manualVehicleEngineAndLights()
+    gameNatives.manualVehicleEngineAndLights()
 })

@@ -1,92 +1,67 @@
-import { dispatcher } from "@/core/dispatcher"
+import { dispatcher } from "@/lib/dispatcher"
 import { type Vehicle } from "../entity"
-import { nativeFunctions } from "@/wrapper"
+import { gameNatives } from "@/wrapper/game"
+import { VEHICLE_WINDOW_STATE, type VehicleWindowState } from "@/wrapper/game/enums.public"
+
+function updateVehicleParamsCarWindows(vehicle: Vehicle, windows: VehicleWindows) {
+    gameNatives.setVehicleParamsCarWindows(
+        vehicle.id,
+        VEHICLE_WINDOW_STATE[windows.driver],
+        VEHICLE_WINDOW_STATE[windows.passenger],
+        VEHICLE_WINDOW_STATE[windows.backLeft],
+        VEHICLE_WINDOW_STATE[windows.backRight],
+    )
+}
 
 class VehicleWindows {
-    private _driver: "open" | "closed" = "closed"
-    private _passenger: "open" | "closed" = "closed"
-    private _backLeft: "open" | "closed" = "closed"
-    private _backRight: "open" | "closed" = "closed"
+    private _driver: VehicleWindowState = "closed"
+    private _passenger: VehicleWindowState = "closed"
+    private _backLeft: VehicleWindowState = "closed"
+    private _backRight: VehicleWindowState = "closed"
 
     constructor(private vehicle: Vehicle) {
         this.reset()
     }
 
     reset() {
-        const state = "closed" as "open" | "closed"
+        this._driver = "closed"
+        this._passenger = "closed"
+        this._backLeft = "closed"
+        this._backRight = "closed"
 
-        this._driver = state
-        this._passenger = state
-        this._backLeft = state
-        this._backRight = state
-
-        nativeFunctions.setVehicleParamsCarWindows(
-            this.vehicle.sampId,
-            state !== "open",
-            state !== "open",
-            state !== "open",
-            state !== "open",
-        )
+        updateVehicleParamsCarWindows(this.vehicle, this)
     }
 
-    set driver(value: "open" | "closed") {
+    set driver(value: VehicleWindowState) {
         this._driver = value
-
-        nativeFunctions.setVehicleParamsCarWindows(
-            this.vehicle.sampId,
-            this._driver !== "open",
-            this._passenger !== "open",
-            this._backLeft !== "open",
-            this._backRight !== "open",
-        )
+        updateVehicleParamsCarWindows(this.vehicle, this)
     }
 
     get driver() {
         return this._driver
     }
 
-    set passenger(value: "open" | "closed") {
+    set passenger(value: VehicleWindowState) {
         this._passenger = value
-
-        nativeFunctions.setVehicleParamsCarWindows(
-            this.vehicle.sampId,
-            this._driver !== "open",
-            this._passenger !== "open",
-            this._backLeft !== "open",
-            this._backRight !== "open",
-        )
+        updateVehicleParamsCarWindows(this.vehicle, this)
     }
 
     get passenger() {
         return this._passenger
     }
 
-    set backLeft(value: "open" | "closed") {
+    set backLeft(value: VehicleWindowState) {
         this._backLeft = value
-
-        nativeFunctions.setVehicleParamsCarWindows(
-            this.vehicle.sampId,
-            this._driver !== "open",
-            this._passenger !== "open",
-            this._backLeft !== "open",
-            this._backRight !== "open",
-        )
+        updateVehicleParamsCarWindows(this.vehicle, this)
     }
 
     get backLeft() {
         return this._backLeft
     }
 
-    set backRight(value: "open" | "closed") {
+    set backRight(value: VehicleWindowState) {
         this._backRight = value
-
-        nativeFunctions.setVehicleParamsCarWindows(
-            this.vehicle.sampId,
-            this._driver !== "open",
-            this._passenger !== "open",
-            this._backLeft !== "open",
-            this._backRight !== "open",
-        )
+        updateVehicleParamsCarWindows(this.vehicle, this)
     }
 
     get backRight() {
@@ -94,29 +69,16 @@ class VehicleWindows {
     }
 }
 
-function setVehicleParamsFromData(
-    vehicle: Vehicle,
-    data: Partial<{
-        engine: boolean
-        lights: boolean
-        alarm: boolean
-        doors: boolean
-        bonnet: boolean
-        boot: boolean
-        objective: boolean
-    }>,
-) {
-    const params = nativeFunctions.getVehicleParamsEx(vehicle.sampId)
-
-    nativeFunctions.setVehicleParamsEx(
-        vehicle.sampId,
-        data.engine ?? params.engine === 1,
-        data.lights ?? params.lights === 1,
-        data.alarm ?? params.alarm === 1,
-        data.doors ?? params.doors === 1,
-        data.bonnet ?? params.bonnet === 1,
-        data.boot ?? params.boot === 1,
-        data.objective ?? params.objective === 1,
+function updateVehicleParams(vehicle: Vehicle, params: VehicleParams) {
+    gameNatives.setVehicleParamsEx(
+        vehicle.id,
+        params.engine === "on",
+        params.lights === "on",
+        params.alarm === "on",
+        params.doors === "locked",
+        params.hood === "open",
+        params.trunk === "open",
+        params.objective === "on",
     )
 }
 
@@ -136,31 +98,22 @@ export class VehicleParams {
     }
 
     reset() {
-        this._engine = "off" as "on" | "off"
-        this._lights = "off" as "on" | "off"
-        this._alarm = "off" as "on" | "off"
-        this._doors = "unlocked" as "locked" | "unlocked"
-        this._bonnet = "closed" as "open" | "closed"
-        this._boot = "closed" as "open" | "closed"
-        this._objective = "off" as "on" | "off"
+        this._engine = "off"
+        this._lights = "off"
+        this._alarm = "off"
+        this._doors = "unlocked"
+        this._bonnet = "closed"
+        this._boot = "closed"
+        this._objective = "off"
 
-        nativeFunctions.setVehicleParamsEx(
-            this.vehicle.sampId,
-            this._engine === "on",
-            this._lights === "on",
-            this._alarm === "on",
-            this._doors === "locked",
-            this._bonnet === "open",
-            this._boot === "open",
-            this._objective === "on",
-        )
+        updateVehicleParams(this.vehicle, this)
     }
 
     set engine(value: "on" | "off") {
         const stateChanged = this._engine !== value
 
         this._engine = value
-        setVehicleParamsFromData(this.vehicle, { engine: value === "on" })
+        updateVehicleParams(this.vehicle, this)
 
         stateChanged && dispatcher.emit("vehicleEngineStateChange", this.vehicle, value)
     }
@@ -171,7 +124,7 @@ export class VehicleParams {
 
     set lights(value: "on" | "off") {
         this._lights = value
-        setVehicleParamsFromData(this.vehicle, { lights: value === "on" })
+        updateVehicleParams(this.vehicle, this)
     }
 
     get lights() {
@@ -180,7 +133,7 @@ export class VehicleParams {
 
     set alarm(value: "on" | "off") {
         this._alarm = value
-        setVehicleParamsFromData(this.vehicle, { alarm: value === "on" })
+        updateVehicleParams(this.vehicle, this)
     }
 
     get alarm() {
@@ -189,7 +142,7 @@ export class VehicleParams {
 
     set doors(value: "locked" | "unlocked") {
         this._doors = value
-        setVehicleParamsFromData(this.vehicle, { doors: value === "locked" })
+        updateVehicleParams(this.vehicle, this)
     }
 
     get doors() {
@@ -198,7 +151,7 @@ export class VehicleParams {
 
     set hood(value: "closed" | "open") {
         this._bonnet = value
-        setVehicleParamsFromData(this.vehicle, { bonnet: value === "open" })
+        updateVehicleParams(this.vehicle, this)
     }
 
     get hood() {
@@ -207,7 +160,7 @@ export class VehicleParams {
 
     set trunk(value: "closed" | "open") {
         this._boot = value
-        setVehicleParamsFromData(this.vehicle, { boot: value === "open" })
+        updateVehicleParams(this.vehicle, this)
     }
 
     get trunk() {
@@ -216,7 +169,7 @@ export class VehicleParams {
 
     set objective(value: "on" | "off") {
         this._objective = value
-        setVehicleParamsFromData(this.vehicle, { objective: value === "on" })
+        updateVehicleParams(this.vehicle, this)
     }
 
     get objective() {

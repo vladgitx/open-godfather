@@ -1,46 +1,44 @@
-import { nativeFunctions } from "@/wrapper"
-import { type Position3, Vector3 } from "../../core/vector3"
+import { gameNatives, INVALID_VEHICLE_ID } from "@/wrapper/game"
+import { type Position3, Vector3 } from "../../lib/vector3"
 import { VehicleParams } from "./params"
 import { getVehicleOccupants } from "./@events/occupants"
-import { INVALID_VEHICLE_ID } from "@/wrapper/functions"
-import { SampEntity } from "@/core/samp-entity"
+import { GameEntity } from "@/lib/entity/game"
 
 const REMOVE_PAINTJOB_ID = 3
 
-export const vehicleInternalPaintjobId = new WeakMap<Vehicle, number>()
-
-export class Vehicle extends SampEntity {
+export class Vehicle extends GameEntity {
     readonly params = new VehicleParams(this)
 
     private _primaryColor: number
     private _secondaryColor: number
     private _interior = 0
     private _plate = ""
+    private _paintjobId: number | undefined
 
     constructor(
-        sampId: number,
+        gameId: number,
         readonly model: number,
         primaryColor: number,
         secondaryColor: number,
     ) {
-        super(sampId, INVALID_VEHICLE_ID)
+        super(gameId, INVALID_VEHICLE_ID)
 
         this._primaryColor = primaryColor
         this._secondaryColor = secondaryColor
 
-        nativeFunctions.linkVehicleToInterior(this.sampId, this._interior)
-        nativeFunctions.setVehicleNumberPlate(this.sampId, this._plate)
+        gameNatives.linkVehicleToInterior(this.id, this._interior)
+        gameNatives.setVehicleNumberPlate(this.id, this._plate)
     }
 
     getDamageStatus() {
-        return nativeFunctions.getVehicleDamageStatus(this.sampId)
+        return gameNatives.getVehicleDamageStatus(this.id)
     }
 
     setDamageStatus(status: Partial<{ panels: number; doors: number; lights: number; tires: number }>) {
         const currentStatus = this.getDamageStatus()
 
-        nativeFunctions.updateVehicleDamageStatus(
-            this.sampId,
+        gameNatives.updateVehicleDamageStatus(
+            this.id,
             status.panels ?? currentStatus.panels,
             status.doors ?? currentStatus.doors,
             status.lights ?? currentStatus.lights,
@@ -49,49 +47,49 @@ export class Vehicle extends SampEntity {
     }
 
     getSpawnInfo() {
-        const info = nativeFunctions.getVehicleSpawnInfo(this.sampId)
+        const info = gameNatives.getVehicleSpawnInfo(this.id)
         return { position: new Vector3(info.spawnX, info.spawnY, info.spawnZ), angle: info.spawnAngle }
     }
 
     repair() {
-        nativeFunctions.repairVehicle(this.sampId)
+        gameNatives.repairVehicle(this.id)
     }
 
     set position(position: Position3) {
-        nativeFunctions.setVehiclePosition(this.sampId, position.x, position.y, position.z)
+        gameNatives.setVehiclePosition(this.id, position.x, position.y, position.z)
     }
 
     get position(): Vector3 {
-        return new Vector3(nativeFunctions.getVehiclePosition(this.sampId))
+        return new Vector3(gameNatives.getVehiclePosition(this.id))
     }
 
     set velocity(velocity: Position3) {
-        nativeFunctions.setVehicleVelocity(this.sampId, velocity)
+        gameNatives.setVehicleVelocity(this.id, velocity)
     }
 
     get velocity() {
-        return nativeFunctions.getVehicleVelocity(this.sampId)
+        return gameNatives.getVehicleVelocity(this.id)
     }
 
     set rotation(angle: number) {
-        nativeFunctions.setVehicleZAngle(this.sampId, angle)
+        gameNatives.setVehicleZAngle(this.id, angle)
     }
 
     get rotation() {
-        return nativeFunctions.getVehicleZAngle(this.sampId)
+        return gameNatives.getVehicleZAngle(this.id)
     }
 
     set world(value: number) {
-        nativeFunctions.setVehicleVirtualWorld(this.sampId, value)
+        gameNatives.setVehicleVirtualWorld(this.id, value)
     }
 
     get world() {
-        return nativeFunctions.getVehicleVirtualWorld(this.sampId)
+        return gameNatives.getVehicleVirtualWorld(this.id)
     }
 
     set interior(interior: number) {
         this._interior = interior
-        nativeFunctions.linkVehicleToInterior(this.sampId, interior)
+        gameNatives.linkVehicleToInterior(this.id, interior)
     }
 
     get interior() {
@@ -99,16 +97,16 @@ export class Vehicle extends SampEntity {
     }
 
     set health(health: number) {
-        nativeFunctions.setVehicleHealth(this.sampId, health)
+        gameNatives.setVehicleHealth(this.id, health)
     }
 
     get health() {
-        return nativeFunctions.getVehicleHealth(this.sampId)
+        return gameNatives.getVehicleHealth(this.id)
     }
 
     set primaryColor(color: number) {
         this._primaryColor = color
-        nativeFunctions.changeVehicleColor(this.sampId, this._primaryColor, this._secondaryColor)
+        gameNatives.changeVehicleColor(this.id, this._primaryColor, this._secondaryColor)
     }
 
     get primaryColor() {
@@ -117,7 +115,7 @@ export class Vehicle extends SampEntity {
 
     set secondaryColor(color: number) {
         this._secondaryColor = color
-        nativeFunctions.changeVehicleColor(this.sampId, this._primaryColor, this._secondaryColor)
+        gameNatives.changeVehicleColor(this.id, this._primaryColor, this._secondaryColor)
     }
 
     get secondaryColor() {
@@ -126,7 +124,7 @@ export class Vehicle extends SampEntity {
 
     set plate(plate: string) {
         this._plate = plate
-        nativeFunctions.setVehicleNumberPlate(this.sampId, plate)
+        gameNatives.setVehicleNumberPlate(this.id, plate)
     }
 
     get plate() {
@@ -134,18 +132,16 @@ export class Vehicle extends SampEntity {
     }
 
     set paintjob(id: number | undefined) {
-        if (id === undefined) {
-            vehicleInternalPaintjobId.delete(this)
-        } else {
-            vehicleInternalPaintjobId.set(this, id)
-        }
-
-        nativeFunctions.changeVehiclePaintjob(this.sampId, id ?? REMOVE_PAINTJOB_ID)
+        this._paintjobId = id
+        gameNatives.changeVehiclePaintjob(this.id, id ?? REMOVE_PAINTJOB_ID)
     }
 
     get paintjob() {
-        const paintjobId = vehicleInternalPaintjobId.get(this)
-        return paintjobId === REMOVE_PAINTJOB_ID ? undefined : paintjobId
+        return this._paintjobId
+    }
+
+    static setInternalPaintjobId(vehicle: Vehicle, id: number) {
+        vehicle._paintjobId = id === REMOVE_PAINTJOB_ID ? undefined : id
     }
 
     get occupants() {

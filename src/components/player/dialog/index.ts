@@ -1,2 +1,1 @@
-export { PlayerDialog } from "./instance"
-export { ListDialogResponse, MessageDialogResponse, InputDialogResponse } from "./@types/response"
+export { PlayerDialog, ListDialogResponse, MessageDialogResponse, InputDialogResponse } from "./instance"

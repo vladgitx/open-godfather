@@ -1,12 +1,12 @@
-import { type Vector3 } from "../../core/vector3"
-import { nativeFunctions } from "@/wrapper"
-import { playerHandler, type Player } from "../player"
-import { SampEntity } from "@/core/samp-entity"
-import { TEXT_DRAW_ALIGNMENTS, TEXT_DRAW_FONTS, type TextDrawAlignment, type TextDrawFont } from "@/utils/enums"
+import { type Vector3 } from "../../lib/vector3"
+import { gameNatives } from "@/wrapper/game"
+import { players, type Player } from "../player"
+import { TEXT_DRAW_ALIGNMENTS, TEXT_DRAW_FONTS, type TextDrawAlignment, type TextDrawFont } from "@/wrapper/game/enums.public"
+import { GameEntity } from "@/lib/entity/game"
 
 const INVALID_TEXTDRAW_ID = 0xffff
 
-export class Textdraw extends SampEntity {
+export class Textdraw extends GameEntity {
     private toRemoveFromSetOnCleanup = new WeakSet<Player>()
     private showingForPlayers = new Set<Player>()
 
@@ -29,7 +29,7 @@ export class Textdraw extends SampEntity {
     private _previewVehicleColor?: { primary: number; secondary: number }
 
     constructor(
-        sampId: number,
+        gameId: number,
         position: { x: number; y: number },
         text: string,
         textColor?: string,
@@ -48,7 +48,7 @@ export class Textdraw extends SampEntity {
         previewRotation?: { rotation: Vector3; zoom: number },
         previewVehicleColor?: { primary: number; secondary: number },
     ) {
-        super(sampId, INVALID_TEXTDRAW_ID)
+        super(gameId, INVALID_TEXTDRAW_ID)
 
         this._textColor = textColor
         this._boxColor = boxColor
@@ -71,12 +71,12 @@ export class Textdraw extends SampEntity {
 
     private reshowForAllPlayers() {
         for (const player of this.showingForPlayers) {
-            nativeFunctions.textDrawShowForPlayer(player.sampId, this.sampId)
+            gameNatives.textDrawShowForPlayer(player.id, this.id)
         }
     }
 
     showForPlayer(player: Player) {
-        nativeFunctions.textDrawShowForPlayer(player.sampId, this.sampId)
+        gameNatives.textDrawShowForPlayer(player.id, this.id)
         this.showingForPlayers.add(player)
 
         if (!this.toRemoveFromSetOnCleanup.has(player)) {
@@ -89,7 +89,7 @@ export class Textdraw extends SampEntity {
     }
 
     hideForPlayer(player: Player) {
-        nativeFunctions.textDrawHideForPlayer(player.sampId, this.sampId)
+        gameNatives.textDrawHideForPlayer(player.id, this.id)
         this.showingForPlayers.delete(player)
     }
 
@@ -98,11 +98,9 @@ export class Textdraw extends SampEntity {
     }
 
     showForAllPlayers() {
-        nativeFunctions.textDrawShowForAll(this.sampId)
+        gameNatives.textDrawShowForAll(this.id)
 
-        const players = playerHandler.all
-
-        for (const player of players) {
+        for (const player of players.pool.all) {
             this.showingForPlayers.add(player)
 
             if (!this.toRemoveFromSetOnCleanup.has(player)) {
@@ -116,13 +114,13 @@ export class Textdraw extends SampEntity {
     }
 
     hideForAllPlayers() {
-        nativeFunctions.textDrawHideForAll(this.sampId)
+        gameNatives.textDrawHideForAll(this.id)
         this.showingForPlayers.clear()
     }
 
     setLetterSize(width: number, height: number) {
         this._letterSize = { width, height }
-        nativeFunctions.textDrawLetterSize(this.sampId, width, height)
+        gameNatives.textDrawLetterSize(this.id, width, height)
         this.reshowForAllPlayers()
     }
 
@@ -132,7 +130,7 @@ export class Textdraw extends SampEntity {
 
     setTextSize(width: number, height: number) {
         this._textSize = { width, height }
-        nativeFunctions.textDrawTextSize(this.sampId, width, height)
+        gameNatives.textDrawTextSize(this.id, width, height)
         this.reshowForAllPlayers()
     }
 
@@ -142,7 +140,7 @@ export class Textdraw extends SampEntity {
 
     set alignment(value: TextDrawAlignment) {
         this._alignment = value
-        nativeFunctions.textDrawAlignment(this.sampId, TEXT_DRAW_ALIGNMENTS[value])
+        gameNatives.textDrawAlignment(this.id, TEXT_DRAW_ALIGNMENTS[value])
         this.reshowForAllPlayers()
     }
 
@@ -152,7 +150,7 @@ export class Textdraw extends SampEntity {
 
     set textColor(value: string) {
         this._textColor = value
-        nativeFunctions.textDrawColor(this.sampId, value)
+        gameNatives.textDrawColor(this.id, value)
         this.reshowForAllPlayers()
     }
 
@@ -162,7 +160,7 @@ export class Textdraw extends SampEntity {
 
     set usingBox(value: boolean) {
         this._useBox = value
-        nativeFunctions.textDrawUseBox(this.sampId, Number(value))
+        gameNatives.textDrawUseBox(this.id, Number(value))
         this.reshowForAllPlayers()
     }
 
@@ -172,7 +170,7 @@ export class Textdraw extends SampEntity {
 
     set boxColor(value: string) {
         this._boxColor = value
-        nativeFunctions.textDrawBoxColor(this.sampId, value)
+        gameNatives.textDrawBoxColor(this.id, value)
         this.reshowForAllPlayers()
     }
 
@@ -182,7 +180,7 @@ export class Textdraw extends SampEntity {
 
     set shadowSize(value: number) {
         this._shadowSize = value
-        nativeFunctions.textDrawSetShadow(this.sampId, value)
+        gameNatives.textDrawSetShadow(this.id, value)
         this.reshowForAllPlayers()
     }
 
@@ -192,7 +190,7 @@ export class Textdraw extends SampEntity {
 
     set outlineSize(value: number) {
         this._outlineSize = value
-        nativeFunctions.textDrawSetOutline(this.sampId, value)
+        gameNatives.textDrawSetOutline(this.id, value)
         this.reshowForAllPlayers()
     }
 
@@ -202,7 +200,7 @@ export class Textdraw extends SampEntity {
 
     set backgroundColor(value: string) {
         this._backgroundColor = value
-        nativeFunctions.textDrawBackgroundColor(this.sampId, value)
+        gameNatives.textDrawBackgroundColor(this.id, value)
         this.reshowForAllPlayers()
     }
 
@@ -212,7 +210,7 @@ export class Textdraw extends SampEntity {
 
     set font(value: TextDrawFont) {
         this._font = value
-        nativeFunctions.textDrawFont(this.sampId, TEXT_DRAW_FONTS[value])
+        gameNatives.textDrawFont(this.id, TEXT_DRAW_FONTS[value])
         this.reshowForAllPlayers()
     }
 
@@ -222,7 +220,7 @@ export class Textdraw extends SampEntity {
 
     set proportional(value: boolean) {
         this._proportional = value
-        nativeFunctions.textDrawSetProportional(this.sampId, Number(value))
+        gameNatives.textDrawSetProportional(this.id, Number(value))
         this.reshowForAllPlayers()
     }
 
@@ -232,7 +230,7 @@ export class Textdraw extends SampEntity {
 
     set selectable(value: boolean) {
         this._selectable = value
-        nativeFunctions.textDrawSetSelectable(this.sampId, Number(value))
+        gameNatives.textDrawSetSelectable(this.id, Number(value))
         this.reshowForAllPlayers()
     }
 
@@ -242,7 +240,7 @@ export class Textdraw extends SampEntity {
 
     set text(value: string) {
         this._text = value
-        nativeFunctions.textDrawSetString(this.sampId, value)
+        gameNatives.textDrawSetString(this.id, value)
     }
 
     get text() {
@@ -251,7 +249,7 @@ export class Textdraw extends SampEntity {
 
     set previewModel(value: number) {
         this._previewModel = value
-        nativeFunctions.textDrawSetPreviewModel(this.sampId, value)
+        gameNatives.textDrawSetPreviewModel(this.id, value)
         this.reshowForAllPlayers()
     }
 
@@ -261,7 +259,7 @@ export class Textdraw extends SampEntity {
 
     setPreviewRotation(rotation: Vector3, zoom: number) {
         this._previewRotation = { rotation, zoom }
-        nativeFunctions.textDrawSetPreviewRot(this.sampId, rotation.x, rotation.y, rotation.z, zoom)
+        gameNatives.textDrawSetPreviewRot(this.id, rotation.x, rotation.y, rotation.z, zoom)
         this.reshowForAllPlayers()
     }
 
@@ -271,7 +269,7 @@ export class Textdraw extends SampEntity {
 
     setPreviewVehicleColor(primary: number, secondary: number) {
         this._previewVehicleColor = { primary, secondary }
-        nativeFunctions.textDrawSetPreviewVehCol(this.sampId, primary, secondary)
+        gameNatives.textDrawSetPreviewVehCol(this.id, primary, secondary)
         this.reshowForAllPlayers()
     }
 
@@ -281,7 +279,7 @@ export class Textdraw extends SampEntity {
 
     setPosition(x: number, y: number) {
         this._position = { x, y }
-        nativeFunctions.textDrawSetPos(this.sampId, x, y)
+        gameNatives.textDrawSetPos(this.id, x, y)
         this.reshowForAllPlayers()
     }
 

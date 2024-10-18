@@ -1,60 +1,73 @@
-import { type Vector3 } from "../../../core/vector3"
-import { nativeFunctions } from "@/wrapper"
+import { Entity } from "@/lib/entity"
 import { type Player } from "../entity"
-import { PLAYER_BONES, type PlayerBone } from "@/utils/enums"
+import { PLAYER_BONES, type PlayerBone } from "@/wrapper/game/enums.public"
+import { type Position3 } from "@/lib/vector3"
+import { gameNatives } from "@/wrapper/game"
+import { type PlayerAttachedObjectSlot } from "./handler"
 
-export function setPlayerAttachedObject(player: Player, data: PlayerAttachedObject) {
-    nativeFunctions.setPlayerAttachedObject(
-        player.sampId,
-        data.slot,
-        data.model,
-        PLAYER_BONES[data.bone],
-        data.offset.x,
-        data.offset.y,
-        data.offset.z,
-        data.rotation.x,
-        data.rotation.y,
-        data.rotation.z,
-        data.scale.x,
-        data.scale.y,
-        data.scale.z,
-        data.firstMaterialColor,
-        data.secondMaterialColor,
-    )
-}
-
-export const attachedObjInternalOffset = new WeakMap<PlayerAttachedObject, Vector3>()
-export const attachedObjInternalRotation = new WeakMap<PlayerAttachedObject, Vector3>()
-export const attachedObjInternalScale = new WeakMap<PlayerAttachedObject, Vector3>()
-
-export class PlayerAttachedObject {
+export class PlayerAttachedObject extends Entity {
+    private _model: number
     private _bone: PlayerBone
+    private _offset: Position3
+    private _rotation: Position3
+    private _scale: Position3
     private _firstMaterialColor: string
     private _secondMaterialColor: string
 
     constructor(
         private player: Player,
-        readonly slot: number,
-        readonly model: number,
+        readonly slot: PlayerAttachedObjectSlot,
+        model: number,
         bone: PlayerBone,
-        offset: Vector3,
-        rotation: Vector3,
-        scale: Vector3,
+        offset: Position3,
+        rotation: Position3,
+        scale: Position3,
         firstMaterialColor: string,
         secondMaterialColor: string,
     ) {
-        attachedObjInternalOffset.set(this, offset)
-        attachedObjInternalRotation.set(this, rotation)
-        attachedObjInternalScale.set(this, scale)
+        super()
 
+        this._model = model
         this._bone = bone
+        this._offset = offset
+        this._rotation = rotation
+        this._scale = scale
         this._firstMaterialColor = firstMaterialColor
         this._secondMaterialColor = secondMaterialColor
     }
 
+    static refreshVisuals(attachedObject: PlayerAttachedObject) {
+        gameNatives.setPlayerAttachedObject(
+            attachedObject.player.id,
+            attachedObject.slot,
+            attachedObject._model,
+            PLAYER_BONES[attachedObject._bone],
+            attachedObject._offset.x,
+            attachedObject._offset.y,
+            attachedObject._offset.z,
+            attachedObject._rotation.x,
+            attachedObject._rotation.y,
+            attachedObject._rotation.z,
+            attachedObject._scale.x,
+            attachedObject._scale.y,
+            attachedObject._scale.z,
+            attachedObject._firstMaterialColor,
+            attachedObject._secondMaterialColor,
+        )
+    }
+
+    set model(value: number) {
+        this._model = value
+        PlayerAttachedObject.refreshVisuals(this)
+    }
+
+    get model() {
+        return this._model
+    }
+
     set firstMaterialColor(value: string) {
         this._firstMaterialColor = value
-        setPlayerAttachedObject(this.player, this)
+        PlayerAttachedObject.refreshVisuals(this)
     }
 
     get firstMaterialColor() {
@@ -63,7 +76,7 @@ export class PlayerAttachedObject {
 
     set secondMaterialColor(value: string) {
         this._secondMaterialColor = value
-        setPlayerAttachedObject(this.player, this)
+        PlayerAttachedObject.refreshVisuals(this)
     }
 
     get secondMaterialColor() {
@@ -72,40 +85,37 @@ export class PlayerAttachedObject {
 
     set bone(value: PlayerBone) {
         this._bone = value
-        setPlayerAttachedObject(this.player, this)
+        PlayerAttachedObject.refreshVisuals(this)
     }
 
     get bone() {
         return this._bone
     }
 
-    set offset(value: Vector3) {
-        attachedObjInternalOffset.set(this, value)
-        setPlayerAttachedObject(this.player, this)
+    set offset(value: Position3) {
+        this._offset = value
+        PlayerAttachedObject.refreshVisuals(this)
     }
 
     get offset() {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return attachedObjInternalOffset.get(this)!
+        return this._offset
     }
 
-    set rotation(value: Vector3) {
-        attachedObjInternalRotation.set(this, value)
-        setPlayerAttachedObject(this.player, this)
+    set rotation(value: Position3) {
+        this._rotation = value
+        PlayerAttachedObject.refreshVisuals(this)
     }
 
     get rotation() {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return attachedObjInternalRotation.get(this)!
+        return this._rotation
     }
 
-    set scale(value: Vector3) {
-        attachedObjInternalScale.set(this, value)
-        setPlayerAttachedObject(this.player, this)
+    set scale(value: Position3) {
+        this._scale = value
+        PlayerAttachedObject.refreshVisuals(this)
     }
 
     get scale() {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return attachedObjInternalScale.get(this)!
+        return this._scale
     }
 }

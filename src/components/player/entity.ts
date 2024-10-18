@@ -1,15 +1,12 @@
-import { nativeFunctions } from "@/wrapper"
-import { type Position3, Vector3 } from "../../core/vector3"
-import { type Vehicle, vehicleHandler } from "../vehicle"
-import { PlayerAnimations } from "./animations"
+import { gameNatives } from "@/wrapper/game"
+import { type Position3, Vector3 } from "../../lib/vector3"
+import { type Vehicle, vehicles } from "../vehicle"
 import { PlayerDialog } from "./dialog"
 import { PlayerWeapons } from "./weapons"
 import { putInVehicleWithEvent } from "./@events/enter-exit-car"
-import { PlayerAttachedObjects } from "./attached-objects"
-import { dispatcher } from "../../core/dispatcher"
-import { type PlayerEventMap } from "./@events/entity-callbacks"
-import { INVALID_PLAYER_ID } from "@/wrapper/functions"
-import { SampEntity } from "@/core/samp-entity"
+import { dispatcher } from "../../lib/dispatcher"
+import { type PlayerEventMap } from "./@events/entity-event-bus"
+import { INVALID_PLAYER_ID } from "@/wrapper/game"
 import {
     CAMERA_CUT_STYLES,
     type CameraCutStyle,
@@ -18,52 +15,65 @@ import {
     SPECIAL_ACTIONS,
     type SpecialAction,
     type VehicleSeat,
-} from "@/utils/enums"
-import { getEnumKeyByValue } from "@/utils/miscellaneous"
+} from "@/wrapper/game/enums.public"
+import { getEnumKeyByValue } from "@/lib/utils"
+import { PlayerAnimations } from "./animations"
+import { GameEntity } from "@/lib/entity/game"
+import { PlayerAttachedObjectHandler } from "./attached-objects"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
-export class Player extends SampEntity<PlayerEventMap> {
-    readonly dialog = new PlayerDialog(this)
-    readonly weapons = new PlayerWeapons(this)
-    readonly animations = new PlayerAnimations(this)
-    readonly attachedObjects = new PlayerAttachedObjects(this)
-    private _name = nativeFunctions.getPlayerName(this.sampId)
+export class Player extends GameEntity<PlayerEventMap> {
+    readonly attachedObjects = new PlayerAttachedObjectHandler(this)
+
+    private _name = gameNatives.getPlayerName(this.id)
     private _color = "FFFFFF"
     private _cash = 0
     private _skin = 0
     private _spectating = true
 
-    constructor(sampId: number) {
-        super(sampId, INVALID_PLAYER_ID)
+    constructor(gameId: number) {
+        super(gameId, INVALID_PLAYER_ID)
 
-        nativeFunctions.setPlayerColor(this.sampId, this._color)
-        nativeFunctions.givePlayerMoney(this.sampId, this._cash)
-        nativeFunctions.setPlayerSkin(this.sampId, this._skin)
-        nativeFunctions.setPlayerTeam(this.sampId, DEFAULT_PLAYER_TEAM)
-        nativeFunctions.togglePlayerSpectating(this.sampId, this._spectating)
+        gameNatives.setPlayerColor(this.id, this._color)
+        gameNatives.givePlayerMoney(this.id, this._cash)
+        gameNatives.setPlayerSkin(this.id, this._skin)
+        gameNatives.setPlayerTeam(this.id, DEFAULT_PLAYER_TEAM)
+        gameNatives.togglePlayerSpectating(this.id, this._spectating)
     }
 
-    exitObjectEditMode() {
-        nativeFunctions.cancelEdit(this.sampId)
-        dispatcher.emit("playerExitObjectEditMode", this)
+    get animations() {
+        return new PlayerAnimations(this)
+    }
+
+    get weapons() {
+        return new PlayerWeapons(this)
+    }
+
+    get dialog() {
+        return new PlayerDialog(this)
+    }
+
+    cancelObjectEditMode() {
+        gameNatives.cancelEdit(this.id)
+        dispatcher.emit("playerCancelObjectEditMode", this)
     }
 
     sendMessage(message: string, color = "FFFFFF") {
-        nativeFunctions.sendClientMessage(this.sampId, color, message)
+        gameNatives.sendClientMessage(this.id, color, message)
     }
 
     spawn(position = new Vector3(0, 0, 3), rotation = 0, world = 0, interior = 0) {
         this.world = world
         this.interior = interior
 
-        nativeFunctions.setSpawnInfo(this.sampId, DEFAULT_PLAYER_TEAM, this.skin, position, rotation)
+        gameNatives.setSpawnInfo(this.id, DEFAULT_PLAYER_TEAM, this.skin, position, rotation)
 
         if (this.spectating) {
             this.spectating = false
         } else if (this.state === "wasted") {
             // If in class selection
-            nativeFunctions.spawnPlayer(this.sampId)
+            gameNatives.spawnPlayer(this.id)
         }
 
         this.resetCameraBehind()
@@ -71,34 +81,34 @@ export class Player extends SampEntity<PlayerEventMap> {
 
     kick(delay = 10) {
         if (delay <= 0) {
-            nativeFunctions.kick(this.sampId)
+            gameNatives.kick(this.id)
             return
         }
 
         setTimeout(() => {
-            nativeFunctions.kick(this.sampId)
+            gameNatives.kick(this.id)
         }, delay)
     }
 
     resetCameraBehind() {
-        nativeFunctions.setCameraBehindPlayer(this.sampId)
+        gameNatives.setCameraBehindPlayer(this.id)
     }
 
     setCameraLookAt(position: Vector3, cutStyle: CameraCutStyle = "cut") {
-        nativeFunctions.setPlayerCameraLookAt(this.sampId, position, CAMERA_CUT_STYLES[cutStyle])
+        gameNatives.setPlayerCameraLookAt(this.id, position, CAMERA_CUT_STYLES[cutStyle])
     }
 
     interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "move") {
-        nativeFunctions.interpolateCameraPos(this.sampId, from, to, time, CAMERA_CUT_STYLES[cutStyle])
+        gameNatives.interpolateCameraPos(this.id, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 
     interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "move") {
-        nativeFunctions.interpolateCameraLookAt(this.sampId, from, to, time, CAMERA_CUT_STYLES[cutStyle])
+        gameNatives.interpolateCameraLookAt(this.id, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 
     set spectating(spectating: boolean) {
         this._spectating = spectating
-        nativeFunctions.togglePlayerSpectating(this.sampId, spectating)
+        gameNatives.togglePlayerSpectating(this.id, spectating)
     }
 
     get spectating() {
@@ -106,32 +116,32 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     set position(position: Position3) {
-        nativeFunctions.setPlayerPosition(this.sampId, position.x, position.y, position.z)
+        gameNatives.setPlayerPosition(this.id, position.x, position.y, position.z)
     }
 
     get position(): Vector3 {
-        return new Vector3(nativeFunctions.getPlayerPosition(this.sampId))
+        return new Vector3(gameNatives.getPlayerPosition(this.id))
     }
 
     set cameraPosition(position: Position3) {
-        nativeFunctions.setPlayerCameraPos(this.sampId, position)
+        gameNatives.setPlayerCameraPos(this.id, position)
     }
 
     get cameraPosition() {
-        return nativeFunctions.getPlayerCameraPos(this.sampId)
+        return gameNatives.getPlayerCameraPos(this.id)
     }
 
     set specialAction(action: SpecialAction) {
-        nativeFunctions.setPlayerSpecialAction(this.sampId, SPECIAL_ACTIONS[action])
+        gameNatives.setPlayerSpecialAction(this.id, SPECIAL_ACTIONS[action])
     }
 
     get specialAction() {
-        return getEnumKeyByValue(SPECIAL_ACTIONS, nativeFunctions.getPlayerSpecialAction(this.sampId))!
+        return getEnumKeyByValue(SPECIAL_ACTIONS, gameNatives.getPlayerSpecialAction(this.id))
     }
 
     set skin(skin: number) {
         this._skin = skin
-        nativeFunctions.setPlayerSkin(this.sampId, skin)
+        gameNatives.setPlayerSkin(this.id, skin)
     }
 
     get skin() {
@@ -139,16 +149,16 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     set rotation(rotation: number) {
-        nativeFunctions.setPlayerRotation(this.sampId, rotation)
+        gameNatives.setPlayerRotation(this.id, rotation)
     }
 
     get rotation() {
-        return nativeFunctions.getPlayerRotation(this.sampId)
+        return gameNatives.getPlayerRotation(this.id)
     }
 
     set name(name: string) {
         this._name = name
-        nativeFunctions.setPlayerName(this.sampId, name)
+        gameNatives.setPlayerName(this.id, name)
     }
 
     get name() {
@@ -156,40 +166,40 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     set world(value: number) {
-        nativeFunctions.setPlayerVirtualWorld(this.sampId, value)
+        gameNatives.setPlayerVirtualWorld(this.id, value)
     }
 
     get world() {
-        return nativeFunctions.getPlayerVirtualWorld(this.sampId)
+        return gameNatives.getPlayerVirtualWorld(this.id)
     }
 
     set interior(value: number) {
-        nativeFunctions.setPlayerInterior(this.sampId, value)
+        gameNatives.setPlayerInterior(this.id, value)
     }
 
     get interior() {
-        return nativeFunctions.getPlayerInterior(this.sampId)
+        return gameNatives.getPlayerInterior(this.id)
     }
 
     set health(value: number) {
-        nativeFunctions.setPlayerHealth(this.sampId, value)
+        gameNatives.setPlayerHealth(this.id, value)
     }
 
     get health() {
-        return nativeFunctions.getPlayerHealth(this.sampId)
+        return gameNatives.getPlayerHealth(this.id)
     }
 
     set armour(value: number) {
-        nativeFunctions.setPlayerArmour(this.sampId, value)
+        gameNatives.setPlayerArmour(this.id, value)
     }
 
     get armour() {
-        return nativeFunctions.getPlayerArmour(this.sampId)
+        return gameNatives.getPlayerArmour(this.id)
     }
 
     set color(hex: string) {
         this._color = hex
-        nativeFunctions.setPlayerColor(this.sampId, hex)
+        gameNatives.setPlayerColor(this.id, hex)
     }
 
     get color() {
@@ -197,20 +207,20 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     get ip() {
-        return nativeFunctions.getPlayerIp(this.sampId)
+        return gameNatives.getPlayerIp(this.id)
     }
 
     get ping() {
-        return nativeFunctions.getPlayerPing(this.sampId)
+        return gameNatives.getPlayerPing(this.id)
     }
 
     get gpci() {
-        return nativeFunctions.gpci(this.sampId)
+        return gameNatives.gpci(this.id)
     }
 
     set cash(value: number) {
-        nativeFunctions.resetPlayerMoney(this.sampId)
-        nativeFunctions.givePlayerMoney(this.sampId, value)
+        gameNatives.resetPlayerMoney(this.id)
+        gameNatives.givePlayerMoney(this.id, value)
 
         this._cash = value
     }
@@ -220,19 +230,19 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     set score(value: number) {
-        nativeFunctions.setPlayerScore(this.sampId, value)
+        gameNatives.setPlayerScore(this.id, value)
     }
 
     get score() {
-        return nativeFunctions.getPlayerScore(this.sampId)
+        return gameNatives.getPlayerScore(this.id)
     }
 
     get cameraMode() {
-        return nativeFunctions.getPlayerCameraMode(this.sampId)
+        return gameNatives.getPlayerCameraMode(this.id)
     }
 
     setChatBubble(text: string, color = "FFFFFF", drawDistance = 12, expireTime = 5000) {
-        return nativeFunctions.setPlayerChatBubble(this.sampId, text, color, drawDistance, expireTime)
+        return gameNatives.setPlayerChatBubble(this.id, text, color, drawDistance, expireTime)
     }
 
     get spawned() {
@@ -246,7 +256,7 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     get state(): PlayerState | undefined {
-        return getEnumKeyByValue(PLAYER_STATES, nativeFunctions.getPlayerState(this.sampId))
+        return getEnumKeyByValue(PLAYER_STATES, gameNatives.getPlayerState(this.id))
     }
 
     putIntoVehicle(vehicle: Vehicle, seat: VehicleSeat = "driver") {
@@ -254,16 +264,16 @@ export class Player extends SampEntity<PlayerEventMap> {
     }
 
     get vehicle(): Vehicle | undefined {
-        const vehicleId = nativeFunctions.getPlayerVehicleId(this.sampId)
+        const vehicleId = gameNatives.getPlayerVehicleId(this.id)
 
         if (vehicleId === undefined) {
             return undefined
         }
 
-        return vehicleHandler.atSampId(vehicleId)
+        return vehicles.pool.at(vehicleId)
     }
 
     get vehicleSeat() {
-        return nativeFunctions.getPlayerVehicleSeat(this.sampId)
+        return gameNatives.getPlayerVehicleSeat(this.id)
     }
 }
