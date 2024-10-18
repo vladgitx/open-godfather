@@ -2,18 +2,25 @@ import { dispatcher } from "../dispatcher"
 import { EventBus, type EventMapInterface } from "../event-bus"
 import { KeyValueVariables } from "../variables"
 
-let lastUsedReferenceId = 0
+let lastUsedReferenceId = Number.MIN_SAFE_INTEGER
 
 export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
+    readonly refId: number
+
     private cleanupCallbacks: (() => void)[] = []
     private destroyed = false
 
     readonly events = new EventBus<EventMap>()
     readonly variables = new KeyValueVariables()
 
-    readonly refId = lastUsedReferenceId++
-
     constructor() {
+        if (lastUsedReferenceId === Number.MAX_SAFE_INTEGER) {
+            // TODO: Handle the reference IDs better so this doesn't happen
+            throw new Error("Maximum entity reference ID reached")
+        }
+
+        this.refId = lastUsedReferenceId++
+
         dispatcher.emit("entityInstantiate", this)
 
         this.onCleanup(() => {
