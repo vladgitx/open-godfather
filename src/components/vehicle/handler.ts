@@ -1,12 +1,12 @@
 import { gameNatives } from "@/wrapper/game"
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { Vehicle } from "./entity"
 import { EntityPool } from "@/lib/entity"
 
 class VehicleHandler {
     readonly pool = new EntityPool<Vehicle>(Vehicle)
 
-    new(model: number, position: Vector3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
+    new(model: number, position: Position3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
         const vehicleId = gameNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
 
         if (vehicleId === undefined) {
@@ -23,7 +23,7 @@ class VehicleHandler {
         return vehicle
     }
 
-    getClosest(position: Vector3, range = Infinity, world?: number, interior?: number) {
+    getClosest(position: Position3, range = Infinity, world?: number, interior?: number) {
         let closestVehicle: Vehicle | undefined = undefined
         let closestDistance = range
 

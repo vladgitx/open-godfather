@@ -1,4 +1,4 @@
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { TextLabel } from "./entity"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
@@ -10,7 +10,7 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel
     new(
         text: string,
         color: string,
-        position: Vector3,
+        position: Position3,
         drawDistance = 20,
         onlyVisibleFor?: {
             world?: number

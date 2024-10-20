@@ -63,7 +63,7 @@ export class Player extends GameEntity<PlayerEventMap> {
         gameNatives.sendClientMessage(this.id, color, message)
     }
 
-    spawn(position = new Vector3(0, 0, 3), rotation = 0, world = 0, interior = 0) {
+    spawn(position = { x: 0.0, y: 0.0, z: 3.0 }, rotation = 0, world = 0, interior = 0) {
         this.world = world
         this.interior = interior
 
@@ -94,15 +94,15 @@ export class Player extends GameEntity<PlayerEventMap> {
         gameNatives.setCameraBehindPlayer(this.id)
     }
 
-    setCameraLookAt(position: Vector3, cutStyle: CameraCutStyle = "cut") {
+    setCameraLookAt(position: Position3, cutStyle: CameraCutStyle = "cut") {
         gameNatives.setPlayerCameraLookAt(this.id, position, CAMERA_CUT_STYLES[cutStyle])
     }
 
-    interpolateCameraPosition(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "move") {
+    interpolateCameraPosition(from: Position3, to: Position3, time: number, cutStyle: CameraCutStyle = "move") {
         gameNatives.interpolateCameraPos(this.id, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 
-    interpolateCameraLookAt(from: Vector3, to: Vector3, time: number, cutStyle: CameraCutStyle = "move") {
+    interpolateCameraLookAt(from: Position3, to: Position3, time: number, cutStyle: CameraCutStyle = "move") {
         gameNatives.interpolateCameraLookAt(this.id, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 

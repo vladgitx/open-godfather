@@ -2,13 +2,15 @@ import { type Constructible } from "@/lib/types"
 import { EventBus } from "../event-bus"
 import { type Entity } from "./entity"
 
+type EntityPoolKey = number | string | bigint
+
 export class EntityPool<T extends Entity> {
-    private map = new Map<number, T>()
+    private map = new Map<EntityPoolKey, T>()
     readonly events = new EventBus<{ add: [T] }>()
 
     constructor(private entityConstructor: Constructible<T>) {}
 
-    static add<T extends Entity>(pool: EntityPool<T>, key: number, entity: T) {
+    static add<T extends Entity>(pool: EntityPool<T>, key: EntityPoolKey, entity: T) {
         if (pool.map.has(key)) {
             throw new Error(`Entity with key ${key} already exists in pool`)
         }
@@ -25,7 +27,15 @@ export class EntityPool<T extends Entity> {
         return [...this.map.values()]
     }
 
-    at(key: number) {
+    get size() {
+        return this.map.size
+    }
+
+    has(key: EntityPoolKey) {
+        return this.map.has(key)
+    }
+
+    at(key: EntityPoolKey) {
         return this.map.get(key)
     }
 

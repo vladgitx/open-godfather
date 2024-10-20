@@ -1,4 +1,4 @@
-import { gameNatives } from "@/wrapper/game"
+import { gameNatives, type Weapon, WEAPONS } from "@/wrapper/game"
 import { dispatcher } from "../../lib/dispatcher"
 
 class GameServer {
@@ -42,6 +42,10 @@ class GameServer {
 
     disableDefaultInteriorEntrances() {
         gameNatives.disableInteriorEnterExits()
+    }
+
+    getWeaponName(weapon: Weapon) {
+        return gameNatives.getWeaponName(WEAPONS[weapon])
     }
 
     set name(name: string) {

@@ -14,6 +14,10 @@ export class PlayerWeapons {
         return gameNatives.givePlayerWeapon(this.player.id, WEAPONS[weapon], ammo)
     }
 
+    setAmmo(weapon: Weapon, ammo: number) {
+        gameNatives.setPlayerAmmo(this.player.id, WEAPONS[weapon], ammo)
+    }
+
     remove(weapon: Weapon) {
         const weapons = this.all
         const holding = this.holding

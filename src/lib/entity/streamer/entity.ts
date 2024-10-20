@@ -1,5 +1,5 @@
 import { INVALID_STREAMER_ID, streamerNatives, type StreamerItemType } from "@/wrapper/streamer"
-import { type Vector3 } from "../../vector3"
+import { type Position3 } from "../../vector3"
 import { GameEntity } from "../game"
 import { type EventMapInterface } from "@/lib/event-bus"
 
@@ -27,7 +27,7 @@ export class StreamerEntity<EventMap extends EventMapInterface = EventMapInterfa
         return streamerNatives.getIntData(this.type, this.id, "interiorId")
     }
 
-    set position(position: Vector3) {
+    set position(position: Position3) {
         streamerNatives.setItemPos(this.type, this.id, position)
     }
 

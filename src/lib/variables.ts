@@ -1,4 +1,4 @@
-export class KeyValueVariables<T extends Record<string, unknown> = Record<never, never>> {
+export class KeyValueVariables<T extends Record<string, unknown> = Record<string, unknown>> {
     private variables = new Map<keyof T, unknown>()
 
     set<K extends keyof T>(name: K, value: T[K]): void

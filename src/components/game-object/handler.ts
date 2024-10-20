@@ -1,5 +1,5 @@
 import { streamerNatives } from "@/wrapper/streamer"
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { GameObject } from "./entity"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
@@ -8,8 +8,8 @@ import { EntityPool } from "@/lib/entity"
 class GameObjectHandler extends StreamerEntityHandler<GameObject, typeof GameObject> {
     new(
         model: number,
-        position: Vector3,
-        rotation: Vector3,
+        position: Position3,
+        rotation: Position3,
         streamDistance = 200,
         onlyVisibleFor?: {
             world?: number

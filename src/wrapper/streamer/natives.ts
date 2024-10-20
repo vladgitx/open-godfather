@@ -7,7 +7,7 @@ import type { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enum
 
 class StreamerNatives {
     createDynamicCheckpoint(
-        position: Vector3,
+        position: Position3,
         size: number,
         worldId: number,
         interiorId: number,
@@ -62,7 +62,7 @@ class StreamerNatives {
     createDynamicPickup(
         modelId: number,
         type: number,
-        position: Vector3,
+        position: Position3,
         worldId: number,
         interiorId: number,
         playerId: number,
@@ -100,7 +100,7 @@ class StreamerNatives {
     createDynamic3dTextLabel(
         text: string,
         color: string,
-        position: Vector3,
+        position: Position3,
         drawDistance: number,
         attachedPlayerId: number,
         attachedVehicleId: number,
@@ -202,14 +202,14 @@ class StreamerNatives {
         return new Vector3(pos[0], pos[1], pos[2])
     }
 
-    setItemPos(itemType: StreamerItemType, itemId: number, position: Vector3) {
+    setItemPos(itemType: StreamerItemType, itemId: number, position: Position3) {
         samp.callNative("Streamer_SetItemPos", "iifff", STREAMER_ITEM_TYPES[itemType], itemId, position.x, position.y, position.z)
     }
 
     createDynamicObject(
         model: number,
-        position: Vector3,
-        rotation: Vector3,
+        position: Position3,
+        rotation: Position3,
         world: number,
         interior: number,
         playerId: number,

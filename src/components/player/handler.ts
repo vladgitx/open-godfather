@@ -1,5 +1,5 @@
 import { gameNatives } from "@/wrapper/game"
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { Player } from "./entity"
 import { EntityPool } from "@/lib/entity"
 
@@ -10,7 +10,7 @@ class PlayerHandler {
         gameNatives.sendClientMessageToAll(color, message)
     }
 
-    getClosest(position: Vector3, range = Infinity, world?: number, interior?: number) {
+    getClosest(position: Position3, range = Infinity, world?: number, interior?: number) {
         let closestPlayer: Player | undefined = undefined
         let closestDistance = range
 

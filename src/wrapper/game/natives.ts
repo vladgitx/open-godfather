@@ -186,6 +186,10 @@ class GameNatives {
         samp.callNative("RepairVehicle", "i", vehicleId)
     }
 
+    setPlayerAmmo(playerId: number, weaponId: EnumValue<typeof WEAPONS>, ammo: number) {
+        samp.callNative("SetPlayerAmmo", "iii", playerId, weaponId, ammo)
+    }
+
     setPlayerAttachedObject = (
         playerId: number,
         index: PlayerAttachedObjectSlot,

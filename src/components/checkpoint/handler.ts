@@ -1,12 +1,12 @@
 import { streamerNatives } from "@/wrapper/streamer"
 import { type Player } from "../player"
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { Checkpoint } from "./entity"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
 
 class CheckpointHandler extends StreamerEntityHandler<Checkpoint, typeof Checkpoint> {
     new(
-        position: Vector3,
+        position: Position3,
         size = 3.0,
         streamDistance = 200,
         onlyVisibleFor?: {

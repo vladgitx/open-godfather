@@ -1,5 +1,5 @@
 import { streamerNatives } from "@/wrapper/streamer"
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { Pickup } from "./entity"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
@@ -8,7 +8,7 @@ import { EntityPool } from "@/lib/entity"
 class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
     new(
         model: number,
-        position: Vector3,
+        position: Position3,
         streamDistance = 200,
         onlyVisibleFor?: {
             world?: number

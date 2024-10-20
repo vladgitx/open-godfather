@@ -1,7 +1,7 @@
 import { type Player, players } from "../player"
 import { streamerNatives } from "@/wrapper/streamer"
 import { vehicles, type Vehicle } from "../vehicle"
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { StreamerEntity } from "@/lib/entity/streamer"
 
 export class TextLabel extends StreamerEntity {
@@ -38,7 +38,7 @@ export class TextLabel extends StreamerEntity {
         return this._color
     }
 
-    attachTo(entity: Player | Vehicle, offset: Vector3) {
+    attachTo(entity: Player | Vehicle, offset: Position3) {
         if (this.attached) {
             return false
         }

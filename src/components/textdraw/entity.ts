@@ -1,4 +1,4 @@
-import { type Vector3 } from "../../lib/vector3"
+import { type Position3 } from "../../lib/vector3"
 import { gameNatives } from "@/wrapper/game"
 import { players, type Player } from "../player"
 import { TEXT_DRAW_ALIGNMENTS, TEXT_DRAW_FONTS, type TextDrawAlignment, type TextDrawFont } from "@/wrapper/game/enums.public"
@@ -25,7 +25,7 @@ export class Textdraw extends GameEntity {
     private _useBox?: boolean
     private _selectable?: boolean
     private _previewModel?: number
-    private _previewRotation?: { rotation: Vector3; zoom: number }
+    private _previewRotation?: { rotation: Position3; zoom: number }
     private _previewVehicleColor?: { primary: number; secondary: number }
 
     constructor(
@@ -45,7 +45,7 @@ export class Textdraw extends GameEntity {
         useBox?: boolean,
         selectable?: boolean,
         previewModel?: number,
-        previewRotation?: { rotation: Vector3; zoom: number },
+        previewRotation?: { rotation: Position3; zoom: number },
         previewVehicleColor?: { primary: number; secondary: number },
     ) {
         super(gameId, INVALID_TEXTDRAW_ID)
@@ -257,7 +257,7 @@ export class Textdraw extends GameEntity {
         return this._previewModel
     }
 
-    setPreviewRotation(rotation: Vector3, zoom: number) {
+    setPreviewRotation(rotation: Position3, zoom: number) {
         this._previewRotation = { rotation, zoom }
         gameNatives.textDrawSetPreviewRot(this.id, rotation.x, rotation.y, rotation.z, zoom)
         this.reshowForAllPlayers()
