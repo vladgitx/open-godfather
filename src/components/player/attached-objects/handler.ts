@@ -1,10 +1,11 @@
-import { EntityPool, EntityPromises } from "@/lib/entity"
+import { EntityPromises } from "@/lib/entity"
 import { type Player } from "../entity"
 import { PLAYER_BONES, type PlayerBone } from "@/wrapper/game/enums.public"
 import { type Vector3, type Position3 } from "@/lib/vector3"
 import { type NumberRange } from "@/lib/types"
 import { gameNatives } from "@/wrapper/game"
 import { PlayerAttachedObject } from "./entity"
+import { EntityPool } from "@/lib/pool"
 
 const MAX_PLAYER_ATTACHED_OBJECTS = 10
 
@@ -87,7 +88,7 @@ export class PlayerAttachedObjectHandler {
             secondMaterialColor ?? "",
         )
 
-        EntityPool.add_new(this.pool, usingSlot, attachedObject)
+        EntityPool.add(this.pool, usingSlot, attachedObject)
 
         attachedObject.onCleanup(() => {
             EntityPool.remove(this.pool, usingSlot!, attachedObject) && gameNatives.removePlayerAttachedObject(this.player.id, usingSlot!)

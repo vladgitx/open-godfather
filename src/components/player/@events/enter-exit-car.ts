@@ -3,7 +3,7 @@ import { gameNatives } from "@/wrapper/game"
 import { type Vehicle, vehicles } from "../../vehicle"
 import { dispatcher } from "@/lib/dispatcher"
 import { VEHICLE_SEATS, type VehicleSeat } from "@/wrapper/game/enums.public"
-import { searchPoolValuesForEntityRefId } from "@/lib/entity"
+import { searchPoolValuesForEntityRefId } from "@/lib/pool"
 
 const lastVehicleReferenceId = new WeakMap<Player, bigint>()
 

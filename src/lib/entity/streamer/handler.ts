@@ -2,7 +2,7 @@ import { streamerNatives, type StreamerItemType } from "@/wrapper/streamer"
 import { type StreamerEntity } from "./entity"
 import { type Player } from "@/components/player"
 import { type Position3 } from "@/lib/vector3"
-import { EntityPool } from "../pool"
+import { EntityPool } from "../../pool"
 
 export class StreamerEntityHandler<T extends StreamerEntity> {
     readonly pool = new EntityPool<number, T>()

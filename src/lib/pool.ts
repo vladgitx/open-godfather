@@ -1,5 +1,5 @@
-import { EventBus } from "../event-bus"
-import { type Entity } from "./entity"
+import { EventBus } from "./event-bus"
+import { type Entity } from "./entity/entity"
 
 type ValidPoolKey = number | string | bigint
 
@@ -7,7 +7,7 @@ export class EntityPool<K extends ValidPoolKey, V> {
     private map = new Map<K, V>()
     readonly events = new EventBus<{ add: [V]; remove: [V] }>()
 
-    static add_new<K extends ValidPoolKey, V>(pool: EntityPool<K, V>, key: K, value: V) {
+    static add<K extends ValidPoolKey, V>(pool: EntityPool<K, V>, key: K, value: V) {
         if (pool.map.has(key)) {
             throw new Error(`Entity with key ${key} already exists in pool`)
         }

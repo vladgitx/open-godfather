@@ -2,7 +2,7 @@ import { type Position3 } from "../../lib/vector3"
 import { TextLabel } from "./entity"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 import { streamerNatives } from "@/wrapper/streamer"
 import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/game"
 
@@ -41,7 +41,7 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
         }
 
         const textLabel = new TextLabel(labelId, text, color)
-        EntityPool.add_new(this.pool, labelId, textLabel)
+        EntityPool.add(this.pool, labelId, textLabel)
 
         textLabel.onCleanup(() => {
             streamerNatives.destroyDynamic3dTextLabel(labelId)

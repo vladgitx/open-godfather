@@ -1,7 +1,7 @@
 import { gameNatives } from "@/wrapper/game"
 import { type Position3 } from "../../lib/vector3"
 import { Vehicle } from "./entity"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 
 class VehicleHandler {
     readonly pool = new EntityPool<number, Vehicle>()
@@ -14,7 +14,7 @@ class VehicleHandler {
         }
 
         const vehicle = new Vehicle(vehicleId, model, primaryColor, secondaryColor)
-        EntityPool.add_new(this.pool, vehicleId, vehicle)
+        EntityPool.add(this.pool, vehicleId, vehicle)
 
         vehicle.onCleanup(() => {
             gameNatives.destroyVehicle(vehicleId)

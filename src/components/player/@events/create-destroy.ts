@@ -4,11 +4,11 @@ import { players } from "../handler"
 import { KICK_REASONS } from "@/wrapper/game/enums.public"
 import { getEnumKeyByValue } from "@/lib/utils"
 import { Player } from "../entity"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 
 gameCallbacks.onPlayerConnect((playerId) => {
     const player = new Player(playerId)
-    EntityPool.add_new(players.pool, playerId, player)
+    EntityPool.add(players.pool, playerId, player)
 
     player.onCleanup(() => {
         EntityPool.remove(players.pool, playerId, player)

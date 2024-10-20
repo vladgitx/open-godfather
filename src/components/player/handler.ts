@@ -1,7 +1,7 @@
 import { gameNatives } from "@/wrapper/game"
 import { type Position3 } from "../../lib/vector3"
 import { type Player } from "./entity"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 
 class PlayerHandler {
     readonly pool = new EntityPool<number, Player>()

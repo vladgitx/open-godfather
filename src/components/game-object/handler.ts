@@ -3,7 +3,7 @@ import { type Position3 } from "../../lib/vector3"
 import { GameObject } from "./entity"
 import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 
 class GameObjectHandler extends StreamerEntityHandler<GameObject> {
     new(
@@ -36,7 +36,7 @@ class GameObjectHandler extends StreamerEntityHandler<GameObject> {
         }
 
         const object = new GameObject(objectId)
-        EntityPool.add_new(this.pool, objectId, object)
+        EntityPool.add(this.pool, objectId, object)
 
         object.onCleanup(() => {
             streamerNatives.destroyDynamicObject(objectId)

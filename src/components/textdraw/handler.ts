@@ -1,6 +1,6 @@
 import { gameNatives } from "@/wrapper/game"
 import { Textdraw } from "./entity"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 
 class TextdrawHandler {
     readonly pool = new EntityPool<number, Textdraw>()
@@ -9,7 +9,7 @@ class TextdrawHandler {
         const textdrawId = gameNatives.textDrawCreate(x, y, text)
 
         const textdraw = new Textdraw(textdrawId, { x, y }, text)
-        EntityPool.add_new(this.pool, textdrawId, textdraw)
+        EntityPool.add(this.pool, textdrawId, textdraw)
 
         textdraw.onCleanup(() => {
             gameNatives.textDrawDestroy(textdrawId)

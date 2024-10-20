@@ -3,7 +3,7 @@ import { type Player } from "../player"
 import { type Position3 } from "../../lib/vector3"
 import { Checkpoint } from "./entity"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
-import { EntityPool } from "@/lib/entity"
+import { EntityPool } from "@/lib/pool"
 
 class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
     new(
@@ -33,7 +33,7 @@ class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
         }
 
         const checkpoint = new Checkpoint(checkpointId)
-        EntityPool.add_new(this.pool, checkpointId, checkpoint)
+        EntityPool.add(this.pool, checkpointId, checkpoint)
 
         checkpoint.onCleanup(() => {
             streamerNatives.destroyDynamicCheckpoint(checkpointId)
