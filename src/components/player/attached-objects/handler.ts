@@ -20,7 +20,7 @@ const editPromise = new EntityPromises<Player, AttachedObjectEditResult | undefi
 
 export class PlayerAttachedObjectHandler {
     private editingObject?: PlayerAttachedObject
-    readonly pool = new EntityPool<PlayerAttachedObject>(PlayerAttachedObject)
+    readonly pool = new EntityPool<PlayerAttachedObjectSlot, PlayerAttachedObject>()
 
     constructor(private player: Player) {
         player.onCleanup(() => {
@@ -87,12 +87,10 @@ export class PlayerAttachedObjectHandler {
             secondMaterialColor ?? "",
         )
 
-        EntityPool.add(this.pool, usingSlot, attachedObject)
+        EntityPool.add_new(this.pool, usingSlot, attachedObject)
 
         attachedObject.onCleanup(() => {
-            usingSlot !== undefined &&
-                this.pool.at(usingSlot) === attachedObject &&
-                gameNatives.removePlayerAttachedObject(this.player.id, usingSlot)
+            EntityPool.remove(this.pool, usingSlot!, attachedObject) && gameNatives.removePlayerAttachedObject(this.player.id, usingSlot!)
         })
 
         return attachedObject

@@ -5,7 +5,7 @@ import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
 import { EntityPool } from "@/lib/entity"
 
-class GameObjectHandler extends StreamerEntityHandler<GameObject, typeof GameObject> {
+class GameObjectHandler extends StreamerEntityHandler<GameObject> {
     new(
         model: number,
         position: Position3,
@@ -36,14 +36,15 @@ class GameObjectHandler extends StreamerEntityHandler<GameObject, typeof GameObj
         }
 
         const object = new GameObject(objectId)
-        EntityPool.add(this.pool, objectId, object)
+        EntityPool.add_new(this.pool, objectId, object)
 
         object.onCleanup(() => {
             streamerNatives.destroyDynamicObject(objectId)
+            EntityPool.remove(this.pool, objectId, object)
         })
 
         return object
     }
 }
 
-export const gameObjects = new GameObjectHandler(GameObject, "object")
+export const gameObjects = new GameObjectHandler("object")

@@ -5,7 +5,7 @@ import { type Player } from "../player"
 import { StreamerEntityHandler } from "@/lib/entity/streamer"
 import { EntityPool } from "@/lib/entity"
 
-class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
+class PickupHandler extends StreamerEntityHandler<Pickup> {
     new(
         model: number,
         position: Position3,
@@ -34,14 +34,15 @@ class PickupHandler extends StreamerEntityHandler<Pickup, typeof Pickup> {
         }
 
         const pickup = new Pickup(pickupId)
-        EntityPool.add(this.pool, pickupId, pickup)
+        EntityPool.add_new(this.pool, pickupId, pickup)
 
         pickup.onCleanup(() => {
             streamerNatives.destroyDynamicPickup(pickupId)
+            EntityPool.remove(this.pool, pickupId, pickup)
         })
 
         return pickup
     }
 }
 
-export const pickups = new PickupHandler(Pickup, "pickup")
+export const pickups = new PickupHandler("pickup")

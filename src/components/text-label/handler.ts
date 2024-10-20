@@ -6,7 +6,7 @@ import { EntityPool } from "@/lib/entity"
 import { streamerNatives } from "@/wrapper/streamer"
 import { INVALID_PLAYER_ID, INVALID_VEHICLE_ID } from "@/wrapper/game"
 
-class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel> {
+class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
     new(
         text: string,
         color: string,
@@ -41,14 +41,15 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel, typeof TextLabel
         }
 
         const textLabel = new TextLabel(labelId, text, color)
-        EntityPool.add(this.pool, labelId, textLabel)
+        EntityPool.add_new(this.pool, labelId, textLabel)
 
         textLabel.onCleanup(() => {
             streamerNatives.destroyDynamic3dTextLabel(labelId)
+            EntityPool.remove(this.pool, labelId, textLabel)
         })
 
         return textLabel
     }
 }
 
-export const textLabels = new TextLabelHandler(TextLabel, "textLabel")
+export const textLabels = new TextLabelHandler("textLabel")

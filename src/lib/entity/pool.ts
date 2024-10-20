@@ -1,26 +1,28 @@
-import { type Constructible } from "@/lib/types"
 import { EventBus } from "../event-bus"
 import { type Entity } from "./entity"
 
-type EntityPoolKey = number | string | bigint
+type ValidPoolKey = number | string | bigint
 
-export class EntityPool<T extends Entity> {
-    private map = new Map<EntityPoolKey, T>()
-    readonly events = new EventBus<{ add: [T] }>()
+export class EntityPool<K extends ValidPoolKey, V> {
+    private map = new Map<K, V>()
+    readonly events = new EventBus<{ add: [V]; remove: [V] }>()
 
-    constructor(private entityConstructor: Constructible<T>) {}
-
-    static add<T extends Entity>(pool: EntityPool<T>, key: EntityPoolKey, entity: T) {
+    static add_new<K extends ValidPoolKey, V>(pool: EntityPool<K, V>, key: K, value: V) {
         if (pool.map.has(key)) {
             throw new Error(`Entity with key ${key} already exists in pool`)
         }
 
-        pool.map.set(key, entity)
-        EventBus.emit(pool.events, "add", entity)
+        pool.map.set(key, value)
+        EventBus.emit(pool.events, "add", value)
+    }
 
-        entity.onCleanup(() => {
-            pool.map.get(key) === entity && pool.map.delete(key)
-        })
+    static remove<K extends ValidPoolKey, V>(pool: EntityPool<K, V>, key: K, value: V) {
+        if (pool.map.get(key) === value) {
+            EventBus.emit(pool.events, "remove", value)
+            return pool.map.delete(key)
+        }
+
+        return false
     }
 
     get all() {
@@ -31,27 +33,30 @@ export class EntityPool<T extends Entity> {
         return this.map.size
     }
 
-    has(key: EntityPoolKey) {
-        return this.map.has(key)
+    has(key: ValidPoolKey) {
+        return this.map.has(key as K)
     }
 
-    at(key: EntityPoolKey) {
-        return this.map.get(key)
+    at(key: ValidPoolKey) {
+        return this.map.get(key as K)
     }
 
-    atRefId(referenceId: bigint) {
-        const entities = this.map.values()
+    existsInPool(anything: unknown): anything is V {
+        const pool = this.map.values()
 
-        for (const entity of entities) {
-            if (entity.refId === referenceId) {
-                return entity
+        for (const entity of pool) {
+            if (entity === anything) {
+                return true
             }
         }
 
-        return undefined
+        return false
     }
+}
 
-    isInstanceOfEntity(anything: unknown): anything is T {
-        return anything instanceof this.entityConstructor
-    }
+export function searchPoolValuesForEntityRefId<K extends ValidPoolKey, V extends Entity>(
+    pool: EntityPool<K, V>,
+    entityRefId: bigint,
+): V | undefined {
+    return pool.all.find((entity) => entity.refId === entityRefId)
 }

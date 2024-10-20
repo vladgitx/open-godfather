@@ -1,10 +1,10 @@
 import { gameNatives } from "@/wrapper/game"
 import { type Position3 } from "../../lib/vector3"
-import { Player } from "./entity"
+import { type Player } from "./entity"
 import { EntityPool } from "@/lib/entity"
 
 class PlayerHandler {
-    readonly pool = new EntityPool<Player>(Player)
+    readonly pool = new EntityPool<number, Player>()
 
     broadcast(message: string, color = "FFFFFF") {
         gameNatives.sendClientMessageToAll(color, message)

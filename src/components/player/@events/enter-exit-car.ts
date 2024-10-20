@@ -3,6 +3,7 @@ import { gameNatives } from "@/wrapper/game"
 import { type Vehicle, vehicles } from "../../vehicle"
 import { dispatcher } from "@/lib/dispatcher"
 import { VEHICLE_SEATS, type VehicleSeat } from "@/wrapper/game/enums.public"
+import { searchPoolValuesForEntityRefId } from "@/lib/entity"
 
 const lastVehicleReferenceId = new WeakMap<Player, bigint>()
 
@@ -34,7 +35,7 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
         }
 
         lastVehicleReferenceId.delete(player)
-        dispatcher.emit("playerExitVehicle", player, vehicles.pool.atRefId(lastVehicleRefId))
+        dispatcher.emit("playerExitVehicle", player, searchPoolValuesForEntityRefId(vehicles.pool, lastVehicleRefId))
     }
 })
 

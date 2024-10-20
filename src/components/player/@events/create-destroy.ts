@@ -8,7 +8,11 @@ import { EntityPool } from "@/lib/entity"
 
 gameCallbacks.onPlayerConnect((playerId) => {
     const player = new Player(playerId)
-    EntityPool.add(players.pool, playerId, player)
+    EntityPool.add_new(players.pool, playerId, player)
+
+    player.onCleanup(() => {
+        EntityPool.remove(players.pool, playerId, player)
+    })
 
     dispatcher.emit("playerConnect", player)
 })
