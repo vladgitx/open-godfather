@@ -24,6 +24,14 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
 
     onCleanup(callback: () => void) {
         this.cleanupCallbacks.push(callback)
+
+        return () => {
+            const index = this.cleanupCallbacks.indexOf(callback)
+
+            if (index !== -1) {
+                this.cleanupCallbacks.splice(index, 1)
+            }
+        }
     }
 
     get exists() {
