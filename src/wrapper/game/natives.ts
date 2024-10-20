@@ -568,12 +568,12 @@ class GameNatives {
         return vehicleId
     }
 
-    getPlayerCameraMode = (playerId: number): number => {
+    getPlayerCameraMode = (playerId: number) => {
         if (!this.isPlayerConnected(playerId)) {
             return CAMERA_MODES["follow-ped"]
         }
 
-        return samp.callNative("GetPlayerCameraMode", "i", playerId)
+        return samp.callNative("GetPlayerCameraMode", "i", playerId) as EnumValue<typeof CAMERA_MODES>
     }
 
     setPlayerCameraPos = (playerId: number, position: Position3): number => {

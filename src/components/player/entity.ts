@@ -9,6 +9,7 @@ import { type PlayerEventMap } from "./@events/entity-event-bus"
 import { INVALID_PLAYER_ID } from "@/wrapper/game"
 import {
     CAMERA_CUT_STYLES,
+    CAMERA_MODES,
     type CameraCutStyle,
     PLAYER_STATES,
     type PlayerState,
@@ -239,7 +240,7 @@ export class Player extends GameEntity<PlayerEventMap> {
     }
 
     get cameraMode() {
-        return gameNatives.getPlayerCameraMode(this.id)
+        return getEnumKeyByValue(CAMERA_MODES, gameNatives.getPlayerCameraMode(this.id))
     }
 
     setChatBubble(text: string, color = "FFFFFF", drawDistance = 12, expireTime = 5000) {
