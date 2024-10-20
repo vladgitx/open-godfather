@@ -434,8 +434,8 @@ class GameNatives {
         }
     }
 
-    getPlayerVehicleSeat = (playerId: number): number | undefined => {
-        const res = samp.callNative("GetPlayerVehicleSeat", "i", playerId)
+    getPlayerVehicleSeat = (playerId: number) => {
+        const res = samp.callNative("GetPlayerVehicleSeat", "i", playerId) as EnumValue<typeof VEHICLE_SEATS> | -1
 
         if (res === -1) {
             return undefined

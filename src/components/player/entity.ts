@@ -14,6 +14,7 @@ import {
     type PlayerState,
     SPECIAL_ACTIONS,
     type SpecialAction,
+    VEHICLE_SEATS,
     type VehicleSeat,
 } from "@/wrapper/game/enums.public"
 import { getEnumKeyByValue } from "@/lib/utils"
@@ -274,6 +275,6 @@ export class Player extends GameEntity<PlayerEventMap> {
     }
 
     get vehicleSeat() {
-        return gameNatives.getPlayerVehicleSeat(this.id)
+        return getEnumKeyByValue(VEHICLE_SEATS, gameNatives.getPlayerVehicleSeat(this.id))
     }
 }
