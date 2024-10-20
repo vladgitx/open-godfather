@@ -35,6 +35,20 @@ class PlayerHandler {
 
         return closestPlayer
     }
+
+    getInRange(position: Position3, range: number, world?: number, interior?: number) {
+        return this.pool.all.filter((player) => {
+            if (world !== undefined && player.world !== world) {
+                return false
+            }
+
+            if (interior !== undefined && player.interior !== interior) {
+                return false
+            }
+
+            return player.position.distance(position) <= range
+        })
+    }
 }
 
 export const players = new PlayerHandler()

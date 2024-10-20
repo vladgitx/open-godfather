@@ -48,6 +48,20 @@ class VehicleHandler {
 
         return closestVehicle
     }
+
+    getInRange(position: Position3, range: number, world?: number, interior?: number) {
+        return this.pool.all.filter((vehicle) => {
+            if (world !== undefined && vehicle.world !== world) {
+                return false
+            }
+
+            if (interior !== undefined && vehicle.interior !== interior) {
+                return false
+            }
+
+            return vehicle.position.distance(position) <= range
+        })
+    }
 }
 
 export const vehicles = new VehicleHandler()
