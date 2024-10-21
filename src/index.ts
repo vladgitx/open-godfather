@@ -16,7 +16,7 @@ export type { Pickup } from "./components/pickup"
 export type { GameObject } from "./components/game-object"
 export type { Textdraw } from "./components/textdraw"
 export type { Checkpoint } from "./components/checkpoint"
-export type { EnumValue, Constructible } from "./lib/types"
+export type { EnumValue, Constructible, ExcludeFirstParam } from "./lib/types"
 export type { EventMapInterface } from "./lib/event-bus"
 export type { Position3 } from "./lib/vector3"
 
