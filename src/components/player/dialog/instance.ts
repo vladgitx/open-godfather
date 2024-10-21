@@ -87,6 +87,22 @@ class PlayerDialogShow {
 
     async tablistWithHeaders(
         caption: string,
+        headers: string,
+        items: string[],
+        primaryButton: string,
+        secondaryButton?: string,
+    ): Promise<ListDialogResponse>
+
+    async tablistWithHeaders(
+        caption: string,
+        headers: string[],
+        items: string[][],
+        primaryButton: string,
+        secondaryButton?: string,
+    ): Promise<ListDialogResponse>
+
+    async tablistWithHeaders(
+        caption: string,
         headers: string | string[],
         items: string[] | string[][],
         primaryButton: string,
