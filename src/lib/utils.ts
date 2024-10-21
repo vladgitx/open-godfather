@@ -27,6 +27,10 @@ export function getEnumKeyByValue<J, T extends Record<string, J>>(
     return Object.keys(enumObject).find((key) => enumObject[key] === value) as never
 }
 
+export function validateEnumKey<T extends Record<string, unknown>>(enumObject: T, key: unknown): key is keyof T {
+    return Object.keys(enumObject).includes(String(key))
+}
+
 export function typedObjectKeys<T extends Record<string, unknown>>(object: T): (keyof T)[] {
     return Object.keys(object) as (keyof T)[]
 }
