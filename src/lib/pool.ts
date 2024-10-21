@@ -1,11 +1,14 @@
 import { EventBus } from "./event-bus"
 import { type Entity } from "./entity/entity"
+import { type Constructible } from "./types"
 
 type ValidPoolKey = number | string | bigint
 
 export class EntityPool<K extends ValidPoolKey, V> {
-    private map = new Map<K, V>()
+    private readonly map = new Map<K, V>()
     readonly events = new EventBus<{ add: [V]; remove: [V] }>()
+
+    constructor(private readonly constructible: Constructible<V>) {}
 
     static add<K extends ValidPoolKey, V>(pool: EntityPool<K, V>, key: K, value: V) {
         if (pool.map.has(key)) {
@@ -41,16 +44,8 @@ export class EntityPool<K extends ValidPoolKey, V> {
         return this.map.get(key as K)
     }
 
-    existsInPool(anything: unknown): anything is V {
-        const pool = this.map.values()
-
-        for (const entity of pool) {
-            if (entity === anything) {
-                return true
-            }
-        }
-
-        return false
+    isInstanceOf(anything: unknown): anything is V {
+        return anything instanceof this.constructible
     }
 }
 

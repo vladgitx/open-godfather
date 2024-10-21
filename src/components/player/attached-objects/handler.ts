@@ -21,7 +21,7 @@ const editPromise = new EntityPromises<Player, AttachedObjectEditResult | undefi
 
 export class PlayerAttachedObjectHandler {
     private editingObject?: PlayerAttachedObject
-    readonly pool = new EntityPool<PlayerAttachedObjectSlot, PlayerAttachedObject>()
+    readonly pool = new EntityPool<PlayerAttachedObjectSlot, PlayerAttachedObject>(PlayerAttachedObject)
 
     constructor(private player: Player) {
         player.onCleanup(() => {

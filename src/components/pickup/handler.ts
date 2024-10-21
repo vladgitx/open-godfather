@@ -45,4 +45,4 @@ class PickupHandler extends StreamerEntityHandler<Pickup> {
     }
 }
 
-export const pickups = new PickupHandler("pickup")
+export const pickups = new PickupHandler("pickup", Pickup)

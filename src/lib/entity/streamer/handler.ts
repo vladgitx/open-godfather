@@ -3,11 +3,17 @@ import { type StreamerEntity } from "./entity"
 import { type Player } from "@/components/player"
 import { type Position3 } from "@/lib/vector3"
 import { EntityPool } from "../../pool"
+import { type Constructible } from "@/lib/types"
 
 export class StreamerEntityHandler<T extends StreamerEntity> {
-    readonly pool = new EntityPool<number, T>()
+    readonly pool: EntityPool<number, T>
 
-    constructor(private type: StreamerItemType) {}
+    constructor(
+        private type: StreamerItemType,
+        constructible: Constructible<T>,
+    ) {
+        this.pool = new EntityPool<number, T>(constructible)
+    }
 
     countVisible(player: Player) {
         return streamerNatives.countVisibleItems(player.id, this.type)

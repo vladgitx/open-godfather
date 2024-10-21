@@ -47,4 +47,4 @@ class GameObjectHandler extends StreamerEntityHandler<GameObject> {
     }
 }
 
-export const gameObjects = new GameObjectHandler("object")
+export const gameObjects = new GameObjectHandler("object", GameObject)

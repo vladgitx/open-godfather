@@ -66,4 +66,4 @@ class CheckpointHandler extends StreamerEntityHandler<Checkpoint> {
     }
 }
 
-export const checkpoints = new CheckpointHandler("checkpoint")
+export const checkpoints = new CheckpointHandler("checkpoint", Checkpoint)

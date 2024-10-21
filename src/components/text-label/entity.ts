@@ -43,9 +43,9 @@ export class TextLabel extends StreamerEntity {
             return false
         }
 
-        if (players.pool.existsInPool(entity)) {
+        if (players.pool.isInstanceOf(entity)) {
             streamerNatives.setIntData("textLabel", this.id, "attachedPlayer", entity.id)
-        } else if (vehicles.pool.existsInPool(entity)) {
+        } else if (vehicles.pool.isInstanceOf(entity)) {
             streamerNatives.setIntData("textLabel", this.id, "attachedVehicle", entity.id)
         } else {
             return false

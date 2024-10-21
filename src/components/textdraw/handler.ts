@@ -3,7 +3,7 @@ import { Textdraw } from "./entity"
 import { EntityPool } from "@/lib/pool"
 
 class TextdrawHandler {
-    readonly pool = new EntityPool<number, Textdraw>()
+    readonly pool = new EntityPool<number, Textdraw>(Textdraw)
 
     new(x: number, y: number, text: string) {
         const textdrawId = gameNatives.textDrawCreate(x, y, text)

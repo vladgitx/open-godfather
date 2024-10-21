@@ -4,7 +4,7 @@ import { Vehicle } from "./entity"
 import { EntityPool } from "@/lib/pool"
 
 class VehicleHandler {
-    readonly pool = new EntityPool<number, Vehicle>()
+    readonly pool = new EntityPool<number, Vehicle>(Vehicle)
 
     new(model: number, position: Position3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
         const vehicleId = gameNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)

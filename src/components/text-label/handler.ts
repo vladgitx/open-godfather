@@ -52,4 +52,4 @@ class TextLabelHandler extends StreamerEntityHandler<TextLabel> {
     }
 }
 
-export const textLabels = new TextLabelHandler("textLabel")
+export const textLabels = new TextLabelHandler("textLabel", TextLabel)
