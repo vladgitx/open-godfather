@@ -12,11 +12,11 @@ export type PlayerEventMap = {
     exitVehicle: [Vehicle | undefined]
     editAttachedObject: [number, number, number, Vector3, Vector3, Vector3]
     cancelObjectEditMode: []
-    playerShoot: [Weapon, Player | Vehicle | undefined, Vector3]
+    shoot: [Weapon, Player | Vehicle | undefined, Vector3]
 }
 
 dispatcher.on("playerShoot", (player, weapon, target, hitPosition) => {
-    EventBus.emit(player.events, "playerShoot", weapon, target, hitPosition)
+    EventBus.emit(player.events, "shoot", weapon, target, hitPosition)
 })
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
