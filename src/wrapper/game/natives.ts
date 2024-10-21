@@ -357,6 +357,10 @@ class GameNatives {
     }
 
     sendClientMessage(playerId: number, color: string, message: string): void {
+        // messages can contain colors in this format: {FF0000}Hello
+        // that adds inaccurate length to the message string
+        // so we need to calculate the length of the message without color tags
+
         if (message.length <= 90) {
             samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), message)
             return
