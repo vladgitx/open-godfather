@@ -9,6 +9,7 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
 
     private cleanupCallbacks: (() => void)[] = []
     private destroyed = false
+    private isDestroying = false
 
     readonly events = new EventBus<EventMap>()
     readonly variables = new KeyValueVariables()
@@ -39,9 +40,11 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
     }
 
     destroy() {
-        if (this.destroyed) {
+        if (this.destroyed || this.isDestroying) {
             return
         }
+
+        this.isDestroying = true
 
         dispatcher.emit("entityDestroy", this)
         dispatcher.emit("entityCleanup", this)
