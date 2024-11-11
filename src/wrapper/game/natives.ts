@@ -5,6 +5,9 @@ import {
     type DIALOG_STYLES,
     type PLAYER_BONES,
     type SPECIAL_ACTIONS,
+    TEXT_DRAW_ALIGNMENTS,
+    TEXT_DRAW_FONTS,
+    TextDrawAlignment,
     VEHICLE_SEATS,
     type VEHICLE_WINDOW_STATE,
     type WEAPON_SKILLS,
@@ -821,6 +824,90 @@ class GameNatives {
 
     textDrawSetPos(textId: number, x: number, y: number) {
         samp.callNative("TextDrawSetPos", "iff", textId, x, y)
+    }
+
+    createPlayerTextDraw = (playerId: number, x: number, y: number, text: string): number => {
+        return samp.callNative("CreatePlayerTextDraw", "iffs", playerId, x, y, text)
+    }
+
+    playerTextDrawDestroy = (playerId: number, text: number): void => {
+        samp.callNative("PlayerTextDrawDestroy", "ii", playerId, text)
+    }
+
+    playerTextDrawLetterSize = (playerId: number, text: number, x: number, y: number): number => {
+        return samp.callNative("PlayerTextDrawLetterSize", "iiff", playerId, text, x, y)
+    }
+
+    playerTextDrawTextSize = (playerId: number, text: number, x: number, y: number): number => {
+        return samp.callNative("PlayerTextDrawTextSize", "iiff", playerId, text, x, y)
+    }
+
+    playerTextDrawAlignment = (playerId: number, text: number, alignment: EnumValue<typeof TEXT_DRAW_ALIGNMENTS>): number => {
+        return samp.callNative("PlayerTextDrawAlignment", "iii", playerId, text, alignment)
+    }
+
+    playerTextDrawColor = (playerId: number, text: number, color: string): number => {
+        return samp.callNative("PlayerTextDrawColor", "iii", playerId, text, hexToRgbaInt(color))
+    }
+
+    playerTextDrawUseBox = (playerId: number, text: number, use: 0 | 1): number => {
+        return samp.callNative("PlayerTextDrawUseBox", "iii", playerId, text, use)
+    }
+
+    playerTextDrawBoxColor = (playerId: number, text: number, color: string): number => {
+        return samp.callNative("PlayerTextDrawBoxColor", "iii", playerId, text, hexToRgbaInt(color))
+    }
+
+    playerTextDrawSetShadow = (playerId: number, text: number, size: number): number => {
+        return samp.callNative("PlayerTextDrawSetShadow", "iii", playerId, text, size)
+    }
+
+    playerTextDrawSetOutline = (playerId: number, text: number, size: number): number => {
+        return samp.callNative("PlayerTextDrawSetOutline", "iii", playerId, text, size)
+    }
+
+    playerTextDrawBackgroundColor = (playerId: number, text: number, color: string): number => {
+        return samp.callNative("PlayerTextDrawBackgroundColor", "iii", playerId, text, hexToRgbaInt(color))
+    }
+
+    playerTextDrawFont = (playerId: number, text: number, font: EnumValue<typeof TEXT_DRAW_FONTS>): number => {
+        return samp.callNative("PlayerTextDrawFont", "iii", playerId, text, font)
+    }
+
+    playerTextDrawSetProportional = (playerId: number, text: number, set: 1 | 0): number => {
+        return samp.callNative("PlayerTextDrawSetProportional", "iii", playerId, text, set)
+    }
+
+    playerTextDrawSetSelectable = (playerId: number, text: number, set: 1 | 0): number => {
+        return samp.callNative("PlayerTextDrawSetSelectable", "iii", playerId, text, set)
+    }
+
+    playerTextDrawShow = (playerId: number, text: number): number => {
+        return samp.callNative("PlayerTextDrawShow", "ii", playerId, text)
+    }
+
+    playerTextDrawHide = (playerId: number, text: number): number => {
+        return samp.callNative("PlayerTextDrawHide", "ii", playerId, text)
+    }
+
+    playerTextDrawSetString = (playerId: number, text: number, string: string): number => {
+        return samp.callNative("PlayerTextDrawSetString", "iis", playerId, text, string)
+    }
+
+    playerTextDrawSetPreviewModel = (playerId: number, text: number, modelindex: number): number => {
+        return samp.callNative("PlayerTextDrawSetPreviewModel", "iii", playerId, text, modelindex)
+    }
+
+    playerTextDrawSetPreviewRot = (playerId: number, text: number, fRotX: number, fRotY: number, fRotZ: number, fZoom: number): number => {
+        return samp.callNative("PlayerTextDrawSetPreviewRot", "iiffff", playerId, text, fRotX, fRotY, fRotZ, fZoom)
+    }
+
+    playerTextDrawSetPreviewVehCol = (playerId: number, text: number, color1: number, color2: number): number => {
+        return samp.callNative("PlayerTextDrawSetPreviewVehCol", "iiii", playerId, text, color1, color2)
+    }
+
+    playerTextDrawSetPos = (playerId: number, textId: number, x: number, y: number) => {
+        samp.callNative("PlayerTextDrawSetPos", "iiff", playerId, textId, x, y)
     }
 }
 

@@ -4,6 +4,11 @@ export interface Position3 {
     z: number
 }
 
+export interface Position2 {
+    x: number
+    y: number
+}
+
 export class Vector3 implements Position3 {
     public x: number
     public y: number

@@ -22,11 +22,13 @@ import { getEnumKeyByValue } from "@/lib/utils"
 import { PlayerAnimations } from "./animations"
 import { GameEntity } from "@/lib/entity/game"
 import { PlayerAttachedObjectHandler } from "./attached-objects"
+import { PlayerTextdrawHandler } from "./textdraw"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
 export class Player extends GameEntity<PlayerEventMap> {
     readonly attachedObjects = new PlayerAttachedObjectHandler(this)
+    readonly textdraws = new PlayerTextdrawHandler(this)
 
     private _name = gameNatives.getPlayerName(this.id)
     private _color = "FFFFFF"

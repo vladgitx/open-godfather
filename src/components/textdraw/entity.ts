@@ -1,10 +1,8 @@
 import { type Position3 } from "../../lib/vector3"
-import { gameNatives } from "@/wrapper/game"
+import { gameNatives, INVALID_TEXTDRAW_ID } from "@/wrapper/game"
 import { players, type Player } from "../player"
 import { TEXT_DRAW_ALIGNMENTS, TEXT_DRAW_FONTS, type TextDrawAlignment, type TextDrawFont } from "@/wrapper/game/enums.public"
 import { GameEntity } from "@/lib/entity/game"
-
-const INVALID_TEXTDRAW_ID = 0xffff
 
 export class Textdraw extends GameEntity {
     private toRemoveFromSetOnCleanup = new WeakSet<Player>()
