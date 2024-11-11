@@ -2,6 +2,14 @@ import type { BODY_PARTS, HIT_TYPES, KICK_REASONS, PLAYER_BONES, PLAYER_STATES, 
 import type { EnumValue } from "@/lib/types"
 
 class GameCallbacks {
+    onPlayerClickTextDraw(callback: (playerId: number, clickedId: number) => void) {
+        samp.on("OnPlayerClickTextDraw", callback)
+    }
+
+    onPlayerClickPlayerTextDraw(callback: (playerId: number, clickedId: number) => void) {
+        samp.on("OnPlayerClickPlayerTextDraw", callback)
+    }
+
     onPlayerKeyStateChange(callback: (playerId: number, newKeys: number, oldKeys: number) => void) {
         samp.on("OnPlayerKeyStateChange", callback)
     }

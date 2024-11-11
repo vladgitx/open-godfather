@@ -1,14 +1,14 @@
 import { GameEntity } from "@/lib/entity/game"
 import {
     gameNatives,
-    INVALID_TEXTDRAW_ID,
+    INVALID_TEXT_DRAW,
     TEXT_DRAW_ALIGNMENTS,
     TEXT_DRAW_FONTS,
     type TextDrawAlignment,
     type TextDrawFont,
 } from "@/wrapper/game"
 import { type Player } from "../entity"
-import { Position2, type Position3 } from "@/lib/vector3"
+import { type Position2, type Position3 } from "@/lib/vector3"
 
 export class PlayerTextdraw extends GameEntity {
     private _text: string
@@ -20,7 +20,7 @@ export class PlayerTextdraw extends GameEntity {
         text: string,
         position: Position2,
     ) {
-        super(gameId, INVALID_TEXTDRAW_ID)
+        super(gameId, INVALID_TEXT_DRAW)
 
         this._text = text
         this._position = position

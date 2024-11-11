@@ -1,5 +1,5 @@
 import { type Position3 } from "../../lib/vector3"
-import { gameNatives, INVALID_TEXTDRAW_ID } from "@/wrapper/game"
+import { gameNatives, INVALID_TEXT_DRAW } from "@/wrapper/game"
 import { players, type Player } from "../player"
 import { TEXT_DRAW_ALIGNMENTS, TEXT_DRAW_FONTS, type TextDrawAlignment, type TextDrawFont } from "@/wrapper/game/enums.public"
 import { GameEntity } from "@/lib/entity/game"
@@ -46,7 +46,7 @@ export class Textdraw extends GameEntity {
         previewRotation?: { rotation: Position3; zoom: number },
         previewVehicleColor?: { primary: number; secondary: number },
     ) {
-        super(gameId, INVALID_TEXTDRAW_ID)
+        super(gameId, INVALID_TEXT_DRAW)
 
         this._textColor = textColor
         this._boxColor = boxColor
