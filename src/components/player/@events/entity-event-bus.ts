@@ -4,6 +4,8 @@ import { EventBus } from "@/lib/event-bus"
 import { type Vector3 } from "@/lib/vector3"
 import type { PlayerState, Weapon } from "@/wrapper/game/enums.public"
 import { type Player } from "../entity"
+import { Textdraw } from "@/components/textdraw"
+import { PlayerTextdraw } from "../textdraw"
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type PlayerEventMap = {
@@ -13,7 +15,17 @@ export type PlayerEventMap = {
     editAttachedObject: [number, number, number, Vector3, Vector3, Vector3]
     cancelObjectEditMode: []
     shoot: [Weapon, Player | Vehicle | undefined, Vector3]
+    clickTextDraw: [Textdraw | undefined]
+    clickPlayerTextDraw: [PlayerTextdraw]
 }
+
+dispatcher.on("playerClickPlayerTextDraw", (player, textdraw) => {
+    EventBus.emit(player.events, "clickPlayerTextDraw", textdraw)
+})
+
+dispatcher.on("playerClickTextDraw", (player, textdraw) => {
+    EventBus.emit(player.events, "clickTextDraw", textdraw)
+})
 
 dispatcher.on("playerShoot", (player, weapon, target, hitPosition) => {
     EventBus.emit(player.events, "shoot", weapon, target, hitPosition)
