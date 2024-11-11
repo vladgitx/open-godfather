@@ -34,6 +34,10 @@ export class PlayerTextdraw extends GameEntity {
         gameNatives.playerTextDrawHide(this.player.id, this.id)
     }
 
+    isVisible() {
+        return gameNatives.isPlayerTextDrawVisible(this.player.id, this.id)
+    }
+
     setLetterSize(width: number, height: number) {
         gameNatives.playerTextDrawLetterSize(this.player.id, this.id, width, height)
     }

@@ -18,6 +18,10 @@ import { type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
 
 class GameNatives {
+    isPlayerTextDrawVisible = (playerId: number, text: number): boolean => {
+        return Boolean(samp.callNative("IsPlayerTextDrawVisible", "ii", playerId, text))
+    }
+
     isVehicleStreamedIn(vehicleId: number, playerId: number): boolean {
         return Boolean(samp.callNative("IsVehicleStreamedIn", "ii", vehicleId, playerId))
     }
