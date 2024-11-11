@@ -9,6 +9,8 @@ import { type Pickup } from "../components/pickup"
 import { type Entity } from "./entity"
 import { type Checkpoint } from "../components/checkpoint"
 import type { BodyPart, KickReason, PlayerState, Weapon } from "@/wrapper/game/enums.public"
+import { type Textdraw } from "@/components/textdraw"
+import { type PlayerTextdraw } from "@/components/player/textdraw"
 
 interface ServerEvents {
     init: []
@@ -37,6 +39,8 @@ interface PlayerEvents {
     playerKeyStateChange: [Player, number, number]
     playerEnterCheckpoint: [Player, Checkpoint]
     playerLeaveCheckpoint: [Player, Checkpoint]
+    playerClickTextDraw: [Player, Textdraw | undefined]
+    playerClickPlayerTextDraw: [Player, PlayerTextdraw]
 }
 
 interface VehicleEvents {

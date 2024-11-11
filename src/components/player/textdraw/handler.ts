@@ -1,28 +1,20 @@
 import { EntityPool } from "@/lib/pool"
 import { PlayerTextdraw } from "./entity"
-import { gameCallbacks, gameNatives } from "@/wrapper/game"
+import { gameNatives } from "@/wrapper/game"
 import { type Player } from "../entity"
 import { type Position2 } from "@/lib/vector3"
 import { EntityPromises } from "@/lib/entity"
-import { players } from "../handler"
-import { type Textdraw, textdraws } from "@/components/textdraw"
+import { type Textdraw } from "@/components/textdraw"
+import { dispatcher } from "@/lib/dispatcher"
 
 const selectPromises = new EntityPromises<Player, PlayerTextdraw | Textdraw | undefined>()
 
-gameCallbacks.onPlayerClickPlayerTextDraw((playerId, clickedId) => {
-    const player = players.pool.at(playerId)
-
-    if (player) {
-        selectPromises.resolve(player, player.textdraws.pool.at(clickedId))
-    }
+dispatcher.on("playerClickPlayerTextDraw", (player, textdraw) => {
+    selectPromises.resolve(player, textdraw)
 })
 
-gameCallbacks.onPlayerClickTextDraw((playerId, clickedId) => {
-    const player = players.pool.at(playerId)
-
-    if (player) {
-        selectPromises.resolve(player, textdraws.pool.at(clickedId))
-    }
+dispatcher.on("playerClickTextDraw", (player, textdraw) => {
+    selectPromises.resolve(player, textdraw)
 })
 
 export class PlayerTextdrawHandler {

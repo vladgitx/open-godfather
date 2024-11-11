@@ -6,6 +6,7 @@ import { DEFAULT_PLAYER_TEAM } from "../entity"
 import { BODY_PARTS, HIT_TYPES, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
 import { getEnumKeyByValue } from "@/lib/utils"
 import { gameCallbacks, gameNatives } from "@/wrapper/game"
+import { textdraws } from "@/components/textdraw"
 
 gameCallbacks.onPlayerKeyStateChange((playerId, newKeys, oldKeys) => {
     const player = players.pool.at(playerId)
@@ -148,3 +149,23 @@ gameCallbacks.onPlayerEditAttachedObject(
         )
     },
 )
+
+gameCallbacks.onPlayerClickPlayerTextDraw((playerId, clickedId) => {
+    const player = players.pool.at(playerId)
+
+    if (player) {
+        const playerTextdraw = player.textdraws.pool.at(clickedId)
+
+        if (playerTextdraw) {
+            dispatcher.emit("playerClickPlayerTextDraw", player, playerTextdraw)
+        }
+    }
+})
+
+gameCallbacks.onPlayerClickTextDraw((playerId, clickedId) => {
+    const player = players.pool.at(playerId)
+
+    if (player) {
+        dispatcher.emit("playerClickTextDraw", player, textdraws.pool.at(clickedId))
+    }
+})
