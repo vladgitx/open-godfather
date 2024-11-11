@@ -108,6 +108,10 @@ export class Player extends GameEntity<PlayerEventMap> {
         gameNatives.interpolateCameraLookAt(this.id, from, to, time, CAMERA_CUT_STYLES[cutStyle])
     }
 
+    isStreamedInFor(player: Player) {
+        return gameNatives.isPlayerStreamedIn(this.id, player.id)
+    }
+
     set spectating(spectating: boolean) {
         this._spectating = spectating
         gameNatives.togglePlayerSpectating(this.id, spectating)

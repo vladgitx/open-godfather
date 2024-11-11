@@ -4,6 +4,8 @@ import { VehicleParams } from "./params"
 import { getVehicleOccupants } from "./@events/occupants"
 import { GameEntity } from "@/lib/entity/game"
 import { type VehicleEventMap } from "./@events/entity-event-bus"
+import { type Player } from "../player"
+import { vehicles } from "./handler"
 
 const REMOVE_PAINTJOB_ID = 3
 
@@ -54,6 +56,27 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
 
     repair() {
         gameNatives.repairVehicle(this.id)
+    }
+
+    isStreamedInFor(player: Player) {
+        return gameNatives.isVehicleStreamedIn(this.id, player.id)
+    }
+
+    attachTrailer(vehicle: Vehicle) {
+        gameNatives.attachTrailerToVehicle(vehicle.id, this.id)
+    }
+
+    detachTrailer() {
+        gameNatives.detachTrailerFromVehicle(this.id)
+    }
+
+    hasAnyTrailerAttached() {
+        return gameNatives.isTrailerAttachedToVehicle(this.id)
+    }
+
+    getAttachedTrailer() {
+        const id = gameNatives.getVehicleTrailer(this.id)
+        return id === undefined ? undefined : vehicles.pool.at(id)
     }
 
     set position(position: Position3) {

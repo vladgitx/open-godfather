@@ -16,6 +16,37 @@ import { type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
 
 class GameNatives {
+    isVehicleStreamedIn(vehicleId: number, playerId: number): boolean {
+        return Boolean(samp.callNative("IsVehicleStreamedIn", "ii", vehicleId, playerId))
+    }
+
+    isPlayerStreamedIn(playerId: number, forPlayerId: number): boolean {
+        return Boolean(samp.callNative("IsPlayerStreamedIn", "ii", playerId, forPlayerId))
+    }
+
+    attachTrailerToVehicle = (trailerId: number, vehicleId: number): true => {
+        return Boolean(samp.callNative("AttachTrailerToVehicle", "ii", trailerId, vehicleId)) as true
+    }
+
+    detachTrailerFromVehicle = (vehicleId: number): void => {
+        samp.callNative("DetachTrailerFromVehicle", "i", vehicleId)
+    }
+
+    isTrailerAttachedToVehicle = (vehicleId: number): boolean => {
+        return Boolean(samp.callNative("IsTrailerAttachedToVehicle", "i", vehicleId))
+    }
+
+    getVehicleTrailer = (vehicleId: number): number | undefined => {
+        const ret = samp.callNative("GetVehicleTrailer", "i", vehicleId)
+
+        if (ret === 0) {
+            // No trailer
+            return undefined
+        }
+
+        return ret
+    }
+
     setVehicleParamsCarWindows(
         vehicleId: number,
         frontLeft: EnumValue<typeof VEHICLE_WINDOW_STATE>,
