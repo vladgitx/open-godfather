@@ -14,8 +14,7 @@ export class EventBus<EventMap extends EventMapInterface = EventMapInterface> {
         return () => {
             this.callbacks.set(
                 eventName,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                this.callbacks.get(eventName)!.filter((cb) => cb !== callback),
+                (this.callbacks.get(eventName) ?? []).filter((cb) => cb !== callback),
             )
         }
     }
