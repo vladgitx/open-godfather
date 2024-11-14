@@ -6,9 +6,13 @@ type ValidPoolKey = number | string | bigint
 
 export class EntityPool<K extends ValidPoolKey, V> {
     private readonly map = new Map<K, V>()
+    private readonly constructibles: Constructible<V>[] // Used to check if an object is an instance of V
+
     readonly events = new EventBus<{ add: [V]; remove: [V] }>()
 
-    constructor(private readonly constructible: Constructible<V>) {}
+    constructor(...constructibles: Constructible<V>[]) {
+        this.constructibles = constructibles
+    }
 
     static add<K extends ValidPoolKey, V>(pool: EntityPool<K, V>, key: K, value: V) {
         if (pool.map.has(key)) {
@@ -45,7 +49,7 @@ export class EntityPool<K extends ValidPoolKey, V> {
     }
 
     isInstanceOf(anything: unknown): anything is V {
-        return anything instanceof this.constructible
+        return this.constructibles.some((constructible) => anything instanceof constructible)
     }
 }
 
