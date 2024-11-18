@@ -114,6 +114,14 @@ export class Player extends GameEntity<PlayerEventMap> {
         return gameNatives.isPlayerStreamedIn(this.id, player.id)
     }
 
+    set controllable(controllable: boolean) {
+        gameNatives.togglePlayerControllable(this.id, controllable)
+    }
+
+    get controllable() {
+        return gameNatives.isPlayerControllable(this.id)
+    }
+
     set spectating(spectating: boolean) {
         this._spectating = spectating
         gameNatives.togglePlayerSpectating(this.id, spectating)

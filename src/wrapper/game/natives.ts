@@ -269,6 +269,14 @@ class GameNatives {
         return samp.callNative("EditAttachedObject", "ii", playerId, index) === 1
     }
 
+    togglePlayerControllable = (playerId: number, toggle: boolean) => {
+        return Boolean(samp.callNative("TogglePlayerControllable", "ii", playerId, toggle ? 1 : 0))
+    }
+
+    isPlayerControllable = (playerId: number) => {
+        return Boolean(samp.callNative("IsPlayerControllable", "i", playerId))
+    }
+
     destroyVehicle = (vehicleId: number): boolean => {
         return samp.callNative("DestroyVehicle", "i", vehicleId) === 1
     }
