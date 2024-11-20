@@ -15,6 +15,9 @@ import {
     type PlayerState,
     SPECIAL_ACTIONS,
     type SpecialAction,
+    SPECTATE_MODES,
+    SPECTATE_TYPES,
+    type SpectateMode,
     VEHICLE_SEATS,
     type VehicleSeat,
 } from "@/wrapper/game/enums.public"
@@ -23,6 +26,7 @@ import { PlayerAnimations } from "./animations"
 import { GameEntity } from "@/lib/entity/game"
 import { PlayerAttachedObjectHandler } from "./attached-objects"
 import { PlayerTextdrawHandler } from "./textdraw"
+import { players } from "./handler"
 
 export const DEFAULT_PLAYER_TEAM = 0
 
@@ -112,6 +116,30 @@ export class Player extends GameEntity<PlayerEventMap> {
 
     isStreamedInFor(player: Player) {
         return gameNatives.isPlayerStreamedIn(this.id, player.id)
+    }
+
+    spectatePlayer(target: Player, mode: SpectateMode = "normal") {
+        return gameNatives.playerSpectatePlayer(this.id, target.id, SPECTATE_MODES[mode])
+    }
+
+    spectateVehicle(target: Vehicle, mode: SpectateMode = "normal") {
+        return gameNatives.playerSpectateVehicle(this.id, target.id, SPECTATE_MODES[mode])
+    }
+
+    getSpectateTargetPlayer() {
+        if (gameNatives.getPlayerSpectateType(this.id) === SPECTATE_TYPES.player) {
+            return players.pool.at(gameNatives.getPlayerSpectateId(this.id))
+        }
+
+        return undefined
+    }
+
+    getSpectateTargetVehicle() {
+        if (gameNatives.getPlayerSpectateType(this.id) === SPECTATE_TYPES.vehicle) {
+            return vehicles.pool.at(gameNatives.getPlayerSpectateId(this.id))
+        }
+
+        return undefined
     }
 
     set controllable(controllable: boolean) {

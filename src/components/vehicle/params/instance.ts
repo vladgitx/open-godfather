@@ -1,15 +1,15 @@
 import { dispatcher } from "@/lib/dispatcher"
 import { type Vehicle } from "../entity"
 import { gameNatives } from "@/wrapper/game"
-import { VEHICLE_WINDOW_STATE, type VehicleWindowState } from "@/wrapper/game/enums.public"
+import { VEHICLE_WINDOW_STATES, type VehicleWindowState } from "@/wrapper/game/enums.public"
 
 function updateVehicleParamsCarWindows(vehicle: Vehicle, windows: VehicleWindows) {
     gameNatives.setVehicleParamsCarWindows(
         vehicle.id,
-        VEHICLE_WINDOW_STATE[windows.driver],
-        VEHICLE_WINDOW_STATE[windows.passenger],
-        VEHICLE_WINDOW_STATE[windows.backLeft],
-        VEHICLE_WINDOW_STATE[windows.backRight],
+        VEHICLE_WINDOW_STATES[windows.driver],
+        VEHICLE_WINDOW_STATES[windows.passenger],
+        VEHICLE_WINDOW_STATES[windows.backLeft],
+        VEHICLE_WINDOW_STATES[windows.backRight],
     )
 }
 

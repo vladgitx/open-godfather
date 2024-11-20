@@ -247,9 +247,25 @@ export const TEXT_DRAW_FONTS = { font0: 0, font1: 1, font2: 2, font3: 3, sprite:
 
 export type TextDrawFont = keyof typeof TEXT_DRAW_FONTS
 
-export const VEHICLE_WINDOW_STATE = {
+export const VEHICLE_WINDOW_STATES = {
     open: 0,
     closed: 1,
 } as const
 
-export type VehicleWindowState = keyof typeof VEHICLE_WINDOW_STATE
+export type VehicleWindowState = keyof typeof VEHICLE_WINDOW_STATES
+
+export const SPECTATE_MODES = {
+    normal: 1,
+    fixed: 2,
+    side: 3,
+} as const
+
+export type SpectateMode = keyof typeof SPECTATE_MODES
+
+export const SPECTATE_TYPES = {
+    none: 0,
+    vehicle: 1,
+    player: 2,
+} as const
+
+export type SpectateType = keyof typeof SPECTATE_TYPES

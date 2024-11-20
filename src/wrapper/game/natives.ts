@@ -5,10 +5,12 @@ import {
     type DIALOG_STYLES,
     type PLAYER_BONES,
     type SPECIAL_ACTIONS,
+    SPECTATE_MODES,
+    type SPECTATE_TYPES,
     type TEXT_DRAW_ALIGNMENTS,
     type TEXT_DRAW_FONTS,
     VEHICLE_SEATS,
-    type VEHICLE_WINDOW_STATE,
+    type VEHICLE_WINDOW_STATES,
     type WEAPON_SKILLS,
     type WEAPON_SLOTS,
     WEAPONS,
@@ -55,10 +57,10 @@ class GameNatives {
 
     setVehicleParamsCarWindows(
         vehicleId: number,
-        frontLeft: EnumValue<typeof VEHICLE_WINDOW_STATE>,
-        frontRight: EnumValue<typeof VEHICLE_WINDOW_STATE>,
-        rearLeft: EnumValue<typeof VEHICLE_WINDOW_STATE>,
-        rearRight: EnumValue<typeof VEHICLE_WINDOW_STATE>,
+        frontLeft: EnumValue<typeof VEHICLE_WINDOW_STATES>,
+        frontRight: EnumValue<typeof VEHICLE_WINDOW_STATES>,
+        rearLeft: EnumValue<typeof VEHICLE_WINDOW_STATES>,
+        rearRight: EnumValue<typeof VEHICLE_WINDOW_STATES>,
     ) {
         samp.callNative("SetVehicleParamsCarWindows", "iiiii", vehicleId, frontLeft, frontRight, rearLeft, rearRight)
     }
@@ -275,6 +277,22 @@ class GameNatives {
 
     isPlayerControllable = (playerId: number) => {
         return Boolean(samp.callNative("IsPlayerControllable", "i", playerId))
+    }
+
+    playerSpectatePlayer = (playerId: number, targetId: number, mode: EnumValue<typeof SPECTATE_MODES> = SPECTATE_MODES.normal) => {
+        return Boolean(samp.callNative("PlayerSpectatePlayer", "iii", playerId, targetId, mode))
+    }
+
+    playerSpectateVehicle = (playerId: number, vehicleId: number, mode: EnumValue<typeof SPECTATE_MODES> = SPECTATE_MODES.normal) => {
+        return Boolean(samp.callNative("PlayerSpectateVehicle", "iii", playerId, vehicleId, mode))
+    }
+
+    getPlayerSpectateType = (playerId: number): EnumValue<typeof SPECTATE_TYPES> => {
+        return samp.callNative("GetPlayerSpectateType", "i", playerId) as EnumValue<typeof SPECTATE_TYPES>
+    }
+
+    getPlayerSpectateId = (playerId: number): number => {
+        return samp.callNative("GetPlayerSpectateID", "i", playerId) as number
     }
 
     destroyVehicle = (vehicleId: number): boolean => {
