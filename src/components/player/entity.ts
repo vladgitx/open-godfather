@@ -142,6 +142,10 @@ export class Player extends GameEntity<PlayerEventMap> {
         return undefined
     }
 
+    getSpectateTargetType() {
+        return getEnumKeyByValue(SPECTATE_TYPES, gameNatives.getPlayerSpectateType(this.id))
+    }
+
     set controllable(controllable: boolean) {
         gameNatives.togglePlayerControllable(this.id, controllable)
     }
