@@ -46,6 +46,7 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
 
         this.isDestroying = true
 
+        dispatcher.emit("entityPreDestroy", this)
         dispatcher.emit("entityDestroy", this)
         dispatcher.emit("entityCleanup", this)
 

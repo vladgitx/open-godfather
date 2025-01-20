@@ -51,6 +51,7 @@ interface VehicleEvents {
 
 interface EntityEvents {
     entityInstantiate: [Entity]
+    entityPreDestroy: [Entity]
     entityDestroy: [Entity]
     entityCleanup: [Entity]
 }
