@@ -23,6 +23,23 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
         })
     }
 
+    get exists() {
+        return !this.destroyed
+    }
+
+    /**
+     * Executes a callback function with the current entity as the context.
+     *
+     * @param callback - The callback function to execute
+     */
+    execute(callback: (entity: this) => void) {
+        try {
+            callback(this)
+        } catch (error) {
+            console.error("Error during entity execute method:", error)
+        }
+    }
+
     onCleanup(callback: () => void) {
         this.cleanupCallbacks.push(callback)
 
@@ -33,10 +50,6 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
                 this.cleanupCallbacks.splice(index, 1)
             }
         }
-    }
-
-    get exists() {
-        return !this.destroyed
     }
 
     destroy() {
