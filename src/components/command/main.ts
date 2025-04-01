@@ -8,7 +8,7 @@ export class Command {
     readonly variables = new KeyValueVariables()
 
     constructor(
-        readonly name: string,
+        readonly name: `/${string}`,
         readonly aliases: string[],
         readonly callback: CommandCallback,
     ) {}
@@ -17,7 +17,7 @@ export class Command {
 class CommandHandler {
     private readonly namesAndAliases = new Map<string, Command>()
 
-    add = (name: string, aliases: string[], callback: CommandCallback) => {
+    add = (name: `/${string}`, aliases: string[], callback: CommandCallback) => {
         if (aliases.includes(name)) {
             throw new Error(`Command ${name} cannot have an alias with the same name`)
         }
