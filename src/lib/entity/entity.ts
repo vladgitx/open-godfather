@@ -38,6 +38,8 @@ export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
         } catch (error) {
             console.error("Error during entity execute method:", error)
         }
+
+        return this
     }
 
     onCleanup(callback: () => void) {
