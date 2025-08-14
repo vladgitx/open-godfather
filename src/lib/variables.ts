@@ -28,4 +28,8 @@ export class KeyValueVariables<T extends Record<string, unknown> = Record<string
     clear() {
         this.variables.clear()
     }
+
+    entries() {
+        return this.variables.entries()
+    }
 }
