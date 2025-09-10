@@ -938,6 +938,14 @@ class GameNatives {
     playerTextDrawSetPos = (playerId: number, textId: number, x: number, y: number) => {
         samp.callNative("PlayerTextDrawSetPos", "iiff", playerId, textId, x, y)
     }
+
+    blockIpAddress(ipAddress: string, ms: number): void {
+        samp.callNative("BlockIpAddress", "si", ipAddress, ms)
+    }
+
+    unblockIpAddress(ipAddress: string): void {
+        samp.callNative("UnBlockIpAddress", "s", ipAddress)
+    }
 }
 
 export const gameNatives = new GameNatives()

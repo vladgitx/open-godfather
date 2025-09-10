@@ -48,6 +48,14 @@ class GameServer {
         return gameNatives.getWeaponName(WEAPONS[weapon])
     }
 
+    blockIpAddress(ipAddress: string, timeInMs: number) {
+        gameNatives.blockIpAddress(ipAddress, timeInMs)
+    }
+
+    unblockIpAddress(ipAddress: string) {
+        gameNatives.unblockIpAddress(ipAddress)
+    }
+
     set name(name: string) {
         this._name = name
         gameNatives.sendRconCommand("name " + this._name)
