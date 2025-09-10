@@ -11,6 +11,7 @@ import { type Checkpoint } from "../components/checkpoint"
 import type { BodyPart, KickReason, PlayerState, Weapon } from "@/wrapper/game/enums.public"
 import { type Textdraw } from "@/components/textdraw"
 import { type PlayerTextdraw } from "@/components/player/textdraw"
+import { type GameObject } from "@/components/game-object"
 
 interface ServerEvents {
     init: []
@@ -31,7 +32,7 @@ interface PlayerEvents {
     playerStartExitVehicle: [Player, Vehicle]
     playerDamage: [Player, Player | undefined, number, Weapon, BodyPart]
     playerDeath: [Player, Player | undefined, Weapon]
-    playerShoot: [Player, Weapon, Player | Vehicle | undefined, Vector3]
+    playerShoot: [Player, Weapon, Player | Vehicle | GameObject | undefined, Vector3]
     playerPickUpPickup: [Player, Pickup]
     playerChangeVehiclePaintjob: [Player, Vehicle, number | undefined]
     playerEditAttachedObject: [Player, number, number, number, Vector3, Vector3, Vector3]

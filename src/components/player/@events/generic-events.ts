@@ -3,10 +3,11 @@ import { dispatcher } from "@/lib/dispatcher"
 import { players } from "../handler"
 import { vehicles } from "@/components/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
-import { BODY_PARTS, HIT_TYPES, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
+import { BODY_PARTS, HIT_TYPES, type HitType, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
 import { getEnumKeyByValue } from "@/lib/utils"
 import { gameCallbacks, gameNatives } from "@/wrapper/game"
 import { textdraws } from "@/components/textdraw"
+import { gameObjects } from "@/components/game-object"
 
 gameCallbacks.onPlayerKeyStateChange((playerId, newKeys, oldKeys) => {
     const player = players.pool.at(playerId)
@@ -116,10 +117,21 @@ gameCallbacks.onPlayerWeaponShot((playerId, weapon, hitType, hitId, fX, fY, fZ) 
     const player = players.pool.at(playerId)
 
     if (player) {
-        const hitEntity =
-            hitType === HIT_TYPES.player ? players.pool.at(hitId) : hitType === HIT_TYPES.vehicle ? vehicles.pool.at(hitId) : undefined
+        const getHitEntity = {
+            none: () => undefined,
+            player: (id) => players.pool.at(id),
+            vehicle: (id) => vehicles.pool.at(id),
+            object: (id) => gameObjects.pool.at(id),
+            "player-object": () => undefined, // TODO: Figure out what to return here. The attached object slot, the player, etc?
+        } as const satisfies Record<HitType, (hitId: number) => unknown>
 
-        dispatcher.emit("playerShoot", player, getEnumKeyByValue(WEAPONS, weapon), hitEntity, new Vector3(fX, fY, fZ))
+        dispatcher.emit(
+            "playerShoot",
+            player,
+            getEnumKeyByValue(WEAPONS, weapon),
+            getHitEntity[getEnumKeyByValue(HIT_TYPES, hitType)](hitId),
+            new Vector3(fX, fY, fZ),
+        )
     }
     return 1
 })
