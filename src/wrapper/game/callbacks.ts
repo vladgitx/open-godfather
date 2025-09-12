@@ -1,5 +1,10 @@
 import type { BODY_PARTS, HIT_TYPES, KICK_REASONS, PLAYER_BONES, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
 import type { EnumValue } from "@/lib/types"
+import { charset } from "@/lib/charset"
+
+samp.registerEvent("OnPlayerTextI18n", "iai")
+samp.registerEvent("OnPlayerCommandTextI18n", "iai")
+samp.registerEvent("OnDialogResponseI18n", "iiiiai")
 
 class GameCallbacks {
     onPlayerClickTextDraw(callback: (playerId: number, clickedId: number) => void) {
@@ -31,11 +36,17 @@ class GameCallbacks {
     }
 
     onPlayerText(callback: (playerId: number, text: string) => void) {
-        samp.on("OnPlayerText", callback)
+        samp.on("OnPlayerTextI18n", (playerId: number, text) => {
+            callback(playerId, charset.decode(text))
+        })
     }
 
     onPlayerCommandText(callback: (playerId: number, cmdText: string) => void) {
-        samp.on("OnPlayerCommandText", callback)
+        samp.on("OnPlayerCommandTextI18n", (playerId: number, cmdText) => {
+            callback(playerId, charset.decode(cmdText))
+
+            return 1 // Prevents the "SERVER: Unknown Command" message
+        })
     }
 
     onPlayerRequestClass(callback: (playerId: number, classId: number) => void) {
@@ -83,7 +94,9 @@ class GameCallbacks {
     }
 
     onDialogResponse(callback: (playerId: number, dialogId: number, response: 1 | 0, listitem: number, inputText: string) => void) {
-        samp.on("OnDialogResponse", callback)
+        samp.on("OnDialogResponseI18n", (playerId: number, dialogId: number, response: 1 | 0, listitem: number, inputText) => {
+            callback(playerId, dialogId, response, listitem, charset.decode(inputText))
+        })
     }
 
     onGameModeExit(callback: () => void) {

@@ -18,6 +18,7 @@ import {
 import { type EnumValue } from "@/lib/types"
 import { type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
+import { charset } from "@/lib/charset"
 
 class GameNatives {
     isPlayerTextDrawVisible = (playerId: number, text: number): boolean => {
@@ -342,7 +343,24 @@ class GameNatives {
         button1: string,
         button2: string,
     ): boolean => {
-        return samp.callNative("ShowPlayerDialog", "iiissss", playerId, dialogId, styleId, caption, info, button1, button2) === 1
+        const captionEncoded = charset.encode(caption)
+        const infoEncoded = charset.encode(info)
+        const button1Encoded = charset.encode(button1)
+        const button2Encoded = charset.encode(button2)
+
+        return (
+            samp.callNative(
+                "ShowPlayerDialog",
+                `iii${captionEncoded.flag}${infoEncoded.flag}${button1Encoded.flag}${button2Encoded.flag}`,
+                playerId,
+                dialogId,
+                styleId,
+                captionEncoded.encoded,
+                infoEncoded.encoded,
+                button1Encoded.encoded,
+                button2Encoded.encoded,
+            ) === 1
+        )
     }
 
     hidePlayerDialog(playerId: number) {
@@ -424,24 +442,32 @@ class GameNatives {
         // that adds inaccurate length to the message string
         // so we need to calculate the length of the message without color tags
 
+        const { flag, encoded } = charset.encode(message)
+
         if (message.length <= 90) {
-            samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), message)
+            samp.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
             return
         }
 
         const parts = Math.ceil(message.length / 90)
 
-        samp.callNative("SendClientMessage", "iis", playerId, hexToRgbaInt(color), message.slice(0, 90) + " ...")
+        samp.callNative(
+            "SendClientMessage",
+            `ii${flag}`,
+            playerId,
+            hexToRgbaInt(color),
+            charset.encode(message.slice(0, 90) + " ...").encoded,
+        )
 
         for (let i = 1; i < parts; i++) {
             const part = message.slice(i * 90, (i + 1) * 90)
 
             samp.callNative(
                 "SendClientMessage",
-                "iis",
+                `ii${flag}`,
                 playerId,
                 hexToRgbaInt(color),
-                i === parts - 1 ? "... " + part : "... " + part + " ...",
+                charset.encode(i === parts - 1 ? "... " + part : "... " + part + " ...").encoded,
             )
         }
     }
@@ -717,15 +743,22 @@ class GameNatives {
 
     sendClientMessageToAll(color: string, message: string): void {
         if (message.length > 90) {
-            samp.callNative("SendClientMessageToAll", "is", hexToRgbaInt(color), `${message.slice(0, 90)} ...`)
-            samp.callNative("SendClientMessageToAll", "is", hexToRgbaInt(color), `... ${message.slice(90)}`)
+            const firstPart = charset.encode(`${message.slice(0, 90)} ...`)
+            const secondPart = charset.encode(`... ${message.slice(90)}`)
+
+            samp.callNative("SendClientMessageToAll", `i${firstPart.flag}`, hexToRgbaInt(color), firstPart.encoded)
+            samp.callNative("SendClientMessageToAll", `i${secondPart.flag}`, hexToRgbaInt(color), secondPart.encoded)
         } else {
-            samp.callNative("SendClientMessageToAll", "is", hexToRgbaInt(color), message)
+            const { flag, encoded } = charset.encode(message)
+
+            samp.callNative("SendClientMessageToAll", `i${flag}`, hexToRgbaInt(color), encoded)
         }
     }
 
     setPlayerChatBubble = (playerId: number, text: string, color: string, drawdistance: number, expiretime: number): boolean => {
-        return samp.callNative("SetPlayerChatBubble", "isifi", playerId, text, hexToRgbaInt(color), drawdistance, expiretime) === 1
+        const { flag, encoded } = charset.encode(text)
+
+        return samp.callNative("SetPlayerChatBubble", `i${flag}ifi`, playerId, encoded, hexToRgbaInt(color), drawdistance, expiretime) === 1
     }
 
     getVehicleModel(vehicleId: number): number | undefined {
@@ -756,7 +789,9 @@ class GameNatives {
     }
 
     textDrawCreate = (x: number, y: number, text: string): number => {
-        return samp.callNative("TextDrawCreate", "ffs", x, y, text)
+        const { flag, encoded } = charset.encode(charset.convertSpecialCharacters(text))
+
+        return samp.callNative("TextDrawCreate", `ff${flag}`, x, y, encoded) as number
     }
 
     textDrawDestroy = (text: number): number => {
@@ -835,8 +870,10 @@ class GameNatives {
         return samp.callNative("TextDrawSetSelectable", "ii", text, set)
     }
 
-    textDrawSetString = (text: number, string: string): number => {
-        return samp.callNative("TextDrawSetString", "is", text, string)
+    textDrawSetString = (text: number, string: string): void => {
+        const { flag, encoded } = charset.encode(charset.convertSpecialCharacters(string))
+
+        samp.callNative("TextDrawSetString", `i${flag}`, text, encoded)
     }
 
     textDrawSetPreviewModel = (text: number, modelindex: number): number => {
@@ -856,7 +893,9 @@ class GameNatives {
     }
 
     createPlayerTextDraw = (playerId: number, x: number, y: number, text: string): number => {
-        return samp.callNative("CreatePlayerTextDraw", "iffs", playerId, x, y, text)
+        const { flag, encoded } = charset.encode(text)
+
+        return samp.callNative("CreatePlayerTextDraw", `iff${flag}`, playerId, x, y, encoded) as number
     }
 
     playerTextDrawDestroy = (playerId: number, text: number): void => {
@@ -919,8 +958,10 @@ class GameNatives {
         return samp.callNative("PlayerTextDrawHide", "ii", playerId, text)
     }
 
-    playerTextDrawSetString = (playerId: number, text: number, string: string): number => {
-        return samp.callNative("PlayerTextDrawSetString", "iis", playerId, text, string)
+    playerTextDrawSetString = (playerId: number, text: number, string: string): void => {
+        const { flag, encoded } = charset.encode(string)
+
+        samp.callNative("PlayerTextDrawSetString", `ii${flag}`, playerId, text, encoded)
     }
 
     playerTextDrawSetPreviewModel = (playerId: number, text: number, modelindex: number): number => {
