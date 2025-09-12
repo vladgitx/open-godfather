@@ -21,6 +21,8 @@ export type { EnumValue, Constructible, ExcludeFirstParam } from "./lib/types"
 export type { EventMapInterface } from "./lib/event-bus"
 export type { Position3, Position2 } from "./lib/vector3"
 
+export { charset } from "./lib/charset"
+
 export { gameServer } from "./components/game-server"
 export { players } from "./components/player"
 export { vehicles } from "./components/vehicle"

@@ -22,8 +22,12 @@
     ],
     "author": "vladgitx",
     "license": "ISC",
+    "dependencies": {
+        "iconv-lite": "^0.7.0"
+    },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-typescript": "^11.1.6",
         "@sa-mp/node": "^0.2.0",

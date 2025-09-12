@@ -4,6 +4,7 @@ import { hexToRgbaInt, rgbaIntToHex } from "@/lib/utils"
 import { STREAMER_ITEM_DATA, STREAMER_ITEM_TYPES, type StreamerItemData, type StreamerItemType } from "./enums"
 import { type EnumValue } from "@/lib/types"
 import type { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enums.public"
+import { charset } from "@/lib/charset"
 
 class StreamerNatives {
     createDynamicCheckpoint(
@@ -112,10 +113,12 @@ class StreamerNatives {
         areaId: number,
         priority: number,
     ) {
+        const { flag, encoded } = charset.encode(text)
+
         const id = samp.callNative(
             "CreateDynamic3DTextLabel",
-            "siffffiiiiiifii",
-            text,
+            `${flag}iffffiiiiiifii`,
+            encoded,
             hexToRgbaInt(color),
             position.x,
             position.y,
@@ -144,11 +147,13 @@ class StreamerNatives {
     }
 
     getDynamic3dTextLabelText(textLabelId: number) {
-        return samp.callNative("GetDynamic3DTextLabelText", "iSi", textLabelId, 256) as string
+        return charset.decode(samp.callNative("GetDynamic3DTextLabelText", "iAi", textLabelId, 256))
     }
 
     updateDynamic3dTextLabelText(textLabelId: number, color: string, text: string) {
-        samp.callNative("UpdateDynamic3DTextLabelText", "iis", textLabelId, hexToRgbaInt(color), text)
+        const { flag, encoded } = charset.encode(text)
+
+        samp.callNative("UpdateDynamic3DTextLabelText", `ii${flag}`, textLabelId, hexToRgbaInt(color), encoded)
     }
 
     getFloatData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData) {
@@ -308,12 +313,14 @@ class StreamerNatives {
         backColor: string,
         textAlignment: EnumValue<typeof MATERIAL_TEXT_ALIGNMENTS>,
     ) {
+        const { flag, encoded } = charset.encode(text)
+
         samp.callNative(
             "SetDynamicObjectMaterialText",
-            "iisisiiiii",
+            `ii${flag}isiiiii`,
             objectId,
             materialIndex,
-            text,
+            encoded,
             materialSize,
             fontFace,
             fontSize,
