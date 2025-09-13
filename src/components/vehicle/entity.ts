@@ -79,6 +79,14 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
         return id === undefined ? undefined : vehicles.pool.at(id)
     }
 
+    getRotationQuaternion() {
+        return gameNatives.getVehicleRotationQuat(this.id)
+    }
+
+    getMatrix() {
+        return gameNatives.getVehicleMatrix(this.id)
+    }
+
     set position(position: Position3) {
         gameNatives.setVehiclePosition(this.id, position.x, position.y, position.z)
     }

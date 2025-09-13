@@ -16,7 +16,7 @@ import {
     WEAPONS,
 } from "@/wrapper/game/enums.public"
 import { type EnumValue } from "@/lib/types"
-import { type Position3 } from "@/lib/vector3"
+import { Vector3, type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
 import { charset } from "@/lib/charset"
 
@@ -54,6 +54,27 @@ class GameNatives {
         }
 
         return ret
+    }
+
+    getVehicleRotationQuat(vehicleId: number) {
+        const data = samp.callNative("GetVehicleRotationQuat", "iFFFF", vehicleId) as number[]
+
+        return {
+            w: data[0],
+            x: data[1],
+            y: data[2],
+            z: data[3],
+        }
+    }
+
+    getVehicleMatrix(vehicleId: number) {
+        const data = samp.callNative("GetVehicleMatrix", "iFFFFFFFFF", vehicleId) as number[]
+
+        return {
+            right: new Vector3(data[0], data[1], data[2]),
+            up: new Vector3(data[3], data[4], data[5]),
+            at: new Vector3(data[6], data[7], data[8]),
+        }
     }
 
     setVehicleParamsCarWindows(
