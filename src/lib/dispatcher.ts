@@ -8,7 +8,7 @@ import EventEmitter from "events"
 import { type Pickup } from "../components/pickup"
 import { type Entity } from "./entity"
 import { type Checkpoint } from "../components/checkpoint"
-import type { BodyPart, KickReason, PlayerState, Weapon } from "@/wrapper/game/enums.public"
+import type { BodyPart, KickReason, PlayerBone, PlayerState, Weapon } from "@/wrapper/game/enums.public"
 import { type Textdraw } from "@/components/textdraw"
 import { type PlayerTextdraw } from "@/components/player/textdraw"
 import { type GameObject } from "@/components/game-object"
@@ -19,47 +19,55 @@ interface ServerEvents {
 }
 
 interface PlayerEvents {
-    playerConnect: [Player]
-    playerDisconnect: [Player, KickReason]
-    playerUpdate: [Player]
-    playerCommand: [Player, string, Command | undefined, () => void | Promise<void>]
-    playerSpawn: [Player]
-    playerFirstSpawn: [Player]
-    playerText: [Player, string]
-    playerStateChange: [Player, PlayerState, PlayerState]
-    playerEnterVehicle: [Player, Vehicle]
-    playerExitVehicle: [Player, Vehicle | undefined]
-    playerStartEnterVehicle: [Player, Vehicle, boolean]
-    playerStartExitVehicle: [Player, Vehicle]
-    playerDamage: [Player, Player | undefined, number, Weapon, BodyPart]
-    playerDeath: [Player, Player | undefined, Weapon]
-    playerShoot: [Player, Weapon, Player | Vehicle | GameObject | undefined, Vector3]
-    playerPickUpPickup: [Player, Pickup]
-    playerChangeVehiclePaintjob: [Player, Vehicle, number | undefined]
-    playerEditAttachedObject: [Player, number, number, number, Vector3, Vector3, Vector3]
-    playerCancelObjectEditMode: [Player]
-    playerKeyStateChange: [Player, number, number]
-    playerEnterCheckpoint: [Player, Checkpoint]
-    playerLeaveCheckpoint: [Player, Checkpoint]
-    playerClickTextDraw: [Player, Textdraw | undefined]
-    playerClickPlayerTextDraw: [Player, PlayerTextdraw]
+    playerConnect: [player: Player]
+    playerDisconnect: [player: Player, reason: KickReason]
+    playerUpdate: [player: Player]
+    playerCommand: [player: Player, commandText: string, command: Command | undefined, callCommand: () => void | Promise<void>]
+    playerSpawn: [player: Player]
+    playerFirstSpawn: [player: Player]
+    playerText: [player: Player, text: string]
+    playerStateChange: [player: Player, newState: PlayerState, oldState: PlayerState]
+    playerEnterVehicle: [player: Player, vehicle: Vehicle]
+    playerExitVehicle: [player: Player, vehicle: Vehicle | undefined]
+    playerStartEnterVehicle: [player: Player, vehicle: Vehicle, asPassenger: boolean]
+    playerStartExitVehicle: [player: Player, vehicle: Vehicle]
+    playerDamage: [player: Player, issuer: Player | undefined, damageAmount: number, weapon: Weapon, bodyPart: BodyPart]
+    playerDeath: [player: Player, killer: Player | undefined, weapon: Weapon]
+    playerShoot: [player: Player, weapon: Weapon, victim: Player | Vehicle | GameObject | undefined, hitCoordinates: Vector3]
+    playerPickUpPickup: [player: Player, pickup: Pickup]
+    playerChangeVehiclePaintjob: [player: Player, vehicle: Vehicle, paintjobId: number | undefined]
+    playerEditAttachedObject: [
+        player: Player,
+        index: number,
+        model: number,
+        bone: PlayerBone,
+        offset: Vector3,
+        rotation: Vector3,
+        scale: Vector3,
+    ]
+    playerCancelObjectEditMode: [player: Player]
+    playerKeyStateChange: [player: Player, newKeys: number, oldKeys: number]
+    playerEnterCheckpoint: [player: Player, checkpoint: Checkpoint]
+    playerLeaveCheckpoint: [player: Player, checkpoint: Checkpoint]
+    playerClickTextDraw: [player: Player, textdraw: Textdraw | undefined]
+    playerClickPlayerTextDraw: [player: Player, textdraw: PlayerTextdraw]
 }
 
 interface VehicleEvents {
-    vehicleRespawn: [Vehicle]
-    vehicleDeath: [Vehicle, Player | undefined]
-    vehicleEngineStateChange: [Vehicle, "on" | "off"]
+    vehicleRespawn: [vehicle: Vehicle]
+    vehicleDeath: [vehicle: Vehicle, reporter: Player | undefined]
+    vehicleEngineStateChange: [vehicle: Vehicle, newState: "on" | "off"]
 }
 
 interface EntityEvents {
-    entityInstantiate: [Entity]
-    entityPreDestroy: [Entity]
-    entityDestroy: [Entity]
-    entityCleanup: [Entity]
+    entityInstantiate: [entity: Entity]
+    entityPreDestroy: [entity: Entity]
+    entityDestroy: [entity: Entity]
+    entityCleanup: [entity: Entity]
 }
 
 interface CommandEvents {
-    commandRegister: [Command]
+    commandRegister: [command: Command]
 }
 
 type EventMap = ServerEvents & PlayerEvents & VehicleEvents & EntityEvents & CommandEvents

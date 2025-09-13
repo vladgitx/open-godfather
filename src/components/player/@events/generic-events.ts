@@ -3,7 +3,7 @@ import { dispatcher } from "@/lib/dispatcher"
 import { players } from "../handler"
 import { vehicles } from "@/components/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
-import { BODY_PARTS, HIT_TYPES, type HitType, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
+import { BODY_PARTS, HIT_TYPES, type HitType, PLAYER_BONES, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
 import { getEnumKeyByValue } from "@/lib/utils"
 import { gameCallbacks, gameNatives } from "@/wrapper/game"
 import { textdraws } from "@/components/textdraw"
@@ -164,7 +164,7 @@ gameCallbacks.onPlayerEditAttachedObject(
             player,
             index,
             model,
-            bone,
+            getEnumKeyByValue(PLAYER_BONES, bone),
             new Vector3(offX, offY, offZ),
             new Vector3(rotX, rotY, rotZ),
             new Vector3(scaleX, scaleY, scaleZ),
