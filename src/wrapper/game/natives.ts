@@ -987,6 +987,10 @@ class GameNatives {
     unblockIpAddress(ipAddress: string): void {
         samp.callNative("UnBlockIpAddress", "s", ipAddress)
     }
+
+    isPlayerNPC(playerId: number): boolean {
+        return samp.callNative("IsPlayerNPC", "i", playerId) === 1
+    }
 }
 
 export const gameNatives = new GameNatives()

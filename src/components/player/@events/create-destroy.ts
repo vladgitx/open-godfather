@@ -1,4 +1,4 @@
-import { gameCallbacks } from "@/wrapper/game"
+import { gameCallbacks, gameNatives } from "@/wrapper/game"
 import { dispatcher } from "@/lib/dispatcher"
 import { players } from "../handler"
 import { KICK_REASONS } from "@/wrapper/game/enums.public"
@@ -7,6 +7,10 @@ import { Player } from "../entity"
 import { EntityPool } from "@/lib/pool"
 
 gameCallbacks.onPlayerConnect((playerId) => {
+    if (gameNatives.isPlayerNPC(playerId)) {
+        return
+    }
+    
     const player = new Player(playerId)
     EntityPool.add(players.pool, playerId, player)
 
