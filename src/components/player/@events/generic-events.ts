@@ -9,6 +9,16 @@ import { gameCallbacks, gameNatives } from "@/wrapper/game"
 import { textdraws } from "@/components/textdraw"
 import { gameObjects } from "@/components/game-object"
 
+gameCallbacks.onPlayerUpdate((playerId) => {
+    const player = players.pool.at(playerId)
+
+    if (player) {
+        dispatcher.emit("playerUpdate", player)
+    }
+
+    return 1
+})
+
 gameCallbacks.onPlayerKeyStateChange((playerId, newKeys, oldKeys) => {
     const player = players.pool.at(playerId)
 

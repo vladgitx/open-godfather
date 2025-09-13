@@ -27,6 +27,10 @@ class GameCallbacks {
         samp.on("OnPlayerDisconnect", callback)
     }
 
+    onPlayerUpdate(callback: (playerId: number) => void) {
+        samp.on("OnPlayerUpdate", callback)
+    }
+
     onPlayerSpawn(callback: (playerId: number) => void) {
         samp.on("OnPlayerSpawn", callback)
     }

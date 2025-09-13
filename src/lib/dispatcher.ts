@@ -21,6 +21,7 @@ interface ServerEvents {
 interface PlayerEvents {
     playerConnect: [Player]
     playerDisconnect: [Player, KickReason]
+    playerUpdate: [Player]
     playerCommand: [Player, string, Command | undefined, () => void | Promise<void>]
     playerSpawn: [Player]
     playerFirstSpawn: [Player]
