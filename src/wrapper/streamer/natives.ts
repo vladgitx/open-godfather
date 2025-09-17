@@ -5,6 +5,7 @@ import { STREAMER_ITEM_DATA, STREAMER_ITEM_TYPES, type StreamerItemData, type St
 import { type EnumValue } from "@/lib/types"
 import type { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enums.public"
 import { charset } from "@/lib/charset"
+import { nativeHook } from "@/lib/native-hook"
 
 class StreamerNatives {
     createDynamicCheckpoint(
@@ -17,7 +18,7 @@ class StreamerNatives {
         areaId: number,
         priority: number,
     ) {
-        const id = samp.callNative(
+        const id = nativeHook.callNative(
             "CreateDynamicCP",
             "ffffiiifii",
             position.x,
@@ -36,27 +37,27 @@ class StreamerNatives {
     }
 
     destroyDynamicCheckpoint(id: number) {
-        samp.callNative("DestroyDynamicCP", "i", id)
+        nativeHook.callNative("DestroyDynamicCP", "i", id)
     }
 
     isValidDynamicCheckpoint(id: number) {
-        return samp.callNative("IsValidDynamicCP", "i", id) === 1
+        return nativeHook.callNative("IsValidDynamicCP", "i", id) === 1
     }
 
     togglePlayerDynamicCheckpoint(playerId: number, checkpointId: number, toggle: boolean) {
-        samp.callNative("TogglePlayerDynamicCP", "iii", playerId, checkpointId, toggle ? 1 : 0)
+        nativeHook.callNative("TogglePlayerDynamicCP", "iii", playerId, checkpointId, toggle ? 1 : 0)
     }
 
     togglePlayerAllDynamicCheckpoints(playerId: number, toggle: boolean) {
-        samp.callNative("TogglePlayerAllDynamicCPs", "ii", playerId, toggle ? 1 : 0)
+        nativeHook.callNative("TogglePlayerAllDynamicCPs", "ii", playerId, toggle ? 1 : 0)
     }
 
     isPlayerInDynamicCheckpoint(playerId: number, checkpointId: number) {
-        return samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId) === 1
+        return nativeHook.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId) === 1
     }
 
     getPlayerVisibleDynamicCheckpoint(playerId: number) {
-        const id = samp.callNative("GetPlayerVisibleDynamicCP", "i", playerId) as number
+        const id = nativeHook.callNative("GetPlayerVisibleDynamicCP", "i", playerId) as number
         return id === INVALID_STREAMER_ID ? undefined : id
     }
 
@@ -71,7 +72,7 @@ class StreamerNatives {
         areaId: number,
         priority: number,
     ) {
-        const id = samp.callNative(
+        const id = nativeHook.callNative(
             "CreateDynamicPickup",
             "iifffiiifii",
             modelId,
@@ -91,11 +92,11 @@ class StreamerNatives {
     }
 
     destroyDynamicPickup(pickupId: number) {
-        samp.callNative("DestroyDynamicPickup", "i", pickupId)
+        nativeHook.callNative("DestroyDynamicPickup", "i", pickupId)
     }
 
     isValidDynamicPickup(pickupId: number) {
-        return samp.callNative("IsValidDynamicPickup", "i", pickupId) === 1
+        return nativeHook.callNative("IsValidDynamicPickup", "i", pickupId) === 1
     }
 
     createDynamic3dTextLabel(
@@ -115,7 +116,7 @@ class StreamerNatives {
     ) {
         const { flag, encoded } = charset.encode(text)
 
-        const id = samp.callNative(
+        const id = nativeHook.callNative(
             "CreateDynamic3DTextLabel",
             `${flag}iffffiiiiiifii`,
             encoded,
@@ -139,25 +140,25 @@ class StreamerNatives {
     }
 
     destroyDynamic3dTextLabel(textLabelId: number) {
-        samp.callNative("DestroyDynamic3DTextLabel", "i", textLabelId)
+        nativeHook.callNative("DestroyDynamic3DTextLabel", "i", textLabelId)
     }
 
     isValidDynamic3dTextLabel(textLabelId: number) {
-        return samp.callNative("IsValidDynamic3DTextLabel", "i", textLabelId) === 1
+        return nativeHook.callNative("IsValidDynamic3DTextLabel", "i", textLabelId) === 1
     }
 
     getDynamic3dTextLabelText(textLabelId: number) {
-        return charset.decode(samp.callNative("GetDynamic3DTextLabelText", "iAi", textLabelId, 256))
+        return charset.decode(nativeHook.callNative("GetDynamic3DTextLabelText", "iAi", textLabelId, 256))
     }
 
     updateDynamic3dTextLabelText(textLabelId: number, color: string, text: string) {
         const { flag, encoded } = charset.encode(text)
 
-        samp.callNative("UpdateDynamic3DTextLabelText", `ii${flag}`, textLabelId, hexToRgbaInt(color), encoded)
+        nativeHook.callNative("UpdateDynamic3DTextLabelText", `ii${flag}`, textLabelId, hexToRgbaInt(color), encoded)
     }
 
     getFloatData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData) {
-        return samp.callNativeFloat(
+        return nativeHook.callNativeFloat(
             "Streamer_GetFloatData",
             "iiiF",
             STREAMER_ITEM_TYPES[itemType],
@@ -167,27 +168,33 @@ class StreamerNatives {
     }
 
     setFloatData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData, value: number) {
-        samp.callNative("Streamer_SetFloatData", "iiif", STREAMER_ITEM_TYPES[itemType], itemId, STREAMER_ITEM_DATA[itemData], value)
+        nativeHook.callNative("Streamer_SetFloatData", "iiif", STREAMER_ITEM_TYPES[itemType], itemId, STREAMER_ITEM_DATA[itemData], value)
     }
 
     getIntData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData) {
-        return samp.callNative("Streamer_GetIntData", "iii", STREAMER_ITEM_TYPES[itemType], itemId, STREAMER_ITEM_DATA[itemData]) as number
+        return nativeHook.callNative(
+            "Streamer_GetIntData",
+            "iii",
+            STREAMER_ITEM_TYPES[itemType],
+            itemId,
+            STREAMER_ITEM_DATA[itemData],
+        ) as number
     }
 
     setIntData(itemType: StreamerItemType, itemId: number, itemData: StreamerItemData, value: number) {
-        samp.callNative("Streamer_SetIntData", "iiii", STREAMER_ITEM_TYPES[itemType], itemId, STREAMER_ITEM_DATA[itemData], value)
+        nativeHook.callNative("Streamer_SetIntData", "iiii", STREAMER_ITEM_TYPES[itemType], itemId, STREAMER_ITEM_DATA[itemData], value)
     }
 
     countVisibleItems(playerId: number, type: StreamerItemType) {
-        return samp.callNative("Streamer_CountVisibleItems", "iii", playerId, STREAMER_ITEM_TYPES[type], 1) as number
+        return nativeHook.callNative("Streamer_CountVisibleItems", "iii", playerId, STREAMER_ITEM_TYPES[type], 1) as number
     }
 
     countItems(type: StreamerItemType) {
-        return samp.callNative("Streamer_CountItems", "ii", STREAMER_ITEM_TYPES[type], 1) as number
+        return nativeHook.callNative("Streamer_CountItems", "ii", STREAMER_ITEM_TYPES[type], 1) as number
     }
 
     getNearbyItems(position: Position3, type: StreamerItemType, maxItems: number, range: number, world: number) {
-        const itemIds = samp.callNative(
+        const itemIds = nativeHook.callNative(
             "Streamer_GetNearbyItems",
             "fffiAifi",
             position.x,
@@ -203,12 +210,12 @@ class StreamerNatives {
     }
 
     getItemPos(itemType: StreamerItemType, itemId: number) {
-        const pos = samp.callNative("Streamer_GetItemPos", "iiFFF", STREAMER_ITEM_TYPES[itemType], itemId) as number[]
+        const pos = nativeHook.callNative("Streamer_GetItemPos", "iiFFF", STREAMER_ITEM_TYPES[itemType], itemId) as number[]
         return new Vector3(pos[0], pos[1], pos[2])
     }
 
     setItemPos(itemType: StreamerItemType, itemId: number, position: Position3) {
-        samp.callNative("Streamer_SetItemPos", "iifff", STREAMER_ITEM_TYPES[itemType], itemId, position.x, position.y, position.z)
+        nativeHook.callNative("Streamer_SetItemPos", "iifff", STREAMER_ITEM_TYPES[itemType], itemId, position.x, position.y, position.z)
     }
 
     createDynamicObject(
@@ -223,7 +230,7 @@ class StreamerNatives {
         areaId: number,
         priority: number,
     ) {
-        const id = samp.callNative(
+        const id = nativeHook.callNative(
             "CreateDynamicObject",
             "iffffffiiiffii",
             model,
@@ -246,19 +253,19 @@ class StreamerNatives {
     }
 
     destroyDynamicObject(objectId: number) {
-        samp.callNative("DestroyDynamicObject", "i", objectId)
+        nativeHook.callNative("DestroyDynamicObject", "i", objectId)
     }
 
     isDynamicObjectMaterialUsed(objectId: number, materialIndex: number) {
-        return samp.callNative("IsDynamicObjectMaterialUsed", "ii", objectId, materialIndex) === 1
+        return nativeHook.callNative("IsDynamicObjectMaterialUsed", "ii", objectId, materialIndex) === 1
     }
 
     removeDynamicObjectMaterial(objectId: number, materialIndex: number) {
-        samp.callNative("RemoveDynamicObjectMaterial", "ii", objectId, materialIndex)
+        nativeHook.callNative("RemoveDynamicObjectMaterial", "ii", objectId, materialIndex)
     }
 
     getDynamicObjectMaterial(objectId: number, materialIndex: number) {
-        const ret = samp.callNative("GetDynamicObjectMaterial", "iiISSIii", objectId, materialIndex, 80, 80) as [
+        const ret = nativeHook.callNative("GetDynamicObjectMaterial", "iiISSIii", objectId, materialIndex, 80, 80) as [
             number,
             string,
             string,
@@ -281,7 +288,7 @@ class StreamerNatives {
         textureName: string,
         materialColor: string,
     ) {
-        samp.callNative(
+        nativeHook.callNative(
             "SetDynamicObjectMaterial",
             "iiissi",
             objectId,
@@ -294,11 +301,11 @@ class StreamerNatives {
     }
 
     isDynamicObjectMaterialTextUsed(objectId: number, materialIndex: number) {
-        return samp.callNative("IsDynamicObjectMaterialTextUsed", "ii", objectId, materialIndex) === 1
+        return nativeHook.callNative("IsDynamicObjectMaterialTextUsed", "ii", objectId, materialIndex) === 1
     }
 
     removeDynamicObjectMaterialText(objectId: number, materialIndex: number) {
-        samp.callNative("RemoveDynamicObjectMaterialText", "ii", objectId, materialIndex)
+        nativeHook.callNative("RemoveDynamicObjectMaterialText", "ii", objectId, materialIndex)
     }
 
     setDynamicObjectMaterialText(
@@ -315,7 +322,7 @@ class StreamerNatives {
     ) {
         const { flag, encoded } = charset.encode(text)
 
-        samp.callNative(
+        nativeHook.callNative(
             "SetDynamicObjectMaterialText",
             `ii${flag}isiiiii`,
             objectId,

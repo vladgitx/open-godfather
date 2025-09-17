@@ -19,34 +19,35 @@ import { type EnumValue } from "@/lib/types"
 import { Vector3, type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
 import { charset } from "@/lib/charset"
+import { nativeHook } from "@/lib/native-hook"
 
 class GameNatives {
     isPlayerTextDrawVisible = (playerId: number, text: number): boolean => {
-        return Boolean(samp.callNative("IsPlayerTextDrawVisible", "ii", playerId, text))
+        return Boolean(nativeHook.callNative("IsPlayerTextDrawVisible", "ii", playerId, text))
     }
 
     isVehicleStreamedIn(vehicleId: number, playerId: number): boolean {
-        return Boolean(samp.callNative("IsVehicleStreamedIn", "ii", vehicleId, playerId))
+        return Boolean(nativeHook.callNative("IsVehicleStreamedIn", "ii", vehicleId, playerId))
     }
 
     isPlayerStreamedIn(playerId: number, forPlayerId: number): boolean {
-        return Boolean(samp.callNative("IsPlayerStreamedIn", "ii", playerId, forPlayerId))
+        return Boolean(nativeHook.callNative("IsPlayerStreamedIn", "ii", playerId, forPlayerId))
     }
 
     attachTrailerToVehicle = (trailerId: number, vehicleId: number): true => {
-        return Boolean(samp.callNative("AttachTrailerToVehicle", "ii", trailerId, vehicleId)) as true
+        return Boolean(nativeHook.callNative("AttachTrailerToVehicle", "ii", trailerId, vehicleId)) as true
     }
 
     detachTrailerFromVehicle = (vehicleId: number): void => {
-        samp.callNative("DetachTrailerFromVehicle", "i", vehicleId)
+        nativeHook.callNative("DetachTrailerFromVehicle", "i", vehicleId)
     }
 
     isTrailerAttachedToVehicle = (vehicleId: number): boolean => {
-        return Boolean(samp.callNative("IsTrailerAttachedToVehicle", "i", vehicleId))
+        return Boolean(nativeHook.callNative("IsTrailerAttachedToVehicle", "i", vehicleId))
     }
 
     getVehicleTrailer = (vehicleId: number): number | undefined => {
-        const ret = samp.callNative("GetVehicleTrailer", "i", vehicleId)
+        const ret = nativeHook.callNative("GetVehicleTrailer", "i", vehicleId)
 
         if (ret === 0) {
             // No trailer
@@ -57,7 +58,7 @@ class GameNatives {
     }
 
     getVehicleRotationQuat(vehicleId: number) {
-        const data = samp.callNative("GetVehicleRotationQuat", "iFFFF", vehicleId) as number[]
+        const data = nativeHook.callNative("GetVehicleRotationQuat", "iFFFF", vehicleId) as number[]
 
         return {
             w: data[0],
@@ -68,7 +69,7 @@ class GameNatives {
     }
 
     getVehicleMatrix(vehicleId: number) {
-        const data = samp.callNative("GetVehicleMatrix", "iFFFFFFFFF", vehicleId) as number[]
+        const data = nativeHook.callNative("GetVehicleMatrix", "iFFFFFFFFF", vehicleId) as number[]
 
         return {
             right: new Vector3(data[0], data[1], data[2]),
@@ -84,11 +85,11 @@ class GameNatives {
         rearLeft: EnumValue<typeof VEHICLE_WINDOW_STATES>,
         rearRight: EnumValue<typeof VEHICLE_WINDOW_STATES>,
     ) {
-        samp.callNative("SetVehicleParamsCarWindows", "iiiii", vehicleId, frontLeft, frontRight, rearLeft, rearRight)
+        nativeHook.callNative("SetVehicleParamsCarWindows", "iiiii", vehicleId, frontLeft, frontRight, rearLeft, rearRight)
     }
 
     getVehicleParamsCarWindows(vehicleId: number) {
-        const data = samp.callNative("GetVehicleParamsCarWindows", "iIIII", vehicleId) as (-1 | 0 | 1)[]
+        const data = nativeHook.callNative("GetVehicleParamsCarWindows", "iIIII", vehicleId) as (-1 | 0 | 1)[]
 
         return {
             frontLeft: data[0],
@@ -99,7 +100,7 @@ class GameNatives {
     }
 
     getVehicleDamageStatus(vehicleId: number) {
-        const data = samp.callNative("GetVehicleDamageStatus", "iIIII", vehicleId) as number[]
+        const data = nativeHook.callNative("GetVehicleDamageStatus", "iIIII", vehicleId) as number[]
 
         return {
             panels: data[0],
@@ -110,11 +111,11 @@ class GameNatives {
     }
 
     updateVehicleDamageStatus(vehicleId: number, panels: number, doors: number, lights: number, tires: number) {
-        samp.callNative("UpdateVehicleDamageStatus", "iiiii", vehicleId, panels, doors, lights, tires)
+        nativeHook.callNative("UpdateVehicleDamageStatus", "iiiii", vehicleId, panels, doors, lights, tires)
     }
 
     getVehicleSpawnInfo(vehicleId: number) {
-        const data = samp.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleId) as number[]
+        const data = nativeHook.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleId) as number[]
 
         return {
             spawnX: data[0],
@@ -127,7 +128,7 @@ class GameNatives {
     }
 
     interpolateCameraPos = (playerId: number, from: Position3, to: Position3, time: number, cut: EnumValue<typeof CAMERA_CUT_STYLES>) => {
-        samp.callNative("InterpolateCameraPos", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
+        nativeHook.callNative("InterpolateCameraPos", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
     interpolateCameraLookAt = (
@@ -137,15 +138,15 @@ class GameNatives {
         time: number,
         cut: EnumValue<typeof CAMERA_CUT_STYLES>,
     ) => {
-        samp.callNative("InterpolateCameraLookAt", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
+        nativeHook.callNative("InterpolateCameraLookAt", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
 
     manualVehicleEngineAndLights = () => {
-        samp.callNative("ManualVehicleEngineAndLights", "")
+        nativeHook.callNative("ManualVehicleEngineAndLights", "")
     }
 
     setVehicleNumberPlate = (vehicleId: number, numberPlate: string) => {
-        samp.callNative("SetVehicleNumberPlate", "is", vehicleId, numberPlate)
+        nativeHook.callNative("SetVehicleNumberPlate", "is", vehicleId, numberPlate)
     }
 
     setVehicleParamsEx = (
@@ -158,7 +159,7 @@ class GameNatives {
         boot: boolean,
         objective: boolean,
     ) => {
-        samp.callNative(
+        nativeHook.callNative(
             "SetVehicleParamsEx",
             "iiiiiiii",
             vehicleId,
@@ -173,7 +174,7 @@ class GameNatives {
     }
 
     getVehicleParamsEx = (vehicleId: number) => {
-        const res = samp.callNative("GetVehicleParamsEx", "iIIIIIII", vehicleId) as (-1 | 0 | 1)[]
+        const res = nativeHook.callNative("GetVehicleParamsEx", "iIIIIIII", vehicleId) as (-1 | 0 | 1)[]
 
         return {
             engine: res[0],
@@ -187,68 +188,68 @@ class GameNatives {
     }
 
     getServerTickRate = () => {
-        return samp.callNative("GetServerTickRate", "") as unknown as number
+        return nativeHook.callNative("GetServerTickRate", "") as unknown as number
     }
 
     disableInteriorEnterExits = (): void => {
-        samp.callNative("DisableInteriorEnterExits", "")
+        nativeHook.callNative("DisableInteriorEnterExits", "")
     }
 
     getVehicleVelocity = (vehicleId: number) => {
-        const res = samp.callNative("GetVehicleVelocity", "iFFF", vehicleId) as number[]
+        const res = nativeHook.callNative("GetVehicleVelocity", "iFFF", vehicleId) as number[]
         return { x: res[0], y: res[1], z: res[2] }
     }
 
     getWeaponName = (weaponId: EnumValue<typeof WEAPONS>) => {
-        return samp.callNative("GetWeaponName", "iSi", weaponId, 32) as unknown as string
+        return nativeHook.callNative("GetWeaponName", "iSi", weaponId, 32) as unknown as string
     }
 
     setVehicleVelocity = (vehicleId: number, velocity: Position3) => {
-        samp.callNative("SetVehicleVelocity", "ifff", vehicleId, velocity.x, velocity.y, velocity.z)
+        nativeHook.callNative("SetVehicleVelocity", "ifff", vehicleId, velocity.x, velocity.y, velocity.z)
     }
 
     setPlayerSkillLevel = (playerId: number, skillType: EnumValue<typeof WEAPON_SKILLS>, level: number) => {
-        samp.callNative("SetPlayerSkillLevel", "iii", playerId, skillType, level)
+        nativeHook.callNative("SetPlayerSkillLevel", "iii", playerId, skillType, level)
     }
 
     setPlayerColor = (playerId: number, color: string): void => {
-        samp.callNative("SetPlayerColor", "ii", playerId, hexToRgbaInt(color))
+        nativeHook.callNative("SetPlayerColor", "ii", playerId, hexToRgbaInt(color))
     }
 
     setWeather = (weatherId: number): void => {
-        samp.callNative("SetWeather", "i", weatherId)
+        nativeHook.callNative("SetWeather", "i", weatherId)
     }
 
     setWorldTime = (hour: number): void => {
-        samp.callNative("SetWorldTime", "i", hour)
+        nativeHook.callNative("SetWorldTime", "i", hour)
     }
 
     setNameTagDrawDistance = (distance: number): void => {
-        samp.callNative("SetNameTagDrawDistance", "f", distance)
+        nativeHook.callNative("SetNameTagDrawDistance", "f", distance)
     }
 
     enableStuntBonusForAll = (enable: 0 | 1): void => {
-        samp.callNative("EnableStuntBonusForAll", "i", enable)
+        nativeHook.callNative("EnableStuntBonusForAll", "i", enable)
     }
 
     sendRconCommand = (command: string): void => {
-        samp.callNative("SendRconCommand", "s", command)
+        nativeHook.callNative("SendRconCommand", "s", command)
     }
 
     changeVehicleColor = (vehicleId: number, color1: number, color2: number) => {
-        samp.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2)
+        nativeHook.callNative("ChangeVehicleColor", "iii", vehicleId, color1, color2)
     }
 
     changeVehiclePaintjob = (vehicleId: number, paintjobId: number) => {
-        samp.callNative("ChangeVehiclePaintjob", "ii", vehicleId, paintjobId)
+        nativeHook.callNative("ChangeVehiclePaintjob", "ii", vehicleId, paintjobId)
     }
 
     repairVehicle = (vehicleId: number) => {
-        samp.callNative("RepairVehicle", "i", vehicleId)
+        nativeHook.callNative("RepairVehicle", "i", vehicleId)
     }
 
     setPlayerAmmo(playerId: number, weaponId: EnumValue<typeof WEAPONS>, ammo: number) {
-        samp.callNative("SetPlayerAmmo", "iii", playerId, weaponId, ammo)
+        nativeHook.callNative("SetPlayerAmmo", "iii", playerId, weaponId, ammo)
     }
 
     setPlayerAttachedObject = (
@@ -278,51 +279,51 @@ class GameNatives {
             values.push(hexToRgbaInt(materialcolor2))
         }
 
-        return samp.callNative("SetPlayerAttachedObject", "iiiifffffffffii", ...values) === 1
+        return nativeHook.callNative("SetPlayerAttachedObject", "iiiifffffffffii", ...values) === 1
     }
 
     removePlayerAttachedObject = (playerId: number, index: number) => {
-        return samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index) === 1
+        return nativeHook.callNative("RemovePlayerAttachedObject", "ii", playerId, index) === 1
     }
 
     isPlayerAttachedObjectSlotUsed = (playerId: number, index: number) => {
-        return samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index) === 1
+        return nativeHook.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index) === 1
     }
 
     editAttachedObject = (playerId: number, index: number) => {
-        return samp.callNative("EditAttachedObject", "ii", playerId, index) === 1
+        return nativeHook.callNative("EditAttachedObject", "ii", playerId, index) === 1
     }
 
     togglePlayerControllable = (playerId: number, toggle: boolean) => {
-        return Boolean(samp.callNative("TogglePlayerControllable", "ii", playerId, toggle ? 1 : 0))
+        return Boolean(nativeHook.callNative("TogglePlayerControllable", "ii", playerId, toggle ? 1 : 0))
     }
 
     isPlayerControllable = (playerId: number) => {
-        return Boolean(samp.callNative("IsPlayerControllable", "i", playerId))
+        return Boolean(nativeHook.callNative("IsPlayerControllable", "i", playerId))
     }
 
     playerSpectatePlayer = (playerId: number, targetId: number, mode: EnumValue<typeof SPECTATE_MODES> = SPECTATE_MODES.normal) => {
-        return Boolean(samp.callNative("PlayerSpectatePlayer", "iii", playerId, targetId, mode))
+        return Boolean(nativeHook.callNative("PlayerSpectatePlayer", "iii", playerId, targetId, mode))
     }
 
     playerSpectateVehicle = (playerId: number, vehicleId: number, mode: EnumValue<typeof SPECTATE_MODES> = SPECTATE_MODES.normal) => {
-        return Boolean(samp.callNative("PlayerSpectateVehicle", "iii", playerId, vehicleId, mode))
+        return Boolean(nativeHook.callNative("PlayerSpectateVehicle", "iii", playerId, vehicleId, mode))
     }
 
     getPlayerSpectateType = (playerId: number): EnumValue<typeof SPECTATE_TYPES> => {
-        return samp.callNative("GetPlayerSpectateType", "i", playerId) as EnumValue<typeof SPECTATE_TYPES>
+        return nativeHook.callNative("GetPlayerSpectateType", "i", playerId) as EnumValue<typeof SPECTATE_TYPES>
     }
 
     getPlayerSpectateId = (playerId: number): number => {
-        return samp.callNative("GetPlayerSpectateID", "i", playerId) as number
+        return nativeHook.callNative("GetPlayerSpectateID", "i", playerId) as number
     }
 
     destroyVehicle = (vehicleId: number): boolean => {
-        return samp.callNative("DestroyVehicle", "i", vehicleId) === 1
+        return nativeHook.callNative("DestroyVehicle", "i", vehicleId) === 1
     }
 
     cancelEdit = (playerId: number): number => {
-        return samp.callNative("CancelEdit", "i", playerId)
+        return nativeHook.callNative("CancelEdit", "i", playerId)
     }
 
     createVehicle = (
@@ -334,7 +335,7 @@ class GameNatives {
         respawnDelay = -1,
         addSiren = false,
     ): number | undefined => {
-        const vehicleId = samp.callNative(
+        const vehicleId = nativeHook.callNative(
             "CreateVehicle",
             "iffffiiii",
             modelId,
@@ -370,7 +371,7 @@ class GameNatives {
         const button2Encoded = charset.encode(button2)
 
         return (
-            samp.callNative(
+            nativeHook.callNative(
                 "ShowPlayerDialog",
                 `iii${captionEncoded.flag}${infoEncoded.flag}${button1Encoded.flag}${button2Encoded.flag}`,
                 playerId,
@@ -385,31 +386,31 @@ class GameNatives {
     }
 
     hidePlayerDialog(playerId: number) {
-        samp.callNative("HidePlayerDialog", "i", playerId)
+        nativeHook.callNative("HidePlayerDialog", "i", playerId)
     }
 
     setPlayerName(playerId: number, name: string): boolean {
-        return samp.callNative("SetPlayerName", "is", playerId, name) === 1
+        return nativeHook.callNative("SetPlayerName", "is", playerId, name) === 1
     }
 
     setPlayerInterior(playerId: number, interior: number): boolean {
-        return samp.callNative("SetPlayerInterior", "ii", playerId, interior) === 1
+        return nativeHook.callNative("SetPlayerInterior", "ii", playerId, interior) === 1
     }
 
     getPlayerInterior(playerId: number): number {
-        return samp.callNative("GetPlayerInterior", "i", playerId)
+        return nativeHook.callNative("GetPlayerInterior", "i", playerId)
     }
 
     setPlayerVirtualWorld(playerId: number, world: number): boolean {
-        return samp.callNative("SetPlayerVirtualWorld", "ii", playerId, world) === 1
+        return nativeHook.callNative("SetPlayerVirtualWorld", "ii", playerId, world) === 1
     }
 
     getPlayerVirtualWorld(playerId: number): number {
-        return samp.callNative("GetPlayerVirtualWorld", "i", playerId)
+        return nativeHook.callNative("GetPlayerVirtualWorld", "i", playerId)
     }
 
     setPlayerTeam = (playerId: number, teamId: number): boolean => {
-        return samp.callNative("SetPlayerTeam", "ii", playerId, teamId) === 1
+        return nativeHook.callNative("SetPlayerTeam", "ii", playerId, teamId) === 1
     }
 
     setSpawnInfo(
@@ -427,7 +428,7 @@ class GameNatives {
         const weapon3 = weapons[2]?.weapon ?? WEAPONS.fist
         const weapon3ammo = weapons[2]?.ammo ?? 0
 
-        samp.callNative(
+        nativeHook.callNative(
             "SetSpawnInfo",
             "iiiffffiiiiii",
             playerId,
@@ -447,15 +448,15 @@ class GameNatives {
     }
 
     kick(playerId: number): void {
-        samp.callNative("Kick", "i", playerId)
+        nativeHook.callNative("Kick", "i", playerId)
     }
 
     spawnPlayer(playerId: number): boolean {
-        return samp.callNative("SpawnPlayer", "i", playerId) === 1
+        return nativeHook.callNative("SpawnPlayer", "i", playerId) === 1
     }
 
     togglePlayerSpectating(playerId: number, toggle: boolean): boolean {
-        return samp.callNative("TogglePlayerSpectating", "ii", playerId, toggle ? 1 : 0) === 1
+        return nativeHook.callNative("TogglePlayerSpectating", "ii", playerId, toggle ? 1 : 0) === 1
     }
 
     sendClientMessage(playerId: number, color: string, message: string): void {
@@ -466,13 +467,13 @@ class GameNatives {
         const { flag, encoded } = charset.encode(message)
 
         if (message.length <= 90) {
-            samp.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
+            nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
             return
         }
 
         const parts = Math.ceil(message.length / 90)
 
-        samp.callNative(
+        nativeHook.callNative(
             "SendClientMessage",
             `ii${flag}`,
             playerId,
@@ -483,7 +484,7 @@ class GameNatives {
         for (let i = 1; i < parts; i++) {
             const part = message.slice(i * 90, (i + 1) * 90)
 
-            samp.callNative(
+            nativeHook.callNative(
                 "SendClientMessage",
                 `ii${flag}`,
                 playerId,
@@ -494,22 +495,22 @@ class GameNatives {
     }
 
     setPlayerScore = (playerId: number, score: number): boolean => {
-        return samp.callNative("SetPlayerScore", "ii", playerId, score) === 1
+        return nativeHook.callNative("SetPlayerScore", "ii", playerId, score) === 1
     }
 
     getPlayerScore = (playerId: number): number => {
         if (!this.isPlayerConnected(playerId)) {
             return 0
         }
-        return samp.callNative("GetPlayerScore", "i", playerId)
+        return nativeHook.callNative("GetPlayerScore", "i", playerId)
     }
 
     isPlayerInRangeOfPoint = (playerId: number, range: number, x: number, y: number, z: number): boolean => {
-        return samp.callNative("IsPlayerInRangeOfPoint", "iffff", playerId, range, x, y, z) === 1
+        return nativeHook.callNative("IsPlayerInRangeOfPoint", "iffff", playerId, range, x, y, z) === 1
     }
 
     setVehiclePosition = (vehicleId: number, x: number, y: number, z: number): boolean => {
-        return samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z) === 1
+        return nativeHook.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z) === 1
     }
 
     applyAnimation = (
@@ -524,19 +525,32 @@ class GameNatives {
         time: number,
         forcesync: boolean,
     ): void => {
-        samp.callNative("ApplyAnimation", "issfiiiiii", playerId, animlib, animname, fDelta, loop, lockx, locky, freeze, time, forcesync)
+        nativeHook.callNative(
+            "ApplyAnimation",
+            "issfiiiiii",
+            playerId,
+            animlib,
+            animname,
+            fDelta,
+            loop,
+            lockx,
+            locky,
+            freeze,
+            time,
+            forcesync,
+        )
     }
 
     clearAnimations = (playerId: number, forcesync: boolean): void => {
-        samp.callNative("ClearAnimations", "ii", playerId, forcesync)
+        nativeHook.callNative("ClearAnimations", "ii", playerId, forcesync)
     }
 
     getPlayerAnimationIndex = (playerId: number): number => {
-        return samp.callNative("GetPlayerAnimationIndex", "i", playerId)
+        return nativeHook.callNative("GetPlayerAnimationIndex", "i", playerId)
     }
 
     getAnimationName = (index: number): { library: string; name: string } | undefined => {
-        const res = samp.callNative("GetAnimationName", "iSiSi", index, 32, 32) as string[]
+        const res = nativeHook.callNative("GetAnimationName", "iSiSi", index, 32, 32) as string[]
 
         if (res.length < 2) {
             return undefined
@@ -549,7 +563,7 @@ class GameNatives {
     }
 
     getPlayerVehicleSeat = (playerId: number) => {
-        const res = samp.callNative("GetPlayerVehicleSeat", "i", playerId) as EnumValue<typeof VEHICLE_SEATS> | -1
+        const res = nativeHook.callNative("GetPlayerVehicleSeat", "i", playerId) as EnumValue<typeof VEHICLE_SEATS> | -1
 
         if (res === -1) {
             return undefined
@@ -559,52 +573,52 @@ class GameNatives {
     }
 
     getPlayerSpecialAction = (playerId: number) => {
-        return samp.callNative("GetPlayerSpecialAction", "i", playerId) as EnumValue<typeof SPECIAL_ACTIONS>
+        return nativeHook.callNative("GetPlayerSpecialAction", "i", playerId) as EnumValue<typeof SPECIAL_ACTIONS>
     }
 
     setPlayerSpecialAction = (playerId: number, actionId: EnumValue<typeof SPECIAL_ACTIONS>): boolean => {
-        return samp.callNative("SetPlayerSpecialAction", "ii", playerId, actionId) === 1
+        return nativeHook.callNative("SetPlayerSpecialAction", "ii", playerId, actionId) === 1
     }
 
     gpci = (playerId: number): string => {
         if (!this.isPlayerConnected(playerId)) {
             return "invalid_gpci"
         }
-        return samp.callNative("gpci", "iSi", playerId, 61)
+        return nativeHook.callNative("gpci", "iSi", playerId, 61)
     }
 
     getPlayerName(playerId: number): string {
         if (!this.isPlayerConnected(playerId)) {
             return "invalid_name"
         }
-        return samp.callNative("GetPlayerName", "iSi", playerId, 24)
+        return nativeHook.callNative("GetPlayerName", "iSi", playerId, 24)
     }
 
     getPlayerIp = (playerId: number): string => {
         if (!this.isPlayerConnected(playerId)) {
             return "255.255.255.255"
         }
-        return samp.callNative("GetPlayerIp", "iSi", playerId, 17)
+        return nativeHook.callNative("GetPlayerIp", "iSi", playerId, 17)
     }
 
     getPlayerPing = (playerId: number): number => {
-        return samp.callNative("GetPlayerPing", "i", playerId)
+        return nativeHook.callNative("GetPlayerPing", "i", playerId)
     }
 
     givePlayerMoney = (playerId: number, money: number): boolean => {
-        return samp.callNative("GivePlayerMoney", "ii", playerId, money) === 1
+        return nativeHook.callNative("GivePlayerMoney", "ii", playerId, money) === 1
     }
 
     resetPlayerMoney = (playerId: number): boolean => {
-        return samp.callNative("ResetPlayerMoney", "i", playerId) === 1
+        return nativeHook.callNative("ResetPlayerMoney", "i", playerId) === 1
     }
 
     givePlayerWeapon = (playerId: number, weaponId: EnumValue<typeof WEAPONS>, ammo: number): boolean => {
-        return samp.callNative("GivePlayerWeapon", "iii", playerId, weaponId, ammo) === 1
+        return nativeHook.callNative("GivePlayerWeapon", "iii", playerId, weaponId, ammo) === 1
     }
 
     getPlayerWeapon = (playerId: number) => {
-        const id = samp.callNative("GetPlayerWeapon", "i", playerId) as EnumValue<typeof WEAPONS & { invalid: -1 }>
+        const id = nativeHook.callNative("GetPlayerWeapon", "i", playerId) as EnumValue<typeof WEAPONS & { invalid: -1 }>
 
         if (id === -1) {
             return WEAPONS.fist
@@ -614,58 +628,58 @@ class GameNatives {
     }
 
     resetPlayerWeapons = (playerId: number): boolean => {
-        return samp.callNative("ResetPlayerWeapons", "i", playerId) === 1
+        return nativeHook.callNative("ResetPlayerWeapons", "i", playerId) === 1
     }
 
     setPlayerArmedWeapon = (playerId: number, weaponId: EnumValue<typeof WEAPONS>) => {
-        return samp.callNative("SetPlayerArmedWeapon", "ii", playerId, weaponId) === 1
+        return nativeHook.callNative("SetPlayerArmedWeapon", "ii", playerId, weaponId) === 1
     }
 
     setPlayerSkin = (playerId: number, skinId: number): boolean => {
-        return samp.callNative("SetPlayerSkin", "ii", playerId, skinId) === 1
+        return nativeHook.callNative("SetPlayerSkin", "ii", playerId, skinId) === 1
     }
 
     isPlayerConnected(playerId: number): boolean {
-        return samp.callNative("IsPlayerConnected", "i", playerId) === 1
+        return nativeHook.callNative("IsPlayerConnected", "i", playerId) === 1
     }
 
     getPlayerPosition(playerId: number): Position3 {
-        const pos = samp.callNative("GetPlayerPos", "iFFF", playerId) as number[]
+        const pos = nativeHook.callNative("GetPlayerPos", "iFFF", playerId) as number[]
         return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
     getVehiclePosition = (vehicleId: number): Position3 => {
-        const pos = samp.callNative("GetVehiclePos", "iFFF", vehicleId) as number[]
+        const pos = nativeHook.callNative("GetVehiclePos", "iFFF", vehicleId) as number[]
 
         return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
     setPlayerPosition(playerId: number, x: number, y: number, z: number): boolean {
-        return samp.callNative("SetPlayerPos", "ifff", playerId, x, y, z) === 1
+        return nativeHook.callNative("SetPlayerPos", "ifff", playerId, x, y, z) === 1
     }
 
     setPlayerHealth(playerId: number, health: number): boolean {
-        return samp.callNative("SetPlayerHealth", "if", playerId, health) === 1
+        return nativeHook.callNative("SetPlayerHealth", "if", playerId, health) === 1
     }
 
     getPlayerHealth(playerId: number): number {
-        return samp.callNative("GetPlayerHealth", "iF", playerId)
+        return nativeHook.callNative("GetPlayerHealth", "iF", playerId)
     }
 
     setPlayerArmour(playerId: number, armour: number): boolean {
-        return samp.callNative("SetPlayerArmour", "if", playerId, armour) === 1
+        return nativeHook.callNative("SetPlayerArmour", "if", playerId, armour) === 1
     }
 
     getPlayerArmour(playerId: number): number {
-        return samp.callNative("GetPlayerArmour", "iF", playerId)
+        return nativeHook.callNative("GetPlayerArmour", "iF", playerId)
     }
 
     putPlayerInVehicle(playerId: number, vehicleId: number, seat: EnumValue<typeof VEHICLE_SEATS> = VEHICLE_SEATS.driver): boolean {
-        return samp.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seat) === 1
+        return nativeHook.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seat) === 1
     }
 
     getPlayerWeaponData = (playerId: number, slot: EnumValue<typeof WEAPON_SLOTS>): { model: EnumValue<typeof WEAPONS>; ammo: number } => {
-        const res = samp.callNative("GetPlayerWeaponData", "iiII", playerId, slot) as [EnumValue<typeof WEAPONS>, number]
+        const res = nativeHook.callNative("GetPlayerWeaponData", "iiII", playerId, slot) as [EnumValue<typeof WEAPONS>, number]
 
         return {
             model: res[0],
@@ -674,7 +688,7 @@ class GameNatives {
     }
 
     getPlayerVehicleId(playerId: number): number | undefined {
-        const vehicleId = samp.callNative("GetPlayerVehicleID", "i", playerId)
+        const vehicleId = nativeHook.callNative("GetPlayerVehicleID", "i", playerId)
 
         if (vehicleId === 0) {
             return undefined
@@ -687,79 +701,79 @@ class GameNatives {
             return CAMERA_MODES["follow-ped"]
         }
 
-        return samp.callNative("GetPlayerCameraMode", "i", playerId) as EnumValue<typeof CAMERA_MODES>
+        return nativeHook.callNative("GetPlayerCameraMode", "i", playerId) as EnumValue<typeof CAMERA_MODES>
     }
 
     setPlayerCameraPos = (playerId: number, position: Position3): number => {
-        return samp.callNative("SetPlayerCameraPos", "ifff", playerId, position.x, position.y, position.z)
+        return nativeHook.callNative("SetPlayerCameraPos", "ifff", playerId, position.x, position.y, position.z)
     }
 
     setPlayerCameraLookAt = (playerId: number, position: Position3, cut: EnumValue<typeof CAMERA_CUT_STYLES>): number => {
-        return samp.callNative("SetPlayerCameraLookAt", "ifffi", playerId, position.x, position.y, position.z, cut)
+        return nativeHook.callNative("SetPlayerCameraLookAt", "ifffi", playerId, position.x, position.y, position.z, cut)
     }
 
     setCameraBehindPlayer = (playerId: number): number => {
-        return samp.callNative("SetCameraBehindPlayer", "i", playerId)
+        return nativeHook.callNative("SetCameraBehindPlayer", "i", playerId)
     }
 
     getPlayerCameraPos = (playerId: number) => {
-        const pos = samp.callNative("GetPlayerCameraPos", "iFFF", playerId) as number[]
+        const pos = nativeHook.callNative("GetPlayerCameraPos", "iFFF", playerId) as number[]
         return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
     getPlayerState(playerId: number): number | undefined {
-        return samp.callNative("GetPlayerState", "i", playerId)
+        return nativeHook.callNative("GetPlayerState", "i", playerId)
     }
 
     setPlayerRotation(playerId: number, rotation: number) {
-        return samp.callNative("SetPlayerFacingAngle", "if", playerId, rotation) === 1
+        return nativeHook.callNative("SetPlayerFacingAngle", "if", playerId, rotation) === 1
     }
 
     getPlayerRotation(playerId: number): number {
         if (!this.isPlayerConnected(playerId)) {
             return 0
         }
-        return samp.callNative("GetPlayerFacingAngle", "iF", playerId)
+        return nativeHook.callNative("GetPlayerFacingAngle", "iF", playerId)
     }
 
     setVehicleZAngle = (vehicleId: number, angle: number) => {
-        return samp.callNative("SetVehicleZAngle", "if", vehicleId, angle) === 1
+        return nativeHook.callNative("SetVehicleZAngle", "if", vehicleId, angle) === 1
     }
 
     getVehicleZAngle = (vehicleId: number): number => {
         if (!this.isValidVehicle(vehicleId)) {
             return 0
         }
-        return samp.callNative("GetVehicleZAngle", "iF", vehicleId)
+        return nativeHook.callNative("GetVehicleZAngle", "iF", vehicleId)
     }
 
     setVehicleVirtualWorld = (vehicleId: number, worldId: number) => {
-        return samp.callNative("SetVehicleVirtualWorld", "ii", vehicleId, worldId) === 1
+        return nativeHook.callNative("SetVehicleVirtualWorld", "ii", vehicleId, worldId) === 1
     }
 
     getVehicleVirtualWorld = (vehicleId: number): number => {
         if (!this.isValidVehicle(vehicleId)) {
             return 0
         }
-        return samp.callNative("GetVehicleVirtualWorld", "i", vehicleId)
+        return nativeHook.callNative("GetVehicleVirtualWorld", "i", vehicleId)
     }
 
     linkVehicleToInterior = (vehicleId: number, interiorId: number): boolean => {
-        return samp.callNative("LinkVehicleToInterior", "ii", vehicleId, interiorId) === 1
+        return nativeHook.callNative("LinkVehicleToInterior", "ii", vehicleId, interiorId) === 1
     }
 
     getVehicleDistanceFromPoint = (vehicleId: number, x: number, y: number, z: number): number => {
         if (!this.isValidVehicle(vehicleId)) {
             return Number.POSITIVE_INFINITY
         }
-        return samp.callNativeFloat("GetVehicleDistanceFromPoint", "ifff", vehicleId, x, y, z)
+        return nativeHook.callNativeFloat("GetVehicleDistanceFromPoint", "ifff", vehicleId, x, y, z)
     }
 
     getPlayerDistanceFromPoint = (playerId: number, x: number, y: number, z: number): number => {
         if (!this.isPlayerConnected(playerId)) {
             return Number.POSITIVE_INFINITY
         }
-        return samp.callNativeFloat("GetPlayerDistanceFromPoint", "ifff", playerId, x, y, z)
+        return nativeHook.callNativeFloat("GetPlayerDistanceFromPoint", "ifff", playerId, x, y, z)
     }
 
     sendClientMessageToAll(color: string, message: string): void {
@@ -767,23 +781,33 @@ class GameNatives {
             const firstPart = charset.encode(`${message.slice(0, 90)} ...`)
             const secondPart = charset.encode(`... ${message.slice(90)}`)
 
-            samp.callNative("SendClientMessageToAll", `i${firstPart.flag}`, hexToRgbaInt(color), firstPart.encoded)
-            samp.callNative("SendClientMessageToAll", `i${secondPart.flag}`, hexToRgbaInt(color), secondPart.encoded)
+            nativeHook.callNative("SendClientMessageToAll", `i${firstPart.flag}`, hexToRgbaInt(color), firstPart.encoded)
+            nativeHook.callNative("SendClientMessageToAll", `i${secondPart.flag}`, hexToRgbaInt(color), secondPart.encoded)
         } else {
             const { flag, encoded } = charset.encode(message)
 
-            samp.callNative("SendClientMessageToAll", `i${flag}`, hexToRgbaInt(color), encoded)
+            nativeHook.callNative("SendClientMessageToAll", `i${flag}`, hexToRgbaInt(color), encoded)
         }
     }
 
     setPlayerChatBubble = (playerId: number, text: string, color: string, drawdistance: number, expiretime: number): boolean => {
         const { flag, encoded } = charset.encode(text)
 
-        return samp.callNative("SetPlayerChatBubble", `i${flag}ifi`, playerId, encoded, hexToRgbaInt(color), drawdistance, expiretime) === 1
+        return (
+            nativeHook.callNative(
+                "SetPlayerChatBubble",
+                `i${flag}ifi`,
+                playerId,
+                encoded,
+                hexToRgbaInt(color),
+                drawdistance,
+                expiretime,
+            ) === 1
+        )
     }
 
     getVehicleModel(vehicleId: number): number | undefined {
-        const modelId = samp.callNative("GetVehicleModel", "i", vehicleId)
+        const modelId = nativeHook.callNative("GetVehicleModel", "i", vehicleId)
         if (modelId === 0) {
             return undefined
         }
@@ -794,219 +818,219 @@ class GameNatives {
         if (!this.isValidVehicle(vehicleId)) {
             return 1000
         }
-        return samp.callNative("GetVehicleHealth", "iF", vehicleId)
+        return nativeHook.callNative("GetVehicleHealth", "iF", vehicleId)
     }
 
     setVehicleHealth(vehicleId: number, health: number): boolean {
-        return samp.callNative("SetVehicleHealth", "if", vehicleId, health) === 1
+        return nativeHook.callNative("SetVehicleHealth", "if", vehicleId, health) === 1
     }
 
     isValidVehicle(vehicleId: number): boolean {
-        return samp.callNative("IsValidVehicle", "i", vehicleId) === 1
+        return nativeHook.callNative("IsValidVehicle", "i", vehicleId) === 1
     }
 
     showNameTags = (show: number): number => {
-        return samp.callNative("ShowNameTags", "i", show)
+        return nativeHook.callNative("ShowNameTags", "i", show)
     }
 
     textDrawCreate = (x: number, y: number, text: string): number => {
         const { flag, encoded } = charset.encode(charset.convertSpecialCharacters(text))
 
-        return samp.callNative("TextDrawCreate", `ff${flag}`, x, y, encoded) as number
+        return nativeHook.callNative("TextDrawCreate", `ff${flag}`, x, y, encoded) as number
     }
 
     textDrawDestroy = (text: number): number => {
-        return samp.callNative("TextDrawDestroy", "i", text)
+        return nativeHook.callNative("TextDrawDestroy", "i", text)
     }
 
     textDrawShowForPlayer = (playerId: number, text: number): number => {
-        return samp.callNative("TextDrawShowForPlayer", "ii", playerId, text)
+        return nativeHook.callNative("TextDrawShowForPlayer", "ii", playerId, text)
     }
 
     textDrawHideForPlayer = (playerId: number, text: number): number => {
-        return samp.callNative("TextDrawHideForPlayer", "ii", playerId, text)
+        return nativeHook.callNative("TextDrawHideForPlayer", "ii", playerId, text)
     }
 
     textDrawShowForAll = (text: number): number => {
-        return samp.callNative("TextDrawShowForAll", "i", text)
+        return nativeHook.callNative("TextDrawShowForAll", "i", text)
     }
 
     textDrawHideForAll = (text: number): number => {
-        return samp.callNative("TextDrawHideForAll", "i", text)
+        return nativeHook.callNative("TextDrawHideForAll", "i", text)
     }
 
     selectTextDraw = (playerId: number, hovercolor: string): number => {
-        return samp.callNative("SelectTextDraw", "ii", playerId, hexToRgbaInt(hovercolor))
+        return nativeHook.callNative("SelectTextDraw", "ii", playerId, hexToRgbaInt(hovercolor))
     }
 
     cancelSelectTextDraw = (playerId: number): number => {
-        return samp.callNative("CancelSelectTextDraw", "i", playerId)
+        return nativeHook.callNative("CancelSelectTextDraw", "i", playerId)
     }
 
     textDrawLetterSize = (text: number, x: number, y: number): number => {
-        return samp.callNative("TextDrawLetterSize", "iff", text, x, y)
+        return nativeHook.callNative("TextDrawLetterSize", "iff", text, x, y)
     }
 
     textDrawTextSize = (text: number, x: number, y: number): number => {
-        return samp.callNative("TextDrawTextSize", "iff", text, x, y)
+        return nativeHook.callNative("TextDrawTextSize", "iff", text, x, y)
     }
 
     textDrawAlignment = (text: number, alignment: number): number => {
-        return samp.callNative("TextDrawAlignment", "ii", text, alignment)
+        return nativeHook.callNative("TextDrawAlignment", "ii", text, alignment)
     }
 
     textDrawColor = (text: number, color: string): number => {
-        return samp.callNative("TextDrawColor", "ii", text, hexToRgbaInt(color))
+        return nativeHook.callNative("TextDrawColor", "ii", text, hexToRgbaInt(color))
     }
 
     textDrawUseBox = (text: number, use: number): number => {
-        return samp.callNative("TextDrawUseBox", "ii", text, use)
+        return nativeHook.callNative("TextDrawUseBox", "ii", text, use)
     }
 
     textDrawBoxColor = (text: number, color: string): number => {
-        return samp.callNative("TextDrawBoxColor", "ii", text, hexToRgbaInt(color))
+        return nativeHook.callNative("TextDrawBoxColor", "ii", text, hexToRgbaInt(color))
     }
 
     textDrawSetShadow = (text: number, size: number): number => {
-        return samp.callNative("TextDrawSetShadow", "ii", text, size)
+        return nativeHook.callNative("TextDrawSetShadow", "ii", text, size)
     }
 
     textDrawSetOutline = (text: number, size: number): number => {
-        return samp.callNative("TextDrawSetOutline", "ii", text, size)
+        return nativeHook.callNative("TextDrawSetOutline", "ii", text, size)
     }
 
     textDrawBackgroundColor = (text: number, color: string): number => {
-        return samp.callNative("TextDrawBackgroundColor", "ii", text, hexToRgbaInt(color))
+        return nativeHook.callNative("TextDrawBackgroundColor", "ii", text, hexToRgbaInt(color))
     }
 
     textDrawFont = (text: number, font: number): number => {
-        return samp.callNative("TextDrawFont", "ii", text, font)
+        return nativeHook.callNative("TextDrawFont", "ii", text, font)
     }
 
     textDrawSetProportional = (text: number, set: number): number => {
-        return samp.callNative("TextDrawSetProportional", "ii", text, set)
+        return nativeHook.callNative("TextDrawSetProportional", "ii", text, set)
     }
 
     textDrawSetSelectable = (text: number, set: number): number => {
-        return samp.callNative("TextDrawSetSelectable", "ii", text, set)
+        return nativeHook.callNative("TextDrawSetSelectable", "ii", text, set)
     }
 
     textDrawSetString = (text: number, string: string): void => {
         const { flag, encoded } = charset.encode(charset.convertSpecialCharacters(string))
 
-        samp.callNative("TextDrawSetString", `i${flag}`, text, encoded)
+        nativeHook.callNative("TextDrawSetString", `i${flag}`, text, encoded)
     }
 
     textDrawSetPreviewModel = (text: number, modelindex: number): number => {
-        return samp.callNative("TextDrawSetPreviewModel", "ii", text, modelindex)
+        return nativeHook.callNative("TextDrawSetPreviewModel", "ii", text, modelindex)
     }
 
     textDrawSetPreviewRot = (text: number, fRotX: number, fRotY: number, fRotZ: number, fZoom: number): number => {
-        return samp.callNative("TextDrawSetPreviewRot", "iffff", text, fRotX, fRotY, fRotZ, fZoom)
+        return nativeHook.callNative("TextDrawSetPreviewRot", "iffff", text, fRotX, fRotY, fRotZ, fZoom)
     }
 
     textDrawSetPreviewVehCol = (text: number, color1: number, color2: number): number => {
-        return samp.callNative("TextDrawSetPreviewVehCol", "iii", text, color1, color2)
+        return nativeHook.callNative("TextDrawSetPreviewVehCol", "iii", text, color1, color2)
     }
 
     textDrawSetPos(textId: number, x: number, y: number) {
-        samp.callNative("TextDrawSetPos", "iff", textId, x, y)
+        nativeHook.callNative("TextDrawSetPos", "iff", textId, x, y)
     }
 
     createPlayerTextDraw = (playerId: number, x: number, y: number, text: string): number => {
         const { flag, encoded } = charset.encode(text)
 
-        return samp.callNative("CreatePlayerTextDraw", `iff${flag}`, playerId, x, y, encoded) as number
+        return nativeHook.callNative("CreatePlayerTextDraw", `iff${flag}`, playerId, x, y, encoded) as number
     }
 
     playerTextDrawDestroy = (playerId: number, text: number): void => {
-        samp.callNative("PlayerTextDrawDestroy", "ii", playerId, text)
+        nativeHook.callNative("PlayerTextDrawDestroy", "ii", playerId, text)
     }
 
     playerTextDrawLetterSize = (playerId: number, text: number, x: number, y: number): number => {
-        return samp.callNative("PlayerTextDrawLetterSize", "iiff", playerId, text, x, y)
+        return nativeHook.callNative("PlayerTextDrawLetterSize", "iiff", playerId, text, x, y)
     }
 
     playerTextDrawTextSize = (playerId: number, text: number, x: number, y: number): number => {
-        return samp.callNative("PlayerTextDrawTextSize", "iiff", playerId, text, x, y)
+        return nativeHook.callNative("PlayerTextDrawTextSize", "iiff", playerId, text, x, y)
     }
 
     playerTextDrawAlignment = (playerId: number, text: number, alignment: EnumValue<typeof TEXT_DRAW_ALIGNMENTS>): number => {
-        return samp.callNative("PlayerTextDrawAlignment", "iii", playerId, text, alignment)
+        return nativeHook.callNative("PlayerTextDrawAlignment", "iii", playerId, text, alignment)
     }
 
     playerTextDrawColor = (playerId: number, text: number, color: string): number => {
-        return samp.callNative("PlayerTextDrawColor", "iii", playerId, text, hexToRgbaInt(color))
+        return nativeHook.callNative("PlayerTextDrawColor", "iii", playerId, text, hexToRgbaInt(color))
     }
 
     playerTextDrawUseBox = (playerId: number, text: number, use: 0 | 1): number => {
-        return samp.callNative("PlayerTextDrawUseBox", "iii", playerId, text, use)
+        return nativeHook.callNative("PlayerTextDrawUseBox", "iii", playerId, text, use)
     }
 
     playerTextDrawBoxColor = (playerId: number, text: number, color: string): number => {
-        return samp.callNative("PlayerTextDrawBoxColor", "iii", playerId, text, hexToRgbaInt(color))
+        return nativeHook.callNative("PlayerTextDrawBoxColor", "iii", playerId, text, hexToRgbaInt(color))
     }
 
     playerTextDrawSetShadow = (playerId: number, text: number, size: number): number => {
-        return samp.callNative("PlayerTextDrawSetShadow", "iii", playerId, text, size)
+        return nativeHook.callNative("PlayerTextDrawSetShadow", "iii", playerId, text, size)
     }
 
     playerTextDrawSetOutline = (playerId: number, text: number, size: number): number => {
-        return samp.callNative("PlayerTextDrawSetOutline", "iii", playerId, text, size)
+        return nativeHook.callNative("PlayerTextDrawSetOutline", "iii", playerId, text, size)
     }
 
     playerTextDrawBackgroundColor = (playerId: number, text: number, color: string): number => {
-        return samp.callNative("PlayerTextDrawBackgroundColor", "iii", playerId, text, hexToRgbaInt(color))
+        return nativeHook.callNative("PlayerTextDrawBackgroundColor", "iii", playerId, text, hexToRgbaInt(color))
     }
 
     playerTextDrawFont = (playerId: number, text: number, font: EnumValue<typeof TEXT_DRAW_FONTS>): number => {
-        return samp.callNative("PlayerTextDrawFont", "iii", playerId, text, font)
+        return nativeHook.callNative("PlayerTextDrawFont", "iii", playerId, text, font)
     }
 
     playerTextDrawSetProportional = (playerId: number, text: number, set: 1 | 0): number => {
-        return samp.callNative("PlayerTextDrawSetProportional", "iii", playerId, text, set)
+        return nativeHook.callNative("PlayerTextDrawSetProportional", "iii", playerId, text, set)
     }
 
     playerTextDrawSetSelectable = (playerId: number, text: number, set: 1 | 0): number => {
-        return samp.callNative("PlayerTextDrawSetSelectable", "iii", playerId, text, set)
+        return nativeHook.callNative("PlayerTextDrawSetSelectable", "iii", playerId, text, set)
     }
 
     playerTextDrawShow = (playerId: number, text: number): number => {
-        return samp.callNative("PlayerTextDrawShow", "ii", playerId, text)
+        return nativeHook.callNative("PlayerTextDrawShow", "ii", playerId, text)
     }
 
     playerTextDrawHide = (playerId: number, text: number): number => {
-        return samp.callNative("PlayerTextDrawHide", "ii", playerId, text)
+        return nativeHook.callNative("PlayerTextDrawHide", "ii", playerId, text)
     }
 
     playerTextDrawSetString = (playerId: number, text: number, string: string): void => {
         const { flag, encoded } = charset.encode(string)
 
-        samp.callNative("PlayerTextDrawSetString", `ii${flag}`, playerId, text, encoded)
+        nativeHook.callNative("PlayerTextDrawSetString", `ii${flag}`, playerId, text, encoded)
     }
 
     playerTextDrawSetPreviewModel = (playerId: number, text: number, modelindex: number): number => {
-        return samp.callNative("PlayerTextDrawSetPreviewModel", "iii", playerId, text, modelindex)
+        return nativeHook.callNative("PlayerTextDrawSetPreviewModel", "iii", playerId, text, modelindex)
     }
 
     playerTextDrawSetPreviewRot = (playerId: number, text: number, fRotX: number, fRotY: number, fRotZ: number, fZoom: number): number => {
-        return samp.callNative("PlayerTextDrawSetPreviewRot", "iiffff", playerId, text, fRotX, fRotY, fRotZ, fZoom)
+        return nativeHook.callNative("PlayerTextDrawSetPreviewRot", "iiffff", playerId, text, fRotX, fRotY, fRotZ, fZoom)
     }
 
     playerTextDrawSetPreviewVehCol = (playerId: number, text: number, color1: number, color2: number): number => {
-        return samp.callNative("PlayerTextDrawSetPreviewVehCol", "iiii", playerId, text, color1, color2)
+        return nativeHook.callNative("PlayerTextDrawSetPreviewVehCol", "iiii", playerId, text, color1, color2)
     }
 
     playerTextDrawSetPos = (playerId: number, textId: number, x: number, y: number) => {
-        samp.callNative("PlayerTextDrawSetPos", "iiff", playerId, textId, x, y)
+        nativeHook.callNative("PlayerTextDrawSetPos", "iiff", playerId, textId, x, y)
     }
 
     blockIpAddress(ipAddress: string, ms: number): void {
-        samp.callNative("BlockIpAddress", "si", ipAddress, ms)
+        nativeHook.callNative("BlockIpAddress", "si", ipAddress, ms)
     }
 
     unblockIpAddress(ipAddress: string): void {
-        samp.callNative("UnBlockIpAddress", "s", ipAddress)
+        nativeHook.callNative("UnBlockIpAddress", "s", ipAddress)
     }
 }
 

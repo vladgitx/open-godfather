@@ -22,6 +22,7 @@ export type { EventMapInterface } from "./lib/event-bus"
 export type { Position3, Position2 } from "./lib/vector3"
 
 export { charset } from "./lib/charset"
+export { nativeHook } from "./lib/native-hook"
 
 export { gameServer } from "./components/game-server"
 export { players } from "./components/player"
