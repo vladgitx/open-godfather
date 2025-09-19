@@ -28,7 +28,7 @@ import { PlayerAttachedObjectHandler } from "./attached-objects"
 import { PlayerTextdrawHandler } from "./textdraw"
 import { players } from "./handler"
 
-export const DEFAULT_PLAYER_TEAM = 0
+export const DEFAULT_PLAYER_TEAM = 1
 
 export class Player extends GameEntity<PlayerEventMap> {
     readonly attachedObjects = new PlayerAttachedObjectHandler(this)
@@ -71,9 +71,13 @@ export class Player extends GameEntity<PlayerEventMap> {
         gameNatives.sendClientMessage(this.id, color, message)
     }
 
-    spawn(position = { x: 0.0, y: 0.0, z: 3.0 }, rotation = 0, world = 0, interior = 0) {
-        this.world = world
-        this.interior = interior
+    spawn(position?: Position3, rotation?: number, world?: number, interior?: number) {
+        if (!position || rotation === undefined) {
+            const spawnInfo = gameNatives.getSpawnInfo(this.id)
+
+            position = { x: spawnInfo.position.x, y: spawnInfo.position.y, z: spawnInfo.position.z }
+            rotation = spawnInfo.rotation
+        }
 
         gameNatives.setSpawnInfo(this.id, DEFAULT_PLAYER_TEAM, this.skin, position, rotation)
 
@@ -83,6 +87,9 @@ export class Player extends GameEntity<PlayerEventMap> {
             // If in class selection
             gameNatives.spawnPlayer(this.id)
         }
+
+        this.world = world ?? this.world
+        this.interior = interior ?? this.interior
 
         this.resetCameraBehind()
     }

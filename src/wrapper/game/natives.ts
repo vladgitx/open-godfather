@@ -447,6 +447,43 @@ class GameNatives {
         )
     }
 
+    getSpawnInfo(playerId: number): {
+        team: number
+        skin: number
+        position: Position3
+        rotation: number
+        weapons: { weapon: EnumValue<typeof WEAPONS>; ammo: number }[]
+    } {
+        const result = nativeHook.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerId) as number[]
+
+        if (result.length < 12) {
+            throw new Error("GetSpawnInfo returned invalid data")
+        }
+
+        const [team, skin, x, y, z, angle, weapon1, ammo1, weapon2, ammo2, weapon3, ammo3] = result
+
+        return {
+            team,
+            skin,
+            position: { x, y, z },
+            rotation: angle,
+            weapons: [
+                {
+                    weapon: weapon1 as EnumValue<typeof WEAPONS>,
+                    ammo: ammo1,
+                },
+                {
+                    weapon: weapon2 as EnumValue<typeof WEAPONS>,
+                    ammo: ammo2,
+                },
+                {
+                    weapon: weapon3 as EnumValue<typeof WEAPONS>,
+                    ammo: ammo3,
+                },
+            ],
+        }
+    }
+
     kick(playerId: number): void {
         nativeHook.callNative("Kick", "i", playerId)
     }
