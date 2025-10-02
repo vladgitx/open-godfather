@@ -318,6 +318,10 @@ export class Player extends GameEntity<PlayerEventMap> {
         return putInVehicleWithEvent(this, vehicle, seat)
     }
 
+    removeFromVehicle(force = true) {
+        return gameNatives.remvovePlayerFromVehicle(this.id, force)
+    }
+
     get vehicle(): Vehicle | undefined {
         const vehicleId = gameNatives.getPlayerVehicleId(this.id)
 

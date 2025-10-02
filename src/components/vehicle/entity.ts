@@ -118,6 +118,10 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
         return gameNatives.getVehicleMatrix(this.id)
     }
 
+    getDriver(): Player | undefined {
+        return gameNatives.getVehicleDriver(this.id)
+    }
+
     set position(position: Position3) {
         gameNatives.setVehiclePosition(this.id, position.x, position.y, position.z)
     }

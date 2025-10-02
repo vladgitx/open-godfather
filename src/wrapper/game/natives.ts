@@ -20,6 +20,7 @@ import { Vector3, type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
 import { charset } from "@/lib/charset"
 import { nativeHook } from "@/lib/native-hook"
+import { type Player, players } from "@/components/player"
 
 class GameNatives {
     isPlayerTextDrawVisible = (playerId: number, text: number): boolean => {
@@ -745,6 +746,10 @@ class GameNatives {
         return nativeHook.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seat) === 1
     }
 
+    remvovePlayerFromVehicle(playerId: number, force: boolean): boolean {
+        return nativeHook.callNative("RemovePlayerFromVehicle", "ii", playerId, force) === 1
+    }
+
     getPlayerWeaponData = (playerId: number, slot: EnumValue<typeof WEAPON_SLOTS>): { model: EnumValue<typeof WEAPONS>; ammo: number } => {
         const res = nativeHook.callNative("GetPlayerWeaponData", "iiII", playerId, slot) as [EnumValue<typeof WEAPONS>, number]
 
@@ -831,6 +836,10 @@ class GameNatives {
 
     getVehicleInterior = (vehicleId: number): number => {
         return nativeHook.callNative("GetVehicleInterior", "i", vehicleId) as number
+    }
+
+    getVehicleDriver = (vehicleId: number): Player | undefined => {
+        return players.pool.at(nativeHook.callNative("GetVehicleDriver", "i", vehicleId) as number)
     }
 
     getVehicleDistanceFromPoint = (vehicleId: number, x: number, y: number, z: number): number => {
