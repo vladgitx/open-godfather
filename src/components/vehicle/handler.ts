@@ -3,7 +3,9 @@ import { type Position3 } from "../../lib/vector3"
 import { Vehicle } from "./entity"
 import { EntityPool } from "@/lib/pool"
 
-export const vehicleSpawnWorldAndInterior = new Map<Vehicle, { world: number; interior: number }>()
+// Getting some weird issues from the native GetVehicleSpawnInfo, so storing it separately
+// In my case, Streamer_GetNearbyItems will return pickups that exceed the range I set in the parameters, leading to bugs
+export const vehicleSpawnInfo = new Map<Vehicle, { position: Position3; rotation: number; world: number; interior: number }>()
 
 class VehicleHandler {
     readonly pool = new EntityPool<number, Vehicle>(Vehicle)
@@ -31,12 +33,12 @@ class VehicleHandler {
         vehicle.interior = interior
         vehicle.world = world
 
-        vehicleSpawnWorldAndInterior.set(vehicle, { world, interior })
+        vehicleSpawnInfo.set(vehicle, { position, rotation, world, interior })
 
         vehicle.onCleanup(() => {
             gameNatives.destroyVehicle(vehicleId)
             EntityPool.remove(this.pool, vehicleId, vehicle)
-            vehicleSpawnWorldAndInterior.delete(vehicle)
+            vehicleSpawnInfo.delete(vehicle)
         })
 
         return vehicle

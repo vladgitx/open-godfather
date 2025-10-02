@@ -20,7 +20,6 @@ import { Vector3, type Position3 } from "@/lib/vector3"
 import { type PlayerAttachedObjectSlot } from "@/components/player/attached-objects"
 import { charset } from "@/lib/charset"
 import { nativeHook } from "@/lib/native-hook"
-import { type Player, players } from "@/components/player"
 
 class GameNatives {
     isPlayerTextDrawVisible = (playerId: number, text: number): boolean => {
@@ -115,7 +114,10 @@ class GameNatives {
         nativeHook.callNative("UpdateVehicleDamageStatus", "iiiii", vehicleId, panels, doors, lights, tires)
     }
 
-    getVehicleSpawnInfo(vehicleId: number) {
+    /*getVehicleSpawnInfo(vehicleId: number) {
+        // Getting some weird issues from the native GetVehicleSpawnInfo, so storing it separately
+        // In my case, Streamer_GetNearbyItems will return pickups that exceed the range I set in the parameters, leading to bugs
+
         const data = nativeHook.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleId) as number[]
 
         return {
@@ -126,7 +128,7 @@ class GameNatives {
             primaryColor: data[4],
             secondaryColor: data[5],
         }
-    }
+    }*/
 
     setVehicleSpawnInfo(
         vehicleId: number,
@@ -838,8 +840,8 @@ class GameNatives {
         return nativeHook.callNative("GetVehicleInterior", "i", vehicleId) as number
     }
 
-    getVehicleDriver = (vehicleId: number): Player | undefined => {
-        return players.pool.at(nativeHook.callNative("GetVehicleDriver", "i", vehicleId) as number)
+    getVehicleDriver = (vehicleId: number): number => {
+        return nativeHook.callNative("GetVehicleDriver", "i", vehicleId) as number
     }
 
     getVehicleDistanceFromPoint = (vehicleId: number, x: number, y: number, z: number): number => {
