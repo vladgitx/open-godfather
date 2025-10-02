@@ -3,10 +3,22 @@ import { type Position3 } from "../../lib/vector3"
 import { Vehicle } from "./entity"
 import { EntityPool } from "@/lib/pool"
 
+export const vehicleSpawnWorldAndInterior = new Map<Vehicle, { world: number; interior: number }>()
+
 class VehicleHandler {
     readonly pool = new EntityPool<number, Vehicle>(Vehicle)
 
-    new(model: number, position: Position3, rotation: number, primaryColor = -1, secondaryColor = -1, respawnDelay = -1, siren = false) {
+    new(
+        model: number,
+        position: Position3,
+        rotation: number,
+        world: number,
+        interior: number,
+        primaryColor = -1,
+        secondaryColor = -1,
+        respawnDelay = -1,
+        siren = false,
+    ) {
         const vehicleId = gameNatives.createVehicle(model, position, rotation, primaryColor, secondaryColor, respawnDelay, siren)
 
         if (vehicleId === undefined) {
@@ -16,9 +28,15 @@ class VehicleHandler {
         const vehicle = new Vehicle(vehicleId, model, primaryColor, secondaryColor)
         EntityPool.add(this.pool, vehicleId, vehicle)
 
+        vehicle.interior = interior
+        vehicle.world = world
+
+        vehicleSpawnWorldAndInterior.set(vehicle, { world, interior })
+
         vehicle.onCleanup(() => {
             gameNatives.destroyVehicle(vehicleId)
             EntityPool.remove(this.pool, vehicleId, vehicle)
+            vehicleSpawnWorldAndInterior.delete(vehicle)
         })
 
         return vehicle

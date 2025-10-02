@@ -1,5 +1,5 @@
 import { dispatcher } from "@/lib/dispatcher"
-import { vehicles } from "../handler"
+import { vehicles, vehicleSpawnWorldAndInterior } from "../handler"
 import { players } from "@/components/player"
 import { gameCallbacks } from "@/wrapper/game"
 
@@ -10,6 +10,11 @@ gameCallbacks.onVehicleSpawn((vehicleId) => {
     if (vehicle) {
         vehicle.params.reset()
         vehicle.params.windows.reset()
+
+        const { world, interior } = vehicleSpawnWorldAndInterior.get(vehicle) ?? { world: 0, interior: 0 }
+
+        vehicle.world = world
+        vehicle.interior = interior
 
         dispatcher.emit("vehicleRespawn", vehicle)
     }

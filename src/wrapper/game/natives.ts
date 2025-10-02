@@ -127,6 +127,36 @@ class GameNatives {
         }
     }
 
+    setVehicleSpawnInfo(
+        vehicleId: number,
+        modelId: number,
+        position: Position3,
+        angle: number,
+        primaryColor: number,
+        secondaryColor: number,
+        respawnDelay: number,
+        interior: number,
+    ): void {
+        nativeHook.callNative(
+            "SetVehicleSpawnInfo",
+            "iiffffiiii",
+            vehicleId,
+            modelId,
+            position.x,
+            position.y,
+            position.z,
+            angle,
+            primaryColor,
+            secondaryColor,
+            respawnDelay,
+            interior,
+        )
+    }
+
+    setVehicleToRespawn(vehicleId: number): boolean {
+        return nativeHook.callNative("SetVehicleToRespawn", "i", vehicleId) === 1
+    }
+
     interpolateCameraPos = (playerId: number, from: Position3, to: Position3, time: number, cut: EnumValue<typeof CAMERA_CUT_STYLES>) => {
         nativeHook.callNative("InterpolateCameraPos", "iffffffii", playerId, from.x, from.y, from.z, to.x, to.y, to.z, time, cut)
     }
@@ -797,6 +827,10 @@ class GameNatives {
 
     linkVehicleToInterior = (vehicleId: number, interiorId: number): boolean => {
         return nativeHook.callNative("LinkVehicleToInterior", "ii", vehicleId, interiorId) === 1
+    }
+
+    getVehicleInterior = (vehicleId: number): number => {
+        return nativeHook.callNative("GetVehicleInterior", "i", vehicleId) as number
     }
 
     getVehicleDistanceFromPoint = (vehicleId: number, x: number, y: number, z: number): number => {

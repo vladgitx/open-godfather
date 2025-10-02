@@ -5,7 +5,7 @@ import { getVehicleOccupants } from "./@events/occupants"
 import { GameEntity } from "@/lib/entity/game"
 import { type VehicleEventMap } from "./@events/entity-event-bus"
 import { type Player } from "../player"
-import { vehicles } from "./handler"
+import { vehicles, vehicleSpawnWorldAndInterior } from "./handler"
 
 const REMOVE_PAINTJOB_ID = 3
 
@@ -14,7 +14,6 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
 
     private _primaryColor: number
     private _secondaryColor: number
-    private _interior = 0
     private _plate = ""
     private _paintjobId: number | undefined
 
@@ -29,7 +28,6 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
         this._primaryColor = primaryColor
         this._secondaryColor = secondaryColor
 
-        gameNatives.linkVehicleToInterior(this.id, this._interior)
         gameNatives.setVehicleNumberPlate(this.id, this._plate)
     }
 
@@ -49,9 +47,42 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
         )
     }
 
-    getSpawnInfo() {
+    getSpawnInfo(): { position: Vector3; angle: number; world: number; interior: number } {
         const info = gameNatives.getVehicleSpawnInfo(this.id)
-        return { position: new Vector3(info.spawnX, info.spawnY, info.spawnZ), angle: info.spawnAngle }
+        const { world, interior } = vehicleSpawnWorldAndInterior.get(this) ?? { world: 0, interior: 0 }
+
+        return { position: new Vector3(info.spawnX, info.spawnY, info.spawnZ), angle: info.spawnAngle, world, interior }
+    }
+
+    setSpawnInfo(info: { position: Position3; angle: number; world: number; interior: number }) {
+        gameNatives.setVehicleSpawnInfo(
+            this.id,
+            this.model,
+            info.position,
+            info.angle,
+            this.primaryColor,
+            this.secondaryColor,
+            -1,
+            info.interior,
+        )
+
+        vehicleSpawnWorldAndInterior.set(this, { world: info.world, interior: info.interior })
+    }
+
+    respawn() {
+        const result = gameNatives.setVehicleToRespawn(this.id)
+
+        if (result) {
+            this.params.reset()
+            this.params.windows.reset()
+
+            const { world, interior } = vehicleSpawnWorldAndInterior.get(this) ?? { world: 0, interior: 0 }
+
+            this.world = world
+            this.interior = interior
+        }
+
+        return result
     }
 
     repair() {
@@ -120,12 +151,11 @@ export class Vehicle extends GameEntity<VehicleEventMap> {
     }
 
     set interior(interior: number) {
-        this._interior = interior
         gameNatives.linkVehicleToInterior(this.id, interior)
     }
 
     get interior() {
-        return this._interior
+        return gameNatives.getVehicleInterior(this.id)
     }
 
     set health(health: number) {
