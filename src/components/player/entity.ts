@@ -38,7 +38,6 @@ export class Player extends GameEntity<PlayerEventMap> {
     private _color = "FFFFFF"
     private _cash = 0
     private _skin = 0
-    private _spectating = true
 
     constructor(gameId: number) {
         super(gameId, INVALID_PLAYER_ID)
@@ -47,7 +46,6 @@ export class Player extends GameEntity<PlayerEventMap> {
         gameNatives.givePlayerMoney(this.id, this._cash)
         gameNatives.setPlayerSkin(this.id, this._skin)
         gameNatives.setPlayerTeam(this.id, DEFAULT_PLAYER_TEAM)
-        gameNatives.togglePlayerSpectating(this.id, this._spectating)
     }
 
     get animations() {
@@ -162,12 +160,11 @@ export class Player extends GameEntity<PlayerEventMap> {
     }
 
     set spectating(spectating: boolean) {
-        this._spectating = spectating
         gameNatives.togglePlayerSpectating(this.id, spectating)
     }
 
     get spectating() {
-        return this._spectating
+        return gameNatives.getPlayerState(this.id) === PLAYER_STATES.spectating
     }
 
     set position(position: Position3) {

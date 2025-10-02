@@ -4,6 +4,7 @@ import {
     CAMERA_MODES,
     type DIALOG_STYLES,
     type PLAYER_BONES,
+    type PLAYER_STATES,
     type SPECIAL_ACTIONS,
     SPECTATE_MODES,
     type SPECTATE_TYPES,
@@ -795,8 +796,8 @@ class GameNatives {
         return { x: pos[0], y: pos[1], z: pos[2] }
     }
 
-    getPlayerState(playerId: number): number | undefined {
-        return nativeHook.callNative("GetPlayerState", "i", playerId)
+    getPlayerState(playerId: number): EnumValue<typeof PLAYER_STATES> {
+        return nativeHook.callNative("GetPlayerState", "i", playerId) as EnumValue<typeof PLAYER_STATES>
     }
 
     setPlayerRotation(playerId: number, rotation: number) {

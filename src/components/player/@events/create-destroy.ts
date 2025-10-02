@@ -10,15 +10,13 @@ gameCallbacks.onPlayerConnect((playerId) => {
     const player = new Player(playerId)
     EntityPool.add(players.pool, playerId, player)
 
-    const timeoutId = setTimeout(() => {
-        // For some unknown reason, the player times out if I don't delay the event call
-        dispatcher.emit("playerConnect", player)
-    }, 1000)
+    player.spectating = true
 
     player.onCleanup(() => {
-        clearTimeout(timeoutId)
         EntityPool.remove(players.pool, playerId, player)
     })
+
+    dispatcher.emit("playerConnect", player)
 })
 
 gameCallbacks.onPlayerDisconnect((playerId, reason) => {
