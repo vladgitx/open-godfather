@@ -101,14 +101,13 @@ class GameNatives {
     }
 
     getVehicleDamageStatus(vehicleId: number) {
-        const data = nativeHook.callNative("GetVehicleDamageStatus", "iIIII", vehicleId) as number[]
-
-        return {
-            panels: data[0],
-            doors: data[1],
-            lights: data[2],
-            tires: data[3],
+        if (!this.isValidVehicle(vehicleId)) {
+            return { panels: 0, doors: 0, lights: 0, tires: 0 }
         }
+
+        const [panels, doors, lights, tires] = nativeHook.callNative("GetVehicleDamageStatus", "iIIII", vehicleId) as number[]
+
+        return { panels, doors, lights, tires }
     }
 
     updateVehicleDamageStatus(vehicleId: number, panels: number, doors: number, lights: number, tires: number) {
