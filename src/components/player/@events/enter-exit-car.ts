@@ -3,9 +3,9 @@ import { gameNatives } from "@/wrapper/game"
 import { type Vehicle, vehicles } from "../../vehicle"
 import { dispatcher } from "@/lib/dispatcher"
 import { VEHICLE_SEATS, type VehicleSeat } from "@/wrapper/game/enums.public"
-import { searchPoolValuesForEntityRefId } from "@/lib/pool"
+import { searchPoolValuesForEntityUUID } from "@/lib/pool"
 
-const lastVehicleReferenceId = new WeakMap<Player, bigint>()
+const lastVehicleUUID = new WeakMap<Player, string>()
 
 dispatcher.on("playerStateChange", (player, newState, oldState) => {
     if (
@@ -20,7 +20,7 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
             return
         }
 
-        lastVehicleReferenceId.set(player, vehicle.refId)
+        lastVehicleUUID.set(player, vehicle.uuid)
         dispatcher.emit("playerEnterVehicle", player, vehicle)
     } else if (
         // Check if a player is not in a vehicle and was in a vehicle before
@@ -28,14 +28,14 @@ dispatcher.on("playerStateChange", (player, newState, oldState) => {
         newState !== "passenger" &&
         newState !== "driver"
     ) {
-        const lastVehicleRefId = lastVehicleReferenceId.get(player)
+        const uuid = lastVehicleUUID.get(player)
 
-        if (lastVehicleRefId === undefined) {
+        if (uuid === undefined) {
             return
         }
 
-        lastVehicleReferenceId.delete(player)
-        dispatcher.emit("playerExitVehicle", player, searchPoolValuesForEntityRefId(vehicles.pool, lastVehicleRefId))
+        lastVehicleUUID.delete(player)
+        dispatcher.emit("playerExitVehicle", player, searchPoolValuesForEntityUUID(vehicles.pool, uuid))
     }
 })
 

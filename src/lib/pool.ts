@@ -2,7 +2,7 @@ import { EventBus } from "./event-bus"
 import { type Entity } from "./entity/entity"
 import { type Constructible } from "./types"
 
-type ValidPoolKey = number | string | bigint
+type ValidPoolKey = number | string
 
 export class EntityPool<K extends ValidPoolKey, V> {
     private readonly map = new Map<K, V>()
@@ -53,9 +53,6 @@ export class EntityPool<K extends ValidPoolKey, V> {
     }
 }
 
-export function searchPoolValuesForEntityRefId<K extends ValidPoolKey, V extends Entity>(
-    pool: EntityPool<K, V>,
-    entityRefId: bigint,
-): V | undefined {
-    return pool.all.find((entity) => entity.refId === entityRefId)
+export function searchPoolValuesForEntityUUID<T extends Entity>(pool: EntityPool<ValidPoolKey, T>, entityUUID: string): T | undefined {
+    return pool.all.find((entity) => entity.uuid === entityUUID)
 }

@@ -1,11 +1,10 @@
+import { randomUUID } from "crypto"
 import { dispatcher } from "../dispatcher"
 import { EventBus, type EventMapInterface } from "../event-bus"
 import { KeyValueVariables } from "../variables"
 
-let lastUsedReferenceId = BigInt(1)
-
 export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
-    readonly refId = lastUsedReferenceId++
+    readonly uuid = randomUUID()
 
     private cleanupCallbacks: (() => void)[] = []
     private destroyed = false

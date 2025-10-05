@@ -2,11 +2,11 @@ import { type Entity } from "./entity"
 
 export class EntityPromises<T extends Entity, K> {
     private toRejectOnCleanup = new WeakSet<T>()
-    private promises = new Map<bigint, { resolve: (result: K) => void; reject: (reason: Error) => void }>() // key: entity.referenceId, value: promise
+    private promises = new Map<string, { resolve: (result: K) => void; reject: (reason: Error) => void }>() // key: entity.uuid, value: promise
 
     async new(entity: T): Promise<K> {
         this.promises
-            .get(entity.refId)
+            .get(entity.uuid)
             ?.reject(
                 new Error(
                     "Promise was overridden by another promise of the same type! e.g. a new dialog was opened before the previous one was closed.",
@@ -22,12 +22,12 @@ export class EntityPromises<T extends Entity, K> {
         }
 
         return new Promise((resolve, reject) => {
-            this.promises.set(entity.refId, { resolve, reject })
+            this.promises.set(entity.uuid, { resolve, reject })
         })
     }
 
     resolve(entity: T, response: K) {
-        const existing = this.promises.get(entity.refId)
+        const existing = this.promises.get(entity.uuid)
 
         if (existing) {
             // @dockfries
@@ -38,11 +38,11 @@ export class EntityPromises<T extends Entity, K> {
             })
         }
 
-        this.promises.delete(entity.refId)
+        this.promises.delete(entity.uuid)
     }
 
     reject(entity: T, reason: Error) {
-        this.promises.get(entity.refId)?.reject(reason)
-        this.promises.delete(entity.refId)
+        this.promises.get(entity.uuid)?.reject(reason)
+        this.promises.delete(entity.uuid)
     }
 }
