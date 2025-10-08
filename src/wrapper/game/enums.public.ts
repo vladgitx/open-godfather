@@ -171,6 +171,7 @@ export const VEHICLE_SEATS = { driver: 0, passenger: 1, "rear-left": 2, "rear-ri
 export type VehicleSeat = keyof typeof VEHICLE_SEATS
 
 export const CAMERA_MODES = {
+    none: 0,
     train: 3,
     "follow-ped": 4,
     "sniper-aiming": 7,

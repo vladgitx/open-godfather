@@ -14,6 +14,7 @@ import {
     PLAYER_STATES,
     type Weapon,
     WEAPONS,
+    type CameraMode,
 } from "@/wrapper/game"
 import { textdraws } from "@/components/textdraw"
 import { gameObjects } from "@/components/game-object"
@@ -30,6 +31,14 @@ gameCallbacks.onPlayerUpdate((playerId) => {
         if (currentWeapon !== lastWeapon) {
             dispatcher.emit("playerWeaponChange", player, currentWeapon, lastWeapon)
             player.variables.set("internal::lastWeapon", currentWeapon)
+        }
+
+        const currentMode = player.cameraMode
+        const lastMode = (player.variables.get("internal::lastCameraMode") as CameraMode | undefined) ?? "none"
+
+        if (currentMode !== lastMode) {
+            dispatcher.emit("playerCameraModeChange", player, currentMode, lastMode)
+            player.variables.set("internal::lastCameraMode", currentMode)
         }
     }
 

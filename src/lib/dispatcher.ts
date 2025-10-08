@@ -8,7 +8,7 @@ import EventEmitter from "events"
 import { type Pickup } from "../components/pickup"
 import { type Entity } from "./entity"
 import { type Checkpoint } from "../components/checkpoint"
-import type { BodyPart, KickReason, PlayerBone, PlayerState, Weapon } from "@/wrapper/game"
+import type { BodyPart, CameraMode, KickReason, PlayerBone, PlayerState, Weapon } from "@/wrapper/game"
 import { type Textdraw } from "@/components/textdraw"
 import { type PlayerTextdraw } from "@/components/player/textdraw"
 import { type GameObject } from "@/components/game-object"
@@ -52,6 +52,7 @@ interface PlayerEvents {
     playerClickTextDraw: [player: Player, textdraw: Textdraw | undefined]
     playerClickPlayerTextDraw: [player: Player, textdraw: PlayerTextdraw]
     playerWeaponChange: [player: Player, newWeapon: Weapon, oldWeapon: Weapon]
+    playerCameraModeChange: [player: Player, newMode: CameraMode, oldMode: CameraMode]
 }
 
 interface VehicleEvents {
