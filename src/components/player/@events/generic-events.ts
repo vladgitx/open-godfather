@@ -3,9 +3,18 @@ import { dispatcher } from "@/lib/dispatcher"
 import { players } from "../handler"
 import { vehicles } from "@/components/vehicle"
 import { DEFAULT_PLAYER_TEAM } from "../entity"
-import { BODY_PARTS, HIT_TYPES, type HitType, PLAYER_BONES, PLAYER_STATES, WEAPONS } from "@/wrapper/game/enums.public"
 import { getEnumKeyByValue } from "@/lib/utils"
-import { gameCallbacks, gameNatives } from "@/wrapper/game"
+import {
+    gameCallbacks,
+    gameNatives,
+    BODY_PARTS,
+    HIT_TYPES,
+    type HitType,
+    PLAYER_BONES,
+    PLAYER_STATES,
+    type Weapon,
+    WEAPONS,
+} from "@/wrapper/game"
 import { textdraws } from "@/components/textdraw"
 import { gameObjects } from "@/components/game-object"
 
@@ -14,6 +23,14 @@ gameCallbacks.onPlayerUpdate((playerId) => {
 
     if (player) {
         dispatcher.emit("playerUpdate", player)
+
+        const currentWeapon = player.weapons.holding
+        const lastWeapon = (player.variables.get("internal::lastWeapon") as Weapon | undefined) ?? "fist"
+
+        if (currentWeapon !== lastWeapon) {
+            dispatcher.emit("playerWeaponChange", player, currentWeapon, lastWeapon)
+            player.variables.set("internal::lastWeapon", currentWeapon)
+        }
     }
 
     return 1
