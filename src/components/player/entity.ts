@@ -175,6 +175,14 @@ export class Player extends GameEntity<PlayerEventMap> {
         return new Vector3(gameNatives.getPlayerPosition(this.id))
     }
 
+    set velocity(velocity: Position3) {
+        gameNatives.setPlayerVelocity(this.id, velocity)
+    }
+
+    get velocity(): Vector3 {
+        return new Vector3(gameNatives.getPlayerVelocity(this.id))
+    }
+
     set cameraPosition(position: Position3) {
         gameNatives.setPlayerCameraPos(this.id, position)
     }

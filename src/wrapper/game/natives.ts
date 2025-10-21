@@ -241,6 +241,16 @@ class GameNatives {
         nativeHook.callNative("SetVehicleVelocity", "ifff", vehicleId, velocity.x, velocity.y, velocity.z)
     }
 
+    getPlayerVelocity = (playerId: number): Position3 => {
+        const res = nativeHook.callNative("GetPlayerVelocity", "iFFF", playerId) as number[]
+
+        return { x: res[0], y: res[1], z: res[2] }
+    }
+
+    setPlayerVelocity = (playerId: number, velocity: Position3) => {
+        return nativeHook.callNative("SetPlayerVelocity", "ifff", playerId, velocity.x, velocity.y, velocity.z) === 1
+    }
+
     setPlayerSkillLevel = (playerId: number, skillType: EnumValue<typeof WEAPON_SKILLS>, level: number) => {
         nativeHook.callNative("SetPlayerSkillLevel", "iii", playerId, skillType, level)
     }
