@@ -10,7 +10,7 @@ class GameObjectHandler extends StreamerEntityHandler<GameObject> {
         model: number,
         position: Position3,
         rotation: Position3,
-        streamDistance = 200,
+        streamDistance = 300.0,
         onlyVisibleFor?: {
             world?: number
             interior?: number
@@ -41,6 +41,26 @@ class GameObjectHandler extends StreamerEntityHandler<GameObject> {
         object.onCleanup(() => {
             streamerNatives.destroyDynamicObject(objectId)
             EntityPool.remove(this.pool, objectId, object)
+        })
+
+        return object
+    }
+
+    newFromId(id: number) {
+        if (this.pool.has(id)) {
+            return this.pool.at(id)
+        }
+
+        if (!streamerNatives.isValidDynamicObject(id)) {
+            return undefined
+        }
+
+        const object = new GameObject(id)
+        EntityPool.add(this.pool, id, object)
+
+        object.onCleanup(() => {
+            streamerNatives.destroyDynamicObject(id)
+            EntityPool.remove(this.pool, id, object)
         })
 
         return object

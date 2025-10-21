@@ -1,9 +1,9 @@
 import { type Position3, Vector3 } from "@/lib/vector3"
 import { INVALID_STREAMER_ID } from "./constants"
-import { hexToRgbaInt, rgbaIntToHex } from "@/lib/utils"
+import { getEnumKeyByValue, hexToRgbaInt, rgbaIntToHex } from "@/lib/utils"
 import { STREAMER_ITEM_DATA, STREAMER_ITEM_TYPES, type StreamerItemData, type StreamerItemType } from "./enums"
 import { type EnumValue } from "@/lib/types"
-import type { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enums.public"
+import { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enums.public"
 import { charset } from "@/lib/charset"
 import { nativeHook } from "@/lib/native-hook"
 
@@ -336,6 +336,32 @@ class StreamerNatives {
             hexToRgbaInt(backColor),
             textAlignment,
         )
+    }
+
+    getDynamicObjectMaterialText(objectId: number, materialIndex: number) {
+        const [text, materialsize, fontface, fontsize, bold, fontcolor, backcolor, textalignment] = nativeHook.callNative(
+            "GetDynamicObjectMaterialText",
+            "iiSISIIIIIii",
+            objectId,
+            materialIndex,
+            256,
+            64,
+        ) as [string, number, string, number, number, number, number, number]
+
+        return {
+            text,
+            size: getEnumKeyByValue(MATERIAL_TEXT_SIZES, materialsize),
+            fontFace: fontface,
+            fontSize: fontsize,
+            bold: bold === 1,
+            fontColor: rgbaIntToHex(fontcolor),
+            backColor: rgbaIntToHex(backcolor),
+            textAlignment: getEnumKeyByValue(MATERIAL_TEXT_ALIGNMENTS, textalignment),
+        }
+    }
+
+    isValidDynamicObject(objectId: number) {
+        return nativeHook.callNative("IsValidDynamicObject", "i", objectId) === 1
     }
 }
 

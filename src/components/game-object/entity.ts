@@ -8,22 +8,6 @@ import {
 import { StreamerEntity } from "@/lib/entity/streamer"
 
 export class GameObject extends StreamerEntity {
-    private materialTextures = new Map<number, { model: number; textureLibrary?: string; textureName?: string; color?: string }>()
-
-    private materialTexts = new Map<
-        number,
-        {
-            text: string
-            size: MaterialTextSize
-            fontFace: string
-            fontSize: number
-            bold: boolean
-            fontColor: string
-            backColor: string
-            textAlignment: MaterialTextAlignment
-        }
-    >()
-
     constructor(gameId: number) {
         super(gameId, "object")
     }
@@ -36,17 +20,15 @@ export class GameObject extends StreamerEntity {
         return streamerNatives.getIntData("object", this.id, "modelId")
     }
 
-    setMaterialTexture(index: number, model: number, library?: string, name?: string, color = "") {
-        this.materialTextures.set(index, { model, textureLibrary: library, textureName: name, color })
-        streamerNatives.setDynamicObjectMaterial(this.id, index, model, library ?? "none", name ?? "none", color)
+    setMaterial(index: number, model: number, txd?: string, texture?: string, color = "") {
+        streamerNatives.setDynamicObjectMaterial(this.id, index, model, txd ?? "none", texture ?? "none", color)
     }
 
-    getMaterialTexture(index: number) {
-        return this.materialTextures.get(index)
+    getMaterial(index: number) {
+        return streamerNatives.getDynamicObjectMaterial(this.id, index)
     }
 
-    removeMaterialTexture(index: number) {
-        this.materialTextures.delete(index)
+    removeMaterial(index: number) {
         streamerNatives.removeDynamicObjectMaterial(this.id, index)
     }
 
@@ -61,8 +43,6 @@ export class GameObject extends StreamerEntity {
         backColor = "",
         textAlignment: MaterialTextAlignment = "left",
     ) {
-        this.materialTexts.set(index, { text, size, fontFace, fontSize, bold, fontColor, backColor, textAlignment })
-
         streamerNatives.setDynamicObjectMaterialText(
             this.id,
             index,
@@ -78,11 +58,10 @@ export class GameObject extends StreamerEntity {
     }
 
     getMaterialText(index: number) {
-        return this.materialTexts.get(index)
+        return streamerNatives.getDynamicObjectMaterialText(this.id, index)
     }
 
     removeMaterialText(index: number) {
-        this.materialTexts.delete(index)
         streamerNatives.removeDynamicObjectMaterialText(this.id, index)
     }
 }
