@@ -240,7 +240,7 @@ export const MATERIAL_TEXT_ALIGNMENTS = { left: 0, center: 1, right: 2 } as cons
 
 export type MaterialTextAlignment = keyof typeof MATERIAL_TEXT_ALIGNMENTS
 
-export const TEXT_DRAW_ALIGNMENTS = { left: 0, center: 1, right: 2 } as const
+export const TEXT_DRAW_ALIGNMENTS = { left: 1, center: 2, right: 3 } as const
 
 export type TextDrawAlignment = keyof typeof TEXT_DRAW_ALIGNMENTS
 
