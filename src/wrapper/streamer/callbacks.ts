@@ -1,3 +1,7 @@
+samp.registerEvent("OnPlayerPickUpDynamicPickup", "ii")
+samp.registerEvent("OnPlayerEnterDynamicCP", "ii")
+samp.registerEvent("OnPlayerLeaveDynamicCP", "ii")
+
 class StreamerCallbacks {
     onPlayerPickUpDynamicPickup(callback: (playerId: number, pickupId: number) => void) {
         samp.on("OnPlayerPickUpDynamicPickup", callback)
