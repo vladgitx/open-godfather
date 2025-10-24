@@ -3,7 +3,7 @@ import { INVALID_STREAMER_ID } from "./constants"
 import { getEnumKeyByValue, hexToRgbaInt, rgbaIntToHex } from "@/lib/utils"
 import { STREAMER_ITEM_DATA, STREAMER_ITEM_TYPES, type StreamerItemData, type StreamerItemType } from "./enums"
 import { type EnumValue } from "@/lib/types"
-import { MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enums.public"
+import { type MAP_ICON_STYLES, MATERIAL_TEXT_ALIGNMENTS, MATERIAL_TEXT_SIZES } from "../game/enums.public"
 import { charset } from "@/lib/charset"
 import { nativeHook } from "@/lib/native-hook"
 
@@ -362,6 +362,46 @@ class StreamerNatives {
 
     isValidDynamicObject(objectId: number) {
         return nativeHook.callNative("IsValidDynamicObject", "i", objectId) === 1
+    }
+
+    createDynamicMapIcon(
+        position: Position3,
+        type: number,
+        color: string,
+        world: number,
+        interior: number,
+        playerId: number,
+        streamDistance: number,
+        style: EnumValue<typeof MAP_ICON_STYLES>,
+        areaId: number,
+        priority: number,
+    ) {
+        const id = nativeHook.callNative(
+            "CreateDynamicMapIcon",
+            "fffiiiiifiii",
+            position.x,
+            position.y,
+            position.z,
+            type,
+            hexToRgbaInt(color),
+            world,
+            interior,
+            playerId,
+            streamDistance,
+            style,
+            areaId,
+            priority,
+        ) as number
+
+        return id === INVALID_STREAMER_ID ? undefined : id
+    }
+
+    destroyDynamicMapIcon(mapIconId: number) {
+        nativeHook.callNative("DestroyDynamicMapIcon", "i", mapIconId)
+    }
+
+    isValidDynamicMapIcon(mapIconId: number) {
+        return nativeHook.callNative("IsValidDynamicMapIcon", "i", mapIconId) === 1
     }
 }
 

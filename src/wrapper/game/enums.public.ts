@@ -270,3 +270,12 @@ export const SPECTATE_TYPES = {
 } as const
 
 export type SpectateType = keyof typeof SPECTATE_TYPES
+
+export const MAP_ICON_STYLES = {
+    local: 0,
+    global: 1,
+    localCheckpoint: 2,
+    globalCheckpoint: 3,
+}
+
+export type MapIconStyle = keyof typeof MAP_ICON_STYLES
