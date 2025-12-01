@@ -44,3 +44,4 @@ export { KeyValueVariables } from "./lib/variables"
 export { validateEnumValue, getEnumKeyByValue, validateEnumKey } from "./lib/utils"
 
 export * from "./wrapper/game/enums.public"
+export * from "./wrapper/game/natives"
