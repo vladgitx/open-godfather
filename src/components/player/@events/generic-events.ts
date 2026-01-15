@@ -18,6 +18,8 @@ import {
 } from "@/wrapper/game"
 import { textdraws } from "@/components/textdraw"
 import { gameObjects } from "@/components/game-object"
+import { streamerCallbacks } from "@/wrapper/streamer"
+import { type EnumValue } from "@/lib/types"
 
 gameCallbacks.onPlayerUpdate((playerId) => {
     const player = players.pool.at(playerId)
@@ -149,7 +151,15 @@ gameCallbacks.onPlayerTakeDamage((playerId, issuerId, amount, weapon, bodyPart) 
     }
 })
 
-gameCallbacks.onPlayerWeaponShot((playerId, weapon, hitType, hitId, fX, fY, fZ) => {
+function processPlayerShot(
+    playerId: number,
+    weapon: EnumValue<typeof WEAPONS>,
+    hitType: EnumValue<typeof HIT_TYPES>,
+    hitId: number,
+    fX: number,
+    fY: number,
+    fZ: number,
+) {
     const player = players.pool.at(playerId)
 
     if (player) {
@@ -169,7 +179,24 @@ gameCallbacks.onPlayerWeaponShot((playerId, weapon, hitType, hitId, fX, fY, fZ) 
             new Vector3(fX, fY, fZ),
         )
     }
+
     return 1
+}
+
+gameCallbacks.onPlayerWeaponShot((playerId, weapon, hitType, hitId, fX, fY, fZ) => {
+    return processPlayerShot(playerId, weapon, hitType, hitId, fX, fY, fZ)
+})
+
+streamerCallbacks.onPlayerShootDynamicObject((playerId, weaponId, objectId, fX, fY, fZ) => {
+    return processPlayerShot(
+        playerId,
+        weaponId,
+        HIT_TYPES.object, // TODO: Is this the proper HitType for dynamic objects?
+        objectId,
+        fX,
+        fY,
+        fZ,
+    )
 })
 
 gameCallbacks.onPlayerEditAttachedObject(
