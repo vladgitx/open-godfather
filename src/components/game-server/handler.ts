@@ -1,7 +1,7 @@
 import { gameNatives, type Weapon, WEAPONS } from "@/wrapper/game"
-import { dispatcher } from "../../lib/dispatcher"
 
 class GameServer {
+    // TODO: Get from config.json
     private _name = "open gf server"
     private _language = "en"
     private _website = "open.mp"
@@ -12,20 +12,6 @@ class GameServer {
     private _hour = 18
     private _weather = 1
     private _disabledNameTags = false
-
-    constructor() {
-        dispatcher.on("init", () => {
-            this.name = this._name
-            this.language = this._language
-            this.website = this._website
-            this.map = this._map
-            this.mode = this._mode
-            this.stuntBonuses = this._stuntBonuses
-            this.nameTagDistance = this._nameTagDistance
-            this.hour = this._hour
-            this.weather = this._weather
-        })
-    }
 
     set disabledNameTags(disabledNameTags: boolean) {
         this._disabledNameTags = disabledNameTags
