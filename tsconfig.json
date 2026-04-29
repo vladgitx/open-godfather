@@ -13,7 +13,7 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "Node",
+        "moduleResolution": "bundler",
         "types": ["@sa-mp/node", "@types/node"],
         "paths": {
             "@/*": ["./src/*"],

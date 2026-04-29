@@ -20,6 +20,17 @@ gameCallbacks.onPlayerConnect((playerId) => {
         clearTimeout(timeoutId)
         connectionTimeoutId.delete(playerId)
 
+        if (players.pool.has(playerId)) {
+            const existingPlayer = players.pool.at(playerId)
+
+            console.warn(`[WARNING open-godfather] Player "${existingPlayer?.name}" (ID ${existingPlayer?.id}) was not properly removed from the players pool on disconnection.
+                The entity will be destroyed and removed from the pool,
+                and player ID ${playerId} will take its place in the pool at ID ${playerId}`)
+
+            existingPlayer?.destroy()
+            EntityPool.remove(players.pool, playerId, existingPlayer)
+        }
+
         const player = new Player(playerId)
         EntityPool.add(players.pool, playerId, player)
 
