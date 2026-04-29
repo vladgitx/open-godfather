@@ -6,7 +6,7 @@ import "./components/pickup/@events"
 import "./components/checkpoint/@events"
 
 export type { StreamerEntity, StreamerEntityHandler } from "./lib/entity/streamer"
-export type { Player } from "./components/player"
+export type { Player, PlayerEventMap } from "./components/player"
 export type { PlayerAttachedObject, AttachedObjectEditResult, PlayerAttachedObjectSlot } from "./components/player/attached-objects"
 export type { ListDialogResponse, MessageDialogResponse, InputDialogResponse } from "./components/player/dialog"
 export type { PlayerTextdraw } from "./components/player/textdraw"
