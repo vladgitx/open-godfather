@@ -8,8 +8,7 @@ import { type Textdraw } from "@/components/textdraw"
 import { type PlayerTextdraw } from "../textdraw"
 import { type GameObject } from "@/components/game-object"
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type PlayerEventMap = {
+export interface PlayerEventMap {
     stateChange: [newState: PlayerState, oldState: PlayerState]
     enterVehicle: [vehicle: Vehicle]
     exitVehicle: [vehicle: Vehicle | undefined]

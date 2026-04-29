@@ -1,6 +1,6 @@
-export type EventMapInterface = Record<string | symbol | number, unknown[]>
+export type EventMapInterface<T = Record<string | symbol | number, unknown[]>> = { [K in keyof T]: unknown[] }
 
-export class EventBus<EventMap extends EventMapInterface = EventMapInterface> {
+export class EventBus<EventMap extends EventMapInterface<EventMap> = EventMapInterface> {
     private callbacks = new Map<keyof EventMap, Map<string | symbol, (...args: unknown[]) => void>>()
 
     on<K extends keyof EventMap>(eventName: K, callback: (...args: EventMap[K]) => void) {
@@ -20,7 +20,7 @@ export class EventBus<EventMap extends EventMapInterface = EventMapInterface> {
         }
     }
 
-    static emit<EventMap extends EventMapInterface, K extends keyof EventMap>(
+    static emit<EventMap extends EventMapInterface<EventMap>, K extends keyof EventMap>(
         eventBus: EventBus<EventMap>,
         eventName: K,
         ...args: EventMap[K]

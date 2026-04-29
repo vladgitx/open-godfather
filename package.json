@@ -4,6 +4,9 @@
     "description": "Node.js library for building open.mp scripts with the samp-node plugin.",
     "main": "build/index.js",
     "types": "build/types/index.d.ts",
+    "files": [
+        "build"
+    ],
     "scripts": {
         "format": "prettier -w --log-level silent '{,src/**/}*.{js,jsx,ts,tsx,mjs,json}'",
         "lint": "npx eslint src/**/*.ts",
