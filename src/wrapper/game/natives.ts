@@ -545,14 +545,17 @@ class GameNatives {
         // so we need to calculate the length of the message without color tags
 
         const { flag, encoded } = charset.encode(message)
-        const MAX_ONE_LINE_LENGTH = 115
+        const visualLength = message.replace(/\{[a-fA-F0-9]{6}\}/g, "").length
 
-        if (message.length <= MAX_ONE_LINE_LENGTH) {
+        const MAX_ONE_LINE_LENGTH = 115
+        const MAX_CLIENT_MESSAGE_LENGTH = 144
+
+        if (visualLength <= MAX_ONE_LINE_LENGTH && message.length <= MAX_CLIENT_MESSAGE_LENGTH) {
             nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
             return
         }
 
-        const parts = Math.ceil(message.length / MAX_ONE_LINE_LENGTH)
+        const parts = Math.ceil(visualLength / MAX_ONE_LINE_LENGTH)
 
         nativeHook.callNative(
             "SendClientMessage",
