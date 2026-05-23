@@ -62,7 +62,8 @@ export class Player extends GameEntity<PlayerEventMap> {
 
     cancelObjectEditMode() {
         gameNatives.cancelEdit(this.id)
-        dispatcher.emit("playerCancelObjectEditMode", this)
+
+        dispatcher.emit("playerCancelObjectEdition", this)
     }
 
     sendMessage(message: string, color = "FFFFFF") {

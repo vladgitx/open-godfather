@@ -38,6 +38,7 @@ interface PlayerEvents {
     playerChangeVehiclePaintjob: [player: Player, vehicle: Vehicle, paintjobId: number | undefined]
     playerEditAttachedObject: [
         player: Player,
+        response: "cancel" | "save",
         index: number,
         model: number,
         bone: PlayerBone,
@@ -45,7 +46,7 @@ interface PlayerEvents {
         rotation: Vector3,
         scale: Vector3,
     ]
-    playerCancelObjectEditMode: [player: Player]
+    playerCancelObjectEdition: [player: Player]
     playerKeyStateChange: [player: Player, newKeys: number, oldKeys: number]
     playerEnterCheckpoint: [player: Player, checkpoint: Checkpoint]
     playerLeaveCheckpoint: [player: Player, checkpoint: Checkpoint]

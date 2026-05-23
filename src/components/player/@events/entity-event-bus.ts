@@ -12,8 +12,16 @@ export interface PlayerEventMap {
     stateChange: [newState: PlayerState, oldState: PlayerState]
     enterVehicle: [vehicle: Vehicle]
     exitVehicle: [vehicle: Vehicle | undefined]
-    editAttachedObject: [index: number, model: number, bone: PlayerBone, offset: Vector3, rotation: Vector3, scale: Vector3]
-    cancelObjectEditMode: []
+    editAttachedObject: [
+        response: "cancel" | "save",
+        index: number,
+        model: number,
+        bone: PlayerBone,
+        offset: Vector3,
+        rotation: Vector3,
+        scale: Vector3,
+    ]
+    cancelObjectEdition: []
     shoot: [weapon: Weapon, victim: Player | Vehicle | GameObject | undefined, hitCoordinates: Vector3]
     clickTextDraw: [textdraw: Textdraw | undefined]
     clickPlayerTextDraw: [textdraw: PlayerTextdraw]
@@ -43,10 +51,10 @@ dispatcher.on("playerExitVehicle", (player, vehicle) => {
     EventBus.emit(player.events, "exitVehicle", vehicle)
 })
 
-dispatcher.on("playerEditAttachedObject", (player, index, model, bone, offset, rotation, scale) => {
-    EventBus.emit(player.events, "editAttachedObject", index, model, bone, offset, rotation, scale)
+dispatcher.on("playerEditAttachedObject", (player, response, index, model, bone, offset, rotation, scale) => {
+    EventBus.emit(player.events, "editAttachedObject", response, index, model, bone, offset, rotation, scale)
 })
 
-dispatcher.on("playerCancelObjectEditMode", (player) => {
-    EventBus.emit(player.events, "cancelObjectEditMode")
+dispatcher.on("playerCancelObjectEdition", (player) => {
+    EventBus.emit(player.events, "cancelObjectEdition")
 })

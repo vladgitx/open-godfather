@@ -119,17 +119,16 @@ export class PlayerAttachedObjectHandler {
             }
         })
 
-        this.player.events.on("cancelObjectEditMode", () => {
-            if (this.editingObject === attachedObject) {
+        this.player.events.on("editAttachedObject", (response, slot, model, bone, offset, rotation, scale) => {
+            if (this.editingObject !== attachedObject) {
+                return
+            }
+
+            if (response === "cancel") {
                 PlayerAttachedObject.refreshVisuals(attachedObject)
 
                 this.editingObject = undefined
                 editPromise.resolve(this.player, undefined)
-            }
-        })
-
-        this.player.events.on("editAttachedObject", (slot, model, bone, offset, rotation, scale) => {
-            if (this.editingObject !== attachedObject) {
                 return
             }
 

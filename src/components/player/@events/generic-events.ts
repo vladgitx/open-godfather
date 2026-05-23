@@ -182,21 +182,17 @@ streamerCallbacks.onPlayerShootDynamicObject(() => {
 })
 
 gameCallbacks.onPlayerEditAttachedObject(
-    (playerId, response, index, model, bone, offX, offY, offZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ) => {
+    (playerId, response: number, index, model, bone, offX, offY, offZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ) => {
         const player = players.pool.at(playerId)
 
         if (!player) {
             return
         }
 
-        if (response === 0) {
-            dispatcher.emit("playerCancelObjectEditMode", player)
-            return
-        }
-
         dispatcher.emit(
             "playerEditAttachedObject",
             player,
+            response === 0 ? "cancel" : response === 1 ? "save" : "cancel",
             index,
             model,
             getEnumKeyByValue(PLAYER_BONES, bone),
