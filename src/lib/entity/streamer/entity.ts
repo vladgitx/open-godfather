@@ -1,5 +1,5 @@
 import { INVALID_STREAMER_ID, streamerNatives, type StreamerItemType } from "@/wrapper/streamer"
-import { type Position3 } from "../../vector3"
+import { Vector3, type Position3 } from "../../vector3"
 import { GameEntity } from "../game"
 import { type EventMapInterface } from "@/lib/event-bus"
 
@@ -31,7 +31,7 @@ export class StreamerEntity<EventMap extends EventMapInterface = EventMapInterfa
         streamerNatives.setItemPos(this.type, this.id, position)
     }
 
-    get position() {
+    get position(): Vector3 {
         return streamerNatives.getItemPos(this.type, this.id)
     }
 
@@ -57,6 +57,20 @@ export class StreamerEntity<EventMap extends EventMapInterface = EventMapInterfa
 
     get rotation() {
         return streamerNatives.getFloatData(this.type, this.id, "rotation")
+    }
+
+    set rotation3d(rotation: Position3) {
+        streamerNatives.setFloatData(this.type, this.id, "rotX", rotation.x)
+        streamerNatives.setFloatData(this.type, this.id, "rotY", rotation.y)
+        streamerNatives.setFloatData(this.type, this.id, "rotZ", rotation.z)
+    }
+
+    get rotation3d(): Vector3 {
+        const x = streamerNatives.getFloatData(this.type, this.id, "rotX")
+        const y = streamerNatives.getFloatData(this.type, this.id, "rotY")
+        const z = streamerNatives.getFloatData(this.type, this.id, "rotZ")
+
+        return new Vector3(x, y, z)
     }
 
     set streamDistance(distance: number) {
