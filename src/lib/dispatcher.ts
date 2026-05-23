@@ -53,6 +53,8 @@ interface PlayerEvents {
     playerClickPlayerTextDraw: [player: Player, textdraw: PlayerTextdraw]
     playerWeaponChange: [player: Player, newWeapon: Weapon, oldWeapon: Weapon]
     playerCameraModeChange: [player: Player, newMode: CameraMode, oldMode: CameraMode]
+    playerEditObject: [player: Player, object: GameObject, response: "cancel" | "final" | "update", offset: Vector3, rotation: Vector3]
+    playerSelectObject: [player: Player, object: GameObject, model: number, position: Vector3]
 }
 
 interface VehicleEvents {

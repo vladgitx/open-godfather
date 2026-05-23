@@ -5,6 +5,8 @@ samp.registerEvent("OnPlayerPickUpDynamicPickup", "ii")
 samp.registerEvent("OnPlayerEnterDynamicCP", "ii")
 samp.registerEvent("OnPlayerLeaveDynamicCP", "ii")
 samp.registerEvent("OnPlayerShootDynamicObject", "iiifff")
+samp.registerEvent("OnPlayerEditDynamicObject", "iiiffffff")
+samp.registerEvent("OnPlayerSelectDynamicObject", "iiifff")
 
 class StreamerCallbacks {
     onPlayerPickUpDynamicPickup(callback: (playerId: number, pickupId: number) => void) {
@@ -30,6 +32,26 @@ class StreamerCallbacks {
         ) => void,
     ) {
         samp.on("OnPlayerShootDynamicObject", callback)
+    }
+
+    onPlayerEditDynamicObject(
+        callback: (
+            playerId: number,
+            objectId: number,
+            response: 1 | 2 | 3,
+            x: number,
+            y: number,
+            z: number,
+            rx: number,
+            ry: number,
+            rz: number,
+        ) => void,
+    ) {
+        samp.on("OnPlayerEditDynamicObject", callback)
+    }
+
+    onPlayerSelectDynamicObject(callback: (playerId: number, objectId: number, model: number, x: number, y: number, z: number) => void) {
+        samp.on("OnPlayerSelectDynamicObject", callback)
     }
 }
 

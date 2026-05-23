@@ -226,3 +226,28 @@ gameCallbacks.onPlayerClickTextDraw((playerId, clickedId) => {
         dispatcher.emit("playerClickTextDraw", player, textdraws.pool.at(clickedId))
     }
 })
+
+streamerCallbacks.onPlayerEditDynamicObject((playerId, objectId, response, x, y, z, rx, ry, rz) => {
+    const player = players.pool.at(playerId)
+    const object = gameObjects.pool.at(objectId)
+
+    if (player && object) {
+        dispatcher.emit(
+            "playerEditObject",
+            player,
+            object,
+            response === 1 ? "cancel" : response === 2 ? "final" : "update",
+            new Vector3(x, y, z),
+            new Vector3(rx, ry, rz),
+        )
+    }
+})
+
+streamerCallbacks.onPlayerSelectDynamicObject((playerId, objectId, model, x, y, z) => {
+    const player = players.pool.at(playerId)
+    const object = gameObjects.pool.at(objectId)
+
+    if (player && object) {
+        dispatcher.emit("playerSelectObject", player, object, model, new Vector3(x, y, z))
+    }
+})
