@@ -148,7 +148,7 @@ class StreamerNatives {
     }
 
     getDynamic3dTextLabelText(textLabelId: number) {
-        return charset.decode(nativeHook.callNative("GetDynamic3DTextLabelText", "iAi", textLabelId, 256))
+        return charset.decode(nativeHook.callNative("GetDynamic3DTextLabelText", "iAi", textLabelId, 256) as number[] | Buffer)
     }
 
     updateDynamic3dTextLabelText(textLabelId: number, color: string, text: string) {
@@ -362,6 +362,10 @@ class StreamerNatives {
 
     isValidDynamicObject(objectId: number) {
         return nativeHook.callNative("IsValidDynamicObject", "i", objectId) === 1
+    }
+
+    editDynamicObject = (playerId: number, objectId: number): boolean => {
+        return Boolean(nativeHook.callNative("EditDynamicObject", "ii", playerId, objectId))
     }
 
     createDynamicMapIcon(

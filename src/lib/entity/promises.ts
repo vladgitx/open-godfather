@@ -45,4 +45,8 @@ export class EntityPromises<T extends Entity, K> {
         this.promises.get(entity.uuid)?.reject(reason)
         this.promises.delete(entity.uuid)
     }
+
+    has(entity: T): boolean {
+        return this.promises.has(entity.uuid)
+    }
 }

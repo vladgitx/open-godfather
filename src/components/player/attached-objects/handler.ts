@@ -91,7 +91,7 @@ export class PlayerAttachedObjectHandler {
         EntityPool.add(this.pool, usingSlot, attachedObject)
 
         attachedObject.onCleanup(() => {
-            EntityPool.remove(this.pool, usingSlot!, attachedObject) && gameNatives.removePlayerAttachedObject(this.player.id, usingSlot!)
+            EntityPool.remove(this.pool, usingSlot, attachedObject) && gameNatives.removePlayerAttachedObject(this.player.id, usingSlot)
         })
 
         return attachedObject
