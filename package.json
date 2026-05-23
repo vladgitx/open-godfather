@@ -42,8 +42,8 @@
         "rollup-plugin-delete": "^2.0.0",
         "tsc-alias": "^1.8.10",
         "tslib": "^2.6.2",
-        "typescript": "^5.2.2",
-        "typescript-eslint": "^7.7.0"
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^7.18.0"
     },
     "prettier": {
         "$schema": "http://json.schemastore.org/prettierrc",
