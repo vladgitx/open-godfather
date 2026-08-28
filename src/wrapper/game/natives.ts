@@ -544,37 +544,51 @@ class GameNatives {
         // that adds inaccurate length to the message string
         // so we need to calculate the length of the message without color tags
 
-        const { flag, encoded } = charset.encode(message)
         const visualLength = message.replace(/\{[a-fA-F0-9]{6}\}/g, "").length
 
         const MAX_ONE_LINE_LENGTH = 115
         const MAX_CLIENT_MESSAGE_LENGTH = 144
 
         if (visualLength <= MAX_ONE_LINE_LENGTH && message.length <= MAX_CLIENT_MESSAGE_LENGTH) {
+            const { flag, encoded } = charset.encode(message)
+
             nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
             return
         }
 
-        const parts = Math.ceil(visualLength / MAX_ONE_LINE_LENGTH)
+        const CONTINUATION_MARKERS_LENGTH = 8
+        const MAX_PART_LENGTH = MAX_CLIENT_MESSAGE_LENGTH - CONTINUATION_MARKERS_LENGTH
+        const parts: string[] = []
 
-        nativeHook.callNative(
-            "SendClientMessage",
-            `ii${flag}`,
-            playerId,
-            hexToRgbaInt(color),
-            charset.encode(message.slice(0, MAX_ONE_LINE_LENGTH) + " ...").encoded,
-        )
+        let partStart = 0
+        let partLength = 0
+        let partVisualLength = 0
 
-        for (let i = 1; i < parts; i++) {
-            const part = message.slice(i * MAX_ONE_LINE_LENGTH, (i + 1) * MAX_ONE_LINE_LENGTH)
+        while (partStart + partLength < message.length) {
+            const offset = partStart + partLength
+            const isColorTag = /^\{[a-fA-F0-9]{6}\}$/.test(message.slice(offset, offset + 8))
+            const tokenLength = isColorTag ? 8 : 1
 
-            nativeHook.callNative(
-                "SendClientMessage",
-                `ii${flag}`,
-                playerId,
-                hexToRgbaInt(color),
-                charset.encode(i === parts - 1 ? "... " + part : "... " + part + " ...").encoded,
-            )
+            if (partLength + tokenLength > MAX_PART_LENGTH || partVisualLength >= MAX_ONE_LINE_LENGTH) {
+                parts.push(message.slice(partStart, offset))
+                
+                partStart = offset
+                partLength = 0
+                partVisualLength = 0
+                continue
+            }
+
+            partLength += tokenLength
+            partVisualLength += isColorTag ? 0 : 1
+        }
+
+        parts.push(message.slice(partStart))
+
+        for (let i = 0; i < parts.length; i++) {
+            const part = `${i === 0 ? "" : "... "}${parts[i]}${i === parts.length - 1 ? "" : " ..."}`
+            const { flag, encoded } = charset.encode(part)
+
+            nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
         }
     }
 
