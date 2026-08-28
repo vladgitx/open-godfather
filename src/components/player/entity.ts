@@ -27,6 +27,8 @@ import { GameEntity } from "@/lib/entity/game"
 import { PlayerAttachedObjectHandler } from "./attached-objects"
 import { PlayerTextdrawHandler } from "./textdraw"
 import { players } from "./handler"
+import { type GameObject } from "../game-object"
+import { beginObjectEditing } from "./edit-object"
 
 export const DEFAULT_PLAYER_TEAM = 1
 
@@ -58,6 +60,10 @@ export class Player extends GameEntity<PlayerEventMap> {
 
     get dialog() {
         return new PlayerDialog(this)
+    }
+
+    beginObjectEditing(object: GameObject) {
+        return beginObjectEditing(this, object)
     }
 
     cancelObjectEditMode() {

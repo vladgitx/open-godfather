@@ -232,11 +232,13 @@ streamerCallbacks.onPlayerEditDynamicObject((playerId, objectId, response, x, y,
             "playerEditObject",
             player,
             object,
-            response === 1 ? "cancel" : response === 2 ? "final" : "update",
+            response === 0 ? "cancel" : response === 1 ? "final" : "update",
             new Vector3(x, y, z),
             new Vector3(rx, ry, rz),
         )
     }
+
+    return 1
 })
 
 streamerCallbacks.onPlayerSelectDynamicObject((playerId, objectId, model, x, y, z) => {
