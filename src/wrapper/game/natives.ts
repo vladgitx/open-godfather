@@ -541,16 +541,29 @@ class GameNatives {
 
     sendClientMessage(playerId: number, color: string, message: string): void {
         // messages can contain colors in this format: {FF0000}Hello
-        // that adds inaccurate length to the message string
-        // so we need to calculate the length of the message without color tags
+        // repeated color tags do not change the output but still count towards the client message limit
 
-        const visualLength = message.replace(/\{[a-fA-F0-9]{6}\}/g, "").length
+        const rawBaseColor = color.replace("#", "")
+        let activeColor = /^[a-fA-F0-9]{6}(?:[a-fA-F0-9]{2})?$/.test(rawBaseColor) ? rawBaseColor.slice(0, 6).toLowerCase() : undefined
+
+        const normalizedMessage = message.replace(/\{([a-fA-F0-9]{6})\}/g, (tag, tagColor: string) => {
+            const normalizedTagColor = tagColor.toLowerCase()
+
+            if (normalizedTagColor === activeColor) {
+                return ""
+            }
+
+            activeColor = normalizedTagColor
+            return tag
+        })
+        
+        const visualLength = normalizedMessage.replace(/\{[a-fA-F0-9]{6}\}/g, "").length
 
         const MAX_ONE_LINE_LENGTH = 115
         const MAX_CLIENT_MESSAGE_LENGTH = 144
 
-        if (visualLength <= MAX_ONE_LINE_LENGTH && message.length <= MAX_CLIENT_MESSAGE_LENGTH) {
-            const { flag, encoded } = charset.encode(message)
+        if (visualLength <= MAX_ONE_LINE_LENGTH && normalizedMessage.length <= MAX_CLIENT_MESSAGE_LENGTH) {
+            const { flag, encoded } = charset.encode(normalizedMessage)
 
             nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
             return
@@ -558,37 +571,41 @@ class GameNatives {
 
         const CONTINUATION_MARKERS_LENGTH = 8
         const MAX_PART_LENGTH = MAX_CLIENT_MESSAGE_LENGTH - CONTINUATION_MARKERS_LENGTH
-        const parts: string[] = []
+        const parts: { message: string; color: string }[] = []
 
         let partStart = 0
         let partLength = 0
         let partVisualLength = 0
+        let partColor = color
+        let currentColor = color
 
-        while (partStart + partLength < message.length) {
+        while (partStart + partLength < normalizedMessage.length) {
             const offset = partStart + partLength
-            const isColorTag = /^\{[a-fA-F0-9]{6}\}$/.test(message.slice(offset, offset + 8))
-            const tokenLength = isColorTag ? 8 : 1
+            const colorTag = normalizedMessage.slice(offset, offset + 8).match(/^\{([a-fA-F0-9]{6})\}$/)
+            const tokenLength = colorTag ? 8 : 1
 
             if (partLength + tokenLength > MAX_PART_LENGTH || partVisualLength >= MAX_ONE_LINE_LENGTH) {
-                parts.push(message.slice(partStart, offset))
-                
+                parts.push({ message: normalizedMessage.slice(partStart, offset), color: partColor })
+
                 partStart = offset
                 partLength = 0
                 partVisualLength = 0
+                partColor = currentColor
                 continue
             }
 
             partLength += tokenLength
-            partVisualLength += isColorTag ? 0 : 1
+            partVisualLength += colorTag ? 0 : 1
+            currentColor = colorTag?.[1] ?? currentColor
         }
 
-        parts.push(message.slice(partStart))
+        parts.push({ message: normalizedMessage.slice(partStart), color: partColor })
 
         for (let i = 0; i < parts.length; i++) {
-            const part = `${i === 0 ? "" : "... "}${parts[i]}${i === parts.length - 1 ? "" : " ..."}`
+            const part = `${i === 0 ? "" : "... "}${parts[i].message}${i === parts.length - 1 ? "" : " ..."}`
             const { flag, encoded } = charset.encode(part)
 
-            nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(color), encoded)
+            nativeHook.callNative("SendClientMessage", `ii${flag}`, playerId, hexToRgbaInt(parts[i].color), encoded)
         }
     }
 
