@@ -38,7 +38,7 @@ class StreamerCallbacks {
         callback: (
             playerId: number,
             objectId: number,
-            response: 1 | 2 | 3,
+            response: 0 | 1 | 2,
             x: number,
             y: number,
             z: number,
