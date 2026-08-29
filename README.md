@@ -1,42 +1,57 @@
-# Open Godfather :warning: Experimental :warning:
+# Open Godfather
 
-Fully-typed Node.js library for building open.mp scripts with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin in an object-oriented manner.
+> **Status:** Experimental / early development
 
-- [Starting a project](#starting-a-project)
-- [Usage example](#usage-example)
-- [Quirks](#quirks)
-- [Is this complete?](#is-this-complete)
+Open Godfather is a fully typed Node.js/TypeScript framework for building [open.mp](https://open.mp/) servers with the [samp-node](https://github.com/AmyrAhmady/samp-node) plugin.
+
+It provides an object-oriented entity model, managed entity lifecycles, typed events, commands, dialogs, streamer integration, and high-level gameplay APIs while still allowing direct access to samp-node when needed.
+
+* [Starting a project](#starting-a-project)
+* [Usage example](#usage-example)
+* [Framework behavior](#framework-behavior)
+* [Project status](#project-status)
 
 ## Starting a project
 
-One-step installation, just run the command below to start a Typescript project in your **current directory**.
+The easiest way to start a project is with [create-og-app](https://github.com/vladgitx/create-og-app), which sets up the server files, plugins, TypeScript project structure, and Rollup configuration for you.
 
 ```bash
 cd my-project
 npx github:vladgitx/og-cli
 ```
 
-That's it! You can now edit `src/index.ts` and start the server with `npm run start`.
+Once the project is created, edit `src/index.ts` and start the server with:
 
-### You know what you're doing?
+```bash
+npm run start
+```
 
-If you don't want to use the [Open Godfather CLI](https://github.com/vladgitx/og-cli), you can handle server files, plugins, etc. by yourself. Just run `npm install github:vladgitx/open-godfather` to install this package in your existing project.
-    
+### Manual setup
+
+If you prefer to manage the open.mp server files, plugins, and build configuration yourself, install Open Godfather directly in an existing project:
+
+```bash
+npm install github:vladgitx/open-godfather
+```
+
 ## Usage example
 
-Spawn a player based on the dialog's response.
+Open.mp entities are represented as TypeScript objects with their own state, behavior, events, and lifecycle.
+
+For example, you can show a dialog when a player connects and spawn them depending on the response:
 
 ```typescript
 import * as og from "open-godfather"
 
 og.events.on("playerConnect", async (player) => {
-    // The dialog show methods return a promise that will throw an error if it fails, some of the reasons include:
-    // - it's overriden (in this case, another dialog pops up)
-    // - the entity is destroyed (in this case, the player disconnects)
-
     try {
-        const result = await player.dialog.show.messageBox("Hey", "Wanna spawn?", "Yes", "No")
-        
+        const result = await player.dialog.show.messageBox(
+            "Hey",
+            "Wanna spawn?",
+            "Yes",
+            "No",
+        )
+
         if (result.action) {
             player.spawn(new og.Vector3(1664.464, 1410.141, 10.642))
 
@@ -47,17 +62,25 @@ og.events.on("playerConnect", async (player) => {
             player.sendMessage("Bye-bye")
             player.kick()
         }
-    } catch () {}
+    } catch {}
 })
 ```
 
+Dialog methods return promises and are automatically rejected when the operation can no longer complete, such as when another dialog replaces the current one or the player disconnects.
+
 ### Commands
 
-The player can spawn a car with a specific model ID using the "/car", "/vehicle", or "/veh" command. If the model is not specified, it will use 411 (Infernus).
+Commands can be registered with aliases and receive the player and parsed arguments directly.
+
+The example below creates `/car`, with `/vehicle` and `/veh` as aliases:
 
 ```typescript
 og.commands.add("/car", ["/vehicle", "/veh"], (player, modelParam = "411") => {
-    const vehicle = og.vehicles.new(parseInt(modelParam), player.position, player.rotation)
+    const vehicle = og.vehicles.new(
+        parseInt(modelParam),
+        player.position,
+        player.rotation,
+    )
 
     if (vehicle) {
         player.putIntoVehicle(vehicle)
@@ -68,31 +91,35 @@ og.commands.add("/car", ["/vehicle", "/veh"], (player, modelParam = "411") => {
 })
 ```
 
-## Quirks
+## Framework behavior
 
-This library overrides some of the default SA-MP behavior in order to simplify things.
+Open Godfather intentionally changes some default SA-MP behavior to provide simpler and more predictable application-level APIs.
 
 ### Connection and spawning
 
-Players are placed into spectate mode when they connect, and all that's left is to spawn them. Also, their name color is set to white.
+Players are placed into spectate mode when they connect, leaving spawning under application control. Their default name color is also set to white.
 
-### Damage
+### Overridable default behavior
 
-This library abolishes player teams, so all players are assigned the same team when they connect. In SA-MP, players wouldn't be able to damage each other, but Open Godfather still applies damage.
+Some gameplay events have default framework behavior. Registering a listener for these events transfers control to your application, allowing the default behavior to be replaced entirely.
 
-However, once you define a `playerDamage` event, the Open Godfather effect is disabled and you have to apply the damage manually:
+#### Damage
+
+Open Godfather does not rely on SA-MP teams for normal damage handling. Players are assigned to the same internal team while the framework applies damage itself.
+
+Registering a `playerDamage` listener disables the default damage behavior:
 
 ```typescript
 og.events.on("playerDamage", (player, issuer, amount, weapon, bodyPart) => {
     if (issuer) {
-    	player.health -= amount
+        player.health -= amount
     }
 })
 ```
 
-### Commands
+#### Commands
 
-Commands are called normally until you define a `playerCommand` event. Once you do that, you have to call the command manually:
+Commands execute automatically unless a `playerCommand` listener is registered. When one is present, your application decides whether the matched command should run:
 
 ```typescript
 og.events.on("playerCommand", (player, cmdText, command, call) => {
@@ -104,9 +131,11 @@ og.events.on("playerCommand", (player, cmdText, command, call) => {
 })
 ```
 
-### Chat
+#### Chat
 
-Same as commands and damage. Once you define a `playerText` listener, you have to manually broadcast the message to other players. The implementation is up to you, but this is what a global chat would look like:
+By default, player messages are handled normally. Registering a `playerText` listener gives your application full control over chat behavior.
+
+A basic global chat implementation could look like this:
 
 ```typescript
 og.events.on("playerText", (player, text) => {
@@ -116,9 +145,9 @@ og.events.on("playerText", (player, text) => {
 })
 ```
 
-### Vehicle params
+### Vehicle parameters
 
-The vehicle engine and lights are automatically set to manual, so vehicles spawn with the engine off. This is how you turn it on:
+Vehicle engines and lights use manual control by default, so newly created vehicles start with their engine off.
 
 ```typescript
 vehicle.params.engine = "on"
@@ -127,21 +156,26 @@ vehicle.params.lights = "on"
 
 ### Colors
 
-You can use HEX colors for everything:
+HEX colors can be used directly throughout the framework:
 
 ```typescript
 player.sendMessage("Hey!", "9163f2")
 ```
 
-## Is this complete?
+## Project status
 
-There are still a lot of natives missing. If you need a native that's not supported yet, you have two options:
+Open Godfather is under active development and does not yet expose every open.mp native or plugin API.
 
-- Simply use the samp-node's `samp.callNative` function. You can also wrap it to make it type-safe.
-- Import it from a library like [samp-node-lib](https://github.com/peterszombati/samp-node-lib).
+Unsupported natives can still be accessed directly through samp-node:
 
-This comes with a potential risk of having to refactor things when they're finally supported by the library, so the best and most appreciated way would be to contribute to this project through a pull request.
+```typescript
+samp.callNative(...)
+```
 
-### Not complete enough?
+This allows high-level Open Godfather APIs and low-level samp-node calls to be used together when necessary.
 
-A more complete solution, that wraps more plugins and covers most of the scripting API, is the [Infernus library](https://github.com/dockfries/infernus).
+Contributions that expand API coverage, improve existing abstractions, or add support for additional open.mp functionality are welcome.
+
+### Alternatives
+
+If you need broader coverage of the open.mp scripting API and a larger ecosystem of plugin wrappers, [Infernus](https://github.com/dockfries/infernus) is another TypeScript-based option.
