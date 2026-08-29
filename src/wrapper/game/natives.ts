@@ -556,7 +556,7 @@ class GameNatives {
             activeColor = normalizedTagColor
             return tag
         })
-        
+
         const visualLength = normalizedMessage.replace(/\{[a-fA-F0-9]{6}\}/g, "").length
 
         const MAX_ONE_LINE_LENGTH = 115

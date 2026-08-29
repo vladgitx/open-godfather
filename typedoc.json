@@ -1,0 +1,12 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "name": "Open Godfather",
+    "entryPoints": ["src/index.ts"],
+    "out": "docs",
+    "hostedBaseUrl": "https://vladgitx.github.io/open-godfather/",
+    "sourceLinkExternal": true,
+    "navigationLinks": {
+        "GitHub": "https://github.com/vladgitx/open-godfather"
+    },
+    "plugin": ["typedoc-plugin-missing-exports"]
+}

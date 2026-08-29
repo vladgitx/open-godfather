@@ -6,6 +6,8 @@ Open Godfather is a fully typed Node.js/TypeScript framework for building [open.
 
 It provides an object-oriented entity model, managed entity lifecycles, typed events, commands, dialogs, streamer integration, and high-level gameplay APIs while still allowing direct access to samp-node when needed.
 
+**[Documentation](https://vladgitx.github.io/open-godfather/)**
+
 * [Starting a project](#starting-a-project)
 * [Usage example](#usage-example)
 * [Framework behavior](#framework-behavior)
