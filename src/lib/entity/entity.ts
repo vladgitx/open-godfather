@@ -3,7 +3,7 @@ import { dispatcher } from "../dispatcher"
 import { EventBus, type EventMapInterface } from "../event-bus"
 import { KeyValueVariables } from "../variables"
 
-export class Entity<EventMap extends EventMapInterface = EventMapInterface> {
+export class Entity<EventMap extends EventMapInterface<EventMap> = EventMapInterface> {
     readonly uuid = randomUUID()
 
     private cleanupCallbacks: (() => void)[] = []

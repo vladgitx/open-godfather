@@ -1,7 +1,7 @@
 import { Entity } from "../entity"
 import { type EventMapInterface } from "../../event-bus"
 
-export class GameEntity<EventMap extends EventMapInterface = EventMapInterface> extends Entity<EventMap> {
+export class GameEntity<EventMap extends EventMapInterface<EventMap> = EventMapInterface> extends Entity<EventMap> {
     private _gameId: number
 
     constructor(gameId: number, invalidGameId: number) {

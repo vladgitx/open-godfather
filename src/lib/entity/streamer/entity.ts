@@ -3,7 +3,7 @@ import { Vector3, type Position3 } from "../../vector3"
 import { GameEntity } from "../game"
 import { type EventMapInterface } from "@/lib/event-bus"
 
-export class StreamerEntity<EventMap extends EventMapInterface = EventMapInterface> extends GameEntity<EventMap> {
+export class StreamerEntity<EventMap extends EventMapInterface<EventMap> = EventMapInterface> extends GameEntity<EventMap> {
     constructor(
         gameId: number,
         private type: StreamerItemType,
