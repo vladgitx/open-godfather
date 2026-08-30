@@ -112,36 +112,50 @@ export class PlayerAttachedObjectHandler {
 
         this.editingObject = attachedObject
 
-        this.editingObject.onCleanup(() => {
+        const unsubscribeObjectCleanup = this.editingObject.onCleanup(() => {
             if (this.editingObject === attachedObject) {
                 this.editingObject = undefined
                 editPromise.reject(this.player, new Error("Player attached object was destroyed"))
             }
         })
 
-        this.player.events.on("editAttachedObject", (response, slot, model, bone, offset, rotation, scale) => {
-            if (this.editingObject !== attachedObject) {
-                return
+        const unsubscribeCancelEdit = this.player.events.on("cancelObjectEdition", () => {
+            if (this.editingObject === attachedObject) {
+                this.editingObject = undefined
+                editPromise.reject(this.player, new Error("CancelEdit was called on player while editing an attached object"))
             }
+        })
 
-            if (response === "cancel") {
-                PlayerAttachedObject.refreshVisuals(attachedObject)
+        const unsubscribeAttachedObjectEdit = this.player.events.on(
+            "editAttachedObject",
+            (response, slot, model, bone, offset, rotation, scale) => {
+                if (this.editingObject !== attachedObject) {
+                    return
+                }
+
+                if (response === "cancel") {
+                    PlayerAttachedObject.refreshVisuals(attachedObject)
+
+                    this.editingObject = undefined
+                    editPromise.resolve(this.player, undefined)
+                    return
+                }
+
+                this.editingObject.offset = offset
+                this.editingObject.rotation = rotation
+                this.editingObject.scale = scale
 
                 this.editingObject = undefined
-                editPromise.resolve(this.player, undefined)
-                return
-            }
-
-            this.editingObject.offset = offset
-            this.editingObject.rotation = rotation
-            this.editingObject.scale = scale
-
-            this.editingObject = undefined
-            editPromise.resolve(this.player, { offset, rotation, scale })
-        })
+                editPromise.resolve(this.player, { offset, rotation, scale })
+            },
+        )
 
         gameNatives.editAttachedObject(this.player.id, attachedObject.slot)
 
-        return editPromise.new(this.player)
+        return editPromise.new(this.player).finally(() => {
+            unsubscribeObjectCleanup()
+            unsubscribeCancelEdit()
+            unsubscribeAttachedObjectEdit()
+        })
     }
 }
